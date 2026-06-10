@@ -5,11 +5,11 @@
       "end": "2026-06-10"
     },
     "filter": "charly-only",
-    "total_interactions": 81887,
-    "total_input_tokens": 73387552,
-    "total_output_tokens": 61075944,
-    "cost_total_effective": 3160.94,
-    "cost_total_real": 65.58,
+    "total_interactions": 81904,
+    "total_input_tokens": 74231421,
+    "total_output_tokens": 61083576,
+    "cost_total_effective": 3161.05,
+    "cost_total_real": 65.7,
     "total_hours": 479,
     "total_days": 96,
     "total_months": 6,
@@ -10489,22 +10489,22 @@
       }
     },
     "2026-06-10 18:00": {
-      "interactions": 31,
-      "input_tokens": 588936,
-      "output_tokens": 30585,
-      "cost_real": 0.12265617819999997,
-      "cost_effective": 0.12265617819999997,
+      "interactions": 48,
+      "input_tokens": 1432805,
+      "output_tokens": 38217,
+      "cost_real": 0.23819775849999997,
+      "cost_effective": 0.23819775849999997,
       "tools": {
         "openrouter": {
-          "req": 31,
-          "in": 588936,
-          "out": 30585,
-          "cost_eff": 0.12265617819999997,
-          "cost_real": 0.12265617819999997
+          "req": 48,
+          "in": 1432805,
+          "out": 38217,
+          "cost_eff": 0.23819775849999997,
+          "cost_real": 0.23819775849999997
         }
       },
       "models": {
-        "deepseek/deepseek-v4-flash": 31
+        "deepseek/deepseek-v4-flash": 48
       }
     }
   },
@@ -11894,18 +11894,18 @@
       }
     },
     "2026-06-10": {
-      "interactions": 206,
-      "input_tokens": 1733905,
-      "output_tokens": 147661,
-      "cost_real": 0.26494063990000005,
-      "cost_effective": 0.26494063990000005,
+      "interactions": 223,
+      "input_tokens": 2577774,
+      "output_tokens": 155293,
+      "cost_real": 0.3804822202,
+      "cost_effective": 0.3804822202,
       "tools": {
         "claude-cli": 130,
-        "openrouter": 76
+        "openrouter": 93
       },
       "models": {
         "claude-sonnet-4-6": 130,
-        "deepseek/deepseek-v4-flash": 76
+        "deepseek/deepseek-v4-flash": 93
       }
     }
   },
@@ -12001,19 +12001,19 @@
       }
     },
     "2026-06": {
-      "interactions": 1658,
-      "input_tokens": 4426275,
-      "output_tokens": 871579,
-      "cost_effective": 3.83,
-      "cost_real": 3.83,
+      "interactions": 1675,
+      "input_tokens": 5270144,
+      "output_tokens": 879211,
+      "cost_effective": 3.94,
+      "cost_real": 3.94,
       "tools": {
         "claude-cli": 1359,
-        "openrouter": 204,
+        "openrouter": 221,
         "codex": 95
       },
       "models": {
         "claude-sonnet-4-6": 1355,
-        "deepseek/deepseek-v4-flash": 202,
+        "deepseek/deepseek-v4-flash": 219,
         "gpt-5.4": 94,
         "<synthetic>": 4,
         "moonshotai/kimi-k2": 2,
@@ -12955,18 +12955,18 @@
       "skills": {}
     },
     "-charly-microdancing/": {
-      "interactions": 76,
-      "input_tokens": 1733737,
-      "output_tokens": 59896,
-      "cost_effective": 0.26,
-      "cost_real": 0.26,
+      "interactions": 93,
+      "input_tokens": 2577606,
+      "output_tokens": 67528,
+      "cost_effective": 0.38,
+      "cost_real": 0.38,
       "first_seen": "2026-06-10",
       "last_seen": "2026-06-10",
       "tools": {
-        "openrouter": 76
+        "openrouter": 93
       },
       "models": {
-        "deepseek/deepseek-v4-flash": 76
+        "deepseek/deepseek-v4-flash": 93
       },
       "skills": {}
     },
@@ -13162,21 +13162,21 @@
   "subscription_config": {
     "claude-cli": [
       {
-        "start": "2026-03-01",
-        "end": "2026-04-15",
-        "label": "Pro $20",
+        "start": "2026-03-19",
+        "end": "2026-04-19",
+        "label": "Pro $20/mes",
         "monthly_fee": 20
       },
       {
-        "start": "2026-04-15",
-        "end": "2026-05-15",
-        "label": "Max $100",
+        "start": "2026-04-19",
+        "end": "2026-06-19",
+        "label": "Max $100/mes",
         "monthly_fee": 100
       },
       {
-        "start": "2026-05-15",
+        "start": "2026-06-19",
         "end": null,
-        "label": "Pro $20",
+        "label": "Pro $20/mes",
         "monthly_fee": 20
       }
     ],

@@ -21,9 +21,9 @@ CHARLY_FILTER = True
 
 SUBSCRIPTIONS = {
     "claude-cli": [
-        {"start": "2026-03-01", "end": "2026-04-15", "label": "Pro $20", "monthly_fee": 20},
-        {"start": "2026-04-15", "end": "2026-05-15", "label": "Max $100", "monthly_fee": 100},
-        {"start": "2026-05-15", "end": None, "label": "Pro $20", "monthly_fee": 20},
+        {"start": "2026-03-19", "end": "2026-04-19", "label": "Pro $20/mes", "monthly_fee": 20},
+        {"start": "2026-04-19", "end": "2026-06-19", "label": "Max $100/mes", "monthly_fee": 100},
+        {"start": "2026-06-19", "end": None, "label": "Pro $20/mes", "monthly_fee": 20},
     ],
     "codex": [
         {"start": "2026-04-01", "end": "2026-05-15", "label": "Subscripción", "monthly_fee": 10},
