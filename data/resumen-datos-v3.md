@@ -23,6 +23,8 @@ Extraído con `scripts/usage-tracker.py` el 2026-06-10.
 
 **Nota sobre costos:** fechas reales de suscripción: Pro $20/mes (Mar 19 → Abr 19), Max $100/mes (Abr 19 → Jun 19), Pro $20/mes (Jun 19 → presente). El costo real de $65.70 corresponde a Codex pay-per-token post-mayo 15 y OpenRouter.
 
+**Amp es @ampcode/cli** (agente autónomo). Sus 2,281 interacciones son escrituras de archivos sin costo directo (ya cubierto por suscripción o plan gratuito). Amp dominó enero-febrero (1,648 cambios) y fue reemplazado por Claude CLI a partir de marzo.
+
 ## Mensual (solo charly)
 
 | Mes | Reqs | Costo efectivo | Costo real | Herramientas | Modelos dominantes |

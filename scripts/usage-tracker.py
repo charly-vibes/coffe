@@ -159,6 +159,9 @@ def extract_pi():
 
 
 def extract_amp():
+    """Extrae de Amp (@ampcode/cli, agente autónomo).
+    Solo guarda URIs de archivos modificados. No hay costo ni modelo.
+    Amp fue la herramienta principal ene-feb (fabbro, nayra), reemplazado por Claude CLI."""
     rows = []
     amp_dir = AMP_DIR / "file-changes"
     if not amp_dir.exists(): return rows

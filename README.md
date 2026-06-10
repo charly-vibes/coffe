@@ -48,7 +48,19 @@ Propósito: recolectar, procesar y documentar los datos de uso de IA de los últ
 
 ### ❌ Gap conocido
 
-- **Primeros 10 días de enero (1-10).** Los commits arrancan el 6-7 de enero (jams, fabbro). No hay logs de sesiones de esa semana. Los commits tienen autor "Charly Vibes" (Claude Code), pero las sesiones originales se limpiaron. Posible explicación: Claude web o Cursor antes de Claude CLI.
+- **Primeros 10 días de enero (1-10).** Los commits arrancan el 6-7 de enero (jams, fabbro) pero Amp arranca recién el 11. Esos primeros ~5 días no tienen logs de ninguna herramienta. Los commits de jams tienen autor "Charly Vibes" (el que usa Claude Code), pero no hay sesiones guardadas.
+- **Amp no tiene costo ni modelo.** Amp es @ampcode/cli (agente autónomo). Solo guarda los archivos que modifica, no el prompt, ni el modelo usado, ni el costo. Por eso aparece con costo $0 y modelo "amp".
+
+### 🔍 Entendiendo Amp
+
+Amp (@ampcode/cli, ex-Sourcegraph/amp) es un agente de IA autónomo que escribe archivos directamente. A diferencia de Claude CLI (donde revisás cada cambio), Amp hace cambios sin intervención. Su uso:
+
+- **Período activo:** 2026-01-11 → 2026-05-05
+- **Pico:** Semana 7 (febrero) con 43 tareas
+- **Proyectos principales:** fabbro (66 tareas en enero), nayra (18)
+- **Declive:** Reemplazado por Claude CLI a partir de marzo
+
+Amp es evidencia de la **primera fase**: trabajo autónomo sin supervisión, que después se reemplazó por el método Resonant Coding con revisión humana.
 - **Fechas exactas de suscripción.** En el script uso estimaciones (Pro $20 → Max $100 → Pro $20). Pendiente confirmar fechas exactas.
 
 ### 📊 Posibles visualizaciones
