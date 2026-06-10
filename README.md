@@ -64,7 +64,7 @@ Con los datos actuales podemos generar:
 
 ## Próximos pasos
 
-1. [ ] Confirmar fechas exactas de suscripción Claude (Pro→Max→Pro)
+1. [x] ~~Confirmar fechas exactas de suscripción Claude (Pro→Max→Pro)~~ ✅ **Mar 19 Pro → Abr 19 Max → Jun 19 Pro**
 2. [ ] Investigar gap de enero 1-10 (¿Claude web? ¿Cursor?)
 3. [ ] Generar dashboard HTML con Chart.js
 4. [ ] Empezar a escribir post principal con datos reales

@@ -17,11 +17,11 @@ Extraído con `scripts/usage-tracker.py` el 2026-06-10.
 | Días activos | **96** |
 | Proyectos (charly) | **48** |
 | Costo efectivo | **$3,160.94** (pay-per-token estimado) |
-| Costo real | **$65.58** (con suscripciones Pro $20 / Max $100) |
+| Costo real | **$65.70** (Pro $20/mes → Max $100/mes → Pro $20/mes) |
 | Tokens input consumidos | ~73.4M |
 | Tokens output generados | ~61.1M |
 
-**Nota sobre costos:** los valores de suscripción son estimaciones preliminares. Usé Pro $20/mes → Max $100/mes → Pro $20/mes para Claude, y suscripción → pay-per-token para Codex. Cuando tengas las fechas exactas, ajusto el config en el script.
+**Nota sobre costos:** fechas reales de suscripción: Pro $20/mes (Mar 19 → Abr 19), Max $100/mes (Abr 19 → Jun 19), Pro $20/mes (Jun 19 → presente). El costo real de $65.70 corresponde a Codex pay-per-token post-mayo 15 y OpenRouter.
 
 ## Mensual (solo charly)
 
