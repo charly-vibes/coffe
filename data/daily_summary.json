@@ -1,0 +1,1731 @@
+{
+  "2023-06-26": {
+    "interactions": 1,
+    "tools": {
+      "gemini-cli": 1
+    },
+    "models": {
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2025-12-07": {
+    "interactions": 3,
+    "tools": {
+      "gemini-cli": 3
+    },
+    "models": {
+      "gemini": 3
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2025-12-15": {
+    "interactions": 1,
+    "tools": {
+      "gemini-cli": 1
+    },
+    "models": {
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2025-12-18": {
+    "interactions": 34,
+    "tools": {
+      "gemini-cli": 1,
+      "amp": 33
+    },
+    "models": {
+      "gemini": 1,
+      "amp": 33
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2025-12-20": {
+    "interactions": 7,
+    "tools": {
+      "amp": 7
+    },
+    "models": {
+      "amp": 7
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2025-12-23": {
+    "interactions": 60,
+    "tools": {
+      "amp": 60
+    },
+    "models": {
+      "amp": 60
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-09": {
+    "interactions": 1,
+    "tools": {
+      "gemini-cli": 1
+    },
+    "models": {
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-11": {
+    "interactions": 64,
+    "tools": {
+      "amp": 64
+    },
+    "models": {
+      "amp": 64
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-12": {
+    "interactions": 74,
+    "tools": {
+      "amp": 74
+    },
+    "models": {
+      "amp": 74
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-13": {
+    "interactions": 108,
+    "tools": {
+      "amp": 108
+    },
+    "models": {
+      "amp": 108
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-14": {
+    "interactions": 174,
+    "tools": {
+      "gemini-cli": 7,
+      "amp": 167
+    },
+    "models": {
+      "gemini": 7,
+      "amp": 167
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-19": {
+    "interactions": 64,
+    "tools": {
+      "amp": 62,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 62,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-20": {
+    "interactions": 38,
+    "tools": {
+      "amp": 38
+    },
+    "models": {
+      "amp": 38
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-21": {
+    "interactions": 8,
+    "tools": {
+      "amp": 6,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 6,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-22": {
+    "interactions": 105,
+    "tools": {
+      "amp": 102,
+      "gemini-cli": 3
+    },
+    "models": {
+      "amp": 102,
+      "gemini": 3
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-23": {
+    "interactions": 16,
+    "tools": {
+      "gemini-cli": 1,
+      "amp": 15
+    },
+    "models": {
+      "gemini": 1,
+      "amp": 15
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-24": {
+    "interactions": 57,
+    "tools": {
+      "amp": 53,
+      "gemini-cli": 4
+    },
+    "models": {
+      "amp": 53,
+      "gemini": 4
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-25": {
+    "interactions": 57,
+    "tools": {
+      "amp": 55,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 55,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-26": {
+    "interactions": 68,
+    "tools": {
+      "amp": 68
+    },
+    "models": {
+      "amp": 68
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-27": {
+    "interactions": 43,
+    "tools": {
+      "amp": 43
+    },
+    "models": {
+      "amp": 43
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-28": {
+    "interactions": 48,
+    "tools": {
+      "amp": 48
+    },
+    "models": {
+      "amp": 48
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-29": {
+    "interactions": 64,
+    "tools": {
+      "amp": 62,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 62,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-30": {
+    "interactions": 42,
+    "tools": {
+      "gemini-cli": 1,
+      "amp": 41
+    },
+    "models": {
+      "gemini": 1,
+      "amp": 41
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-01-31": {
+    "interactions": 46,
+    "tools": {
+      "amp": 46
+    },
+    "models": {
+      "amp": 46
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-01": {
+    "interactions": 82,
+    "tools": {
+      "amp": 82
+    },
+    "models": {
+      "amp": 82
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-02": {
+    "interactions": 1,
+    "tools": {
+      "gemini-cli": 1
+    },
+    "models": {
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-05": {
+    "interactions": 47,
+    "tools": {
+      "amp": 47
+    },
+    "models": {
+      "amp": 47
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-06": {
+    "interactions": 24,
+    "tools": {
+      "amp": 24
+    },
+    "models": {
+      "amp": 24
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-08": {
+    "interactions": 39,
+    "tools": {
+      "amp": 39
+    },
+    "models": {
+      "amp": 39
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-10": {
+    "interactions": 125,
+    "tools": {
+      "amp": 125
+    },
+    "models": {
+      "amp": 125
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-11": {
+    "interactions": 53,
+    "tools": {
+      "gemini-cli": 8,
+      "amp": 45
+    },
+    "models": {
+      "gemini": 8,
+      "amp": 45
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-12": {
+    "interactions": 42,
+    "tools": {
+      "amp": 22,
+      "gemini-cli": 20
+    },
+    "models": {
+      "amp": 22,
+      "gemini": 20
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-13": {
+    "interactions": 37,
+    "tools": {
+      "gemini-cli": 8,
+      "amp": 29
+    },
+    "models": {
+      "gemini": 8,
+      "amp": 29
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-14": {
+    "interactions": 36,
+    "tools": {
+      "amp": 36
+    },
+    "models": {
+      "amp": 36
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-15": {
+    "interactions": 60,
+    "tools": {
+      "amp": 60
+    },
+    "models": {
+      "amp": 60
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-16": {
+    "interactions": 41,
+    "tools": {
+      "amp": 41
+    },
+    "models": {
+      "amp": 41
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-17": {
+    "interactions": 29,
+    "tools": {
+      "amp": 29
+    },
+    "models": {
+      "amp": 29
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-18": {
+    "interactions": 26,
+    "tools": {
+      "amp": 26
+    },
+    "models": {
+      "amp": 26
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-19": {
+    "interactions": 10,
+    "tools": {
+      "gemini-cli": 2,
+      "amp": 8
+    },
+    "models": {
+      "gemini": 2,
+      "amp": 8
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-20": {
+    "interactions": 11,
+    "tools": {
+      "amp": 5,
+      "gemini-cli": 6
+    },
+    "models": {
+      "amp": 5,
+      "gemini": 6
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-22": {
+    "interactions": 2,
+    "tools": {
+      "amp": 2
+    },
+    "models": {
+      "amp": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-23": {
+    "interactions": 60,
+    "tools": {
+      "amp": 59,
+      "gemini-cli": 1
+    },
+    "models": {
+      "amp": 59,
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-24": {
+    "interactions": 10,
+    "tools": {
+      "amp": 10
+    },
+    "models": {
+      "amp": 10
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-25": {
+    "interactions": 48,
+    "tools": {
+      "amp": 40,
+      "gemini-cli": 8
+    },
+    "models": {
+      "amp": 40,
+      "gemini": 8
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-02-28": {
+    "interactions": 23,
+    "tools": {
+      "amp": 21,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 21,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-02": {
+    "interactions": 12,
+    "tools": {
+      "gemini-cli": 2,
+      "amp": 10
+    },
+    "models": {
+      "gemini": 2,
+      "amp": 10
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-03": {
+    "interactions": 30,
+    "tools": {
+      "amp": 22,
+      "gemini-cli": 8
+    },
+    "models": {
+      "amp": 22,
+      "gemini": 8
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-04": {
+    "interactions": 28,
+    "tools": {
+      "amp": 28
+    },
+    "models": {
+      "amp": 28
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-05": {
+    "interactions": 31,
+    "tools": {
+      "amp": 25,
+      "gemini-cli": 6
+    },
+    "models": {
+      "amp": 25,
+      "gemini": 6
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-06": {
+    "interactions": 14,
+    "tools": {
+      "amp": 14
+    },
+    "models": {
+      "amp": 14
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-07": {
+    "interactions": 19,
+    "tools": {
+      "amp": 19
+    },
+    "models": {
+      "amp": 19
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-08": {
+    "interactions": 18,
+    "tools": {
+      "amp": 18
+    },
+    "models": {
+      "amp": 18
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-09": {
+    "interactions": 24,
+    "tools": {
+      "amp": 24
+    },
+    "models": {
+      "amp": 24
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-10": {
+    "interactions": 41,
+    "tools": {
+      "amp": 33,
+      "gemini-cli": 8
+    },
+    "models": {
+      "amp": 33,
+      "gemini": 8
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-11": {
+    "interactions": 26,
+    "tools": {
+      "amp": 26
+    },
+    "models": {
+      "amp": 26
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-12": {
+    "interactions": 9,
+    "tools": {
+      "amp": 8,
+      "gemini-cli": 1
+    },
+    "models": {
+      "amp": 8,
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-13": {
+    "interactions": 2,
+    "tools": {
+      "amp": 2
+    },
+    "models": {
+      "amp": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-15": {
+    "interactions": 16,
+    "tools": {
+      "amp": 16
+    },
+    "models": {
+      "amp": 16
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-16": {
+    "interactions": 247,
+    "tools": {
+      "amp": 15,
+      "gemini-cli": 3,
+      "claude-cli": 229
+    },
+    "models": {
+      "amp": 15,
+      "gemini": 3,
+      "claude-opus-4-6": 229
+    },
+    "total_input_tokens": 323,
+    "total_output_tokens": 90872,
+    "total_cost": 66.254099
+  },
+  "2026-03-17": {
+    "interactions": 2,
+    "tools": {
+      "gemini-cli": 2
+    },
+    "models": {
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-18": {
+    "interactions": 5,
+    "tools": {
+      "gemini-cli": 5
+    },
+    "models": {
+      "gemini": 5
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-19": {
+    "interactions": 28,
+    "tools": {
+      "amp": 27,
+      "gemini-cli": 1
+    },
+    "models": {
+      "amp": 27,
+      "gemini": 1
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-20": {
+    "interactions": 13,
+    "tools": {
+      "amp": 13
+    },
+    "models": {
+      "amp": 13
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-23": {
+    "interactions": 44,
+    "tools": {
+      "amp": 44
+    },
+    "models": {
+      "amp": 44
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-24": {
+    "interactions": 7,
+    "tools": {
+      "gemini-cli": 7
+    },
+    "models": {
+      "gemini": 7
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-25": {
+    "interactions": 30,
+    "tools": {
+      "gemini-cli": 1,
+      "amp": 29
+    },
+    "models": {
+      "gemini": 1,
+      "amp": 29
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-26": {
+    "interactions": 25,
+    "tools": {
+      "gemini-cli": 3,
+      "amp": 22
+    },
+    "models": {
+      "gemini": 3,
+      "amp": 22
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-03-27": {
+    "interactions": 30,
+    "tools": {
+      "amp": 23,
+      "gemini-cli": 2,
+      "claude-cli": 5
+    },
+    "models": {
+      "amp": 23,
+      "gemini": 2,
+      "claude-opus-4-6": 5
+    },
+    "total_input_tokens": 11,
+    "total_output_tokens": 787,
+    "total_cost": 0.659411
+  },
+  "2026-03-30": {
+    "interactions": 38,
+    "tools": {
+      "amp": 36,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 36,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-01": {
+    "interactions": 12,
+    "tools": {
+      "amp": 12
+    },
+    "models": {
+      "amp": 12
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-02": {
+    "interactions": 51,
+    "tools": {
+      "amp": 41,
+      "claude-cli": 3,
+      "gemini-cli": 7
+    },
+    "models": {
+      "amp": 41,
+      "<synthetic>": 1,
+      "gemini": 7,
+      "claude-opus-4-6": 2
+    },
+    "total_input_tokens": 6,
+    "total_output_tokens": 381,
+    "total_cost": 0.48689400000000005
+  },
+  "2026-04-07": {
+    "interactions": 38,
+    "tools": {
+      "amp": 38
+    },
+    "models": {
+      "amp": 38
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-08": {
+    "interactions": 11,
+    "tools": {
+      "amp": 11
+    },
+    "models": {
+      "amp": 11
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-09": {
+    "interactions": 25,
+    "tools": {
+      "amp": 25
+    },
+    "models": {
+      "amp": 25
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-11": {
+    "interactions": 28,
+    "tools": {
+      "amp": 26,
+      "gemini-cli": 2
+    },
+    "models": {
+      "amp": 26,
+      "gemini": 2
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-13": {
+    "interactions": 18,
+    "tools": {
+      "amp": 18
+    },
+    "models": {
+      "amp": 18
+    },
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "total_cost": 0.0
+  },
+  "2026-04-14": {
+    "interactions": 335,
+    "tools": {
+      "claude-cli": 1,
+      "codex": 270,
+      "gemini-cli": 63,
+      "copilot": 1
+    },
+    "models": {
+      "claude-opus-4-6": 1,
+      "gpt-5.4": 268,
+      "gemini": 5,
+      "gemini-3-flash-preview": 50,
+      "gpt-5.2": 2,
+      "gemini-2.5-pro": 9
+    },
+    "total_input_tokens": 3122403,
+    "total_output_tokens": 147915,
+    "total_cost": 12.333047999999991
+  },
+  "2026-04-16": {
+    "interactions": 347,
+    "tools": {
+      "gemini-cli": 1,
+      "copilot": 1,
+      "codex": 329,
+      "amp": 16
+    },
+    "models": {
+      "gemini-3-flash-preview": 1,
+      "gpt-5.3-codex": 1,
+      "gpt-5.4": 329,
+      "amp": 16
+    },
+    "total_input_tokens": 1666418,
+    "total_output_tokens": 131736,
+    "total_cost": 10.942244999999994
+  },
+  "2026-04-17": {
+    "interactions": 720,
+    "tools": {
+      "amp": 11,
+      "codex": 706,
+      "gemini-cli": 3
+    },
+    "models": {
+      "amp": 11,
+      "gpt-5.4": 706,
+      "gemini": 3
+    },
+    "total_input_tokens": 2265560,
+    "total_output_tokens": 214807,
+    "total_cost": 18.142485000000004
+  },
+  "2026-04-18": {
+    "interactions": 453,
+    "tools": {
+      "codex": 363,
+      "amp": 24,
+      "gemini-cli": 66
+    },
+    "models": {
+      "gpt-5.4": 363,
+      "amp": 24,
+      "gemini-3-flash-preview": 66
+    },
+    "total_input_tokens": 1696757,
+    "total_output_tokens": 130175,
+    "total_cost": 11.091673500000004
+  },
+  "2026-04-19": {
+    "interactions": 498,
+    "tools": {
+      "gemini-cli": 46,
+      "amp": 15,
+      "claude-cli": 176,
+      "codex": 261
+    },
+    "models": {
+      "gemini-3-flash-preview": 34,
+      "amp": 15,
+      "claude-sonnet-4-6": 176,
+      "gpt-5.4": 261,
+      "gemini-2.5-pro": 12
+    },
+    "total_input_tokens": 1840567,
+    "total_output_tokens": 203682,
+    "total_cost": 14.350789499999989
+  },
+  "2026-04-20": {
+    "interactions": 1649,
+    "tools": {
+      "amp": 18,
+      "claude-cli": 1228,
+      "gemini-cli": 20,
+      "codex": 383
+    },
+    "models": {
+      "amp": 18,
+      "<synthetic>": 4,
+      "claude-sonnet-4-6": 503,
+      "gemini-3-pro-preview": 20,
+      "gpt-5.4": 383,
+      "claude-opus-4-6": 721
+    },
+    "total_input_tokens": 1157468,
+    "total_output_tokens": 1061372,
+    "total_cost": 150.327784
+  },
+  "2026-04-21": {
+    "interactions": 2373,
+    "tools": {
+      "codex": 658,
+      "claude-cli": 1574,
+      "gemini-cli": 129,
+      "amp": 12
+    },
+    "models": {
+      "gpt-5.4": 658,
+      "<synthetic>": 1,
+      "claude-sonnet-4-6": 458,
+      "gemini-3.1-pro-preview": 12,
+      "gemini-3-pro-preview": 116,
+      "claude-opus-4-6": 1115,
+      "amp": 12,
+      "gemini": 1
+    },
+    "total_input_tokens": 2821923,
+    "total_output_tokens": 1323180,
+    "total_cost": 289.93783800000034
+  },
+  "2026-04-22": {
+    "interactions": 4269,
+    "tools": {
+      "amp": 10,
+      "claude-cli": 3476,
+      "codex": 746,
+      "gemini-cli": 37
+    },
+    "models": {
+      "amp": 10,
+      "claude-sonnet-4-6": 2600,
+      "gpt-5.4": 602,
+      "claude-opus-4-6": 876,
+      "gemini-2.5-pro": 37,
+      "gpt-5.3-codex": 144
+    },
+    "total_input_tokens": 4037034,
+    "total_output_tokens": 2637971,
+    "total_cost": 276.9978771499995
+  },
+  "2026-04-23": {
+    "interactions": 2696,
+    "tools": {
+      "claude-cli": 2143,
+      "amp": 19,
+      "codex": 455,
+      "gemini-cli": 79
+    },
+    "models": {
+      "claude-opus-4-6": 610,
+      "claude-sonnet-4-6": 1533,
+      "amp": 19,
+      "gpt-5.4": 455,
+      "gemini-3-pro-preview": 79
+    },
+    "total_input_tokens": 2507624,
+    "total_output_tokens": 1838399,
+    "total_cost": 174.49613099999985
+  },
+  "2026-04-24": {
+    "interactions": 393,
+    "tools": {
+      "claude-cli": 16,
+      "codex": 284,
+      "gemini-cli": 93
+    },
+    "models": {
+      "claude-sonnet-4-6": 16,
+      "gpt-5.4": 284,
+      "gemini-3-pro-preview": 93
+    },
+    "total_input_tokens": 1852558,
+    "total_output_tokens": 144888,
+    "total_cost": 12.121327500000001
+  },
+  "2026-04-25": {
+    "interactions": 52,
+    "tools": {
+      "codex": 52
+    },
+    "models": {
+      "gpt-5.4": 52
+    },
+    "total_input_tokens": 328038,
+    "total_output_tokens": 12970,
+    "total_cost": 1.7332050000000006
+  },
+  "2026-04-27": {
+    "interactions": 536,
+    "tools": {
+      "codex": 206,
+      "claude-cli": 185,
+      "gemini-cli": 108,
+      "amp": 37
+    },
+    "models": {
+      "gpt-5.4": 206,
+      "claude-opus-4-6": 185,
+      "gemini-3-flash-preview": 108,
+      "amp": 37
+    },
+    "total_input_tokens": 2475271,
+    "total_output_tokens": 155718,
+    "total_cost": 44.83862899999993
+  },
+  "2026-04-28": {
+    "interactions": 2728,
+    "tools": {
+      "codex": 583,
+      "amp": 3,
+      "claude-cli": 2062,
+      "gemini-cli": 80
+    },
+    "models": {
+      "gpt-5.4": 583,
+      "amp": 3,
+      "claude-sonnet-4-6": 2062,
+      "gemini-3-pro-preview": 80
+    },
+    "total_input_tokens": 3157986,
+    "total_output_tokens": 1403952,
+    "total_cost": 72.50339699999995
+  },
+  "2026-04-29": {
+    "interactions": 1026,
+    "tools": {
+      "gemini-cli": 53,
+      "codex": 291,
+      "claude-cli": 670,
+      "amp": 12
+    },
+    "models": {
+      "gemini-3-pro-preview": 53,
+      "gpt-5.4": 291,
+      "claude-sonnet-4-6": 670,
+      "amp": 12
+    },
+    "total_input_tokens": 2877415,
+    "total_output_tokens": 620038,
+    "total_cost": 32.236820499999936
+  },
+  "2026-04-30": {
+    "interactions": 3801,
+    "tools": {
+      "claude-cli": 3281,
+      "amp": 25,
+      "gemini-cli": 93,
+      "codex": 402
+    },
+    "models": {
+      "claude-sonnet-4-6": 3281,
+      "amp": 25,
+      "gemini-3-pro-preview": 93,
+      "gpt-5.4": 402
+    },
+    "total_input_tokens": 4724036,
+    "total_output_tokens": 3571371,
+    "total_cost": 137.70416000000034
+  },
+  "2026-05-01": {
+    "interactions": 877,
+    "tools": {
+      "claude-cli": 654,
+      "amp": 11,
+      "gemini-cli": 18,
+      "codex": 194
+    },
+    "models": {
+      "claude-sonnet-4-6": 654,
+      "amp": 11,
+      "gemini-3-pro-preview": 18,
+      "gpt-5.4": 194
+    },
+    "total_input_tokens": 1977019,
+    "total_output_tokens": 644167,
+    "total_cost": 36.36095550000005
+  },
+  "2026-05-02": {
+    "interactions": 13,
+    "tools": {
+      "gemini-cli": 1,
+      "claude-cli": 2,
+      "amp": 5,
+      "codex": 5
+    },
+    "models": {
+      "gemini-3-pro-preview": 1,
+      "claude-sonnet-4-6": 2,
+      "amp": 5,
+      "gpt-5.4": 5
+    },
+    "total_input_tokens": 28460,
+    "total_output_tokens": 1017,
+    "total_cost": 0.17991199999999996
+  },
+  "2026-05-03": {
+    "interactions": 40,
+    "tools": {
+      "codex": 40
+    },
+    "models": {
+      "gpt-5.4": 40
+    },
+    "total_input_tokens": 148724,
+    "total_output_tokens": 14184,
+    "total_cost": 1.0131139999999998
+  },
+  "2026-05-04": {
+    "interactions": 975,
+    "tools": {
+      "amp": 29,
+      "codex": 469,
+      "claude-cli": 476,
+      "gemini-cli": 1
+    },
+    "models": {
+      "amp": 29,
+      "gpt-5.4": 183,
+      "claude-sonnet-4-6": 476,
+      "gpt-5.5": 286,
+      "gemini": 1
+    },
+    "total_input_tokens": 1997825,
+    "total_output_tokens": 566782,
+    "total_cost": 37.136958499999935
+  },
+  "2026-05-05": {
+    "interactions": 3918,
+    "tools": {
+      "claude-cli": 3133,
+      "codex": 774,
+      "amp": 8,
+      "gemini-cli": 3
+    },
+    "models": {
+      "claude-sonnet-4-6": 3133,
+      "gpt-5.5": 774,
+      "amp": 8,
+      "gemini": 3
+    },
+    "total_input_tokens": 2818138,
+    "total_output_tokens": 3181087,
+    "total_cost": 165.21121299999936
+  },
+  "2026-05-06": {
+    "interactions": 6516,
+    "tools": {
+      "claude-cli": 5733,
+      "codex": 775,
+      "gemini-cli": 8
+    },
+    "models": {
+      "claude-sonnet-4-6": 5728,
+      "gpt-5.5": 248,
+      "gpt-5.4": 527,
+      "<synthetic>": 5,
+      "gemini": 8
+    },
+    "total_input_tokens": 3070819,
+    "total_output_tokens": 6247459,
+    "total_cost": 249.6469430000007
+  },
+  "2026-05-07": {
+    "interactions": 5449,
+    "tools": {
+      "codex": 837,
+      "claude-cli": 4577,
+      "gemini-cli": 35
+    },
+    "models": {
+      "gpt-5.5": 765,
+      "claude-sonnet-4-6": 4575,
+      "gemini": 11,
+      "gpt-5.4": 72,
+      "gemini-2.5-flash": 1,
+      "gemini-2.5-pro": 22,
+      "claude-opus-4-7": 2,
+      "gemini-1.5-pro-latest": 1
+    },
+    "total_input_tokens": 5922108,
+    "total_output_tokens": 4210543,
+    "total_cost": 207.62623800000142
+  },
+  "2026-05-08": {
+    "interactions": 6575,
+    "tools": {
+      "claude-cli": 6505,
+      "codex": 56,
+      "gemini-cli": 14
+    },
+    "models": {
+      "claude-sonnet-4-6": 6505,
+      "gpt-5.5": 56,
+      "gemini": 8,
+      "gemini-2.5-pro": 6
+    },
+    "total_input_tokens": 4947033,
+    "total_output_tokens": 6523477,
+    "total_cost": 243.1226359999994
+  },
+  "2026-05-09": {
+    "interactions": 1689,
+    "tools": {
+      "claude-cli": 1689
+    },
+    "models": {
+      "claude-sonnet-4-6": 1169,
+      "claude-opus-4-6": 516,
+      "<synthetic>": 3,
+      "claude-3-sonnet-20240229": 1
+    },
+    "total_input_tokens": 14295,
+    "total_output_tokens": 1456232,
+    "total_cost": 140.79789300000007
+  },
+  "2026-05-10": {
+    "interactions": 976,
+    "tools": {
+      "claude-cli": 976
+    },
+    "models": {
+      "claude-sonnet-4-6": 976
+    },
+    "total_input_tokens": 1854,
+    "total_output_tokens": 818913,
+    "total_cost": 33.98808900000001
+  },
+  "2026-05-11": {
+    "interactions": 2548,
+    "tools": {
+      "claude-cli": 2548
+    },
+    "models": {
+      "claude-sonnet-4-6": 2544,
+      "<synthetic>": 4
+    },
+    "total_input_tokens": 20635,
+    "total_output_tokens": 3577797,
+    "total_cost": 16.412305000000007
+  },
+  "2026-05-12": {
+    "interactions": 4442,
+    "tools": {
+      "claude-cli": 3748,
+      "codex": 691,
+      "gemini-cli": 3
+    },
+    "models": {
+      "claude-sonnet-4-6": 2533,
+      "gpt-5.5": 229,
+      "claude-opus-4-6": 839,
+      "<synthetic>": 3,
+      "gpt-5.4": 462,
+      "gemini": 3,
+      "claude-opus-4-7": 373
+    },
+    "total_input_tokens": 3186456,
+    "total_output_tokens": 2829882,
+    "total_cost": 28.58465350000005
+  },
+  "2026-05-13": {
+    "interactions": 2368,
+    "tools": {
+      "claude-cli": 1706,
+      "codex": 662
+    },
+    "models": {
+      "claude-opus-4-6": 1132,
+      "claude-opus-4-7": 565,
+      "<synthetic>": 9,
+      "gpt-5.4": 437,
+      "gpt-5.5": 225
+    },
+    "total_input_tokens": 2870331,
+    "total_output_tokens": 1831868,
+    "total_cost": 31.065171000000035
+  },
+  "2026-05-14": {
+    "interactions": 1552,
+    "tools": {
+      "codex": 222,
+      "claude-cli": 1330
+    },
+    "models": {
+      "gpt-5.4": 136,
+      "gpt-5.5": 86,
+      "claude-sonnet-4-6": 1130,
+      "<synthetic>": 6,
+      "claude-opus-4-7": 194
+    },
+    "total_input_tokens": 1558763,
+    "total_output_tokens": 1240695,
+    "total_cost": 11.409843500000012
+  },
+  "2026-05-15": {
+    "interactions": 2182,
+    "tools": {
+      "claude-cli": 1781,
+      "codex": 398,
+      "gemini-cli": 3
+    },
+    "models": {
+      "claude-sonnet-4-6": 686,
+      "gpt-5.4": 204,
+      "gemini": 3,
+      "gpt-5.5": 194,
+      "<synthetic>": 4,
+      "claude-opus-4-7": 1091
+    },
+    "total_input_tokens": 1579685,
+    "total_output_tokens": 1759151,
+    "total_cost": 15.745914499999998
+  },
+  "2026-05-18": {
+    "interactions": 1466,
+    "tools": {
+      "claude-cli": 1460,
+      "codex": 6
+    },
+    "models": {
+      "claude-sonnet-4-6": 1458,
+      "gpt-5.4": 6,
+      "<synthetic>": 2
+    },
+    "total_input_tokens": 99412,
+    "total_output_tokens": 1556465,
+    "total_cost": 0.258382
+  },
+  "2026-05-19": {
+    "interactions": 2398,
+    "tools": {
+      "claude-cli": 1994,
+      "codex": 404
+    },
+    "models": {
+      "claude-sonnet-4-6": 1993,
+      "gpt-5.4": 404,
+      "<synthetic>": 1
+    },
+    "total_input_tokens": 1561423,
+    "total_output_tokens": 1477953,
+    "total_cost": 12.696662500000004
+  },
+  "2026-05-20": {
+    "interactions": 855,
+    "tools": {
+      "claude-cli": 243,
+      "codex": 605,
+      "gemini-cli": 7
+    },
+    "models": {
+      "claude-sonnet-4-6": 240,
+      "<synthetic>": 3,
+      "gpt-5.4": 605,
+      "gemini": 7
+    },
+    "total_input_tokens": 2776410,
+    "total_output_tokens": 368392,
+    "total_cost": 17.93738949999998
+  },
+  "2026-05-21": {
+    "interactions": 326,
+    "tools": {
+      "codex": 325,
+      "gemini-cli": 1
+    },
+    "models": {
+      "gpt-5.4": 253,
+      "gemini": 1,
+      "gpt-5.5": 72
+    },
+    "total_input_tokens": 1865592,
+    "total_output_tokens": 124228,
+    "total_cost": 13.860524500000004
+  },
+  "2026-05-22": {
+    "interactions": 217,
+    "tools": {
+      "codex": 217
+    },
+    "models": {
+      "gpt-5.5": 79,
+      "gpt-5.4": 138
+    },
+    "total_input_tokens": 1063905,
+    "total_output_tokens": 69963,
+    "total_cost": 9.034757500000001
+  },
+  "2026-05-27": {
+    "interactions": 248,
+    "tools": {
+      "codex": 90,
+      "claude-cli": 158
+    },
+    "models": {
+      "gpt-5.4": 90,
+      "claude-sonnet-4-6": 158
+    },
+    "total_input_tokens": 275284,
+    "total_output_tokens": 111970,
+    "total_cost": 1.6410525
+  },
+  "2026-05-29": {
+    "interactions": 84,
+    "tools": {
+      "codex": 84
+    },
+    "models": {
+      "gpt-5.4": 84
+    },
+    "total_input_tokens": 489168,
+    "total_output_tokens": 25788,
+    "total_cost": 2.318476
+  },
+  "2026-06-02": {
+    "interactions": 99,
+    "tools": {
+      "codex": 99
+    },
+    "models": {
+      "gpt-5.4": 99
+    },
+    "total_input_tokens": 375004,
+    "total_output_tokens": 40232,
+    "total_cost": 3.308414000000001
+  },
+  "2026-06-03": {
+    "interactions": 461,
+    "tools": {
+      "codex": 5,
+      "claude-cli": 456
+    },
+    "models": {
+      "gpt-5.4": 4,
+      "gpt-5.3-codex": 1,
+      "claude-sonnet-4-6": 456
+    },
+    "total_input_tokens": 667,
+    "total_output_tokens": 197042,
+    "total_cost": 0.0
+  },
+  "2026-06-04": {
+    "interactions": 22,
+    "tools": {
+      "claude-cli": 22
+    },
+    "models": {
+      "claude-sonnet-4-6": 22
+    },
+    "total_input_tokens": 47,
+    "total_output_tokens": 6886,
+    "total_cost": 0.0
+  },
+  "2026-06-05": {
+    "interactions": 659,
+    "tools": {
+      "claude-cli": 523,
+      "openrouter": 135,
+      "codex": 1
+    },
+    "models": {
+      "claude-sonnet-4-6": 518,
+      "<synthetic>": 5,
+      "anthropic/claude-3-haiku": 3,
+      "moonshotai/kimi-k2": 6,
+      "deepseek/deepseek-v4-flash": 126,
+      "gpt-5.4": 1
+    },
+    "total_input_tokens": 2369261,
+    "total_output_tokens": 354021,
+    "total_cost": 0.41209626080000006
+  },
+  "2026-06-06": {
+    "interactions": 18,
+    "tools": {
+      "openrouter": 18
+    },
+    "models": {
+      "deepseek/deepseek-v4-flash": 18
+    },
+    "total_input_tokens": 95319,
+    "total_output_tokens": 5807,
+    "total_cost": 0.0128919043
+  },
+  "2026-06-07": {
+    "interactions": 89,
+    "tools": {
+      "openrouter": 89
+    },
+    "models": {
+      "deepseek/deepseek-v4-flash": 89
+    },
+    "total_input_tokens": 1070584,
+    "total_output_tokens": 25657,
+    "total_cost": 0.17245009979999995
+  },
+  "2026-06-08": {
+    "interactions": 91,
+    "tools": {
+      "claude-cli": 91
+    },
+    "models": {
+      "claude-sonnet-4-6": 91
+    },
+    "total_input_tokens": 1691,
+    "total_output_tokens": 60817,
+    "total_cost": 0.0
+  },
+  "2026-06-09": {
+    "interactions": 253,
+    "tools": {
+      "openrouter": 114,
+      "claude-cli": 139
+    },
+    "models": {
+      "deepseek/deepseek-v4-flash": 114,
+      "claude-sonnet-4-6": 139
+    },
+    "total_input_tokens": 1374030,
+    "total_output_tokens": 116454,
+    "total_cost": 0.17952099310000003
+  },
+  "2026-06-10": {
+    "interactions": 199,
+    "tools": {
+      "claude-cli": 130,
+      "openrouter": 69
+    },
+    "models": {
+      "claude-sonnet-4-6": 130,
+      "google/gemini-3.1-pro-preview-customtools": 31,
+      "deepseek/deepseek-v4-flash": 38
+    },
+    "total_input_tokens": 1053988,
+    "total_output_tokens": 138372,
+    "total_cost": 0.7776111062000001
+  }
+}

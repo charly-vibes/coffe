@@ -1,0 +1,73 @@
+{
+  "amp": {
+    "first_seen": "2025-12-18",
+    "last_seen": "2026-05-05",
+    "models": [
+      "amp"
+    ],
+    "total_interactions": 2782,
+    "total_cost": 0.0
+  },
+  "claude-cli": {
+    "first_seen": "2026-03-16",
+    "last_seen": "2026-06-10",
+    "models": [
+      "<synthetic>",
+      "claude-3-sonnet-20240229",
+      "claude-opus-4-6",
+      "claude-opus-4-7",
+      "claude-sonnet-4-6"
+    ],
+    "total_interactions": 55123,
+    "total_cost": 2122.4105
+  },
+  "codex": {
+    "first_seen": "2026-04-14",
+    "last_seen": "2026-06-05",
+    "models": [
+      "gpt-5.2",
+      "gpt-5.3-codex",
+      "gpt-5.4",
+      "gpt-5.5"
+    ],
+    "total_interactions": 12948,
+    "total_cost": 484.1048
+  },
+  "copilot": {
+    "first_seen": "2026-04-14",
+    "last_seen": "2026-04-16",
+    "models": [
+      "gemini-3-flash-preview",
+      "gpt-5.3-codex"
+    ],
+    "total_interactions": 2,
+    "total_cost": 0.0
+  },
+  "gemini-cli": {
+    "first_seen": "2023-06-26",
+    "last_seen": "2026-05-21",
+    "models": [
+      "gemini",
+      "gemini-1.5-pro-latest",
+      "gemini-2.5-flash",
+      "gemini-2.5-pro",
+      "gemini-3-flash-preview",
+      "gemini-3-pro-preview",
+      "gemini-3.1-pro-preview"
+    ],
+    "total_interactions": 1112,
+    "total_cost": 0.0
+  },
+  "openrouter": {
+    "first_seen": "2026-06-05",
+    "last_seen": "2026-06-10",
+    "models": [
+      "anthropic/claude-3-haiku",
+      "deepseek/deepseek-v4-flash",
+      "google/gemini-3.1-pro-preview-customtools",
+      "moonshotai/kimi-k2"
+    ],
+    "total_interactions": 425,
+    "total_cost": 1.5546
+  }
+}
