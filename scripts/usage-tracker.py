@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
-usage-tracker.py v3 — Extractor completo de uso de IA.
+usage-tracker.py v4 — Extractor completo de uso de IA.
 Filtra solo proyectos charly, incluye Amp, sesiones y patrones.
+Corrige cálculo de costos: estima desde tokens × pricing para Claude JSONL,
+fusiona cache de dashboard para costos precisos, suma cuotas de suscripción.
 """
 
 import json
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 CLAUDE_DIR = Path.home() / ".claude"
@@ -16,7 +18,6 @@ GEMINI_DIR = Path.home() / ".gemini"
 OUTPUT_DIR = Path("data")
 LOCAL_TZ = datetime.now().astimezone().tzinfo
 
-# Solo proyectos charly
 CHARLY_FILTER = True
 
 SUBSCRIPTIONS = {
@@ -30,6 +31,45 @@ SUBSCRIPTIONS = {
         {"start": "2026-05-15", "end": None, "label": "Pay-per-token", "monthly_fee": 0},
     ],
 }
+
+# Model pricing per million tokens (pay-per-token rates)
+MODEL_PRICING = {
+    "claude": {
+        "opus-4.7":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+        "opus-4.6":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+        "opus-4.5":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+        "sonnet-4.6": {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003},
+        "haiku":      {"input": 0.00000025, "output": 0.00000125, "cache_read": 0.000000025},
+        "synthetic":  {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003},
+    },
+    "codex": {
+        "gpt-5.5": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010},
+        "gpt-5.4": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010},
+        "gpt-5.3": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010},
+    },
+    "gemini": {
+        "gemini-3.1":    {"input": 0.00000125, "output": 0.000005, "cache_read": 0.0000000625},
+        "gemini-3-pro":  {"input": 0.00000125, "output": 0.000005, "cache_read": 0.0000000625},
+        "gemini-2.5":    {"input": 0.000000625, "output": 0.0000025, "cache_read": 0.00000003125},
+    },
+    "deepseek": {
+        "v4-flash": {"input": 0.0000003, "output": 0.0000012, "cache_read": 0.00000003},
+    },
+    "kimi": {
+        "k2": {"input": 0.000002, "output": 0.000008, "cache_read": 0.0000002},
+    },
+}
+
+DEFAULT_RATES = {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
+
+
+def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0, cache_write=0):
+    """Estimate cost from token counts at pay-per-token rates."""
+    rates = MODEL_PRICING.get(family, {}).get(version, DEFAULT_RATES)
+    input_cost = (input_tokens + cache_write) * rates["input"]
+    cache_read_cost = cache_read * rates.get("cache_read", rates["input"] * 0.1)
+    output_cost = output_tokens * rates["output"]
+    return round(input_cost + cache_read_cost + output_cost, 8)
 
 
 def parse_ts(ts):
@@ -67,8 +107,19 @@ def model_details(model_id):
     return ("other", model_id[:20])
 
 
+def clean_proj_name(raw):
+    """Normalize project names from Claude directory paths."""
+    return raw.replace("-var-home-sasha-para-areas-dev-gh-", "").replace("--", "/")
+
+
 def extract_claude():
-    rows = []
+    """
+    Read Claude JSONL files + dashboard cache.
+    Uses cache cost where available (more accurate), falls back to token-based estimate.
+    Returns deduplicated rows (no double counting between JSONL and cache).
+    """
+    # Step 1: Read JSONL files
+    jsonl_rows = []
     for pd in (CLAUDE_DIR / "projects").iterdir():
         if not pd.is_dir(): continue
         proj = pd.name
@@ -86,17 +137,29 @@ def extract_claude():
                             usage = msg.get("usage", {}) or {}
                             model = msg.get("model", "unknown")
                             fam, ver = model_details(model)
-                            rows.append({
-                                "source": "claude", "tool": "claude-cli",
-                                "model_raw": model, "model_family": fam,
-                                "model_version": ver, "project": proj,
-                                "timestamp": ts.isoformat(), "hour": hour_key(ts),
-                                "input_tokens": usage.get("input_tokens", 0) or 0,
-                                "output_tokens": usage.get("output_tokens", 0) or 0,
-                                "cost_effective": None,
+                            inp = usage.get("input_tokens", 0) or 0
+                            out = usage.get("output_tokens", 0) or 0
+                            cache_r = usage.get("cache_read_input_tokens", 0) or 0
+                            cache_c = usage.get("cache_creation_input_tokens", 0) or 0
+                            cost = estimate_cost(fam, ver, inp, out, cache_r, cache_c)
+                            jsonl_rows.append({
+                                "source": "claude_jsonl",
+                                "tool": "claude-cli",
+                                "model_raw": model,
+                                "model_family": fam,
+                                "model_version": ver,
+                                "project": proj,
+                                "timestamp": ts.isoformat(),
+                                "hour": hour_key(ts),
+                                "input_tokens": inp,
+                                "output_tokens": out,
+                                "cost_effective": cost,
                             })
-            except: pass
+            except:
+                pass
 
+    # Step 2: Read dashboard cache for cost overrides
+    cache_cost_lookup = {}
     cache_file = CLAUDE_DIR / "dashboard-cache.json"
     if cache_file.exists():
         cache = json.loads(cache_file.read_text())
@@ -108,16 +171,42 @@ def extract_claude():
                 ts = parse_ts(turn.get("ts"))
                 if not ts: continue
                 model = turn.get("model", "unknown")
-                fam, ver = model_details(model)
-                rows.append({
-                    "source": "claude_cache", "tool": "claude-cli",
-                    "model_raw": model, "model_family": fam, "model_version": ver,
-                    "project": proj, "timestamp": ts.isoformat(), "hour": hour_key(ts),
-                    "input_tokens": turn.get("input_tokens", 0) or 0,
-                    "output_tokens": turn.get("output_tokens", 0) or 0,
-                    "cost_effective": turn.get("cost", 0) or 0,
-                })
-    return rows
+                cost = turn.get("cost", 0) or 0
+                # Build lookup key: (timestamp_iso, model, project)
+                lk = (ts.isoformat(), model, proj)
+                # Keep the first (earliest) entry if multiple matches
+                if lk not in cache_cost_lookup:
+                    cache_cost_lookup[lk] = cost
+
+    # Step 3: Merge cache costs into JSONL rows
+    merged = []
+    for row in jsonl_rows:
+        lk = (row["timestamp"], row["model_raw"], row["project"])
+        if lk in cache_cost_lookup:
+            row["cost_effective"] = cache_cost_lookup[lk]
+            row["source"] = "claude_cache_merged"
+        merged.append(row)
+
+    # Step 4: Add any cache entries that weren't in JSONL (shouldn't happen, but safety)
+    cache_keys = {(r["timestamp"], r["model_raw"], r["project"]) for r in merged}
+    for (ts, model, proj), cost in cache_cost_lookup.items():
+        if (ts, model, proj) not in cache_keys:
+            fam, ver = model_details(model)
+            merged.append({
+                "source": "claude_cache_only",
+                "tool": "claude-cli",
+                "model_raw": model,
+                "model_family": fam,
+                "model_version": ver,
+                "project": proj,
+                "timestamp": ts,
+                "hour": hour_key(parse_ts(ts)),
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cost_effective": cost,
+            })
+
+    return merged
 
 
 def extract_pi():
@@ -137,37 +226,49 @@ def extract_pi():
                         msg = entry.get("message", {}) or {}
                         if msg.get("role") != "assistant": continue
                         usage = msg.get("usage", {}) or {}
+                        # Cost can be a dict {input, output, cacheRead, cacheWrite, total} or a number
                         cost_info = usage.get("cost", {})
-                        cost = cost_info.get("total") if isinstance(cost_info, dict) else (usage.get("cost") or 0)
+                        if isinstance(cost_info, dict):
+                            cost = cost_info.get("total", 0) or 0
+                        else:
+                            cost = cost_info or 0
                         model = msg.get("model", "unknown")
                         provider = entry.get("provider", msg.get("provider", ""))
                         ts = parse_ts(entry.get("timestamp"))
                         if not ts: continue
                         fam, ver = model_details(model)
-                        tool_map = {"openai-codex":"codex","claude-cli":"claude-cli","google-gemini-cli":"gemini-cli","gemini-cli":"gemini-cli","openrouter":"openrouter","github-copilot":"copilot","anthropic":"claude-cli"}
+                        tool_map = {"openai-codex": "codex", "claude-cli": "claude-cli",
+                                    "google-gemini-cli": "gemini-cli", "gemini-cli": "gemini-cli",
+                                    "openrouter": "openrouter", "github-copilot": "copilot",
+                                    "anthropic": "claude-cli"}
                         tool = tool_map.get(provider, provider)
+                        inp = usage.get("input_tokens") or usage.get("input", 0) or 0
+                        out = usage.get("output_tokens") or usage.get("output", 0) or 0
                         rows.append({
-                            "source": "pi", "tool": tool,
-                            "model_raw": model, "model_family": fam, "model_version": ver,
-                            "project": proj, "timestamp": ts.isoformat(), "hour": hour_key(ts),
-                            "input_tokens": usage.get("input_tokens") or usage.get("input", 0) or 0,
-                            "output_tokens": usage.get("output_tokens") or usage.get("output", 0) or 0,
+                            "source": "pi",
+                            "tool": tool,
+                            "model_raw": model,
+                            "model_family": fam,
+                            "model_version": ver,
+                            "project": proj,
+                            "timestamp": ts.isoformat(),
+                            "hour": hour_key(ts),
+                            "input_tokens": inp,
+                            "output_tokens": out,
                             "cost_effective": cost,
                         })
-            except: pass
+            except:
+                pass
     return rows
 
 
 def extract_amp():
-    """Extrae de Amp (@ampcode/cli, agente autónomo).
-    Solo guarda URIs de archivos modificados. No hay costo ni modelo.
-    Amp fue la herramienta principal ene-feb (fabbro, nayra), reemplazado por Claude CLI."""
+    """Extrae de Amp (@ampcode/cli, agente autónomo). Sin costo."""
     rows = []
     amp_dir = AMP_DIR / "file-changes"
     if not amp_dir.exists(): return rows
     for td in amp_dir.iterdir():
         if not td.is_dir(): continue
-        # Check if this task touched charly files
         task_proj = None
         task_dates = []
         for f in td.iterdir():
@@ -180,14 +281,15 @@ def extract_amp():
                         task_dates.append(ts)
                         if not task_proj:
                             task_proj = "charly"
-            except: pass
+            except:
+                pass
         if task_proj and task_dates:
             for ts in task_dates:
                 rows.append({
                     "source": "amp", "tool": "amp",
                     "model_raw": "amp", "model_family": "amp", "model_version": "v1",
-                    "project": "charly/amp-auto", "timestamp": ts.isoformat(),
-                    "hour": hour_key(ts),
+                    "project": "charly/amp-auto",
+                    "timestamp": ts.isoformat(), "hour": hour_key(ts),
                     "input_tokens": 0, "output_tokens": 0, "cost_effective": 0,
                 })
     return rows
@@ -223,25 +325,57 @@ def extract_session_stats():
             "n_skills": n_skills,
             "n_errors": n_errors,
             "n_compactions": n_compactions,
-            "avg_input_per_turn": 0,
-            "avg_output_per_turn": 0,
         })
     return sessions
 
 
 def get_sub_cost(tool, ts_str, eff_cost):
-    """tool, timestamp_str, effective_cost -> (real_cost, effective_cost, sub_label)"""
+    """
+    tool, timestamp_str, effective_cost -> (real_cost, effective_cost, sub_label)
+    For subscription periods: real_cost = 0 (covered by subscription).
+    For pay-per-token: real_cost = effective_cost.
+    """
     if tool not in ["claude-cli", "codex"]:
         return eff_cost, eff_cost, "pay-per-token"
     date = (ts_str or "")[:10]
     for period in SUBSCRIPTIONS[tool]:
         if period["start"] <= date and (period["end"] is None or date < period["end"]):
             if period["monthly_fee"] > 0:
-                label = period["label"]
-                return 0.0, eff_cost, label
+                return 0.0, eff_cost, period["label"]
             else:
                 return eff_cost, eff_cost, period["label"]
     return eff_cost, eff_cost, "unknown"
+
+
+def calc_subscription_fees(monthly_data):
+    """
+    Calculate monthly subscription fees for each month.
+    Returns dict: {month_key: total_sub_fee}
+    """
+    sub_fees = {}
+    for m_key, m_data in monthly_data.items():
+        # Find which months had which subscriptions active
+        total = 0.0
+        # Check if the month has any claude-cli activity
+        tools = m_data.get("tools", {})
+        if "claude-cli" in tools:
+            for period in SUBSCRIPTIONS["claude-cli"]:
+                if period["monthly_fee"] > 0:
+                    p_start = period["start"]
+                    p_end = period["end"] or "9999-12"
+                    # Does this month overlap with the subscription period?
+                    if m_key >= p_start[:7] and m_key < p_end[:7]:
+                        total += period["monthly_fee"]
+        if "codex" in tools:
+            for period in SUBSCRIPTIONS["codex"]:
+                if period["monthly_fee"] > 0:
+                    p_start = period["start"]
+                    p_end = period["end"] or "9999-12"
+                    if m_key >= p_start[:7] and m_key < p_end[:7]:
+                        total += period["monthly_fee"]
+        if total > 0:
+            sub_fees[m_key] = total
+    return sub_fees
 
 
 def aggregate(interactions, sessions):
@@ -249,86 +383,129 @@ def aggregate(interactions, sessions):
     daily = {}
     monthly = {}
     by_project = {}
-    by_tool_model = Counter()
     by_skill_total = Counter()
-    
+
     def new_hourly():
-        return {"interactions":0,"input_tokens":0,"output_tokens":0,"cost_real":0.0,"cost_effective":0.0,"tools":defaultdict(lambda:{"req":0,"in":0,"out":0,"cost_eff":0.0,"cost_real":0.0}),"models":defaultdict(int)}
-    
+        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cost_real": 0.0, "cost_effective": 0.0,
+                "tools": defaultdict(lambda: {"req": 0, "in": 0, "out": 0, "cost_eff": 0.0, "cost_real": 0.0}),
+                "models": defaultdict(int)}
+
     def new_simple():
-        return {"interactions":0,"input_tokens":0,"output_tokens":0,"cost_real":0.0,"cost_effective":0.0,"tools":Counter(),"models":Counter()}
-    
+        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cost_real": 0.0, "cost_effective": 0.0, "tools": Counter(), "models": Counter()}
+
     def new_proj():
-        return {"interactions":0,"input_tokens":0,"output_tokens":0,"cost_effective":0.0,"cost_real":0.0,"first_seen":None,"last_seen":None,"tools":Counter(),"models":Counter(),"skills":Counter()}
-    
+        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cost_effective": 0.0, "cost_real": 0.0,
+                "first_seen": None, "last_seen": None,
+                "tools": Counter(), "models": Counter(), "skills": Counter()}
+
     for r in interactions:
-        h = r["hour"]; d = h[:10]; m = d[:7]
-        tool = r["tool"]; model = r["model_raw"]
-        inp = r.get("input_tokens",0) or 0
-        out = r.get("output_tokens",0) or 0
-        eff = r.get("cost_effective",0) or 0
-        real, _, _ = get_sub_cost(tool, r.get("timestamp",""), eff)
-        
-        if h not in hourly: hourly[h] = new_hourly()
+        h = r["hour"]
+        d = h[:10]
+        m = d[:7]
+        tool = r["tool"]
+        model = r["model_raw"]
+        inp = r.get("input_tokens", 0) or 0
+        out = r.get("output_tokens", 0) or 0
+        eff = r.get("cost_effective", 0) or 0
+        real, _, _ = get_sub_cost(tool, r.get("timestamp", ""), eff)
+
+        if h not in hourly:
+            hourly[h] = new_hourly()
         hr = hourly[h]
-        hr["interactions"] += 1; hr["input_tokens"] += inp; hr["output_tokens"] += out
-        hr["cost_effective"] += eff; hr["cost_real"] += real
-        hr["tools"][tool]["req"] += 1; hr["tools"][tool]["in"] += inp
-        hr["tools"][tool]["out"] += out; hr["tools"][tool]["cost_real"] += real
-        hr["tools"][tool]["cost_eff"] += eff; hr["models"][model] += 1
-        
+        hr["interactions"] += 1
+        hr["input_tokens"] += inp
+        hr["output_tokens"] += out
+        hr["cost_effective"] += eff
+        hr["cost_real"] += real
+        hr["tools"][tool]["req"] += 1
+        hr["tools"][tool]["in"] += inp
+        hr["tools"][tool]["out"] += out
+        hr["tools"][tool]["cost_real"] += real
+        hr["tools"][tool]["cost_eff"] += eff
+        hr["models"][model] += 1
+
         for agg, key in [(daily, d), (monthly, m)]:
-            if key not in agg: agg[key] = new_simple()
+            if key not in agg:
+                agg[key] = new_simple()
             a = agg[key]
-            a["interactions"] += 1; a["input_tokens"] += inp; a["output_tokens"] += out
-            a["cost_effective"] += eff; a["cost_real"] += real
-            a["tools"][tool] += 1; a["models"][model] += 1
-        
-        proj = r.get("project","unknown").replace("-var-home-sasha-para-areas-dev-gh-","").replace("--","/")
-        if proj not in by_project: by_project[proj] = new_proj()
+            a["interactions"] += 1
+            a["input_tokens"] += inp
+            a["output_tokens"] += out
+            a["cost_effective"] += eff
+            a["cost_real"] += real
+            a["tools"][tool] += 1
+            a["models"][model] += 1
+
+        proj = clean_proj_name(r.get("project", "unknown"))
+        if proj not in by_project:
+            by_project[proj] = new_proj()
         pp = by_project[proj]
-        pp["interactions"] += 1; pp["input_tokens"] += inp; pp["output_tokens"] += out
-        pp["cost_effective"] += eff; pp["cost_real"] += real
-        pp["tools"][tool] += 1; pp["models"][model] += 1
-        if pp["first_seen"] is None or r["timestamp"] < pp["first_seen"]: pp["first_seen"] = r["timestamp"]
-        if pp["last_seen"] is None or r["timestamp"] > pp["last_seen"]: pp["last_seen"] = r["timestamp"]
-    
+        pp["interactions"] += 1
+        pp["input_tokens"] += inp
+        pp["output_tokens"] += out
+        pp["cost_effective"] += eff
+        pp["cost_real"] += real
+        pp["tools"][tool] += 1
+        pp["models"][model] += 1
+        if pp["first_seen"] is None or r["timestamp"] < pp["first_seen"]:
+            pp["first_seen"] = r["timestamp"]
+        if pp["last_seen"] is None or r["timestamp"] > pp["last_seen"]:
+            pp["last_seen"] = r["timestamp"]
+
+    # Add subscription fees to real cost
+    sub_fees = calc_subscription_fees(monthly)
+    for m_key, fee in sub_fees.items():
+        if m_key in monthly:
+            monthly[m_key]["cost_real"] += fee
+            monthly[m_key]["subscription_fees"] = fee
+        # Also add to daily totals for the month
+        for d_key, d_data in daily.items():
+            if d_key[:7] == m_key:
+                d_data["cost_real"] += fee / 30.0  # prorated roughly
+
     # Skills from session cache
     cache_file = CLAUDE_DIR / "dashboard-cache.json"
     if cache_file.exists():
         cache = json.loads(cache_file.read_text())
         for key, summary in cache.get("entries", {}).items():
             if summary.get("source") != "claude": continue
-            proj = summary.get("project","")
+            proj = summary.get("project", "")
             if not is_charly(proj): continue
-            proj_clean = proj.replace("-var-home-sasha-para-areas-dev-gh-","").replace("--","/")
-            for skill, count in summary.get("skill_uses",{}).items():
+            proj_clean = clean_proj_name(proj)
+            for skill, count in summary.get("skill_uses", {}).items():
                 by_skill_total[skill] += count
                 if proj_clean in by_project:
                     by_project[proj_clean]["skills"][skill] += count
-    
+
     # Commands from history
     commands = Counter()
     hist_file = CLAUDE_DIR / "history.jsonl"
     if hist_file.exists():
         with open(hist_file) as f:
             for line in f:
-                try: entry = json.loads(line)
-                except: continue
-                display = entry.get("display","")
-                proj = entry.get("project","")
+                try:
+                    entry = json.loads(line)
+                except:
+                    continue
+                display = entry.get("display", "")
+                proj = entry.get("project", "")
                 if not is_charly(proj): continue
                 stripped = display.strip()
-                if stripped.startswith("/") and len(stripped)>2:
+                if stripped.startswith("/") and len(stripped) > 2:
                     cmd = stripped.split()[0]
                     if 2 <= len(cmd) <= 30:
                         commands[cmd] += 1
-    
+
     def clean(o):
-        if isinstance(o, defaultdict): return {k: clean(v) for k,v in o.items()}
-        if isinstance(o, Counter): return dict(o.most_common())
+        if isinstance(o, defaultdict):
+            return {k: clean(v) for k, v in o.items()}
+        if isinstance(o, Counter):
+            return dict(o.most_common())
         return o
-    
+
     # Session analytics
     session_stats = {
         "total_sessions": len(sessions),
@@ -341,32 +518,41 @@ def aggregate(interactions, sessions):
         "avg_skills": 0,
     }
     longest_by_turns = []
-    longest_by_duration = []
     for s in sessions:
         n = s["n_turns"]
-        if n <= 10: session_stats["length_distribution"]["1-10"] += 1
-        elif n <= 50: session_stats["length_distribution"]["11-50"] += 1
-        elif n <= 100: session_stats["length_distribution"]["51-100"] += 1
-        elif n <= 300: session_stats["length_distribution"]["101-300"] += 1
-        elif n <= 500: session_stats["length_distribution"]["301-500"] += 1
-        else: session_stats["length_distribution"]["500+"] += 1
-        if s["has_agent"]: session_stats["with_agent"] += 1
+        if n <= 10:
+            session_stats["length_distribution"]["1-10"] += 1
+        elif n <= 50:
+            session_stats["length_distribution"]["11-50"] += 1
+        elif n <= 100:
+            session_stats["length_distribution"]["51-100"] += 1
+        elif n <= 300:
+            session_stats["length_distribution"]["101-300"] += 1
+        elif n <= 500:
+            session_stats["length_distribution"]["301-500"] += 1
+        else:
+            session_stats["length_distribution"]["500+"] += 1
+        if s["has_agent"]:
+            session_stats["with_agent"] += 1
         session_stats["total_api_errors"] += s["n_errors"]
         session_stats["total_compactions"] += s["n_compactions"]
         session_stats["avg_turns"] += n
         session_stats["avg_tools"] += s["n_tools"]
         session_stats["avg_skills"] += s["n_skills"]
         longest_by_turns.append((n, s["duration_msgs"], s["first_ts"], s["project"]))
-    
+
     if sessions:
         n = len(sessions)
         session_stats["avg_turns"] /= n
         session_stats["avg_tools"] /= n
         session_stats["avg_skills"] /= n
-    
+
     longest_by_turns.sort(key=lambda x: -x[0])
-    session_stats["top_longest_by_turns"] = [{"turns":t,"msgs":m,"date":d,"project":p.replace("-var-home-sasha-para-areas-dev-gh-","").replace("--","/")} for t,m,d,p in longest_by_turns[:10]]
-    
+    session_stats["top_longest_by_turns"] = [
+        {"turns": t, "msgs": m, "date": d, "project": clean_proj_name(p)}
+        for t, m, d, p in longest_by_turns[:10]
+    ]
+
     return clean({
         "metadata": {
             "date_range": {
@@ -379,6 +565,7 @@ def aggregate(interactions, sessions):
             "total_output_tokens": sum(h["output_tokens"] for h in hourly.values()),
             "cost_total_effective": round(sum(h["cost_effective"] for h in hourly.values()), 2),
             "cost_total_real": round(sum(h["cost_real"] for h in hourly.values()), 2),
+            "subscription_fees": round(sum(sub_fees.values()), 2),
             "total_hours": len(hourly),
             "total_days": len(daily),
             "total_months": len(monthly),
@@ -387,16 +574,21 @@ def aggregate(interactions, sessions):
         "hourly": hourly,
         "daily": daily,
         "monthly": clean({m: {
-            "interactions": v["interactions"], "input_tokens": v["input_tokens"],
-            "output_tokens": v["output_tokens"], "cost_effective": round(v["cost_effective"],2),
-            "cost_real": round(v["cost_real"],2),
+            "interactions": v["interactions"],
+            "input_tokens": v["input_tokens"],
+            "output_tokens": v["output_tokens"],
+            "cost_effective": round(v["cost_effective"], 2),
+            "cost_real": round(v["cost_real"], 2),
+            "subscription_fees": round(v.get("subscription_fees", 0), 2),
             "tools": dict(v["tools"].most_common()),
             "models": dict(v["models"].most_common()),
         } for m, v in sorted(monthly.items())}),
         "projects": clean({p: {
-            "interactions": v["interactions"], "input_tokens": v["input_tokens"],
-            "output_tokens": v["output_tokens"], "cost_effective": round(v["cost_effective"],2),
-            "cost_real": round(v["cost_real"],2),
+            "interactions": v["interactions"],
+            "input_tokens": v["input_tokens"],
+            "output_tokens": v["output_tokens"],
+            "cost_effective": round(v["cost_effective"], 2),
+            "cost_real": round(v["cost_real"], 2),
             "first_seen": (v["first_seen"] or "")[:10],
             "last_seen": (v["last_seen"] or "")[:10],
             "tools": dict(v["tools"].most_common()),
@@ -407,83 +599,93 @@ def aggregate(interactions, sessions):
         "commands": dict(commands.most_common(30)),
         "sessions": session_stats,
         "subscription_config": SUBSCRIPTIONS,
+        "subscription_fees_by_month": sub_fees,
         "tools_summary": {},
     })
 
 
 def main():
-    print("=== IA Usage Tracker v3 (Charly only) ===", flush=True)
-    
+    print("=== IA Usage Tracker v4 (Charly only) ===", flush=True)
+
     interactions = []
-    
+
     all_sources = [
         ("Claude", extract_claude()),
         ("Pi", extract_pi()),
         ("Amp", extract_amp()),
     ]
-    
+
     for name, rows in all_sources:
         print(f"  {name}: {len(rows)} rows", flush=True)
         interactions.extend(rows)
-    
-    # Dedup
+
+    # Dedup across sources
     seen = set()
     unique = []
     for r in sorted(interactions, key=lambda x: x["timestamp"]):
-        key = (r["timestamp"], r["tool"], r["model_raw"], r.get("source",""))
+        key = (r["timestamp"], r["tool"], r["model_raw"], r.get("source", ""))
         if key not in seen:
             seen.add(key)
             unique.append(r)
-    
+
     print(f"  Total: {len(interactions)} → {len(unique)} unique", flush=True)
-    
+
     print("Session stats...", flush=True)
     sessions = extract_session_stats()
     print(f"  {len(sessions)} charly sessions", flush=True)
-    
+
     print("Aggregating...", flush=True)
     report = aggregate(unique, sessions)
-    
+
     OUTPUT_DIR.mkdir(exist_ok=True)
     with open(OUTPUT_DIR / "usage_report_v3.json", "w") as f:
         json.dump(report, f, indent=2, default=str)
-    
+
     # Pretty print
     m = report["metadata"]
-    print(f"\n=== REPORT ===")
+    print(f"\n=== REPORT v4 ===")
     print(f"Period: {m['date_range']['start']} → {m['date_range']['end']} ({m['filter']})")
     print(f"Interactions: {m['total_interactions']:,}")
     print(f"Cost effective: ${m['cost_total_effective']:,.2f}")
     print(f"Cost real: ${m['cost_total_real']:,.2f}")
+    print(f"  Subscription fees: ${m['subscription_fees']:,.2f}")
+    print(f"  Pay-per-token: ${m['cost_total_real'] - m['subscription_fees']:,.2f}")
     print(f"Hours: {m['total_hours']}, Days: {m['total_days']}, Projects: {m['total_projects']}")
-    
+
     print(f"\n--- Monthly ---")
     for m_name, mo in report["monthly"].items():
-        tools_s = ", ".join(f"{t}:{c}" for t,c in list(mo["tools"].items())[:4])
-        models_s = ", ".join(f"{mv}:{c}" for mv,c in list(mo["models"].items())[:4])
-        print(f"  {m_name}: {mo['interactions']:>6} reqs  ${mo['cost_effective']:>7.2f} eff  ${mo['cost_real']:>6.2f} real  {mo['input_tokens']//1000:>5}K in  {mo['output_tokens']//1000:>5}K out")
+        tools_s = ", ".join(f"{t}:{c}" for t, c in list(mo["tools"].items())[:3])
+        models_s = ", ".join(f"{mv}:{c}" for mv, c in list(mo["models"].items())[:3])
+        sub = mo.get("subscription_fees", 0)
+        print(f"  {m_name}: {mo['interactions']:>6} reqs  "
+              f"${mo['cost_effective']:>7.2f} eff  "
+              f"${mo['cost_real']:>6.2f} real"
+              f"{f' (sub ${sub:.0f})' if sub else ''}  "
+              f"{mo['input_tokens']//1000:>5}K in  {mo['output_tokens']//1000:>5}K out")
         print(f"       Tools: {tools_s}")
         print(f"       Models: {models_s}")
-    
+
     print(f"\n--- Sessions ---")
     ss = report["sessions"]
     print(f"  Total: {ss['total_sessions']}")
     print(f"  Length distribution: {dict(ss['length_distribution'])}")
-    print(f"  With Agent (autonomous): {ss['with_agent']}/{ss['total_sessions']} ({100*ss['with_agent']/max(1,ss['total_sessions']):.0f}%)")
+    if ss['total_sessions'] > 0:
+        print(f"  With Agent (autonomous): {ss['with_agent']}/{ss['total_sessions']} "
+              f"({100 * ss['with_agent'] / ss['total_sessions']:.0f}%)")
     print(f"  Avg turns: {ss['avg_turns']:.0f}, Avg tools: {ss['avg_tools']:.1f}")
     print(f"  API errors: {ss['total_api_errors']}, Compactions: {ss['total_compactions']}")
     print(f"  Longest sessions:")
     for s in ss['top_longest_by_turns'][:5]:
         print(f"    {s['turns']:>4} turns | {s['msgs']:>3} msgs | {s['date']} | {s['project'][:45]}")
-    
+
     print(f"\n--- Skills ---")
     for skill, count in list(report['skills'].items())[:10]:
         print(f"  {skill}: {count}")
-    
+
     print(f"\n--- Commands ---")
     for cmd, count in list(report['commands'].items())[:10]:
         print(f"  {cmd}: {count}")
-    
+
     print(f"\nDone. data/usage_report_v3.json")
 
 
