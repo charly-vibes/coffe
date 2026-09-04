@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-usage-tracker.py v4 — Extractor completo de uso de IA.
+usage-tracker.py v4.1 — Extractor completo de uso de IA.
 Filtra solo proyectos charly, incluye Amp, sesiones y patrones.
 Corrige cálculo de costos: estima desde tokens × pricing para Claude JSONL,
 fusiona cache de dashboard para costos precisos, suma cuotas de suscripción.
+v4.1: cuenta tokens de cache (cacheRead/cacheWrite) de Pi y Claude
+(validado contra toolpath/path-cli).
 """
 
 import json
@@ -153,6 +155,8 @@ def extract_claude():
                                 "hour": hour_key(ts),
                                 "input_tokens": inp,
                                 "output_tokens": out,
+                                "cache_read_tokens": cache_r,
+                                "cache_write_tokens": cache_c,
                                 "cost_effective": cost,
                             })
             except:
@@ -203,6 +207,8 @@ def extract_claude():
                 "hour": hour_key(parse_ts(ts)),
                 "input_tokens": 0,
                 "output_tokens": 0,
+                "cache_read_tokens": 0,
+                "cache_write_tokens": 0,
                 "cost_effective": cost,
             })
 
@@ -244,6 +250,8 @@ def extract_pi():
                         tool = tool_map.get(provider, provider)
                         inp = usage.get("input_tokens") or usage.get("input", 0) or 0
                         out = usage.get("output_tokens") or usage.get("output", 0) or 0
+                        cache_r = usage.get("cacheRead") or usage.get("cache_read") or 0
+                        cache_w = usage.get("cacheWrite") or usage.get("cache_write") or 0
                         rows.append({
                             "source": "pi",
                             "tool": tool,
@@ -255,6 +263,8 @@ def extract_pi():
                             "hour": hour_key(ts),
                             "input_tokens": inp,
                             "output_tokens": out,
+                            "cache_read_tokens": cache_r or 0,
+                            "cache_write_tokens": cache_w or 0,
                             "cost_effective": cost,
                         })
             except:
@@ -290,7 +300,9 @@ def extract_amp():
                     "model_raw": "amp", "model_family": "amp", "model_version": "v1",
                     "project": "charly/amp-auto",
                     "timestamp": ts.isoformat(), "hour": hour_key(ts),
-                    "input_tokens": 0, "output_tokens": 0, "cost_effective": 0,
+                    "input_tokens": 0, "output_tokens": 0,
+                    "cache_read_tokens": 0, "cache_write_tokens": 0,
+                    "cost_effective": 0,
                 })
     return rows
 
@@ -387,16 +399,19 @@ def aggregate(interactions, sessions):
 
     def new_hourly():
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cache_read_tokens": 0, "cache_write_tokens": 0,
                 "cost_real": 0.0, "cost_effective": 0.0,
                 "tools": defaultdict(lambda: {"req": 0, "in": 0, "out": 0, "cost_eff": 0.0, "cost_real": 0.0}),
                 "models": defaultdict(int)}
 
     def new_simple():
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cache_read_tokens": 0, "cache_write_tokens": 0,
                 "cost_real": 0.0, "cost_effective": 0.0, "tools": Counter(), "models": Counter()}
 
     def new_proj():
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
+                "cache_read_tokens": 0, "cache_write_tokens": 0,
                 "cost_effective": 0.0, "cost_real": 0.0,
                 "first_seen": None, "last_seen": None,
                 "tools": Counter(), "models": Counter(), "skills": Counter()}
@@ -409,6 +424,8 @@ def aggregate(interactions, sessions):
         model = r["model_raw"]
         inp = r.get("input_tokens", 0) or 0
         out = r.get("output_tokens", 0) or 0
+        cr = r.get("cache_read_tokens", 0) or 0
+        cw = r.get("cache_write_tokens", 0) or 0
         eff = r.get("cost_effective", 0) or 0
         real, _, _ = get_sub_cost(tool, r.get("timestamp", ""), eff)
 
@@ -418,6 +435,8 @@ def aggregate(interactions, sessions):
         hr["interactions"] += 1
         hr["input_tokens"] += inp
         hr["output_tokens"] += out
+        hr["cache_read_tokens"] += cr
+        hr["cache_write_tokens"] += cw
         hr["cost_effective"] += eff
         hr["cost_real"] += real
         hr["tools"][tool]["req"] += 1
@@ -434,6 +453,8 @@ def aggregate(interactions, sessions):
             a["interactions"] += 1
             a["input_tokens"] += inp
             a["output_tokens"] += out
+            a["cache_read_tokens"] += cr
+            a["cache_write_tokens"] += cw
             a["cost_effective"] += eff
             a["cost_real"] += real
             a["tools"][tool] += 1
@@ -446,6 +467,8 @@ def aggregate(interactions, sessions):
         pp["interactions"] += 1
         pp["input_tokens"] += inp
         pp["output_tokens"] += out
+        pp["cache_read_tokens"] += cr
+        pp["cache_write_tokens"] += cw
         pp["cost_effective"] += eff
         pp["cost_real"] += real
         pp["tools"][tool] += 1
@@ -563,6 +586,8 @@ def aggregate(interactions, sessions):
             "total_interactions": sum(h["interactions"] for h in hourly.values()),
             "total_input_tokens": sum(h["input_tokens"] for h in hourly.values()),
             "total_output_tokens": sum(h["output_tokens"] for h in hourly.values()),
+            "total_cache_read_tokens": sum(h.get("cache_read_tokens", 0) for h in hourly.values()),
+            "total_cache_write_tokens": sum(h.get("cache_write_tokens", 0) for h in hourly.values()),
             "cost_total_effective": round(sum(h["cost_effective"] for h in hourly.values()), 2),
             "cost_total_real": round(sum(h["cost_real"] for h in hourly.values()), 2),
             "subscription_fees": round(sum(sub_fees.values()), 2),
@@ -577,6 +602,8 @@ def aggregate(interactions, sessions):
             "interactions": v["interactions"],
             "input_tokens": v["input_tokens"],
             "output_tokens": v["output_tokens"],
+            "cache_read_tokens": v["cache_read_tokens"],
+            "cache_write_tokens": v["cache_write_tokens"],
             "cost_effective": round(v["cost_effective"], 2),
             "cost_real": round(v["cost_real"], 2),
             "subscription_fees": round(v.get("subscription_fees", 0), 2),
@@ -587,6 +614,8 @@ def aggregate(interactions, sessions):
             "interactions": v["interactions"],
             "input_tokens": v["input_tokens"],
             "output_tokens": v["output_tokens"],
+            "cache_read_tokens": v["cache_read_tokens"],
+            "cache_write_tokens": v["cache_write_tokens"],
             "cost_effective": round(v["cost_effective"], 2),
             "cost_real": round(v["cost_real"], 2),
             "first_seen": (v["first_seen"] or "")[:10],
@@ -605,7 +634,7 @@ def aggregate(interactions, sessions):
 
 
 def main():
-    print("=== IA Usage Tracker v4 (Charly only) ===", flush=True)
+    print("=== IA Usage Tracker v4.1 (Charly only) ===", flush=True)
 
     interactions = []
 
@@ -643,7 +672,7 @@ def main():
 
     # Pretty print
     m = report["metadata"]
-    print(f"\n=== REPORT v4 ===")
+    print(f"\n=== REPORT v4.1 ===")
     print(f"Period: {m['date_range']['start']} → {m['date_range']['end']} ({m['filter']})")
     print(f"Interactions: {m['total_interactions']:,}")
     print(f"Cost effective: ${m['cost_total_effective']:,.2f}")
