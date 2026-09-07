@@ -68,7 +68,8 @@ DEFAULT_RATES = {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
 def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0, cache_write=0):
     """Estimate cost from token counts at pay-per-token rates."""
     rates = MODEL_PRICING.get(family, {}).get(version, DEFAULT_RATES)
-    input_cost = (input_tokens + cache_write) * rates["input"]
+    # Anthropic cobra cache writes a 1.25x del input rate
+    input_cost = (input_tokens + cache_write * 1.25) * rates["input"]
     cache_read_cost = cache_read * rates.get("cache_read", rates["input"] * 0.1)
     output_cost = output_tokens * rates["output"]
     return round(input_cost + cache_read_cost + output_cost, 8)
@@ -401,7 +402,9 @@ def aggregate(interactions, sessions):
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
                 "cache_read_tokens": 0, "cache_write_tokens": 0,
                 "cost_real": 0.0, "cost_effective": 0.0,
-                "tools": defaultdict(lambda: {"req": 0, "in": 0, "out": 0, "cost_eff": 0.0, "cost_real": 0.0}),
+                "tools": defaultdict(lambda: {"req": 0, "in": 0, "out": 0,
+                                            "cache_read": 0, "cache_write": 0,
+                                            "cost_eff": 0.0, "cost_real": 0.0}),
                 "models": defaultdict(int)}
 
     def new_simple():
@@ -442,6 +445,8 @@ def aggregate(interactions, sessions):
         hr["tools"][tool]["req"] += 1
         hr["tools"][tool]["in"] += inp
         hr["tools"][tool]["out"] += out
+        hr["tools"][tool]["cache_read"] += cr
+        hr["tools"][tool]["cache_write"] += cw
         hr["tools"][tool]["cost_real"] += real
         hr["tools"][tool]["cost_eff"] += eff
         hr["models"][model] += 1
@@ -591,6 +596,11 @@ def aggregate(interactions, sessions):
             "cost_total_effective": round(sum(h["cost_effective"] for h in hourly.values()), 2),
             "cost_total_real": round(sum(h["cost_real"] for h in hourly.values()), 2),
             "subscription_fees": round(sum(sub_fees.values()), 2),
+            "token_accounting": (
+                "cache_read/cache_write se reportan aparte de input/output. "
+                "cache_read no se factura a input rate (10x mas barato); "
+                "total tokens = input + output + cache_read + cache_write"
+            ),
             "total_hours": len(hourly),
             "total_days": len(daily),
             "total_months": len(monthly),
@@ -652,7 +662,7 @@ def main():
     seen = set()
     unique = []
     for r in sorted(interactions, key=lambda x: x["timestamp"]):
-        key = (r["timestamp"], r["tool"], r["model_raw"], r.get("source", ""))
+        key = (r["timestamp"], r["tool"], r["model_raw"], r.get("source", ""), r.get("project", ""))
         if key not in seen:
             seen.add(key)
             unique.append(r)
