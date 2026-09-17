@@ -70,7 +70,7 @@ TEMPLATE = """<!DOCTYPE html>
   <button id="b-bin">activo/inactivo</button>
   <div id="legend"></div>
 </div>
-<div class="wrap"><div id="grid" class="grid"></div></div>
+<div class="wrap"><div id="grid" class="grid"></div><div id="empty" style="display:none;color:var(--muted)">Sin datos: ejecuta primero <code>python scripts/usage-tracker.py</code></div></div>
 <div id="tip"></div>
 <script>
 const DATA = __DATA__;
@@ -81,9 +81,11 @@ let mode = 'int';
 
 const NCOL = days.length, NROW = projects.length;
 const LABEL_W = 190, CW = 14, CH = 18;
+if (!NCOL) { document.getElementById('empty').style.display = 'block'; throw new Error('sin datos'); }
 
-// fecha -> índice; weekend set
-const isWeekend = days.map(d => { const dt = new Date(d + 'T00:00'); const w = dt.getUTCDay(); return w === 0 || w === 6; });
+// fecha -> índice; weekend set (parsear como UTC: getUTCDay sobre hora local
+// desplaza un día en zonas UTC+, ver CORR-001 del review)
+const isWeekend = days.map(d => { const dt = new Date(d + 'T00:00:00Z'); const w = dt.getUTCDay(); return w === 0 || w === 6; });
 
 function dayTotals(i) {
   let tot = 0, nproj = 0;
@@ -101,6 +103,9 @@ function colorInt(v) {
 }
 function colorBin(v) { return v ? 'rgba(255,159,67,0.85)' : 'transparent'; }
 const color = v => mode === 'int' ? colorInt(v) : colorBin(v);
+const legendHTML = m => m === 'int'
+  ? 'menos ' + [0.2, 0.45, 0.7, 0.95].map(a => `<span class="sw" style="background:rgba(255,159,67,${a})"></span>`).join('') + ' más'
+  : '<span class="sw" style="background:rgba(255,159,67,0.85)"></span> activo';
 
 function fmt(n) { return n.toLocaleString('es'); }
 function dateEs(d) { return new Date(d + 'T00:00').toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }); }
@@ -114,7 +119,7 @@ for (let i = 0; i < NCOL; i++) {
   html.push(`<div class="monthtick${isWeekend[i] ? ' weekend' : ''}" style="width:${CW}px">${tick}</div>`);
 }
 // fila de concurrencia diaria
-html.push(`<div class="label" title="concurrencia diaria">→ proyectos/día</div>`);
+html.push(`<div class="label" title="concurrencia diaria: proyectos distintos activos por día (la intensidad satura en 12)">→ proyectos/día</div>`);
 for (let i = 0; i < NCOL; i++) {
   const { nproj } = dayInfo[i];
   const t = nproj ? 0.15 + 0.85 * Math.min(1, nproj / 12) : 0;
@@ -135,11 +140,7 @@ grid.innerHTML = html.join('');
 
 // leyenda
 const lg = document.getElementById('legend');
-if (mode === 'int') {
-  lg.innerHTML = 'menos ' + [1, 0.4, 0.7, 1].map(a => `<span class="sw" style="background:rgba(255,159,67,${a})"></span>`).join('') + ' más';
-} else {
-  lg.innerHTML = '<span class="sw" style="background:rgba(255,159,67,0.85)"></span> activo';
-}
+lg.innerHTML = legendHTML(mode);
 
 // tooltip
 document.addEventListener('mousemove', e => {
@@ -157,7 +158,7 @@ document.addEventListener('mousemove', e => {
   }
   tip.innerHTML = body;
   tip.style.display = 'block';
-  const x = Math.min(e.clientX + 14, innerWidth - 360);
+  const x = Math.max(0, Math.min(e.clientX + 14, innerWidth - 360));
   tip.style.left = x + 'px';
   tip.style.top = (e.clientY + 14) + 'px';
 });
@@ -170,8 +171,8 @@ function setMode(m) {
   grid.querySelectorAll('.cell[data-p]').forEach(el => {
     el.style.background = color(M[el.dataset.p][+el.dataset.i]);
   });
-  if (m === 'int') lg.innerHTML = 'menos ' + [1, 0.4, 0.7, 1].map(a => `<span class="sw" style="background:rgba(255,159,67,${a})"></span>`).join('') + ' más';
-  else lg.innerHTML = '<span class="sw" style="background:rgba(255,159,67,0.85)"></span> activo';
+  if (m === 'int') lg.innerHTML = legendHTML('int');
+  else lg.innerHTML = legendHTML('bin');
 }
 bi.onclick = () => setMode('int');
 bb.onclick = () => setMode('bin');
