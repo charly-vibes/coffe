@@ -44,7 +44,9 @@ Propósito: recolectar, procesar y documentar los datos de uso de IA de los últ
 - **1,884 sesiones:** 48% cortas (1-10 turns), 18% autónomas (con Agent)
 - **Skills:** 29, lidera rule-of-5-universal (115 usos)
 - **Comandos:** 49, /clear domina (307), /rule-of-5-universal (62)
-- **48 proyectos charly:** miblioteca ($870), atril ($471), dont ($403) top 3
+- **Multitasking (nuevo):** 54.6% de horas activas con ≥2 proyectos simultáneos, promedio 2.31 proyectos/hora, máximo 10 proyectos en una misma hora (2026-07-27 22:00). 51% de días con ≥2 proyectos.
+- **38 proyectos charly** (tras normalizar nombres duplicados entre fuentes; antes contaban 59)
+- **38 proyectos:** miblioteca ($870), atril ($471), dont ($403) top 3
 
 ## Lo único que sigue sin resolver
 

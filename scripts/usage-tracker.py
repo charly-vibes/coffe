@@ -111,8 +111,14 @@ def model_details(model_id):
 
 
 def clean_proj_name(raw):
-    """Normalize project names from Claude directory paths."""
-    return raw.replace("-var-home-sasha-para-areas-dev-gh-", "").replace("--", "/")
+    """Normaliza nombres de proyecto a forma canónica entre fuentes
+    (Claude usa paths con dashes, Pi usa nombres de directorio distintos:
+    'charly-atril', '-charly-atril/', '-sk-REPLy.jl/' → 'sk-REPLy-jl')."""
+    p = raw.replace("-var-home-sasha-para-areas-dev-gh-", "")
+    p = p.strip("-/")
+    p = p.replace(".jl", "-jl")  # repos Julia: REPLy.jl → REPLy-jl
+    return {"charly-mibilioteca": "charly-miblioteca",  # typo en sesiones Pi
+            "sk-sxAct": "sk-XAct-jl"}.get(p, p)  # sxAct no existe; repo real XAct.jl
 
 
 def extract_claude():
@@ -397,6 +403,8 @@ def aggregate(interactions, sessions):
     monthly = {}
     by_project = {}
     by_skill_total = Counter()
+    hour_projects = defaultdict(set)  # hora -> proyectos distintos activos
+    day_projects = defaultdict(set)   # dia -> proyectos distintos activos
 
     def new_hourly():
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
@@ -466,6 +474,8 @@ def aggregate(interactions, sessions):
             a["models"][model] += 1
 
         proj = clean_proj_name(r.get("project", "unknown"))
+        hour_projects[h].add(proj)
+        day_projects[d].add(proj)
         if proj not in by_project:
             by_project[proj] = new_proj()
         pp = by_project[proj]
@@ -482,6 +492,85 @@ def aggregate(interactions, sessions):
             pp["first_seen"] = r["timestamp"]
         if pp["last_seen"] is None or r["timestamp"] > pp["last_seen"]:
             pp["last_seen"] = r["timestamp"]
+
+    # --- Multitasking: proyectos activos simultáneamente ---
+    mt_hour_counts = {h: len(ps) for h, ps in hour_projects.items()}
+    mt_dist = Counter()
+    for n in mt_hour_counts.values():
+        if n == 1: mt_dist["1"] += 1
+        elif n == 2: mt_dist["2"] += 1
+        elif n == 3: mt_dist["3"] += 1
+        else: mt_dist["4+"] += 1
+
+    total_active_hours = len(hour_projects)
+    mt_hours_n = sum(1 for n in mt_hour_counts.values() if n >= 2)
+
+    top_mt_hours = sorted(mt_hour_counts.items(), key=lambda x: -x[1])[:10]
+    max_n = max(mt_hour_counts.values()) if mt_hour_counts else 0
+    max_hours = [h for h, n in mt_hour_counts.items() if n == max_n] if mt_hour_counts else []
+
+    active_days = len(day_projects)
+    mt_days = {d: len(ps) for d, ps in day_projects.items()}
+    mt_days_n = sum(1 for n in mt_days.values() if n >= 2)
+    top_mt_days = sorted(mt_days.items(), key=lambda x: -x[1])[:10]
+
+    # Context switches: cambios de proyecto entre requests consecutivos
+    switches_by_day = Counter()
+    prev = None
+    for r in sorted(interactions, key=lambda x: x["timestamp"]):
+        d = r["timestamp"][:10]
+        p = clean_proj_name(r.get("project", "unknown"))
+        if prev and prev[1] != p:
+            switches_by_day[d] += 1
+        prev = (d, p)
+    total_switches = sum(switches_by_day.values())
+    top_switch_days = sorted(switches_by_day.items(), key=lambda x: -x[1])[:10]
+
+    multitasking = {
+        "description": (
+            "Proyectos distintos con actividad en la misma ventana. "
+            "'context_switches' cuenta cambios de proyecto entre requests "
+            "consecutivos (puede inflarse por agentes paralelos en el mismo minuto)."
+        ),
+        "hourly": {
+            "total_active_hours": total_active_hours,
+            "hours_with_multiple_projects": mt_hours_n,
+            "pct_hours_multitasking": round(100 * mt_hours_n / total_active_hours, 1) if total_active_hours else 0,
+            "avg_projects_per_active_hour": round(sum(mt_hour_counts.values()) / total_active_hours, 2) if total_active_hours else 0,
+            "distribution": dict(mt_dist.most_common()),
+            "max_projects_in_one_hour": {
+                "count": max_n,
+                "hours": max_hours[:5],
+                "projects": sorted(hour_projects[max_hours[0]]) if max_hours else [],
+            },
+            "top_10_hours": [
+                {"hour": h, "projects": n, "list": sorted(hour_projects[h])}
+                for h, n in top_mt_hours
+            ],
+        },
+        "daily": {
+            "total_active_days": active_days,
+            "days_with_multiple_projects": mt_days_n,
+            "pct_days_multitasking": round(100 * mt_days_n / active_days, 1) if active_days else 0,
+            "avg_projects_per_active_day": round(sum(mt_days.values()) / active_days, 2) if active_days else 0,
+            "top_10_days": [
+                {"date": d, "projects": n, "list": sorted(day_projects[d]),
+                 "interactions": daily[d]["interactions"] if d in daily else 0}
+                for d, n in top_mt_days
+            ],
+        },
+        "context_switches": {
+            "total": total_switches,
+            "avg_per_active_day": round(total_switches / active_days, 1) if active_days else 0,
+            "max_in_one_day": top_switch_days[0][1] if top_switch_days else 0,
+            "top_10_days": dict(top_switch_days),
+        },
+    }
+
+    # Añadir conteo de proyectos a cada hora del reporte hourly
+    for h, ps in hour_projects.items():
+        if h in hourly:
+            hourly[h]["projects_active"] = len(ps)
 
     # Add subscription fees to real cost
     sub_fees = calc_subscription_fees(monthly)
@@ -637,6 +726,7 @@ def aggregate(interactions, sessions):
         "skills": dict(by_skill_total.most_common(50)),
         "commands": dict(commands.most_common(30)),
         "sessions": session_stats,
+        "multitasking": multitasking,
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
         "tools_summary": {},
@@ -716,6 +806,22 @@ def main():
     print(f"  Longest sessions:")
     for s in ss['top_longest_by_turns'][:5]:
         print(f"    {s['turns']:>4} turns | {s['msgs']:>3} msgs | {s['date']} | {s['project'][:45]}")
+
+    print(f"\n--- Multitasking ---")
+    mt = report["multitasking"]
+    mh, md, mc = mt["hourly"], mt["daily"], mt["context_switches"]
+    print(f"  Horas con ≥2 proyectos: {mh['hours_with_multiple_projects']}/{mh['total_active_hours']} "
+          f"({mh['pct_hours_multitasking']}%)")
+    print(f"  Avg proyectos/hora activa: {mh['avg_projects_per_active_hour']}")
+    print(f"  Distribución por hora: {mh['distribution']}")
+    mx = mh["max_projects_in_one_hour"]
+    print(f"  Máx simultáneo: {mx['count']} proyectos en {mx['hours']}")
+    print(f"  Días con ≥2 proyectos: {md['days_with_multiple_projects']}/{md['total_active_days']} "
+          f"({md['pct_days_multitasking']}%)")
+    print(f"  Context switches: {mc['total']} total, {mc['avg_per_active_day']}/día activo")
+    print(f"  Top días multitasking:")
+    for t in md["top_10_days"][:5]:
+        print(f"    {t['date']}: {t['projects']} proyectos, {t['interactions']} reqs")
 
     print(f"\n--- Skills ---")
     for skill, count in list(report['skills'].items())[:10]:
