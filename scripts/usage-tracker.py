@@ -405,6 +405,7 @@ def aggregate(interactions, sessions):
     by_skill_total = Counter()
     hour_projects = defaultdict(set)  # hora -> proyectos distintos activos
     day_projects = defaultdict(set)   # dia -> proyectos distintos activos
+    proj_day = defaultdict(Counter)   # proyecto -> {dia: interacciones}
 
     def new_hourly():
         return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
@@ -476,6 +477,7 @@ def aggregate(interactions, sessions):
         proj = clean_proj_name(r.get("project", "unknown"))
         hour_projects[h].add(proj)
         day_projects[d].add(proj)
+        proj_day[proj][d] += 1
         if proj not in by_project:
             by_project[proj] = new_proj()
         pp = by_project[proj]
@@ -525,6 +527,24 @@ def aggregate(interactions, sessions):
         prev = (d, p)
     total_switches = sum(switches_by_day.values())
     top_switch_days = sorted(switches_by_day.items(), key=lambda x: -x[1])[:10]
+
+    # Matriz proyecto x día para visualización (Gantt de actividad)
+    from datetime import date as _date, timedelta as _td
+    d0 = _date.fromisoformat(min(day_projects)) if day_projects else None
+    d1 = _date.fromisoformat(max(day_projects)) if day_projects else None
+    all_days = []
+    if d0 and d1:
+        cur = d0
+        while cur <= d1:
+            all_days.append(cur.isoformat())
+            cur += _td(days=1)
+    project_daily = {
+        "days": all_days,
+        "matrix": {
+            p: [proj_day[p].get(d, 0) for d in all_days]
+            for p in sorted(by_project, key=lambda x: -sum(proj_day[x].values()))
+        },
+    }
 
     multitasking = {
         "description": (
@@ -727,6 +747,7 @@ def aggregate(interactions, sessions):
         "commands": dict(commands.most_common(30)),
         "sessions": session_stats,
         "multitasking": multitasking,
+        "project_daily": project_daily,
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
         "tools_summary": {},

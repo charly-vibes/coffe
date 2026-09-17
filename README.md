@@ -9,13 +9,15 @@ Propósito: recolectar, procesar y documentar los datos de uso de IA de los últ
 
 | Archivo | Propósito |
 |---------|-----------|
-| `scripts/usage-tracker.py` | Extractor de uso de IA v3. Lee datos de Claude, Pi, Amp, Gemini. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands. |
+| `scripts/usage-tracker.py` | Extractor de uso de IA v3. Lee datos de Claude, Pi, Amp, Gemini. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. |
+| `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 
 ### Datos generados
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 283K | **Reporte principal.** 81,887 interacciones filtradas solo charly. Incluye hourly (479 horas), daily (96 días), monthly (6 meses), projects (48), sessions (1,884), skills (29), commands (49). |
+| `data/usage_report_v3.json` | 283K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). |
+| `data/gantt-multitasking.html` | 39K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador. |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -70,3 +72,4 @@ Con los datos actuales podemos generar:
 2. [ ] Investigar gap de enero 1-10 (¿Claude web? ¿Cursor?)
 3. [ ] Generar dashboard HTML con Chart.js
 4. [ ] Empezar a escribir post principal con datos reales
+5. [ ] Interpretar el Gantt: los gaps sin actividad (vacaciones?) y los bloques densos de julio-agosto (¿migración masiva? ¿agentes paralelos?)
