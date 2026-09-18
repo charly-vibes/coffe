@@ -11,3 +11,6 @@ __pycache__/
 .beads/*
 !.beads/issues.jsonl
 !.beads/config.yaml
+
+# Claude Code local settings
+.claude/
