@@ -1,15 +1,17 @@
-# Serie de aprendizaje — Tracking de datos
+# coffe — Tracking de uso de IA
 
-Branch: `data/datos-uso-ia`
-Propósito: recolectar, procesar y documentar los datos de uso de IA de los últimos 6 meses para la serie de posts.
+Extractado de `microdancing` (branch `data/datos-uso-ia`, tip `09c063e`) para poder
+reutilizar y extender el tracker independientemente de la serie de posts.
+Propósito: recolectar, procesar y documentar el uso de IA (Claude CLI, Pi, Amp, Gemini)
+de los últimos meses.
 
-## Archivos en esta branch
+## Archivos
 
 ### Scripts
 
 | Archivo | Propósito |
 |---------|-----------|
-| `scripts/usage-tracker.py` | Extractor de uso de IA v3. Lee datos de Claude, Pi, Amp, Gemini. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. |
+| `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi, Amp, Gemini. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 
 ### Datos generados
