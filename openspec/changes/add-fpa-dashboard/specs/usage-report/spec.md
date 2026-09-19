@@ -12,7 +12,10 @@ input/output/cache-read/cache-write por mes y modelo, interacciones por kind
 (user prompts, assistant turns, tool calls), interacciones y coste de los proyectos
 excluidos por el charly-filter, timezone usada para el bucketing horario/diario, y
 las métricas de concurrencia (proyectos distintos por hora, picos de sesiones
-simultáneas, project switches por hora activa) para el dashboard FP&A.
+simultáneas, project switches por hora activa) para el dashboard FP&A. Las cargas
+pay-per-token SHALL (debe) emitirse como campo separado con provenance *assumed*:
+el tracker no registra cargas reales (decisión 2026-09-20), así que el cash cost
+efectivo es solo suscripciones.
 
 #### Scenario: tokens por modelo presentes
 

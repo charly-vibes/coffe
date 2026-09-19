@@ -3,7 +3,8 @@
 Spec EARS v3 (~100 requisitos FPA-001…FPA-179, con sección de trazabilidad
 hallazgo→requisito). Dashboard de análisis financiero sobre `data/usage_report_v3.json`.
 El repo ya tiene: tracker con `aggregate()` pura, schema v3, dos viz scripts,
-tests dorados y smoke Playwright. Change `add-usage-report-spec` casi cerrado (16/17).
+tests dorados y smoke Playwright. Change `add-usage-report-spec` casi cerrado
+(16/17 al 2026-09-20).
 
 ## Goals / Non-Goals
 
@@ -25,7 +26,10 @@ tests dorados y smoke Playwright. Change `add-usage-report-spec` casi cerrado (1
   un CTA configurado está vacío (FPA-168).
 - **Interactividad client-side**: datos embebidos como JSON + JS vanilla; el
   selector de periodo recompute sin reload (FPA-026/056/077), share-URL
-  (FPA-170/171) y export CSV/SVG (FPA-169) sin dependencias.
+  (FPA-170/171) y export CSV/SVG (FPA-169) sin dependencias. La varianza y el
+  forecast (fórmulas cerradas FPA-072/073) se re-implementan en JS para el
+  recompute sin reload; un test Playwright de paridad verifica que los valores
+  calculados por JS igualan los golden precalculados en Python sobre el fixture.
 - **Provenance como tipo**: cada figura lleva tag *reported*/*assumed* (FPA-003)
   via envoltorio de render, no a mano.
 - **Maths puras en Python**: FME, varianza, bridge PVM, forecast y break-even se
@@ -45,6 +49,10 @@ tests dorados y smoke Playwright. Change `add-usage-report-spec` casi cerrado (1
 - Timezone del tracker ausente → marcar vistas hora/día como unverified (FPA-142).
 - Definición de "interaction" sin confirmar (FPA-140) → exigir emisión por kind
   antes de reportar totales sin desglose.
+- Forecast con <3 meses de datos → run-rate base indefinido → sección forecast
+  muestra "n/a" con razón (FPA-008), nunca un forecast inventado.
+- Config sin clave `ctas` en fases tempranas → el check de target vacío (FPA-168)
+  se activa solo cuando la clave existe; F6 la vuelve obligatoria.
 
 ## Migration Plan
 

@@ -47,7 +47,9 @@ Cuando la última fecha del reporte cae antes del fin de su mes, el Dashboard SH
 
 El Dashboard SHALL (debe) abrir con 3–5 cifras headline, cada una con interpretación
 de una línea derivada de los datos. Si una cifra no puede computarse SHALL (debe)
-mostrar "n/a" con la razón y no renderizar un resumen vacío.
+mostrar "n/a" con la razón y no renderizar un resumen vacío. Mientras un periodo no
+tenga datos (p.ej. el gap de Enero 1–10), SHALL (debe) excluirse de trends y
+cálculos de coste unitario y marcarse "n/a" (FPA-017).
 
 #### Scenario: headline sin datos
 
@@ -62,15 +64,18 @@ métrica nombrada y un threshold, ambos visibles junto al claim.
 #### Scenario: claim sin soporte se rechaza
 
 - **WHEN** el generador evalúa un claim sin métrica+threshold asociados
-- **THEN** el claim no se renderiza (o se muestra con métrica y threshold al lado)
+- **THEN** el claim no se renderiza
 
 ### Requirement: árboles con roll-up verificado
 
 El Dashboard SHALL (debe) proveer árboles expandibles Time (Año→Trimestre→Mes),
 Tool (Tool→Model) y Portfolio (Categoría→Proyecto, con drill a Model cuando haya
 datos), mostrar en cada nodo las columnas coste, % del total, interacciones, coste
-por 1k y delta vs prior (budget/varianza en Time), y garantizar que todo padre
-iguale la suma de sus hijos dentro de $0.01 y 1 interacción.
+por 1k y delta vs prior (budget/varianza en Time), garantizar que todo padre
+iguale la suma de sus hijos dentro de $0.01 y 1 interacción, recomputar los
+árboles y los KPIs al seleccionar un periodo (FPA-026), y — mientras no haya
+datos project-by-month — limitar el árbol Portfolio al periodo completo del
+reporte mostrando esa limitación (FPA-027).
 
 #### Scenario: roll-up consistente
 
@@ -85,7 +90,9 @@ efectivo/cash con daily-rate delta, leverage, coste por 1k, coste por sesión,
 concentración top-3, share premium, autonomous share, multitasking, outcome KPIs
 donde haya datos, cache-hit rate y ratio out/in— cada uno con sparkline mensual y
 delta vs prior. Con denominador cero SHALL (debe) mostrar "n/a", nunca cero o
-infinito. Con mes parcial SHALL (debe) comparar como daily rates.
+infinito. Con mes parcial SHALL (debe) comparar como daily rates. Si faltan datos
+de tokens para una tool, los KPIs de tokens SHALL (debe) marcarse "n/a" para esa
+tool, excluirse del cálculo y mostrarse el share excluido (FPA-045).
 
 #### Scenario: denominador cero
 
@@ -98,7 +105,8 @@ El Dashboard SHALL (debe) aceptar presupuestos mensuales (cash, efectivo, objeti
 por 1k) aplicados desde un mes de inicio configurable, pro-ratear meses parciales,
 calcular varianza con signo (positivo = over budget), marcar favorable/desfavorable
 con color Y texto/símbolo, mostrar tabla mensual con YTD, y recalcular al editar un
-input sin recargar la página.
+input sin recargar la página. El presupuesto de coste efectivo SHALL (debe)
+tratarse como informativo (soft): el presupuesto gestionado es el de cash cost.
 
 #### Scenario: edición de presupuesto
 
@@ -121,7 +129,8 @@ meses parciales, eje truncado etiquetado, y un chart 100% stacked de mix por mes
 ### Requirement: forecast con escenarios
 
 El Dashboard SHALL (debe) proyectar el resto del año desde un run-rate base (media
-FME de los últimos 3 meses), aceptar escenarios (crecimiento %, cambio de rate %,
+FME de los últimos 3 meses; con menos de 3 meses de datos, la sección SHALL (debe)
+mostrar "n/a" con la razón), aceptar escenarios (crecimiento %, cambio de rate %,
 plan futuro), calcular efectivo y cash con las fórmulas FPA-072/073, mostrar
 YTD+outlook vs presupuesto con varianza, fila separada para el resto del mes
 parcial, y distinguir actual de forecast con patrón/label, no solo color, con
@@ -148,15 +157,18 @@ configurables.
   más allá de la tolerancia
 - **THEN** se emite una alerta de reconciliación mostrando ambas cifras
 
-### Requirement: vistas por pregunta con IA y CTAs
+### Requirement: vistas por pregunta con CTAs
 
 El Dashboard SHALL (debe) organizarse en las vistas Summary, Cost, Breakdown,
-Habits, Outlook (+ Data & method colapsado), cada una encabezada por la pregunta que
-responde, con titles de charts computados como hallazgos (métrica+threshold, con
-fallback al label descriptivo), un period selector único fijo, top-5 + "Show all" en
-listas, un CTA primario máximo por vista (Summary: "Read the series" + ≤3
-secundarios), targets de config con fail del generador si están vacíos, labels
-verb-first ≤4 palabras, y un solo idioma configurado.
+Habits, Outlook (+ Data & method colapsado; nombres canónicos en inglés, renderizados
+en el idioma configurado — es), cada una encabezada por la pregunta que responde
+(también en el idioma configurado), con presets de periodo (YTD, Q1–Q3, rango
+custom, FPA-090) y navegación de vistas (FPA-091), titles de charts computados como
+hallazgos (métrica+threshold, con fallback al label descriptivo), un period selector
+único fijo, top-5 + "Show all" en listas, un CTA primario máximo por vista (Summary:
+"Read the series" + ≤3 secundarios), targets de config con fail del generador si
+están vacíos (check activo desde que exista la clave `ctas`; obligatorio cuando la
+clave existe), labels verb-first ≤4 palabras, y un solo idioma configurado.
 
 #### Scenario: generador falla con CTA vacío
 
@@ -166,9 +178,15 @@ verb-first ≤4 palabras, y un solo idioma configurado.
 ### Requirement: export y share de vista
 
 El Dashboard SHALL (debe) ofrecer "Export CSV" en toda tabla y "Download SVG" en
-todo chart, y un control "Share view" que copia una URL codificando periodo, vista y
-expansión de árbol; al cargar con esos parámetros SHALL (debe) restaurar el estado,
-e ignorar parámetros inválidos cargando defaults.
+todo chart — ambos generados client-side sin librerías externas — y un control
+"Share view" que copia una URL codificando periodo, vista y expansión de árbol; al
+cargar con esos parámetros SHALL (debe) restaurar el estado, e ignorar parámetros
+inválidos cargando defaults.
+
+#### Scenario: export de tabla
+
+- **WHEN** el usuario activa "Export CSV" en una tabla
+- **THEN** se descarga un CSV con las filas visibles
 
 #### Scenario: URL compartida restaura estado
 
@@ -180,16 +198,6 @@ e ignorar parámetros inválidos cargando defaults.
 - **WHEN** la URL contiene parámetros inválidos
 - **THEN** se ignoran y se cargan los defaults
 
-### Requirement: exportación CSV/SVG sin dependencias
-
-Cada tabla SHALL (debe) ofrecer Export CSV y cada chart Download SVG, generados
-client-side sin librerías externas.
-
-#### Scenario: export de tabla
-
-- **WHEN** el usuario activa "Export CSV" en una tabla
-- **THEN** se descarga un CSV con las filas visibles
-
 ### Requirement: patrones de uso y ciclo de vida
 
 El Dashboard SHALL (debe) mostrar: heatmap día×hora con timezone etiquetada, shares
@@ -197,7 +205,9 @@ after-hours/weekend con horarios configurables, WoW y varianza semanal, skills y
 comandos con trends, buckets de longitud de sesión con coste/mediana/p90, `/clear`
 por 100 sesiones, timeline por tool/model con gaps flag > N días, métricas de
 concurrencia etiquetadas (paralelo vs context switching), share de sesiones con
-Agent, y clasificación de proyectos new/active/dormant con coste dormante.
+Agent, clasificación de proyectos new/active/dormant con coste dormante, y — donde
+haya fechas de creación de repos — su overlay como marcadores en el trend mensual
+(FPA-098).
 
 #### Scenario: timezone ausente marca vistas
 

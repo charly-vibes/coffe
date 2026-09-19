@@ -8,8 +8,9 @@ duplicada, captions solo-hover, idiomas mezclados, sin CTA ni export). La spec E
 `fpa-dashboard-ears-spec.md` (v3, ~/Downloads) consolida esos hallazgos en ~100
 requisitos (FPA-001…FPA-179) para un nuevo dashboard orientado a finanzas personales
 del uso de IA. Copia canónica de la spec dentro del change:
-`fpa-dashboard-ears-spec.md`: coste efectivo vs cash, KPIs, árboles, presupuesto/varianza, bridge
-precio-volumen-mix, forecast, alertas y economía de suscripción.
+`fpa-dashboard-ears-spec.md`. Cubre: coste efectivo vs cash, KPIs, árboles,
+presupuesto/varianza, bridge precio-volumen-mix, forecast, alertas y economía
+de suscripción.
 
 ## What Changes
 

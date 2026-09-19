@@ -8,7 +8,8 @@
       defaults de la spec (FPA-088), modelos premium (default: Opus, FPA-037),
       horarios laborales (FPA-111), días de dormancia/novedad (FPA-122),
       CTAs con targets (FPA-168), idioma (FPA-162), retro opcional (FPA-178)
-- [ ] 0.3 Extender `specs/usage-report-v3.schema.json` (o versionar a v4) para las
+- [ ] 0.3 Extender `specs/usage-report-v3.schema.json` en sitio (versionar a v4
+      solo si un campo cambia de significado, no si solo se añade) para las
       emisiones nuevas del tracker; mantener `--validate` verde
 - [ ] 0.4 Open questions 1–7 resueltas (2026-09-20, ver design.md): budget
       efectivo informativo, sin pay-per-token real (campo assumed/cero), taxonomía
@@ -34,21 +35,23 @@
 ## 2. Datos, jerarquías y KPIs (FPA-010…045, 140–142)
 
 - [ ] 2.1 Emisiones tracker: breakdown por tool/model (FPA-011), project totals via
-      `project_daily` (FPA-012), pay-per-token separado de suscripción (FPA-013),
-      commits/releases con token GitHub (FPA-014), tokens in/out/cache por mes y
-      modelo (FPA-019)
+      `project_daily` (FPA-012), pay-per-token separado de suscripción con
+      provenance assumed (no hay cargas reales, FPA-013), commits/releases con
+      token GitHub (FPA-014), tokens in/out/cache por mes y modelo (FPA-019)
 - [ ] 2.2 Emisiones tracker: interacciones por kind con share de tool-calls
       (FPA-140), proyectos filtrados por charly-filter con share (FPA-141),
       timezone registrada (FPA-142), concurrencia/paralelismo (FPA-120)
-- [ ] 3.1 (avance) Árboles expandibles Time/Tool/Portfolio con columnas completas
-      (FPA-020…024); roll-up ≤ $0.01 y 1 interacción (FPA-025)
-- [ ] 2.3 KPI strip: 11 KPIs del periodo con sparkline y delta vs prior (FPA-030…039);
+- [ ] 2.3 Árboles expandibles Time/Tool/Portfolio con columnas completas y
+      recompute al cambiar el periodo (FPA-020…026); roll-up ≤ $0.01 y 1
+      interacción (FPA-025); Portfolio limitado al periodo completo con la
+      limitación visible mientras no haya project-by-month (FPA-027)
+- [ ] 2.4 KPI strip: KPIs FPA-030…045 del periodo con sparkline y delta vs prior;
       outcome KPIs si hay datos (FPA-040); daily rates en meses parciales (FPA-041);
       "n/a" con denominador cero (FPA-042)
-- [ ] 2.4 Token KPIs: cache-hit rate (FPA-043), ratio out/in (FPA-044), n/a por
+- [ ] 2.5 Token KPIs: cache-hit rate (FPA-043), ratio out/in (FPA-044), n/a por
       tool con share excluido (FPA-045)
-- [ ] 2.5 Periodo sin datos → exclusión de trends y marker n/a (FPA-017)
-- [ ] 2.6 Tests dorados de KPIs + roll-up (FPA-101) con fixture de meses parciales
+- [ ] 2.6 Periodo sin datos → exclusión de trends y marker n/a (FPA-017)
+- [ ] 2.7 Tests dorados de KPIs + roll-up (FPA-101) con fixture de meses parciales
       (FPA-102)
 
 ## 3. Presupuesto, bridge y forecast (FPA-050…077)
@@ -59,12 +62,15 @@
 - [ ] 3.2 Bridge precio-volumen-mix: fórmulas Volume/Mix/Rate (FPA-061…064),
       identidad ≤ $0.01 (FPA-065), FME en meses parciales (FPA-066), eje truncado
       etiquetado (FPA-067), 100% stacked mix por mes (FPA-068)
-- [ ] 3.3 Forecast: run-rate base = media FME últimos 3 meses (FPA-070), inputs de
-      escenario (FPA-071), fórmulas efectivo/cash (FPA-072/073), YTD+outlook vs
-      presupuesto (FPA-074), resto del mes parcial como fila separada (FPA-075),
-      distinción actual/forecast no-solo-color (FPA-076), update sin reload (FPA-077)
-- [ ] 3.4 Tests dorados: bridge identity, pro-rating, FME, forecast (FPA-101/102,
-      FPA-105 para economía de planes va en fase 6)
+- [ ] 3.3 Forecast: run-rate base = media FME últimos 3 meses, "n/a" con razón si
+      hay <3 meses de datos (FPA-070/008), inputs de escenario (FPA-071), fórmulas
+      efectivo/cash (FPA-072/073), YTD+outlook vs presupuesto (FPA-074), resto del
+      mes parcial como fila separada (FPA-075), distinción actual/forecast
+      no-solo-color (FPA-076), update sin reload (FPA-077)
+- [ ] 3.4 Tests dorados: bridge identity, pro-rating, FME, forecast (FPA-101/102);
+      FPA-105 (economía de planes) se cubre en 4.3; test de paridad JS/Python:
+      los valores recalculados en el cliente (varianza, forecast) igualan los
+      golden precalculados sobre el fixture
 
 ## 4. Alertas y economía de suscripción (FPA-080…088, 130–133)
 
@@ -93,7 +99,9 @@
 
 ## 6. UX, CTA y export (FPA-090…098, 150–179)
 
-- [ ] 6.1 IA de vistas: 5 vistas + Data & method (FPA-150/151), mobile tabs /
+- [ ] 6.1 Arquitectura de información: 5 vistas + Data & method (FPA-150/151),
+      presets de periodo YTD/Q1–Q3 y custom range (FPA-090), navegación de vistas
+      (FPA-091), mobile tabs /
       desktop secuencia (FPA-152), period selector fijo único (FPA-153), above the
       fold (FPA-154), top-5 + Show all (FPA-155), merges (FPA-156), Data & method
       colapsado (FPA-157), sin duplicación Pareto/árbol (FPA-158)
@@ -103,7 +111,8 @@
       método de render documentado (FPA-145)
 - [ ] 6.3 CTAs: 1 primario + ≤3 secundarios en Summary (FPA-165), máx 1 primario
       por vista (FPA-166), alerta→1 botón de acción (FPA-167), targets de config
-      con fail si vacío (FPA-168), labels verb-first ≤4 palabras (FPA-172)
+      con fail si vacío — check activo desde que exista la clave `ctas`, obligatorio
+      en F6 (FPA-168), labels verb-first ≤4 palabras (FPA-172)
 - [ ] 6.4 Export/share: Export CSV en toda tabla + Download SVG en todo chart
       (FPA-169), Share view con URL que restaura estado (FPA-170), params inválidos
       ignorados (FPA-171)
