@@ -19,18 +19,18 @@
 
 ## 1. Base y resumen ejecutivo (FPA-001…009)
 
-- [ ] 1.1 Esqueleto `scripts/viz-fpa.py`: HTML autocontenido, inline SVG, header
+- [x] 1.1 Esqueleto `scripts/viz-fpa.py`: HTML autocontenido, inline SVG, header
       con fecha de generación y versión del tracker (FPA-001/005), tema claro/oscuro
       según sistema (FPA-093), formatos USD y tabular nums (FPA-095)
-- [ ] 1.2 Resumen ejecutivo de 3–5 cifras headline con interpretación de una línea
+- [x] 1.2 Resumen ejecutivo de 3–5 cifras headline con interpretación de una línea
       (FPA-007); "n/a" con razón si no se puede computar, nunca vacío (FPA-008)
-- [ ] 1.3 Provenance tag *reported*/*assumed* en toda figura (FPA-003); separación
+- [x] 1.3 Provenance tag *reported*/*assumed* en toda figura (FPA-003); separación
       estricta efectivo/cash, jamás sumados (FPA-002)
-- [ ] 1.4 Marca de mes parcial con días transcurridos/total (FPA-004); claims
+- [x] 1.4 Marca de mes parcial con días transcurridos/total (FPA-004); claims
       narrativos solo con métrica nombrada + threshold visibles (FPA-009)
-- [ ] 1.5 Validación de schema con exit non-zero y listado de campos fallidos
+- [x] 1.5 Validación de schema con exit non-zero y listado de campos fallidos
       (FPA-006); placeholder-check del smoke (FPA-108)
-- [ ] 1.6 Tests dorados fase 1 (agregaciones base) + smoke Playwright
+- [x] 1.6 Tests dorados fase 1 (agregaciones base) + smoke Playwright
 
 ## 2. Datos, jerarquías y KPIs (FPA-010…045, 140–142)
 
