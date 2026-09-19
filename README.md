@@ -51,6 +51,17 @@ Los JSON en `data/` son **derivados**: la fuente son los logs locales de cada he
 
 Requisitos: Python ≥ 3.9 — solo stdlib, sin dependencias que instalar.
 
+### Tests
+
+```bash
+python3 tests/test_tracker.py   # funciones puras + golden de aggregate() (24 tests)
+python3 tests/test_viz.py       # smoke de los HTML en Chromium real (opcional: playwright)
+REGEN_GOLDEN=1 python3 tests/test_tracker.py  # regenerar golden (revisar diff antes de aceptar)
+```
+
+El contrato del reporte está spec'd en `specs/usage-report-v3.schema.json`;
+los viz scripts lo validan con `--validate` (requiere `jsonschema`, opcional).
+
 ```bash
 python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requiere los logs locales)
 python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON

@@ -10,6 +10,7 @@ v4.1: cuenta tokens de cache (cacheRead/cacheWrite) de Pi y Claude
 
 import argparse
 import json
+import os
 import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
@@ -83,7 +84,10 @@ def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0, ca
 
 def parse_ts(ts):
     if isinstance(ts, str):
-        return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        try:
+            return datetime.fromisoformat(ts.replace("Z", "+00:00"))
+        except ValueError:
+            return None
     if isinstance(ts, (int, float)):
         return datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
     return None
@@ -117,21 +121,31 @@ def model_details(model_id):
 
 
 def clean_proj_name(raw):
-    """Normaliza nombres de proyecto a forma canónica entre fuentes
-    (Claude usa paths con dashes, Pi usa nombres de directorio distintos:
-    'charly-atril', '-charly-atril/', '-sk-REPLy.jl/' → 'sk-REPLy-jl')."""
-    p = raw.replace("-var-home-sasha-para-areas-dev-gh-", "")
+    """Normaliza nombres de proyecto a forma canónica entre fuentes.
+
+    Claude usa paths con '/' reemplazado por '-' (p.ej. el repo en
+    <home>/para/areas/dev/gh/charly/coffe aparece como
+    '-var-home-sasha-para-areas-dev-gh-charly-coffe'). El prefijo se deriva
+    de Path.home() en runtime para ser independiente de la máquina.
+    Pi usa nombres de directorio distintos ('-charly-atril/',
+    '-sk-REPLy.jl/' → 'sk-REPLy-jl').
+    """
+    home_prefix = str(Path.home()).replace("/", "-") + "-para-areas-dev-gh-"
+    p = raw.replace(home_prefix, "")
     p = p.strip("-/")
     p = p.replace(".jl", "-jl")  # repos Julia: REPLy.jl → REPLy-jl
     return {"charly-mibilioteca": "charly-miblioteca",  # typo en sesiones Pi
             "sk-sxAct": "sk-XAct-jl"}.get(p, p)  # sxAct no existe; repo real XAct.jl
 
 
-def extract_claude():
+def extract_claude(skipped=None):
     """
     Read Claude JSONL files + dashboard cache.
     Uses cache cost where available (more accurate), falls back to token-based estimate.
     Returns deduplicated rows (no double counting between JSONL and cache).
+
+    `skipped`: dict opcional; se incrementa con las líneas/archivos descartados
+    por error de parseo (visible en metadata.skipped_lines del reporte).
     """
     # Step 1: Read JSONL files
     jsonl_rows = []
@@ -175,8 +189,12 @@ def extract_claude():
                                 "cache_write_tokens": cache_c,
                                 "cost_effective": cost,
                             })
-            except:
-                pass
+            except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
+                if skipped is not None:
+                    k = f"claude:{f.name}"
+                    skipped[k] = skipped.get(k, 0) + 1
+                elif os.environ.get("TRACKER_DEBUG"):
+                    print(f"  [skipped] {f.name}: {e}", file=sys.stderr)
 
     # Step 2: Read dashboard cache for cost overrides
     cache_cost_lookup = {}
@@ -231,7 +249,7 @@ def extract_claude():
     return merged
 
 
-def extract_pi():
+def extract_pi(skipped=None):
     rows = []
     sessions_dir = PI_DIR / "sessions"
     if not sessions_dir.exists(): return rows
@@ -283,8 +301,12 @@ def extract_pi():
                             "cache_write_tokens": cache_w or 0,
                             "cost_effective": cost,
                         })
-            except:
-                pass
+            except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
+                if skipped is not None:
+                    k = f"pi:{f.name}"
+                    skipped[k] = skipped.get(k, 0) + 1
+                elif os.environ.get("TRACKER_DEBUG"):
+                    print(f"  [skipped] {f.name}: {e}", file=sys.stderr)
     return rows
 
 
@@ -307,8 +329,9 @@ def extract_amp():
                         task_dates.append(ts)
                         if not task_proj:
                             task_proj = "charly"
-            except:
-                pass
+            except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
+                if os.environ.get("TRACKER_DEBUG"):
+                    print(f"  [skipped] amp: {e}", file=sys.stderr)
         if task_proj and task_dates:
             for ts in task_dates:
                 rows.append({
@@ -406,105 +429,118 @@ def calc_subscription_fees(monthly_data):
     return sub_fees
 
 
-def aggregate(interactions, sessions):
-    hourly = {}
-    daily = {}
-    monthly = {}
-    by_project = {}
-    by_skill_total = Counter()
-    hour_projects = defaultdict(set)  # hora -> proyectos distintos activos
-    day_projects = defaultdict(set)   # dia -> proyectos distintos activos
-    proj_day = defaultdict(Counter)   # proyecto -> {dia: interacciones}
+class Bucket:
+    """Acumulador de métricas para un bucket de agregación (día, mes, proyecto).
 
-    def new_hourly():
-        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
-                "cache_read_tokens": 0, "cache_write_tokens": 0,
-                "cost_real": 0.0, "cost_effective": 0.0,
-                "tools": defaultdict(lambda: {"req": 0, "in": 0, "out": 0,
-                                            "cache_read": 0, "cache_write": 0,
-                                            "cost_eff": 0.0, "cost_real": 0.0}),
-                "models": defaultdict(int)}
+    Una sola implementación del bloque de acumulación que antes estaba
+    copiado 4 veces en aggregate() — el cambio de contabilidad de tokens
+    se hace en UN lugar.
+    """
 
-    def new_simple():
-        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
-                "cache_read_tokens": 0, "cache_write_tokens": 0,
-                "cost_real": 0.0, "cost_effective": 0.0, "tools": Counter(), "models": Counter()}
+    def __init__(self):
+        self.interactions = 0
+        self.input_tokens = 0
+        self.output_tokens = 0
+        self.cache_read_tokens = 0
+        self.cache_write_tokens = 0
+        self.cost_effective = 0.0
+        self.cost_real = 0.0
+        self.tools = Counter()
+        self.models = Counter()
+        self.first_seen = None
+        self.last_seen = None
+        self.skills = Counter()
 
-    def new_proj():
-        return {"interactions": 0, "input_tokens": 0, "output_tokens": 0,
-                "cache_read_tokens": 0, "cache_write_tokens": 0,
-                "cost_effective": 0.0, "cost_real": 0.0,
-                "first_seen": None, "last_seen": None,
-                "tools": Counter(), "models": Counter(), "skills": Counter()}
+    def add(self, r, real_cost):
+        self.interactions += 1
+        self.input_tokens += r.get("input_tokens", 0) or 0
+        self.output_tokens += r.get("output_tokens", 0) or 0
+        self.cache_read_tokens += r.get("cache_read_tokens", 0) or 0
+        self.cache_write_tokens += r.get("cache_write_tokens", 0) or 0
+        self.cost_effective += r.get("cost_effective", 0) or 0
+        self.cost_real += real_cost
+        self.tools[r["tool"]] += 1
+        self.models[r["model_raw"]] += 1
 
-    for r in interactions:
-        h = r["hour"]
-        d = h[:10]
-        m = d[:7]
-        tool = r["tool"]
-        model = r["model_raw"]
-        inp = r.get("input_tokens", 0) or 0
-        out = r.get("output_tokens", 0) or 0
-        cr = r.get("cache_read_tokens", 0) or 0
-        cw = r.get("cache_write_tokens", 0) or 0
-        eff = r.get("cost_effective", 0) or 0
-        real, _, _ = get_sub_cost(tool, r.get("timestamp", ""), eff)
+    def to_dict(self, detail=False):
+        d = {
+            "interactions": self.interactions,
+            "input_tokens": self.input_tokens,
+            "output_tokens": self.output_tokens,
+            "cache_read_tokens": self.cache_read_tokens,
+            "cache_write_tokens": self.cache_write_tokens,
+            "cost_effective": round(self.cost_effective, 2),
+            "cost_real": round(self.cost_real, 2),
+            "tools": dict(self.tools.most_common()),
+            "models": dict(self.models.most_common()),
+        }
+        if detail:
+            d["subscription_fees"] = 0.0
+        return d
 
-        if h not in hourly:
-            hourly[h] = new_hourly()
-        hr = hourly[h]
-        hr["interactions"] += 1
-        hr["input_tokens"] += inp
-        hr["output_tokens"] += out
-        hr["cache_read_tokens"] += cr
-        hr["cache_write_tokens"] += cw
-        hr["cost_effective"] += eff
-        hr["cost_real"] += real
-        hr["tools"][tool]["req"] += 1
-        hr["tools"][tool]["in"] += inp
-        hr["tools"][tool]["out"] += out
-        hr["tools"][tool]["cache_read"] += cr
-        hr["tools"][tool]["cache_write"] += cw
-        hr["tools"][tool]["cost_real"] += real
-        hr["tools"][tool]["cost_eff"] += eff
-        hr["models"][model] += 1
 
-        for agg, key in [(daily, d), (monthly, m)]:
-            if key not in agg:
-                agg[key] = new_simple()
-            a = agg[key]
-            a["interactions"] += 1
-            a["input_tokens"] += inp
-            a["output_tokens"] += out
-            a["cache_read_tokens"] += cr
-            a["cache_write_tokens"] += cw
-            a["cost_effective"] += eff
-            a["cost_real"] += real
-            a["tools"][tool] += 1
-            a["models"][model] += 1
+class HourlyBucket(Bucket):
+    """Bucket horario: además lleva stats detalladas por herramienta."""
 
-        proj = clean_proj_name(r.get("project", "unknown"))
-        hour_projects[h].add(proj)
-        day_projects[d].add(proj)
-        proj_day[proj][d] += 1
-        if proj not in by_project:
-            by_project[proj] = new_proj()
-        pp = by_project[proj]
-        pp["interactions"] += 1
-        pp["input_tokens"] += inp
-        pp["output_tokens"] += out
-        pp["cache_read_tokens"] += cr
-        pp["cache_write_tokens"] += cw
-        pp["cost_effective"] += eff
-        pp["cost_real"] += real
-        pp["tools"][tool] += 1
-        pp["models"][model] += 1
-        if pp["first_seen"] is None or r["timestamp"] < pp["first_seen"]:
-            pp["first_seen"] = r["timestamp"]
-        if pp["last_seen"] is None or r["timestamp"] > pp["last_seen"]:
-            pp["last_seen"] = r["timestamp"]
+    def __init__(self):
+        super().__init__()
+        self.tool_stats = defaultdict(Bucket)
 
-    # --- Multitasking: proyectos activos simultáneamente ---
+    def add(self, r, real_cost):
+        super().add(r, real_cost)
+        ts = self.tool_stats[r["tool"]]
+        ts.interactions += 1
+        ts.input_tokens += r.get("input_tokens", 0) or 0
+        ts.output_tokens += r.get("output_tokens", 0) or 0
+        ts.cache_read_tokens += r.get("cache_read_tokens", 0) or 0
+        ts.cache_write_tokens += r.get("cache_write_tokens", 0) or 0
+        ts.cost_effective += r.get("cost_effective", 0) or 0
+        ts.cost_real += real_cost
+
+    def to_dict(self):
+        d = super().to_dict()
+        d["tools"] = {t: {
+            "req": b.interactions, "in": b.input_tokens, "out": b.output_tokens,
+            "cache_read": b.cache_read_tokens, "cache_write": b.cache_write_tokens,
+            "cost_eff": round(b.cost_effective, 8), "cost_real": round(b.cost_real, 8),
+        } for t, b in self.tool_stats.items()}
+        return d
+
+
+def _context_switches(interactions):
+    """Cambios de proyecto entre requests consecutivos (por día)."""
+    switches_by_day = Counter()
+    prev = None
+    for r in sorted(interactions, key=lambda x: x["timestamp"]):
+        d = r["timestamp"][:10]
+        p = clean_proj_name(r.get("project", "unknown"))
+        if prev and prev[1] != p:
+            switches_by_day[d] += 1
+        prev = (d, p)
+    return switches_by_day
+
+
+def _project_daily(by_project, day_projects, proj_day):
+    """Matriz densa proyecto × día para el Gantt."""
+    from datetime import date as _date, timedelta as _td
+    all_days = []
+    if day_projects:
+        d0 = _date.fromisoformat(min(day_projects))
+        d1 = _date.fromisoformat(max(day_projects))
+        cur = d0
+        while cur <= d1:
+            all_days.append(cur.isoformat())
+            cur += _td(days=1)
+    return {
+        "days": all_days,
+        "matrix": {
+            p: [proj_day[p].get(d, 0) for d in all_days]
+            for p in sorted(by_project, key=lambda x: -sum(proj_day[x].values()))
+        },
+    }
+
+
+def _multitasking_block(hour_projects, day_projects, daily, switches_by_day):
     mt_hour_counts = {h: len(ps) for h, ps in hour_projects.items()}
     mt_dist = Counter()
     for n in mt_hour_counts.values():
@@ -515,7 +551,6 @@ def aggregate(interactions, sessions):
 
     total_active_hours = len(hour_projects)
     mt_hours_n = sum(1 for n in mt_hour_counts.values() if n >= 2)
-
     top_mt_hours = sorted(mt_hour_counts.items(), key=lambda x: -x[1])[:10]
     max_n = max(mt_hour_counts.values()) if mt_hour_counts else 0
     max_hours = [h for h, n in mt_hour_counts.items() if n == max_n] if mt_hour_counts else []
@@ -524,38 +559,10 @@ def aggregate(interactions, sessions):
     mt_days = {d: len(ps) for d, ps in day_projects.items()}
     mt_days_n = sum(1 for n in mt_days.values() if n >= 2)
     top_mt_days = sorted(mt_days.items(), key=lambda x: -x[1])[:10]
-
-    # Context switches: cambios de proyecto entre requests consecutivos
-    switches_by_day = Counter()
-    prev = None
-    for r in sorted(interactions, key=lambda x: x["timestamp"]):
-        d = r["timestamp"][:10]
-        p = clean_proj_name(r.get("project", "unknown"))
-        if prev and prev[1] != p:
-            switches_by_day[d] += 1
-        prev = (d, p)
     total_switches = sum(switches_by_day.values())
     top_switch_days = sorted(switches_by_day.items(), key=lambda x: -x[1])[:10]
 
-    # Matriz proyecto x día para visualización (Gantt de actividad)
-    from datetime import date as _date, timedelta as _td
-    d0 = _date.fromisoformat(min(day_projects)) if day_projects else None
-    d1 = _date.fromisoformat(max(day_projects)) if day_projects else None
-    all_days = []
-    if d0 and d1:
-        cur = d0
-        while cur <= d1:
-            all_days.append(cur.isoformat())
-            cur += _td(days=1)
-    project_daily = {
-        "days": all_days,
-        "matrix": {
-            p: [proj_day[p].get(d, 0) for d in all_days]
-            for p in sorted(by_project, key=lambda x: -sum(proj_day[x].values()))
-        },
-    }
-
-    multitasking = {
+    return {
         "description": (
             "Proyectos distintos con actividad en la misma ventana. "
             "'context_switches' cuenta cambios de proyecto entre requests "
@@ -596,23 +603,59 @@ def aggregate(interactions, sessions):
         },
     }
 
-    # Añadir conteo de proyectos a cada hora del reporte hourly
-    for h, ps in hour_projects.items():
-        if h in hourly:
-            hourly[h]["projects_active"] = len(ps)
 
-    # Add subscription fees to real cost
-    sub_fees = calc_subscription_fees(monthly)
-    for m_key, fee in sub_fees.items():
-        if m_key in monthly:
-            monthly[m_key]["cost_real"] += fee
-            monthly[m_key]["subscription_fees"] = fee
-        # Also add to daily totals for the month
-        for d_key, d_data in daily.items():
-            if d_key[:7] == m_key:
-                d_data["cost_real"] += fee / 30.0  # prorated roughly
+def _session_stats(sessions):
+    """Estadísticas de sesiones (largos, autonomía, promedios, top)."""
+    stats = {
+        "total_sessions": len(sessions),
+        "length_distribution": Counter(),
+        "with_agent": 0,
+        "total_api_errors": 0,
+        "total_compactions": 0,
+        "avg_turns": 0,
+        "avg_tools": 0,
+        "avg_skills": 0,
+    }
+    longest = []
+    for s in sessions:
+        n = s["n_turns"]
+        if n <= 10: stats["length_distribution"]["1-10"] += 1
+        elif n <= 50: stats["length_distribution"]["11-50"] += 1
+        elif n <= 100: stats["length_distribution"]["51-100"] += 1
+        elif n <= 300: stats["length_distribution"]["101-300"] += 1
+        elif n <= 500: stats["length_distribution"]["301-500"] += 1
+        else: stats["length_distribution"]["500+"] += 1
+        if s["has_agent"]:
+            stats["with_agent"] += 1
+        stats["total_api_errors"] += s["n_errors"]
+        stats["total_compactions"] += s["n_compactions"]
+        stats["avg_turns"] += n
+        stats["avg_tools"] += s["n_tools"]
+        stats["avg_skills"] += s["n_skills"]
+        longest.append((n, s["duration_msgs"], s["first_ts"], s["project"]))
 
-    # Skills from session cache
+    if sessions:
+        n = len(sessions)
+        stats["avg_turns"] /= n
+        stats["avg_tools"] /= n
+        stats["avg_skills"] /= n
+
+    longest.sort(key=lambda x: -x[0])
+    stats["top_longest_by_turns"] = [
+        {"turns": t, "msgs": m, "date": d, "project": clean_proj_name(p)}
+        for t, m, d, p in longest[:10]
+    ]
+    return stats
+
+
+def collect_skills_and_commands():
+    """Extrae skills (cache de Claude) y comandos slash (history.jsonl).
+
+    Vive FUERA de aggregate() para que la agregación sea pura y testeable:
+    los resultados se inyectan como parámetros.
+    """
+    by_skill_total = Counter()
+    skills_by_project = defaultdict(Counter)  # proyecto limpio -> skill -> count
     cache_file = CLAUDE_DIR / "dashboard-cache.json"
     if cache_file.exists():
         cache = json.loads(cache_file.read_text())
@@ -623,10 +666,8 @@ def aggregate(interactions, sessions):
             proj_clean = clean_proj_name(proj)
             for skill, count in summary.get("skill_uses", {}).items():
                 by_skill_total[skill] += count
-                if proj_clean in by_project:
-                    by_project[proj_clean]["skills"][skill] += count
+                skills_by_project[proj_clean][skill] += count
 
-    # Commands from history
     commands = Counter()
     hist_file = CLAUDE_DIR / "history.jsonl"
     if hist_file.exists():
@@ -634,7 +675,7 @@ def aggregate(interactions, sessions):
             for line in f:
                 try:
                     entry = json.loads(line)
-                except:
+                except json.JSONDecodeError:
                     continue
                 display = entry.get("display", "")
                 proj = entry.get("project", "")
@@ -645,59 +686,92 @@ def aggregate(interactions, sessions):
                     if 2 <= len(cmd) <= 30:
                         commands[cmd] += 1
 
+    return by_skill_total, skills_by_project, commands
+
+
+def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
+              commands=None):
+    """Agrega rows → reporte completo. Pura: los datos de skills/comandos
+    se inyectan (ver collect_skills_and_commands())."""
+    hourly = {}
+    daily = {}
+    monthly = {}
+    by_project = {}
+    hour_projects = defaultdict(set)  # hora -> proyectos distintos activos
+    day_projects = defaultdict(set)   # día -> proyectos distintos activos
+    proj_day = defaultdict(Counter)   # proyecto -> {día: interacciones}
+
+    for r in interactions:
+        h = r["hour"]
+        d = h[:10]
+        m = d[:7]
+        real, _, _ = get_sub_cost(r["tool"], r.get("timestamp", ""), r.get("cost_effective", 0) or 0)
+
+        if h not in hourly: hourly[h] = HourlyBucket()
+        if d not in daily: daily[d] = Bucket()
+        if m not in monthly: monthly[m] = Bucket()
+        hourly[h].add(r, real)
+        daily[d].add(r, real)
+        monthly[m].add(r, real)
+
+        proj = clean_proj_name(r.get("project", "unknown"))
+        hour_projects[h].add(proj)
+        day_projects[d].add(proj)
+        proj_day[proj][d] += 1
+        if proj not in by_project: by_project[proj] = Bucket()
+        by_project[proj].add(r, real)
+        # first/last seen
+        ts = r["timestamp"]
+        pp = by_project[proj]
+        if pp.first_seen is None or ts < pp.first_seen:
+            pp.first_seen = ts
+        if pp.last_seen is None or ts > pp.last_seen:
+            pp.last_seen = ts
+
+    # --- Multitasking + context switches ---
+    switches_by_day = _context_switches(interactions)
+    multitasking = _multitasking_block(hour_projects, day_projects,
+                                       {d: b.to_dict() for d, b in daily.items()},
+                                       switches_by_day)
+
+    # Conteo de proyectos activos por hora
+    for h, ps in hour_projects.items():
+        if h in hourly:
+            hourly[h].projects_active = len(ps)
+
+    # --- Subscription fees ---
+    monthly_dicts = {m: b.to_dict(detail=True) for m, b in monthly.items()}
+    sub_fees = calc_subscription_fees(monthly_dicts)
+    for m_key, fee in sub_fees.items():
+        if m_key in monthly:
+            monthly[m_key].cost_real += fee
+            monthly_dicts[m_key]["cost_real"] = round(monthly[m_key].cost_real, 2)
+            monthly_dicts[m_key]["subscription_fees"] = fee
+        for d_key, d_data in daily.items():
+            if d_key[:7] == m_key:
+                d_data.cost_real += fee / 30.0  # prorated roughly
+
+    # --- Skills (inyectados; default: colección en vivo) ---
+    if skills_total is None or skills_by_project is None or commands is None:
+        skills_total, skills_by_project, commands = collect_skills_and_commands()
+    skills_total = Counter(skills_total)
+    commands = Counter(commands)
+    for proj_clean, sk in skills_by_project.items():
+        if proj_clean in by_project:
+            by_project[proj_clean].skills = Counter(sk)
+
+    # --- Sessions ---
+    session_stats = _session_stats(sessions)
+
+    # --- project_daily ---
+    project_daily = _project_daily(by_project, day_projects, proj_day)
+
     def clean(o):
         if isinstance(o, defaultdict):
             return {k: clean(v) for k, v in o.items()}
         if isinstance(o, Counter):
             return dict(o.most_common())
         return o
-
-    # Session analytics
-    session_stats = {
-        "total_sessions": len(sessions),
-        "length_distribution": Counter(),
-        "with_agent": 0,
-        "total_api_errors": 0,
-        "total_compactions": 0,
-        "avg_turns": 0,
-        "avg_tools": 0,
-        "avg_skills": 0,
-    }
-    longest_by_turns = []
-    for s in sessions:
-        n = s["n_turns"]
-        if n <= 10:
-            session_stats["length_distribution"]["1-10"] += 1
-        elif n <= 50:
-            session_stats["length_distribution"]["11-50"] += 1
-        elif n <= 100:
-            session_stats["length_distribution"]["51-100"] += 1
-        elif n <= 300:
-            session_stats["length_distribution"]["101-300"] += 1
-        elif n <= 500:
-            session_stats["length_distribution"]["301-500"] += 1
-        else:
-            session_stats["length_distribution"]["500+"] += 1
-        if s["has_agent"]:
-            session_stats["with_agent"] += 1
-        session_stats["total_api_errors"] += s["n_errors"]
-        session_stats["total_compactions"] += s["n_compactions"]
-        session_stats["avg_turns"] += n
-        session_stats["avg_tools"] += s["n_tools"]
-        session_stats["avg_skills"] += s["n_skills"]
-        longest_by_turns.append((n, s["duration_msgs"], s["first_ts"], s["project"]))
-
-    if sessions:
-        n = len(sessions)
-        session_stats["avg_turns"] /= n
-        session_stats["avg_tools"] /= n
-        session_stats["avg_skills"] /= n
-
-    longest_by_turns.sort(key=lambda x: -x[0])
-    session_stats["top_longest_by_turns"] = [
-        {"turns": t, "msgs": m, "date": d, "project": clean_proj_name(p)}
-        for t, m, d, p in longest_by_turns[:10]
-    ]
 
     return clean({
         "metadata": {
@@ -706,13 +780,13 @@ def aggregate(interactions, sessions):
                 "end": max(r["timestamp"] for r in interactions)[:10] if interactions else None,
             },
             "filter": "charly-only" if CHARLY_FILTER else "all",
-            "total_interactions": sum(h["interactions"] for h in hourly.values()),
-            "total_input_tokens": sum(h["input_tokens"] for h in hourly.values()),
-            "total_output_tokens": sum(h["output_tokens"] for h in hourly.values()),
-            "total_cache_read_tokens": sum(h.get("cache_read_tokens", 0) for h in hourly.values()),
-            "total_cache_write_tokens": sum(h.get("cache_write_tokens", 0) for h in hourly.values()),
-            "cost_total_effective": round(sum(h["cost_effective"] for h in hourly.values()), 2),
-            "cost_total_real": round(sum(h["cost_real"] for h in hourly.values()), 2),
+            "total_interactions": sum(b.interactions for b in hourly.values()),
+            "total_input_tokens": sum(b.input_tokens for b in hourly.values()),
+            "total_output_tokens": sum(b.output_tokens for b in hourly.values()),
+            "total_cache_read_tokens": sum(b.cache_read_tokens for b in hourly.values()),
+            "total_cache_write_tokens": sum(b.cache_write_tokens for b in hourly.values()),
+            "cost_total_effective": round(sum(b.cost_effective for b in hourly.values()), 2),
+            "cost_total_real": round(sum(b.cost_real for b in hourly.values()), 2),
             "subscription_fees": round(sum(sub_fees.values()), 2),
             "token_accounting": (
                 "cache_read/cache_write se reportan aparte de input/output. "
@@ -724,44 +798,23 @@ def aggregate(interactions, sessions):
             "total_months": len(monthly),
             "total_projects": len(by_project),
         },
-        "hourly": hourly,
-        "daily": daily,
-        "monthly": clean({m: {
-            "interactions": v["interactions"],
-            "input_tokens": v["input_tokens"],
-            "output_tokens": v["output_tokens"],
-            "cache_read_tokens": v["cache_read_tokens"],
-            "cache_write_tokens": v["cache_write_tokens"],
-            "cost_effective": round(v["cost_effective"], 2),
-            "cost_real": round(v["cost_real"], 2),
-            "subscription_fees": round(v.get("subscription_fees", 0), 2),
-            "tools": dict(v["tools"].most_common()),
-            "models": dict(v["models"].most_common()),
-        } for m, v in sorted(monthly.items())}),
-        "projects": clean({p: {
-            "interactions": v["interactions"],
-            "input_tokens": v["input_tokens"],
-            "output_tokens": v["output_tokens"],
-            "cache_read_tokens": v["cache_read_tokens"],
-            "cache_write_tokens": v["cache_write_tokens"],
-            "cost_effective": round(v["cost_effective"], 2),
-            "cost_real": round(v["cost_real"], 2),
-            "first_seen": (v["first_seen"] or "")[:10],
-            "last_seen": (v["last_seen"] or "")[:10],
-            "tools": dict(v["tools"].most_common()),
-            "models": dict(v["models"].most_common()),
-            "skills": dict(v["skills"].most_common()),
-        } for p, v in sorted(by_project.items(), key=lambda x: -x[1]["cost_effective"])}),
-        "skills": dict(by_skill_total.most_common(50)),
+        "hourly": {h: b.to_dict() | {"projects_active": getattr(b, "projects_active", 0)}
+                   for h, b in hourly.items()},
+        "daily": {d: b.to_dict() for d, b in daily.items()},
+        "monthly": dict(sorted(monthly_dicts.items())),
+        "projects": {p: (b.to_dict() | {
+            "first_seen": (b.first_seen or "")[:10],
+            "last_seen": (b.last_seen or "")[:10],
+            "skills": dict(getattr(b, "skills", {}).most_common()),
+        }) for p, b in sorted(by_project.items(), key=lambda x: -x[1].cost_effective)},
+        "skills": dict(skills_total.most_common(50)),
         "commands": dict(commands.most_common(30)),
         "sessions": session_stats,
         "multitasking": multitasking,
         "project_daily": project_daily,
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
-        "tools_summary": {},
     })
-
 
 def main():
     ap = argparse.ArgumentParser(description="Extractor de uso de IA (charly only)")
@@ -775,10 +828,11 @@ def main():
     print("=== IA Usage Tracker v4.1 (Charly only) ===", flush=True)
 
     interactions = []
+    skipped = {}
 
     all_sources = [
-        ("Claude", extract_claude()),
-        ("Pi", extract_pi()),
+        ("Claude", extract_claude(skipped)),
+        ("Pi", extract_pi(skipped)),
         ("Amp", extract_amp()),
     ]
 
@@ -811,7 +865,10 @@ def main():
     print(f"  {len(sessions)} charly sessions", flush=True)
 
     print("Aggregating...", flush=True)
-    report = aggregate(unique, sessions)
+    report = aggregate(unique, sessions, *collect_skills_and_commands())
+    if skipped:
+        report["metadata"]["skipped"] = dict(skipped)
+        report["metadata"]["skipped_lines"] = sum(skipped.values())
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:

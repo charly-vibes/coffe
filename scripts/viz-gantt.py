@@ -198,11 +198,26 @@ bb.onclick = () => setMode('bin');
 </html>
 """
 
+def validate_report(report, schema_path=Path("specs/usage-report-v3.schema.json")):
+    """Valida el reporte contra el JSON Schema (opcional: requiere jsonschema)."""
+    try:
+        import jsonschema
+    except ImportError:
+        print("(--validate omitido: instala jsonschema para validar el contrato)")
+        return
+    schema = json.loads(schema_path.read_text())
+    jsonschema.validate(report, schema)
+    print(f"schema OK ({schema_path})")
+
+
 def main():
     import sys
-    report_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPORT
-    out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else OUT
+    args = [a for a in sys.argv[1:] if a != "--validate"]
+    report_path = Path(args[0]) if args else REPORT
+    out_path = Path(args[1]) if len(args) > 1 else OUT
     report = json.loads(report_path.read_text())
+    if "--validate" in sys.argv:
+        validate_report(report)
     pd = report["project_daily"]
     meta = report["metadata"]
     mt = report["multitasking"]
