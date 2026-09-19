@@ -8,19 +8,25 @@ v4.1: cuenta tokens de cache (cacheRead/cacheWrite) de Pi y Claude
 (validado contra toolpath/path-cli).
 """
 
+import argparse
 import json
+import sys
 from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 CLAUDE_DIR = Path.home() / ".claude"
-PI_DIR = Path.home() / ".pi" / "agent"
+PI_DIR = Path.home() / ".pi" / "agent"  # Gemini llega vía logs de Pi (google-gemini-cli), no hay extractor propio
 AMP_DIR = Path.home() / ".amp"
-GEMINI_DIR = Path.home() / ".gemini"
 OUTPUT_DIR = Path("data")
-LOCAL_TZ = datetime.now().astimezone().tzinfo
+LOCAL_TZ = datetime.now().astimezone().tzinfo  # OJO: los buckets hourly/daily usan la TZ local de la máquina que extrae
 
 CHARLY_FILTER = True
+
+# Umbral anti-clobber: si los extractores encuentran menos interacciones que esto
+# (p.ej. máquina sin ~/.claude / ~/.pi/agent / ~/.amp), NO se escribe el reporte
+# sin --force, para no destruir el dataset versionado en data/.
+MIN_INTERACTIONS = 1000
 
 SUBSCRIPTIONS = {
     "claude-cli": [
@@ -129,7 +135,10 @@ def extract_claude():
     """
     # Step 1: Read JSONL files
     jsonl_rows = []
-    for pd in (CLAUDE_DIR / "projects").iterdir():
+    projects_dir = CLAUDE_DIR / "projects"
+    if not projects_dir.exists():
+        return []  # máquina sin logs de Claude (el guard de main() se encarga del resto)
+    for pd in projects_dir.iterdir():
         if not pd.is_dir(): continue
         proj = pd.name
         if not is_charly(proj): continue
@@ -755,6 +764,14 @@ def aggregate(interactions, sessions):
 
 
 def main():
+    ap = argparse.ArgumentParser(description="Extractor de uso de IA (charly only)")
+    ap.add_argument("--output", default=None,
+                    help="Ruta del JSON de salida (default: data/usage_report_v3.json)")
+    ap.add_argument("--force", action="store_true",
+                    help="Escribir aunque los datos extraídos sean casi vacíos")
+    args = ap.parse_args()
+    out_path = Path(args.output) if args.output else OUTPUT_DIR / "usage_report_v3.json"
+
     print("=== IA Usage Tracker v4.1 (Charly only) ===", flush=True)
 
     interactions = []
@@ -780,6 +797,15 @@ def main():
 
     print(f"  Total: {len(interactions)} → {len(unique)} unique", flush=True)
 
+    if len(unique) < MIN_INTERACTIONS and not args.force:
+        print(
+            f"\nABORTADO: solo {len(unique)} interacciones encontradas (< {MIN_INTERACTIONS}).",
+            "\nLos extractores leen ~/.claude, ~/.pi/agent y ~/.amp — ¿estás en la máquina con los logs?",
+            "\nUsa --force para escribir de todas formas.",
+            flush=True,
+        )
+        sys.exit(1)
+
     print("Session stats...", flush=True)
     sessions = extract_session_stats()
     print(f"  {len(sessions)} charly sessions", flush=True)
@@ -787,8 +813,8 @@ def main():
     print("Aggregating...", flush=True)
     report = aggregate(unique, sessions)
 
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    with open(OUTPUT_DIR / "usage_report_v3.json", "w") as f:
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
         json.dump(report, f, indent=2, default=str)
 
     # Pretty print
@@ -852,7 +878,7 @@ def main():
     for cmd, count in list(report['commands'].items())[:10]:
         print(f"  {cmd}: {count}")
 
-    print(f"\nDone. data/usage_report_v3.json")
+    print(f"\nDone. {out_path}")
 
 
 if __name__ == "__main__":

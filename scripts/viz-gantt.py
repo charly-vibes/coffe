@@ -182,7 +182,10 @@ bb.onclick = () => setMode('bin');
 """
 
 def main():
-    report = json.loads(REPORT.read_text())
+    import sys
+    report_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPORT
+    out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else OUT
+    report = json.loads(report_path.read_text())
     pd = report["project_daily"]
     meta = report["metadata"]
     mt = report["multitasking"]
@@ -192,8 +195,9 @@ def main():
            f"{mt['hourly']['pct_hours_multitasking']}% de horas con ≥2 proyectos en paralelo")
 
     html = TEMPLATE.replace("__DATA__", json.dumps(pd, ensure_ascii=False)).replace("__SUB__", sub)
-    OUT.write_text(html)
-    print(f"OK → {OUT} ({OUT.stat().st_size // 1024} KB, {len(pd['days'])} días × {len(pd['matrix'])} proyectos)")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(html)
+    print(f"OK → {out_path} ({out_path.stat().st_size // 1024} KB, {len(pd['days'])} días × {len(pd['matrix'])} proyectos)")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,54 @@
+# Deploy a GitHub Pages vía Actions (sin branch gh-pages).
+#
+# Requisito único (una vez, en la UI del repo):
+#   Settings → Pages → Build and deployment → Source: **GitHub Actions**
+#
+# NOTA DE PRIVACIDAD: los reportes contienen costos, nombres de proyecto y
+# patrones de actividad personales. Si el repo es público, lo publicado
+# también lo es. `index.html` lleva noindex; considera mantener el repo
+# privado o filtrar los datos antes de publicar.
+
+name: deploy-pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate Gantt from committed data
+        run: python3 scripts/viz-gantt.py
+
+      - name: Prepare site
+        run: |
+          mkdir -p _pages
+          cp index.html _pages/
+          cp -r data _pages/data
+          # La entrada del índice es estática; los JSON ya están versionados.
+          rm -f _pages/data/daily_summary.json _pages/data/usage_hourly.json
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _pages
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

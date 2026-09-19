@@ -11,15 +11,15 @@ de los últimos meses.
 
 | Archivo | Propósito |
 |---------|-----------|
-| `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi, Amp, Gemini. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. |
+| `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force` (ver "Uso"). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 
 ### Datos generados
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 283K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). |
-| `data/gantt-multitasking.html` | 39K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador. |
+| `data/usage_report_v3.json` | 716K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-18 (138,276 interacciones). |
+| `data/gantt-multitasking.html` | 40K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -29,9 +29,34 @@ de los últimos meses.
 
 | Archivo | Contenido |
 |---------|-----------|
-| `data/resumen-datos-v3.md` | **Resumen final.** Datos filtrados solo charly, con tablas mensuales, sesiones, skills, comandos, proyectos top. |
+| `data/resumen-datos-v3.md` | **Resumen final.** Datos filtrados solo charly, con tablas mensuales, sesiones, skills, comandos, proyectos top. Refleja el snapshot de 2026-06-10; el JSON actual ya lo supera (ver nota abajo). |
 | `data/resumen-datos-2026-06-10.md` | Resumen preliminar v2 (sin filtrar). |
-| `drafts/serie-aprendizaje-6-meses-boceto.md` | **Boceto de la serie.** Evolución v1→v2→v3 con todos los temas y datos reales. |
+
+> **Nota:** el boceto de la serie vive en `microdancing/drafts/serie-aprendizaje-6-meses-boceto.md`, no en este repo.
+
+> **Nota de vigencia (2026-09-18):** `usage_report_v3.json` fue regenerado el 2026-09-18 con el periodo extendido hasta septiembre (138,276 interacciones, 38 proyectos). Las cifras de `resumen-datos-v3.md` y de la sección "Estado de los datos" reflejan el snapshot de 2026-06-10 (81,887 interacciones); son históricas, no están actualizadas.
+
+Los JSON en `data/` son **derivados**: la fuente son los logs locales de cada herramienta (`~/.claude`, `~/.pi/agent`, `~/.amp`), que no están versionados. En una máquina sin esos logs el tracker no produce datos reales (ver guard en `main()`).
+
+## Uso / Reproducibilidad
+
+Requisitos: Python ≥ 3.9 — solo stdlib, sin dependencias que instalar.
+
+```bash
+python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requiere los logs locales)
+python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON
+python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas
+```
+
+Notas de reproducibilidad entre máquinas:
+
+- El tracker **no sobreescribe** el reporte si extrae < 1,000 interacciones (máquina sin logs); usa `--force` para forzar.
+- Los buckets hourly/daily usan la **TZ local** de la máquina que extrae (`LOCAL_TZ` en el script): dos máquinas con TZ distinta producen agregaciones horarias distintas.
+- Las cuotas de suscripción (`SUBSCRIPTIONS`) y precios por modelo (`MODEL_PRICING`) están hardcoded en el script y afectan los cálculos de costo.
+
+### GitHub Pages
+
+El deploy es vía **GitHub Actions** (no hay branch `gh-pages`): `.github/workflows/deploy-pages.yml` publica un índice (`index.html`), el Gantt (regenerado en CI) y los JSON de `data/` en cada push a `main`. Único requisito manual: Settings → Pages → Source: *GitHub Actions*.
 
 ## Estado de los datos
 
