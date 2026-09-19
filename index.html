@@ -5,27 +5,41 @@
 <meta name="robots" content="noindex, nofollow">
 <title>coffe — tracking de uso de IA</title>
 <style>
-  :root { --bg: #16161d; --fg: #d8d8e0; --muted: #7a7a8a; --accent: #ff9f43; --grid: #23232e; }
-  body { margin: 0; padding: 48px 24px; background: var(--bg); color: var(--fg);
-         font: 14px/1.6 ui-monospace, "JetBrains Mono", Menlo, monospace; }
-  main { max-width: 640px; margin: 0 auto; }
-  h1 { font-size: 20px; }
-  .sub { color: var(--muted); margin-bottom: 24px; }
-  blockquote.epigraph {
-    margin: 0 0 24px; padding: 12px 16px; border-left: 2px solid var(--accent);
-    color: var(--muted); font-style: italic; font-size: 12px;
-  }
+  body { margin: 0; padding: 18px; background: #c0c0c0;
+         font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif; color: #000; }
+  .banner { background: #000080; color: #fff; padding: 10px 14px;
+            border: 2px outset #fff; margin-bottom: 10px; }
+  .banner h1 { font-size: 22px; margin: 0; letter-spacing: 1px; }
+  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
+  marquee { background: #ffff00; color: #000; border: 2px inset #fff;
+            font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 16px; }
+  .frame { background: #fff; border: 2px outset #fff; padding: 18px; max-width: 680px; margin: 0 auto; }
+  blockquote.epigraph { margin: 0 0 18px; padding: 10px 14px; border-left: 4px double #000080;
+    color: #404040; font-style: italic; font-size: 12px; }
   blockquote.epigraph .who { display: block; margin-top: 6px; font-style: normal; }
-  ul { list-style: none; padding: 0; }
-  li { border: 1px solid var(--grid); border-radius: 4px; padding: 12px 16px; margin-bottom: 8px; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .desc { color: var(--muted); font-size: 12px; }
+  table.dir { width: 100%; border-collapse: collapse; }
+  table.dir th { background: #000080; color: #fff; text-align: left; padding: 5px 10px; border: 1px solid #404040; }
+  table.dir td { padding: 6px 10px; border: 1px solid #c0c0c0; }
+  table.dir tr:hover td { background: #ffff00; }
+  a { color: #000080; font-weight: bold; }
+  a:visited { color: #800080; }
+  a:hover { color: #800000; }
+  .desc { color: #404040; font-size: 11px; font-weight: normal; }
+  .new { display: inline-block; background: #ff0000; color: #ffff00; font-weight: bold;
+         font-size: 10px; padding: 1px 6px; transform: rotate(-4deg); margin-left: 6px;
+         animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  footer { max-width: 680px; margin: 18px auto 0; font-size: 11px; color: #404040; text-align: center; }
 </style>
 </head>
 <body>
-<main>
-  <h1>coffe — tracking de uso de IA</h1>
+<div class="banner">
+  <h1>☢ coffe — tracking de uso de IA</h1>
+  <div class="tag">Charly Vibes Analytics S.A. · división de métricas y Productivity Enhancement</div>
+</div>
+<marquee scrollamount="4">★★★ BIENVENIDO A NUESTRO SITIO ★★★ datos actualizados al 2026-09-19 ★★★ 139,609 interacciones y contando ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★ firma nuestro guestbook ★★★</marquee>
+
+<div class="frame">
   <blockquote class="epigraph">
     Do you feel like a chain store<br>
     Practically floored<br>
@@ -33,19 +47,36 @@
     Kicked around bored
     <span class="who">— Blur, "Coffee &amp; TV"</span>
   </blockquote>
-  <p class="sub">Reportes de uso (Claude CLI, Pi, Amp, Gemini) · enero → junio 2026 · generado con <code>scripts/usage-tracker.py</code></p>
-  <ul>
-    <li><a href="data/dashboard.html">Dashboard de insights</a><br>
-        <span class="desc">Tendencias mensuales, top proyectos, skills, comandos, heatmap, sesiones</span></li>
-    <li><a href="data/gantt-multitasking.html">Gantt de multitasking</a><br>
-        <span class="desc">Actividad proyecto × día con concurrencia diaria</span></li>
-    <li><a href="data/usage_report_v3.json">usage_report_v3.json</a><br>
-        <span class="desc">Reporte principal (hourly, daily, monthly, sessions, skills, commands, multitasking)</span></li>
-    <li><a href="data/usage_report_v2.json">usage_report_v2.json</a><br>
-        <span class="desc">Reporte v2 sin filtrar (incluye proyectos no-charly)</span></li>
-    <li><a href="data/tool_timeline.json">tool_timeline.json</a><br>
-        <span class="desc">Timeline de herramientas (primera/última vez)</span></li>
-  </ul>
-</main>
+
+  <table class="dir">
+    <tr><th colspan="2">ÍNDICE DE REPORTES — EDICIÓN SEPTIEMBRE 2026</th></tr>
+    <tr>
+      <td><a href="data/dashboard.html">Dashboard de insights<span class="new">¡NUEVO!</span></a><br>
+          <span class="desc">Tendencias mensuales, top proyectos, skills, comandos, heatmap, sesiones</span></td>
+    </tr>
+    <tr>
+      <td><a href="data/gantt-multitasking.html">Gantt de multitasking</a><br>
+          <span class="desc">Actividad proyecto × día con concurrencia diaria</span></td>
+    </tr>
+    <tr>
+      <td><a href="data/usage_report_v3.json">usage_report_v3.json</a><br>
+          <span class="desc">Reporte principal (hourly, daily, monthly, sessions, skills, commands, multitasking)</span></td>
+    </tr>
+    <tr>
+      <td><a href="data/usage_report_v2.json">usage_report_v2.json</a><br>
+          <span class="desc">Reporte v2 sin filtrar (incluye proyectos no-charly)</span></td>
+    </tr>
+    <tr>
+      <td><a href="data/tool_timeline.json">tool_timeline.json</a><br>
+          <span class="desc">Timeline de herramientas (primera/última vez) — edición histórica 2026-06-10</span></td>
+    </tr>
+  </table>
+</div>
+
+<footer>
+<hr noshade size="2">
+© 1996–2026 Charly Vibes Analytics S.A. · <i>Best viewed in Netscape Navigator 4.0 at 800×600</i><br>
+🚧 UNDER CONSTRUCTION 🚧 · generado con <code>scripts/usage-tracker.py</code> · noindex
+</footer>
 </body>
 </html>

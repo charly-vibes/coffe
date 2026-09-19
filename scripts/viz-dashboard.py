@@ -146,70 +146,121 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta charset="utf-8">
 <title>Uso de IA — dashboard</title>
 <style>
+  /* ======== Corporate Infographics™ 1996 ======== */
   :root {
-    --bg: #16161d; --panel: #1c1c25; --fg: #d8d8e0; --muted: #7a7a8a;
-    --accent: #ff9f43; --accent2: #4fc3f7; --grid: #23232e; --good: #66bb6a;
+    --bg: #c0c0c0; --panel: #ffffff; --fg: #000000; --muted: #404040;
+    --accent: #800000; --accent2: #000080; --good: #008080; --grid: #c0c0c0;
+    --navy: #000080; --yellow: #ffff00;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 24px; background: var(--bg); color: var(--fg);
-    font: 13px/1.5 ui-monospace, "JetBrains Mono", Menlo, monospace;
+    margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
+    font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif;
   }
-  h1 { font-size: 18px; margin: 0 0 2px; }
-  h2 { font-size: 13px; color: var(--muted); margin: 28px 0 10px;
-       text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--grid); padding-bottom: 6px; }
+  .banner {
+    background: var(--navy); color: #fff; padding: 10px 14px;
+    border: 2px outset #fff; margin-bottom: 10px;
+  }
+  .banner h1 { font-size: 22px; margin: 0; font-weight: bold; letter-spacing: 1px; }
+  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
+  marquee { background: var(--yellow); color: #000; border: 2px inset #fff;
+            font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 14px; }
   .sub { color: var(--muted); margin-bottom: 20px; font-size: 12px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 12px 14px; }
-  .card .v { font-size: 20px; color: var(--accent); }
-  .card .l { color: var(--muted); font-size: 11px; margin-top: 2px; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  h2 {
+    font-size: 14px; color: var(--navy); margin: 26px 0 8px;
+    text-transform: uppercase; letter-spacing: .06em;
+    border-bottom: 3px double var(--navy); padding-bottom: 3px;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+  .card { background: #fff; border: 2px outset #fff; padding: 10px 12px; }
+  .card .v { font-size: 20px; color: var(--accent); font-weight: bold; }
+  .card .l { color: var(--muted); font-size: 11px; margin-top: 2px; text-transform: uppercase; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
-  .panel { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 14px; }
+  .panel { background: #fff; border: 2px outset #fff; padding: 14px; }
+  .figcap {
+    font-size: 11px; color: var(--muted); font-style: italic;
+    margin-top: 8px; border-top: 1px solid #808080; padding-top: 4px;
+  }
+  .figcap b { color: var(--navy); font-style: normal; }
   svg { display: block; width: 100%; height: auto; }
-  svg text { fill: var(--muted); font: 10px ui-monospace, monospace; }
-  .bar:hover { opacity: .8; }
-  .tooltip { position: fixed; background: #26262f; border: 1px solid var(--grid); color: var(--fg);
-             padding: 8px 10px; border-radius: 4px; font-size: 12px; pointer-events: none;
-             display: none; z-index: 10; max-width: 340px; white-space: pre; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { color: var(--muted); text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); }
-  td { padding: 4px 8px; border-bottom: 1px solid var(--grid); }
+  svg text { fill: #000; font: 10px Arial, Helvetica, sans-serif; }
+  .bar { stroke: #000; stroke-width: 1px; }
+  .bar:hover, rect:hover { opacity: .75; }
+  .tooltip {
+    position: fixed; background: #ffffcc; border: 2px outset #fff; color: #000;
+    padding: 8px 10px; font-size: 12px; pointer-events: none;
+    display: none; z-index: 10; max-width: 340px; white-space: pre;
+    box-shadow: 4px 4px 0 #404040; font-family: Arial, sans-serif;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 4px 8px; border: 1px solid #404040; }
+  td { padding: 4px 8px; border: 1px solid #c0c0c0; }
   td.num, th.num { text-align: right; }
-  tr:hover td { background: #22222d; }
-  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+  tr:hover td { background: var(--yellow); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: #000; }
   .legend span::before { content: "■ "; }
-  footer { color: var(--muted); font-size: 11px; margin-top: 24px; }
+  .new {
+    display: inline-block; background: #ff0000; color: var(--yellow); font-weight: bold;
+    font-size: 10px; padding: 1px 6px; transform: rotate(-4deg); margin-left: 8px;
+    animation: blink 1s steps(1) infinite; vertical-align: middle;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  footer {
+    margin-top: 26px; padding-top: 8px; border-top: 3px double #808080;
+    color: var(--muted); font-size: 11px; text-align: center;
+  }
+  .counter { display: inline-flex; gap: 2px; vertical-align: middle; margin: 0 6px; }
+  .counter b {
+    background: #000; color: #0f0; font-family: "Courier New", monospace;
+    padding: 1px 4px; border: 1px inset #fff; font-size: 12px;
+  }
 </style>
 </head>
 <body>
-<h1>Uso de IA — dashboard</h1>
+<div class="banner">
+  <h1>☢ charly analytics — DIVISIÓN DE MÉTRICAS</h1>
+  <div class="tag">informe especial de uso de herramientas de inteligencia artificial</div>
+</div>
+<marquee scrollamount="4">★★★ RESULTADOS TRIMESTRALES AHORA DISPONIBLES ★★★ costo real bajo control gracias a las suscripciones ★★★ el multitasking alcanza niveles récord ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★</marquee>
+<blockquote class="epigraph" style="margin:0 0 16px; padding:8px 12px; border-left:4px double var(--navy); color:#404040; font-style:italic; font-size:12px">
+  Do you feel like a chain store · Practically floored · One of many zeroes · Kicked around bored<br>
+  <span style="font-style:normal">— Blur, "Coffee &amp; TV"</span>
+</blockquote>
 <div class="sub" id="subtitle"></div>
 <div class="tooltip" id="tip"></div>
 
-<h2>Resumen</h2>
+<h2>Resumen ejecutivo<span class="new">¡NUEVO!</span></h2>
 <div class="cards" id="cards"></div>
 
 <h2>Tendencia mensual — interacciones y costo real</h2>
-<div class="panel"><div id="chart-monthly"></div><div class="legend"><span style="color:var(--accent)">interacciones</span><span style="color:var(--accent2)">costo real $</span></div></div>
+<div class="panel"><div id="chart-monthly"></div>
+<div class="figcap"><b>Figura 1.</b> Barras: interacciones por mes. Línea: costo real (suscripciones + pay-per-token). Efecto de escala apreciable a partir del segundo trimestre.</div>
+<div class="legend"><span style="color:var(--accent)">interacciones</span><span style="color:var(--accent2)">costo real $</span></div></div>
 
 <h2>Costo efectivo por mes y herramienta</h2>
-<div class="panel"><div id="chart-tools-cost"></div><div class="legend" id="legend-tools"></div></div>
+<div class="panel"><div id="chart-tools-cost"></div>
+<div class="figcap"><b>Figura 2.</b> Composición mensual del costo efectivo (pay-per-token estimado) por herramienta.</div>
+<div class="legend" id="legend-tools"></div></div>
 
 <h2>Top 20 proyectos</h2>
-<div class="panel"><div id="chart-projects"></div></div>
+<div class="panel"><div id="chart-projects"></div>
+<div class="figcap"><b>Figura 3.</b> Los 20 proyectos con más interacciones del periodo. Pase el ratón para ver costos y vigencia.</div></div>
 
 <h2>Cuándo se usa: día de la semana × hora</h2>
-<div class="panel"><div id="chart-heatmap"></div></div>
+<div class="panel"><div id="chart-heatmap"></div>
+<div class="figcap"><b>Figura 4.</b> Densidad de interacciones por día de la semana y hora local. Zonas claras: el cuerpo humano descansa.</div></div>
 
 <div class="row">
   <div>
     <h2>Top skills</h2>
-    <div class="panel"><div id="chart-skills"></div></div>
+    <div class="panel"><div id="chart-skills"></div>
+    <div class="figcap"><b>Figura 4.</b> Skills más invocadas (usos registrados en sesiones).</div></div>
   </div>
   <div>
     <h2>Top comandos slash</h2>
-    <div class="panel"><div id="chart-commands"></div></div>
+    <div class="panel"><div id="chart-commands"></div>
+    <div class="figcap"><b>Figura 5.</b> Comandos slash más ejecutados. /clear lidera con autoridad.</div></div>
   </div>
 </div>
 
@@ -219,15 +270,21 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="panel"><div id="chart-sessions"></div>
     <div id="sessions-summary" class="sub" style="margin-top:8px"></div>
     <table id="sessions-table" style="margin-top:10px"></table>
+    <div class="figcap"><b>Figura 6.</b> Distribución de largos de sesión (turns) y sesiones más largas.</div>
     </div>
   </div>
   <div>
     <h2>Timeline de herramientas</h2>
-    <div class="panel"><table id="tools-table"></table></div>
+    <div class="panel"><table id="tools-table"></table>
+    <div class="figcap"><b>Tabla 1.</b> Primera y última actividad registrada por herramienta (derivado de agregados mensuales).</div></div>
   </div>
 </div>
 
-<footer id="footer" style="margin-top:24px"></footer>
+<footer id="footer" style="margin-top:24px">
+<hr noshade size="2">
+<div id="footer-text"></div>
+<div style="margin-top:8px">Visitante número <span class="counter" id="hits"></span> · © 1996–2026 Charly Vibes Analytics S.A. · <i>Best viewed in Netscape Navigator 4.0 at 800×600</i> · <b>UNDER CONSTRUCTION</b> 🚧</div>
+</footer>
 <script>
 const D = __DATA__;
 
@@ -355,7 +412,7 @@ const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1000 ? Math.round(n
 // ---------- chart 2: costo efectivo apilado por herramienta ----------
 {
   const tools = [...new Set(D.months.flatMap(d => Object.keys(d.tools)))];
-  const COLORS = ['#ff9f43', '#4fc3f7', '#66bb6a', '#ab47bc', '#ef5350', '#ffa726', '#26a69a', '#ec407a'];
+  const COLORS = ['#800000', '#000080', '#008080', '#808000', '#800080', '#ff8000', '#008000', '#404040'];
   const W = 800, H = 240, padL = 60, padR = 20, padT = 20, padB = 34;
   const svg = svgEl(W, H);
   const data = D.months, n = data.length;
@@ -427,12 +484,12 @@ const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1000 ? Math.round(n
       const x = padL + hi * cell, y = padT + di * cell;
       const inten = v / maxV;
       const r = rect(svg, x + 1, y + 1, cell - 2, cell - 2,
-        inten === 0 ? 'var(--grid)' : `rgba(255,159,67,${0.12 + 0.88 * Math.pow(inten, 0.5)})`);
+        inten === 0 ? 'var(--grid)' : `rgba(0,0,128,${0.1 + 0.9 * Math.pow(inten, 0.5)})`);
       r.addEventListener('mousemove', e => showTip(e,
         `${dowNames[di]} ${String(hi).padStart(2, '0')}:00\n${fmtInt(v)} interacciones`));
       r.addEventListener('mouseleave', hideTip);
       if (v > 0 && inten > 0.25) text(svg, x + cell / 2, y + cell / 2 + 3,
-        v >= 1000 ? Math.round(v / 1000) + 'k' : v, 8, 'middle', '#16161d');
+        v >= 1000 ? Math.round(v / 1000) + 'k' : v, 8, 'middle', '#ffff00');
     });
   });
   text(svg, padL, H - 6, 'día de la semana (lun→dom) × hora local', 9);
@@ -500,8 +557,13 @@ hbars('chart-commands', D.commands, 'var(--accent)');
     ).join('');
 }
 
-document.getElementById('footer').textContent =
+document.getElementById('footer-text').textContent =
   `generado ${D.meta.generated} · scripts/viz-dashboard.py · datos solo-charly`;
+{
+  const hits = String(1 + D.meta.total).padStart(7, '0').split('');
+  document.getElementById('hits').innerHTML =
+    hits.map(d => `<b>${d}</b>`).join('');
+}
 </script>
 </body>
 </html>

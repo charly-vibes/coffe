@@ -4,70 +4,121 @@
 <meta charset="utf-8">
 <title>Uso de IA — dashboard</title>
 <style>
+  /* ======== Corporate Infographics™ 1996 ======== */
   :root {
-    --bg: #16161d; --panel: #1c1c25; --fg: #d8d8e0; --muted: #7a7a8a;
-    --accent: #ff9f43; --accent2: #4fc3f7; --grid: #23232e; --good: #66bb6a;
+    --bg: #c0c0c0; --panel: #ffffff; --fg: #000000; --muted: #404040;
+    --accent: #800000; --accent2: #000080; --good: #008080; --grid: #c0c0c0;
+    --navy: #000080; --yellow: #ffff00;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 24px; background: var(--bg); color: var(--fg);
-    font: 13px/1.5 ui-monospace, "JetBrains Mono", Menlo, monospace;
+    margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
+    font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif;
   }
-  h1 { font-size: 18px; margin: 0 0 2px; }
-  h2 { font-size: 13px; color: var(--muted); margin: 28px 0 10px;
-       text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--grid); padding-bottom: 6px; }
+  .banner {
+    background: var(--navy); color: #fff; padding: 10px 14px;
+    border: 2px outset #fff; margin-bottom: 10px;
+  }
+  .banner h1 { font-size: 22px; margin: 0; font-weight: bold; letter-spacing: 1px; }
+  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
+  marquee { background: var(--yellow); color: #000; border: 2px inset #fff;
+            font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 14px; }
   .sub { color: var(--muted); margin-bottom: 20px; font-size: 12px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 12px 14px; }
-  .card .v { font-size: 20px; color: var(--accent); }
-  .card .l { color: var(--muted); font-size: 11px; margin-top: 2px; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  h2 {
+    font-size: 14px; color: var(--navy); margin: 26px 0 8px;
+    text-transform: uppercase; letter-spacing: .06em;
+    border-bottom: 3px double var(--navy); padding-bottom: 3px;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+  .card { background: #fff; border: 2px outset #fff; padding: 10px 12px; }
+  .card .v { font-size: 20px; color: var(--accent); font-weight: bold; }
+  .card .l { color: var(--muted); font-size: 11px; margin-top: 2px; text-transform: uppercase; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
-  .panel { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 14px; }
+  .panel { background: #fff; border: 2px outset #fff; padding: 14px; }
+  .figcap {
+    font-size: 11px; color: var(--muted); font-style: italic;
+    margin-top: 8px; border-top: 1px solid #808080; padding-top: 4px;
+  }
+  .figcap b { color: var(--navy); font-style: normal; }
   svg { display: block; width: 100%; height: auto; }
-  svg text { fill: var(--muted); font: 10px ui-monospace, monospace; }
-  .bar:hover { opacity: .8; }
-  .tooltip { position: fixed; background: #26262f; border: 1px solid var(--grid); color: var(--fg);
-             padding: 8px 10px; border-radius: 4px; font-size: 12px; pointer-events: none;
-             display: none; z-index: 10; max-width: 340px; white-space: pre; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { color: var(--muted); text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); }
-  td { padding: 4px 8px; border-bottom: 1px solid var(--grid); }
+  svg text { fill: #000; font: 10px Arial, Helvetica, sans-serif; }
+  .bar { stroke: #000; stroke-width: 1px; }
+  .bar:hover, rect:hover { opacity: .75; }
+  .tooltip {
+    position: fixed; background: #ffffcc; border: 2px outset #fff; color: #000;
+    padding: 8px 10px; font-size: 12px; pointer-events: none;
+    display: none; z-index: 10; max-width: 340px; white-space: pre;
+    box-shadow: 4px 4px 0 #404040; font-family: Arial, sans-serif;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; background: #fff; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 4px 8px; border: 1px solid #404040; }
+  td { padding: 4px 8px; border: 1px solid #c0c0c0; }
   td.num, th.num { text-align: right; }
-  tr:hover td { background: #22222d; }
-  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+  tr:hover td { background: var(--yellow); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: #000; }
   .legend span::before { content: "■ "; }
-  footer { color: var(--muted); font-size: 11px; margin-top: 24px; }
+  .new {
+    display: inline-block; background: #ff0000; color: var(--yellow); font-weight: bold;
+    font-size: 10px; padding: 1px 6px; transform: rotate(-4deg); margin-left: 8px;
+    animation: blink 1s steps(1) infinite; vertical-align: middle;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  footer {
+    margin-top: 26px; padding-top: 8px; border-top: 3px double #808080;
+    color: var(--muted); font-size: 11px; text-align: center;
+  }
+  .counter { display: inline-flex; gap: 2px; vertical-align: middle; margin: 0 6px; }
+  .counter b {
+    background: #000; color: #0f0; font-family: "Courier New", monospace;
+    padding: 1px 4px; border: 1px inset #fff; font-size: 12px;
+  }
 </style>
 </head>
 <body>
-<h1>Uso de IA — dashboard</h1>
+<div class="banner">
+  <h1>☢ charly analytics — DIVISIÓN DE MÉTRICAS</h1>
+  <div class="tag">informe especial de uso de herramientas de inteligencia artificial</div>
+</div>
+<marquee scrollamount="4">★★★ RESULTADOS TRIMESTRALES AHORA DISPONIBLES ★★★ costo real bajo control gracias a las suscripciones ★★★ el multitasking alcanza niveles récord ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★</marquee>
+<blockquote class="epigraph" style="margin:0 0 16px; padding:8px 12px; border-left:4px double var(--navy); color:#404040; font-style:italic; font-size:12px">
+  Do you feel like a chain store · Practically floored · One of many zeroes · Kicked around bored<br>
+  <span style="font-style:normal">— Blur, "Coffee &amp; TV"</span>
+</blockquote>
 <div class="sub" id="subtitle"></div>
 <div class="tooltip" id="tip"></div>
 
-<h2>Resumen</h2>
+<h2>Resumen ejecutivo<span class="new">¡NUEVO!</span></h2>
 <div class="cards" id="cards"></div>
 
 <h2>Tendencia mensual — interacciones y costo real</h2>
-<div class="panel"><div id="chart-monthly"></div><div class="legend"><span style="color:var(--accent)">interacciones</span><span style="color:var(--accent2)">costo real $</span></div></div>
+<div class="panel"><div id="chart-monthly"></div>
+<div class="figcap"><b>Figura 1.</b> Barras: interacciones por mes. Línea: costo real (suscripciones + pay-per-token). Efecto de escala apreciable a partir del segundo trimestre.</div>
+<div class="legend"><span style="color:var(--accent)">interacciones</span><span style="color:var(--accent2)">costo real $</span></div></div>
 
 <h2>Costo efectivo por mes y herramienta</h2>
-<div class="panel"><div id="chart-tools-cost"></div><div class="legend" id="legend-tools"></div></div>
+<div class="panel"><div id="chart-tools-cost"></div>
+<div class="figcap"><b>Figura 2.</b> Composición mensual del costo efectivo (pay-per-token estimado) por herramienta.</div>
+<div class="legend" id="legend-tools"></div></div>
 
 <h2>Top 20 proyectos</h2>
-<div class="panel"><div id="chart-projects"></div></div>
+<div class="panel"><div id="chart-projects"></div>
+<div class="figcap"><b>Figura 3.</b> Los 20 proyectos con más interacciones del periodo. Pase el ratón para ver costos y vigencia.</div></div>
 
 <h2>Cuándo se usa: día de la semana × hora</h2>
-<div class="panel"><div id="chart-heatmap"></div></div>
+<div class="panel"><div id="chart-heatmap"></div>
+<div class="figcap"><b>Figura 4.</b> Densidad de interacciones por día de la semana y hora local. Zonas claras: el cuerpo humano descansa.</div></div>
 
 <div class="row">
   <div>
     <h2>Top skills</h2>
-    <div class="panel"><div id="chart-skills"></div></div>
+    <div class="panel"><div id="chart-skills"></div>
+    <div class="figcap"><b>Figura 4.</b> Skills más invocadas (usos registrados en sesiones).</div></div>
   </div>
   <div>
     <h2>Top comandos slash</h2>
-    <div class="panel"><div id="chart-commands"></div></div>
+    <div class="panel"><div id="chart-commands"></div>
+    <div class="figcap"><b>Figura 5.</b> Comandos slash más ejecutados. /clear lidera con autoridad.</div></div>
   </div>
 </div>
 
@@ -77,17 +128,23 @@
     <div class="panel"><div id="chart-sessions"></div>
     <div id="sessions-summary" class="sub" style="margin-top:8px"></div>
     <table id="sessions-table" style="margin-top:10px"></table>
+    <div class="figcap"><b>Figura 6.</b> Distribución de largos de sesión (turns) y sesiones más largas.</div>
     </div>
   </div>
   <div>
     <h2>Timeline de herramientas</h2>
-    <div class="panel"><table id="tools-table"></table></div>
+    <div class="panel"><table id="tools-table"></table>
+    <div class="figcap"><b>Tabla 1.</b> Primera y última actividad registrada por herramienta (derivado de agregados mensuales).</div></div>
   </div>
 </div>
 
-<footer id="footer" style="margin-top:24px"></footer>
+<footer id="footer" style="margin-top:24px">
+<hr noshade size="2">
+<div id="footer-text"></div>
+<div style="margin-top:8px">Visitante número <span class="counter" id="hits"></span> · © 1996–2026 Charly Vibes Analytics S.A. · <i>Best viewed in Netscape Navigator 4.0 at 800×600</i> · <b>UNDER CONSTRUCTION</b> 🚧</div>
+</footer>
 <script>
-const D = {"meta": {"start": "2026-01-11", "end": "2026-09-19", "total": 139609, "cost_effective": 3810.64, "cost_real": 379.38, "days": 153, "hours": 819, "projects": 40, "generated": "2026-09-19 10:35"}, "months": [{"label": "ene 26", "interactions": 929, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 929}, "models": {"amp": 929}, "sub_fees": 0}, {"label": "feb 26", "interactions": 719, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 719}, "models": {"amp": 719}, "sub_fees": 0}, {"label": "mar 26", "interactions": 263, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 263}, "models": {"amp": 263}, "sub_fees": 0}, {"label": "abr 26", "interactions": 20675, "cost_effective": 1110.03, "cost_real": 110.0, "input_tokens": 34948263, "output_tokens": 4786696, "tools": {"claude-cli": 13859, "codex": 5738, "gemini-cli": 823, "amp": 253, "copilot": 2}, "models": {"claude-sonnet-4-6": 10737, "gpt-5.4": 5594, "claude-opus-4-6": 3120, "gemini-3-pro-preview": 514, "gemini-3-flash-preview": 259, "amp": 253, "gpt-5.3-codex": 145, "gemini-2.5-pro": 39, "gemini-3.1-pro-preview": 12, "<synthetic>": 2}, "sub_fees": 110.0}, {"label": "may 26", "interactions": 43602, "cost_effective": 2047.25, "cost_real": 161.76, "input_tokens": 33589999, "output_tokens": 10980253, "tools": {"claude-cli": 37449, "codex": 6074, "amp": 43, "gemini-cli": 36}, "models": {"claude-sonnet-4-6": 33014, "gpt-5.4": 3240, "gpt-5.5": 2834, "claude-opus-4-7": 2215, "claude-opus-4-6": 2179, "amp": 43, "<synthetic>": 40, "gemini-3-pro-preview": 19, "gemini-2.5-pro": 17, "claude-3-sonnet-20240229": 1}, "sub_fees": 100.0}, {"label": "jun 26", "interactions": 8276, "cost_effective": 339.98, "cost_real": 24.24, "input_tokens": 7365848, "output_tokens": 5426817, "tools": {"claude-cli": 7849, "openrouter": 332, "codex": 95}, "models": {"claude-sonnet-4-6": 7836, "deepseek/deepseek-v4-flash": 330, "gpt-5.4": 94, "<synthetic>": 13, "moonshotai/kimi-k2": 2, "gpt-5.3-codex": 1}, "sub_fees": 20.0}, {"label": "jul 26", "interactions": 52915, "cost_effective": 276.77, "cost_real": 276.77, "input_tokens": 1095189807, "output_tokens": 20967013, "tools": {"openrouter": 52915}, "models": {"deepseek/deepseek-v4-flash": 48516, "z-ai/glm-5.2": 3940, "anthropic/claude-sonnet-4.6": 353, "google/gemini-2.5-flash": 103, "google/gemini-2.5-pro": 2, "deepseek/deepseek-v4-flash:free": 1}, "sub_fees": 0}, {"label": "ago 26", "interactions": 6043, "cost_effective": 23.0, "cost_real": 23.0, "input_tokens": 37038206, "output_tokens": 2264636, "tools": {"openrouter": 6043}, "models": {"deepseek/deepseek-v4-flash": 5434, "z-ai/glm-5.3-flash": 520, "z-ai/glm-5.2": 89}, "sub_fees": 0}, {"label": "sep 26", "interactions": 6187, "cost_effective": 13.62, "cost_real": 13.62, "input_tokens": 38347185, "output_tokens": 3088845, "tools": {"openrouter": 6187}, "models": {"z-ai/glm-5.3-flash": 6123, "deepseek/deepseek-v4-flash": 64}, "sub_fees": 0}], "projects": [{"name": "charly-dont", "interactions": 17355, "cost_effective": 612.17, "cost_real": 29.42, "first": "2026-04-20", "last": "2026-09-15", "tools": {"claude-cli": 11887, "openrouter": 2998, "codex": 2129, "gemini-cli": 341}}, {"name": "charly-miblioteca", "interactions": 16027, "cost_effective": 946.29, "cost_real": 11.27, "first": "2026-05-06", "last": "2026-06-05", "tools": {"claude-cli": 14764, "codex": 1201, "openrouter": 53, "gemini-cli": 9}}, {"name": "charly-testaruda", "interactions": 10736, "cost_effective": 47.65, "cost_real": 47.65, "first": "2026-07-07", "last": "2026-08-28", "tools": {"openrouter": 10736}}, {"name": "sk-REPLy-jl", "interactions": 9137, "cost_effective": 252.94, "cost_real": 17.04, "first": "2026-04-17", "last": "2026-09-17", "tools": {"claude-cli": 4895, "openrouter": 2866, "codex": 1232, "gemini-cli": 144}}, {"name": "sk-Testimonial-jl", "interactions": 8445, "cost_effective": 49.32, "cost_real": 38.74, "first": "2026-05-06", "last": "2026-09-04", "tools": {"openrouter": 8228, "claude-cli": 217}}, {"name": "charly-pretender", "interactions": 7245, "cost_effective": 195.38, "cost_real": 28.94, "first": "2026-05-06", "last": "2026-08-05", "tools": {"claude-cli": 3633, "openrouter": 2865, "codex": 747}}, {"name": "charly-vampiro", "interactions": 6729, "cost_effective": 27.3, "cost_real": 27.3, "first": "2026-07-28", "last": "2026-08-05", "tools": {"openrouter": 6729}}, {"name": "charly-atril", "interactions": 6442, "cost_effective": 500.85, "cost_real": 0.0, "first": "2026-04-16", "last": "2026-05-13", "tools": {"claude-cli": 5383, "codex": 1020, "gemini-cli": 39}}, {"name": "charly-espectacular", "interactions": 6183, "cost_effective": 170.56, "cost_real": 24.51, "first": "2026-05-12", "last": "2026-09-05", "tools": {"claude-cli": 3423, "openrouter": 2242, "codex": 518}}, {"name": "charly-wai", "interactions": 5832, "cost_effective": 198.46, "cost_real": 15.41, "first": "2026-04-18", "last": "2026-09-17", "tools": {"openrouter": 2983, "claude-cli": 2066, "codex": 719, "gemini-cli": 64}}, {"name": "sk-Tray-jl", "interactions": 5047, "cost_effective": 25.06, "cost_real": 25.06, "first": "2026-07-17", "last": "2026-08-01", "tools": {"openrouter": 5047}}, {"name": "sk-titi", "interactions": 4590, "cost_effective": 24.55, "cost_real": 23.56, "first": "2026-04-22", "last": "2026-08-27", "tools": {"openrouter": 4557, "codex": 33}}, {"name": "charly", "interactions": 3777, "cost_effective": 101.17, "cost_real": 28.93, "first": "2026-04-29", "last": "2026-09-18", "tools": {"openrouter": 2226, "claude-cli": 1402, "codex": 149}}, {"name": "sk-XAct-jl", "interactions": 3606, "cost_effective": 108.81, "cost_real": 5.03, "first": "2026-04-16", "last": "2026-09-04", "tools": {"claude-cli": 1387, "codex": 1253, "openrouter": 859, "gemini-cli": 107}}, {"name": "charly-genesis", "interactions": 3035, "cost_effective": 9.85, "cost_real": 9.85, "first": "2026-07-28", "last": "2026-09-17", "tools": {"openrouter": 3035}}, {"name": "charly-incitaciones", "interactions": 2480, "cost_effective": 27.72, "cost_real": 13.39, "first": "2026-04-14", "last": "2026-09-18", "tools": {"openrouter": 1862, "codex": 407, "claude-cli": 134, "gemini-cli": 76, "copilot": 1}}, {"name": "charly-superficies", "interactions": 2405, "cost_effective": 88.76, "cost_real": 0.0, "first": "2026-05-04", "last": "2026-05-07", "tools": {"claude-cli": 1952, "codex": 451, "gemini-cli": 2}}, {"name": "sk-cositos", "interactions": 2381, "cost_effective": 10.85, "cost_real": 10.85, "first": "2026-07-10", "last": "2026-09-03", "tools": {"openrouter": 2381}}, {"name": "charly/amp-auto", "interactions": 2207, "cost_effective": 0.0, "cost_real": 0.0, "first": "2026-01-11", "last": "2026-05-05", "tools": {"amp": 2207}}, {"name": "sk-clojnder", "interactions": 2079, "cost_effective": 79.27, "cost_real": 0.0, "first": "2026-04-30", "last": "2026-05-04", "tools": {"claude-cli": 1687, "codex": 392}}], "skills": {"rule-of-5-universal": 115, "commit": 75, "issue-review": 38, "rule-of-5": 22, "openspec-proposal": 8, "grill-me": 5, "openspec-archive": 5, "openspec:proposal": 4, "tdd": 4, "resume-handoff": 3, "explore-video": 2, "ui-align": 2}, "commands": {"/clear": 307, "/rule-of-5-universal": 70, "/rate-limit-options": 58, "/new": 34, "/close": 29, "/renew": 24, "/next": 23, "/resume": 17, "/model": 13, "/issue-review": 13, "/commit": 12, "/add-dir": 10}, "heatmap": [[0, 0, 0, 0, 0, 0, 0, 0, 60, 669, 547, 479, 593, 755, 529, 291, 1062, 1258, 673, 1909, 1410, 1312, 929, 1135], [2062, 353, 0, 0, 0, 0, 0, 0, 491, 1409, 2433, 2724, 3490, 3055, 1675, 3923, 4175, 4839, 2540, 1669, 2154, 698, 727, 309], [0, 0, 0, 0, 0, 0, 0, 0, 166, 1219, 1827, 1833, 3222, 3092, 1704, 4209, 5009, 2489, 4128, 4237, 2310, 735, 688, 234], [8, 0, 0, 0, 0, 0, 0, 0, 207, 838, 1097, 846, 1990, 1678, 1475, 2965, 3694, 3447, 2570, 1645, 958, 616, 270, 0], [0, 0, 0, 0, 0, 0, 0, 0, 60, 1252, 1741, 1280, 1102, 1348, 1252, 1798, 2888, 1780, 1553, 1481, 1007, 507, 881, 35], [0, 0, 0, 0, 0, 0, 0, 0, 0, 45, 250, 35, 93, 206, 127, 80, 432, 562, 547, 560, 313, 150, 24, 333], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 177, 37, 50, 214, 274, 144, 61, 109, 458, 298, 121, 10, 0]], "sessions": {"total": 1884, "with_agent": 346, "pct_agent": 18.4, "avg_turns": 26.528662420382165, "length_distribution": {"1-10": 914, "101-300": 94, "11-50": 700, "301-500": 8, "500+": 1, "51-100": 167}, "top_longest": [{"turns": 1001, "msgs": 723, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 480, "msgs": 322, "date": "2026-04-22", "project": "charly-atril"}, {"turns": 398, "msgs": 245, "date": "2026-05-05", "project": "sk-XAct-jl"}, {"turns": 393, "msgs": 248, "date": "2026-04-30", "project": "sk-REPLy-jl"}, {"turns": 360, "msgs": 248, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 354, "msgs": 262, "date": "2026-05-15", "project": "charly-miblioteca"}, {"turns": 336, "msgs": 230, "date": "2026-04-23", "project": "charly-atril"}, {"turns": 326, "msgs": 194, "date": "2026-05-06", "project": "sk-REPLy-jl"}]}, "tools_timeline": [{"tool": "amp", "first": "2026-01", "last": "2026-05", "total": 2207}, {"tool": "claude-cli", "first": "2026-04", "last": "2026-06", "total": 59157}, {"tool": "codex", "first": "2026-04", "last": "2026-06", "total": 11907}, {"tool": "gemini-cli", "first": "2026-04", "last": "2026-05", "total": 859}, {"tool": "copilot", "first": "2026-04", "last": "2026-04", "total": 2}, {"tool": "openrouter", "first": "2026-06", "last": "2026-09", "total": 65477}], "multitasking": {"pct_hours": 54.5, "avg_per_hour": 2.31, "pct_days": 51.6, "max": {"count": 10, "hours": ["2026-07-27 22:00"], "projects": ["charly-dont", "charly-espectacular", "charly-genesis", "charly-incitaciones", "charly-pretender", "charly-testaruda", "charly-vampiro", "charly-wai", "sk-Testimonial-jl", "sk-Tray-jl"]}}};
+const D = {"meta": {"start": "2026-01-11", "end": "2026-09-19", "total": 139609, "cost_effective": 3810.64, "cost_real": 379.38, "days": 153, "hours": 819, "projects": 40, "generated": "2026-09-19 10:41"}, "months": [{"label": "ene 26", "interactions": 929, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 929}, "models": {"amp": 929}, "sub_fees": 0}, {"label": "feb 26", "interactions": 719, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 719}, "models": {"amp": 719}, "sub_fees": 0}, {"label": "mar 26", "interactions": 263, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 263}, "models": {"amp": 263}, "sub_fees": 0}, {"label": "abr 26", "interactions": 20675, "cost_effective": 1110.03, "cost_real": 110.0, "input_tokens": 34948263, "output_tokens": 4786696, "tools": {"claude-cli": 13859, "codex": 5738, "gemini-cli": 823, "amp": 253, "copilot": 2}, "models": {"claude-sonnet-4-6": 10737, "gpt-5.4": 5594, "claude-opus-4-6": 3120, "gemini-3-pro-preview": 514, "gemini-3-flash-preview": 259, "amp": 253, "gpt-5.3-codex": 145, "gemini-2.5-pro": 39, "gemini-3.1-pro-preview": 12, "<synthetic>": 2}, "sub_fees": 110.0}, {"label": "may 26", "interactions": 43602, "cost_effective": 2047.25, "cost_real": 161.76, "input_tokens": 33589999, "output_tokens": 10980253, "tools": {"claude-cli": 37449, "codex": 6074, "amp": 43, "gemini-cli": 36}, "models": {"claude-sonnet-4-6": 33014, "gpt-5.4": 3240, "gpt-5.5": 2834, "claude-opus-4-7": 2215, "claude-opus-4-6": 2179, "amp": 43, "<synthetic>": 40, "gemini-3-pro-preview": 19, "gemini-2.5-pro": 17, "claude-3-sonnet-20240229": 1}, "sub_fees": 100.0}, {"label": "jun 26", "interactions": 8276, "cost_effective": 339.98, "cost_real": 24.24, "input_tokens": 7365848, "output_tokens": 5426817, "tools": {"claude-cli": 7849, "openrouter": 332, "codex": 95}, "models": {"claude-sonnet-4-6": 7836, "deepseek/deepseek-v4-flash": 330, "gpt-5.4": 94, "<synthetic>": 13, "moonshotai/kimi-k2": 2, "gpt-5.3-codex": 1}, "sub_fees": 20.0}, {"label": "jul 26", "interactions": 52915, "cost_effective": 276.77, "cost_real": 276.77, "input_tokens": 1095189807, "output_tokens": 20967013, "tools": {"openrouter": 52915}, "models": {"deepseek/deepseek-v4-flash": 48516, "z-ai/glm-5.2": 3940, "anthropic/claude-sonnet-4.6": 353, "google/gemini-2.5-flash": 103, "google/gemini-2.5-pro": 2, "deepseek/deepseek-v4-flash:free": 1}, "sub_fees": 0}, {"label": "ago 26", "interactions": 6043, "cost_effective": 23.0, "cost_real": 23.0, "input_tokens": 37038206, "output_tokens": 2264636, "tools": {"openrouter": 6043}, "models": {"deepseek/deepseek-v4-flash": 5434, "z-ai/glm-5.3-flash": 520, "z-ai/glm-5.2": 89}, "sub_fees": 0}, {"label": "sep 26", "interactions": 6187, "cost_effective": 13.62, "cost_real": 13.62, "input_tokens": 38347185, "output_tokens": 3088845, "tools": {"openrouter": 6187}, "models": {"z-ai/glm-5.3-flash": 6123, "deepseek/deepseek-v4-flash": 64}, "sub_fees": 0}], "projects": [{"name": "charly-dont", "interactions": 17355, "cost_effective": 612.17, "cost_real": 29.42, "first": "2026-04-20", "last": "2026-09-15", "tools": {"claude-cli": 11887, "openrouter": 2998, "codex": 2129, "gemini-cli": 341}}, {"name": "charly-miblioteca", "interactions": 16027, "cost_effective": 946.29, "cost_real": 11.27, "first": "2026-05-06", "last": "2026-06-05", "tools": {"claude-cli": 14764, "codex": 1201, "openrouter": 53, "gemini-cli": 9}}, {"name": "charly-testaruda", "interactions": 10736, "cost_effective": 47.65, "cost_real": 47.65, "first": "2026-07-07", "last": "2026-08-28", "tools": {"openrouter": 10736}}, {"name": "sk-REPLy-jl", "interactions": 9137, "cost_effective": 252.94, "cost_real": 17.04, "first": "2026-04-17", "last": "2026-09-17", "tools": {"claude-cli": 4895, "openrouter": 2866, "codex": 1232, "gemini-cli": 144}}, {"name": "sk-Testimonial-jl", "interactions": 8445, "cost_effective": 49.32, "cost_real": 38.74, "first": "2026-05-06", "last": "2026-09-04", "tools": {"openrouter": 8228, "claude-cli": 217}}, {"name": "charly-pretender", "interactions": 7245, "cost_effective": 195.38, "cost_real": 28.94, "first": "2026-05-06", "last": "2026-08-05", "tools": {"claude-cli": 3633, "openrouter": 2865, "codex": 747}}, {"name": "charly-vampiro", "interactions": 6729, "cost_effective": 27.3, "cost_real": 27.3, "first": "2026-07-28", "last": "2026-08-05", "tools": {"openrouter": 6729}}, {"name": "charly-atril", "interactions": 6442, "cost_effective": 500.85, "cost_real": 0.0, "first": "2026-04-16", "last": "2026-05-13", "tools": {"claude-cli": 5383, "codex": 1020, "gemini-cli": 39}}, {"name": "charly-espectacular", "interactions": 6183, "cost_effective": 170.56, "cost_real": 24.51, "first": "2026-05-12", "last": "2026-09-05", "tools": {"claude-cli": 3423, "openrouter": 2242, "codex": 518}}, {"name": "charly-wai", "interactions": 5832, "cost_effective": 198.46, "cost_real": 15.41, "first": "2026-04-18", "last": "2026-09-17", "tools": {"openrouter": 2983, "claude-cli": 2066, "codex": 719, "gemini-cli": 64}}, {"name": "sk-Tray-jl", "interactions": 5047, "cost_effective": 25.06, "cost_real": 25.06, "first": "2026-07-17", "last": "2026-08-01", "tools": {"openrouter": 5047}}, {"name": "sk-titi", "interactions": 4590, "cost_effective": 24.55, "cost_real": 23.56, "first": "2026-04-22", "last": "2026-08-27", "tools": {"openrouter": 4557, "codex": 33}}, {"name": "charly", "interactions": 3777, "cost_effective": 101.17, "cost_real": 28.93, "first": "2026-04-29", "last": "2026-09-18", "tools": {"openrouter": 2226, "claude-cli": 1402, "codex": 149}}, {"name": "sk-XAct-jl", "interactions": 3606, "cost_effective": 108.81, "cost_real": 5.03, "first": "2026-04-16", "last": "2026-09-04", "tools": {"claude-cli": 1387, "codex": 1253, "openrouter": 859, "gemini-cli": 107}}, {"name": "charly-genesis", "interactions": 3035, "cost_effective": 9.85, "cost_real": 9.85, "first": "2026-07-28", "last": "2026-09-17", "tools": {"openrouter": 3035}}, {"name": "charly-incitaciones", "interactions": 2480, "cost_effective": 27.72, "cost_real": 13.39, "first": "2026-04-14", "last": "2026-09-18", "tools": {"openrouter": 1862, "codex": 407, "claude-cli": 134, "gemini-cli": 76, "copilot": 1}}, {"name": "charly-superficies", "interactions": 2405, "cost_effective": 88.76, "cost_real": 0.0, "first": "2026-05-04", "last": "2026-05-07", "tools": {"claude-cli": 1952, "codex": 451, "gemini-cli": 2}}, {"name": "sk-cositos", "interactions": 2381, "cost_effective": 10.85, "cost_real": 10.85, "first": "2026-07-10", "last": "2026-09-03", "tools": {"openrouter": 2381}}, {"name": "charly/amp-auto", "interactions": 2207, "cost_effective": 0.0, "cost_real": 0.0, "first": "2026-01-11", "last": "2026-05-05", "tools": {"amp": 2207}}, {"name": "sk-clojnder", "interactions": 2079, "cost_effective": 79.27, "cost_real": 0.0, "first": "2026-04-30", "last": "2026-05-04", "tools": {"claude-cli": 1687, "codex": 392}}], "skills": {"rule-of-5-universal": 115, "commit": 75, "issue-review": 38, "rule-of-5": 22, "openspec-proposal": 8, "grill-me": 5, "openspec-archive": 5, "openspec:proposal": 4, "tdd": 4, "resume-handoff": 3, "explore-video": 2, "ui-align": 2}, "commands": {"/clear": 307, "/rule-of-5-universal": 70, "/rate-limit-options": 58, "/new": 34, "/close": 29, "/renew": 24, "/next": 23, "/resume": 17, "/model": 13, "/issue-review": 13, "/commit": 12, "/add-dir": 10}, "heatmap": [[0, 0, 0, 0, 0, 0, 0, 0, 60, 669, 547, 479, 593, 755, 529, 291, 1062, 1258, 673, 1909, 1410, 1312, 929, 1135], [2062, 353, 0, 0, 0, 0, 0, 0, 491, 1409, 2433, 2724, 3490, 3055, 1675, 3923, 4175, 4839, 2540, 1669, 2154, 698, 727, 309], [0, 0, 0, 0, 0, 0, 0, 0, 166, 1219, 1827, 1833, 3222, 3092, 1704, 4209, 5009, 2489, 4128, 4237, 2310, 735, 688, 234], [8, 0, 0, 0, 0, 0, 0, 0, 207, 838, 1097, 846, 1990, 1678, 1475, 2965, 3694, 3447, 2570, 1645, 958, 616, 270, 0], [0, 0, 0, 0, 0, 0, 0, 0, 60, 1252, 1741, 1280, 1102, 1348, 1252, 1798, 2888, 1780, 1553, 1481, 1007, 507, 881, 35], [0, 0, 0, 0, 0, 0, 0, 0, 0, 45, 250, 35, 93, 206, 127, 80, 432, 562, 547, 560, 313, 150, 24, 333], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 177, 37, 50, 214, 274, 144, 61, 109, 458, 298, 121, 10, 0]], "sessions": {"total": 1884, "with_agent": 346, "pct_agent": 18.4, "avg_turns": 26.528662420382165, "length_distribution": {"1-10": 914, "101-300": 94, "11-50": 700, "301-500": 8, "500+": 1, "51-100": 167}, "top_longest": [{"turns": 1001, "msgs": 723, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 480, "msgs": 322, "date": "2026-04-22", "project": "charly-atril"}, {"turns": 398, "msgs": 245, "date": "2026-05-05", "project": "sk-XAct-jl"}, {"turns": 393, "msgs": 248, "date": "2026-04-30", "project": "sk-REPLy-jl"}, {"turns": 360, "msgs": 248, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 354, "msgs": 262, "date": "2026-05-15", "project": "charly-miblioteca"}, {"turns": 336, "msgs": 230, "date": "2026-04-23", "project": "charly-atril"}, {"turns": 326, "msgs": 194, "date": "2026-05-06", "project": "sk-REPLy-jl"}]}, "tools_timeline": [{"tool": "amp", "first": "2026-01", "last": "2026-05", "total": 2207}, {"tool": "claude-cli", "first": "2026-04", "last": "2026-06", "total": 59157}, {"tool": "codex", "first": "2026-04", "last": "2026-06", "total": 11907}, {"tool": "gemini-cli", "first": "2026-04", "last": "2026-05", "total": 859}, {"tool": "copilot", "first": "2026-04", "last": "2026-04", "total": 2}, {"tool": "openrouter", "first": "2026-06", "last": "2026-09", "total": 65477}], "multitasking": {"pct_hours": 54.5, "avg_per_hour": 2.31, "pct_days": 51.6, "max": {"count": 10, "hours": ["2026-07-27 22:00"], "projects": ["charly-dont", "charly-espectacular", "charly-genesis", "charly-incitaciones", "charly-pretender", "charly-testaruda", "charly-vampiro", "charly-wai", "sk-Testimonial-jl", "sk-Tray-jl"]}}};
 
 // ---------- helpers ----------
 const tip = document.getElementById('tip');
@@ -213,7 +270,7 @@ const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1000 ? Math.round(n
 // ---------- chart 2: costo efectivo apilado por herramienta ----------
 {
   const tools = [...new Set(D.months.flatMap(d => Object.keys(d.tools)))];
-  const COLORS = ['#ff9f43', '#4fc3f7', '#66bb6a', '#ab47bc', '#ef5350', '#ffa726', '#26a69a', '#ec407a'];
+  const COLORS = ['#800000', '#000080', '#008080', '#808000', '#800080', '#ff8000', '#008000', '#404040'];
   const W = 800, H = 240, padL = 60, padR = 20, padT = 20, padB = 34;
   const svg = svgEl(W, H);
   const data = D.months, n = data.length;
@@ -285,12 +342,12 @@ const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1000 ? Math.round(n
       const x = padL + hi * cell, y = padT + di * cell;
       const inten = v / maxV;
       const r = rect(svg, x + 1, y + 1, cell - 2, cell - 2,
-        inten === 0 ? 'var(--grid)' : `rgba(255,159,67,${0.12 + 0.88 * Math.pow(inten, 0.5)})`);
+        inten === 0 ? 'var(--grid)' : `rgba(0,0,128,${0.1 + 0.9 * Math.pow(inten, 0.5)})`);
       r.addEventListener('mousemove', e => showTip(e,
         `${dowNames[di]} ${String(hi).padStart(2, '0')}:00\n${fmtInt(v)} interacciones`));
       r.addEventListener('mouseleave', hideTip);
       if (v > 0 && inten > 0.25) text(svg, x + cell / 2, y + cell / 2 + 3,
-        v >= 1000 ? Math.round(v / 1000) + 'k' : v, 8, 'middle', '#16161d');
+        v >= 1000 ? Math.round(v / 1000) + 'k' : v, 8, 'middle', '#ffff00');
     });
   });
   text(svg, padL, H - 6, 'día de la semana (lun→dom) × hora local', 9);
@@ -358,8 +415,13 @@ hbars('chart-commands', D.commands, 'var(--accent)');
     ).join('');
 }
 
-document.getElementById('footer').textContent =
+document.getElementById('footer-text').textContent =
   `generado ${D.meta.generated} · scripts/viz-dashboard.py · datos solo-charly`;
+{
+  const hits = String(1 + D.meta.total).padStart(7, '0').split('');
+  document.getElementById('hits').innerHTML =
+    hits.map(d => `<b>${d}</b>`).join('');
+}
 </script>
 </body>
 </html>

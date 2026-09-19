@@ -23,47 +23,63 @@ TEMPLATE = """<!DOCTYPE html>
 <meta charset="utf-8">
 <title>Multitasking — actividad por proyecto/día</title>
 <style>
+  /* ======== Corporate Infographics™ 1996 ======== */
   :root {
-    --bg: #16161d; --fg: #d8d8e0; --muted: #7a7a8a;
-    --accent: #ff9f43; --grid: #23232e;
+    --bg: #c0c0c0; --fg: #000000; --muted: #404040;
+    --accent: #000080; --grid: #c0c0c0; --navy: #000080; --yellow: #ffff00;
   }
   * { box-sizing: border-box; }
   body {
-    margin: 0; padding: 24px; background: var(--bg); color: var(--fg);
-    font: 13px/1.5 ui-monospace, "JetBrains Mono", Menlo, monospace;
+    margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
+    font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif;
   }
-  h1 { font-size: 18px; margin: 0 0 4px; }
-  .sub { color: var(--muted); margin-bottom: 16px; }
+  .banner {
+    background: var(--navy); color: #fff; padding: 10px 14px;
+    border: 2px outset #fff; margin-bottom: 10px;
+  }
+  .banner h1 { font-size: 20px; margin: 0; font-weight: bold; letter-spacing: 1px; }
+  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
+  marquee { background: var(--yellow); color: #000; border: 2px inset #fff;
+            font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 14px; }
+  .sub { color: var(--muted); margin-bottom: 16px; font-size: 12px; }
   .controls { margin-bottom: 12px; display: flex; gap: 8px; align-items: center; }
   .controls button {
-    background: transparent; color: var(--muted); border: 1px solid var(--grid);
-    padding: 4px 12px; cursor: pointer; font: inherit; border-radius: 3px;
+    background: #c0c0c0; color: #000; border: 2px outset #fff;
+    padding: 4px 14px; cursor: pointer; font: bold 12px Arial, sans-serif;
   }
-  .controls button.on { color: var(--bg); background: var(--accent); border-color: var(--accent); }
-  #legend { margin-left: auto; color: var(--muted); display: flex; gap: 4px; align-items: center; }
-  #legend .sw { width: 22px; height: 12px; display: inline-block; border-radius: 2px; }
-  .wrap { overflow-x: auto; }
+  .controls button:active { border-style: inset; }
+  .controls button.on { background: var(--navy); color: #fff; border-style: inset; }
+  #legend { margin-left: auto; color: #000; display: flex; gap: 4px; align-items: center; font-size: 11px; }
+  #legend .sw { width: 22px; height: 12px; display: inline-block; border: 1px solid #000; }
+  .wrap { overflow-x: auto; background: #fff; border: 2px inset #fff; padding: 10px; }
   .grid { display: grid; position: relative; }
-  .cell { width: 14px; height: 18px; border-radius: 2px; }
+  .cell { width: 14px; height: 18px; }
   .label {
-    position: sticky; left: 0; z-index: 2; background: var(--bg);
+    position: sticky; left: 0; z-index: 2; background: #fff;
     padding-right: 8px; white-space: nowrap; text-align: right;
     font-size: 12px; overflow: hidden; text-overflow: ellipsis; max-width: 190px;
+    border-bottom: 1px solid #e0e0e0;
   }
   .rowhead { height: 22px; }
-  .weekend { background: rgba(255,255,255,0.035); }
-  .monthtick { font-size: 10px; color: var(--muted); white-space: nowrap; overflow: visible; }
+  .weekend { background: #e8e8e8; }
+  .monthtick { font-size: 10px; color: #000; white-space: nowrap; overflow: visible; font-weight: bold; }
   #tip {
     position: fixed; display: none; pointer-events: none; z-index: 10;
-    background: #26262f; border: 1px solid #3a3a48; padding: 8px 10px;
-    border-radius: 4px; font-size: 12px; max-width: 340px; box-shadow: 0 4px 14px rgba(0,0,0,.5);
+    background: #ffffcc; border: 2px outset #fff; padding: 8px 10px;
+    font-size: 12px; max-width: 340px; box-shadow: 4px 4px 0 #404040;
   }
-  #tip b { color: var(--accent); }
+  #tip b { color: var(--navy); }
   #tip .o { color: var(--muted); }
+  footer { margin-top: 20px; font-size: 11px; color: var(--muted); text-align: center; }
+  footer i { font-weight: bold; }
 </style>
 </head>
 <body>
-<h1>Multitasking — trabajo concurrente por proyecto</h1>
+<div class="banner">
+  <h1>☢ charly analytics — GRÁFICO DE GANTT MULTITASKING</h1>
+  <div class="tag">anexo estadístico · actividad concurrente por proyecto y día</div>
+</div>
+<marquee scrollamount="4">★★★ NUEVO: modo activo/inactivo ★★★ hasta 12 proyectos simultáneos registrados en una sola hora ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★</marquee>
 <div class="sub">__SUB__</div>
 <div class="controls">
   <button id="b-int" class="on">interacciones</button>
@@ -72,6 +88,7 @@ TEMPLATE = """<!DOCTYPE html>
 </div>
 <div class="wrap"><div id="grid" class="grid"></div><div id="empty" style="display:none;color:var(--muted)">Sin datos: ejecuta primero <code>python scripts/usage-tracker.py</code></div></div>
 <div id="tip"></div>
+<footer><hr noshade size="2">© 1996–2026 Charly Vibes Analytics S.A. · <i>Best viewed in Netscape Navigator 4.0 at 800×600</i> · 🚧 UNDER CONSTRUCTION 🚧</footer>
 <script>
 const DATA = __DATA__;
 const days = DATA.days, projects = Object.keys(DATA.matrix), M = DATA.matrix;
@@ -99,13 +116,13 @@ const logMax = Math.log(1 + maxCount);
 function colorInt(v) {
   if (!v) return 'transparent';
   const t = Math.log(1 + v) / logMax;
-  return `rgba(255,159,67,${0.15 + 0.85 * Math.pow(t, 0.7)})`;
+  return `rgba(0,0,128,${0.15 + 0.85 * Math.pow(t, 0.7)})`;
 }
-function colorBin(v) { return v ? 'rgba(255,159,67,0.85)' : 'transparent'; }
+function colorBin(v) { return v ? 'rgba(128,0,0,0.9)' : 'transparent'; }
 const color = v => mode === 'int' ? colorInt(v) : colorBin(v);
 const legendHTML = m => m === 'int'
-  ? 'menos ' + [0.2, 0.45, 0.7, 0.95].map(a => `<span class="sw" style="background:rgba(255,159,67,${a})"></span>`).join('') + ' más'
-  : '<span class="sw" style="background:rgba(255,159,67,0.85)"></span> activo';
+  ? 'menos ' + [0.2, 0.45, 0.7, 0.95].map(a => `<span class="sw" style="background:rgba(0,0,128,${a})"></span>`).join('') + ' más'
+  : '<span class="sw" style="background:rgba(128,0,0,0.9)"></span> activo';
 
 function fmt(n) { return n.toLocaleString('es'); }
 function dateEs(d) { return new Date(d + 'T00:00').toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }); }
@@ -123,7 +140,7 @@ html.push(`<div class="label" title="concurrencia diaria: proyectos distintos ac
 for (let i = 0; i < NCOL; i++) {
   const { nproj } = dayInfo[i];
   const t = nproj ? 0.15 + 0.85 * Math.min(1, nproj / 12) : 0;
-  html.push(`<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-day="${i}" data-conc="1" style="background:${nproj ? `rgba(120,180,255,${t})` : 'transparent'}"></div>`);
+  html.push(`<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-day="${i}" data-conc="1" style="background:${nproj ? `rgba(0,128,128,${t})` : 'transparent'}"></div>`);
 }
 // filas por proyecto
 for (const p of projects) {
