@@ -1,0 +1,92 @@
+{
+  "language": "es",
+  "retro": {
+    "enabled": true
+  },
+  "taxonomy": {
+    "fallback": "Unclassified",
+    "rules": [
+      {"match": "^charly[/-]", "category": "charly"},
+      {"match": "^sk-", "category": "sk"}
+    ],
+    "overrides": {}
+  },
+  "subscriptions": {
+    "claude-cli": [
+      {"start": "2026-03-19", "end": "2026-04-19", "label": "Pro $20/mes", "monthly_fee": 20},
+      {"start": "2026-04-19", "end": "2026-06-19", "label": "Max $100/mes", "monthly_fee": 100},
+      {"start": "2026-06-19", "end": null, "label": "Pro $20/mes", "monthly_fee": 20}
+    ],
+    "codex": [
+      {"start": "2026-04-01", "end": "2026-05-15", "label": "Subscripción", "monthly_fee": 10},
+      {"start": "2026-05-15", "end": null, "label": "Pay-per-token", "monthly_fee": 0}
+    ]
+  },
+  "model_pricing": {
+    "default_rates": {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003},
+    "cache_write_factor": 1.25,
+    "versions": [
+      {
+        "effective": "2026-01-01",
+        "rates": {
+          "claude": {
+            "opus-4.7":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+            "opus-4.6":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+            "opus-4.5":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
+            "sonnet-4.6": {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003},
+            "haiku":      {"input": 0.00000025, "output": 0.00000125, "cache_read": 0.000000025},
+            "synthetic":  {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
+          },
+          "codex": {
+            "gpt-5.5": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010},
+            "gpt-5.4": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010},
+            "gpt-5.3": {"input": 0.000010, "output": 0.000040, "cache_read": 0.0000010}
+          },
+          "gemini": {
+            "gemini-3.1":   {"input": 0.00000125, "output": 0.000005, "cache_read": 0.0000000625},
+            "gemini-3-pro": {"input": 0.00000125, "output": 0.000005, "cache_read": 0.0000000625},
+            "gemini-2.5":   {"input": 0.000000625, "output": 0.0000025, "cache_read": 0.00000003125}
+          },
+          "deepseek": {
+            "v4-flash": {"input": 0.0000003, "output": 0.0000012, "cache_read": 0.00000003}
+          },
+          "kimi": {
+            "k2": {"input": 0.000002, "output": 0.000008, "cache_read": 0.0000002}
+          }
+        }
+      }
+    ]
+  },
+  "budgets": {
+    "$comment": "Montos provisionales pendientes de decisión de Sasha; effective_monthly es informativo (soft), el presupuesto activo es cash_monthly (design.md OQ-1).",
+    "start_month": "2026-04",
+    "cash_monthly": 100.0,
+    "effective_monthly": 200.0,
+    "target_per_1k": 3.0
+  },
+  "alert_thresholds": {
+    "plan_usage_multiple": 25,
+    "reconcile_tolerance_pct": 10,
+    "unit_cost_rise_pct": 15,
+    "premium_share_rise_pts": 5,
+    "concentration_top3_pct": 50,
+    "staleness_days": 14
+  },
+  "premium_models": ["opus"],
+  "working_hours": {
+    "days": [1, 2, 3, 4, 5],
+    "start": "09:00",
+    "end": "18:00"
+  },
+  "lifecycle": {
+    "new_days": 30,
+    "dormant_days": 30
+  },
+  "ctas": {
+    "primary": {"label": "Leer la serie", "target": "https://github.com/charly-vibes/coffe"},
+    "secondary": [
+      {"label": "Gantt multitasking", "target": "data/gantt-multitasking.html"},
+      {"label": "Reporte de datos", "target": "data/usage_report_v3.json"}
+    ]
+  }
+}

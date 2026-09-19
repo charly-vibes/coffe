@@ -1,17 +1,17 @@
 ## 0. Config y esquema (tickets bd de fase 0)
 
-- [ ] 0.1 Crear `config/fpa.json` con taxonomía de proyectos (FPA-018), calendario
+- [x] 0.1 Crear `config/fpa.json` con taxonomía de proyectos (FPA-018), calendario
       de suscripciones fechado con default Pro Mar-19 / Max Abr-19 / Pro Jun-19
       (FPA-015), pricing versionado por fecha efectiva (FPA-016)
-- [ ] 0.2 Añadir al config: presupuestos mensuales (cash, efectivo, objetivo por
+- [x] 0.2 Añadir al config: presupuestos mensuales (cash, efectivo, objetivo por
       1k interacciones) con mes de inicio (FPA-050/051), umbrales de alertas con
       defaults de la spec (FPA-088), modelos premium (default: Opus, FPA-037),
       horarios laborales (FPA-111), días de dormancia/novedad (FPA-122),
       CTAs con targets (FPA-168), idioma (FPA-162), retro opcional (FPA-178)
-- [ ] 0.3 Extender `specs/usage-report-v3.schema.json` en sitio (versionar a v4
+- [x] 0.3 Extender `specs/usage-report-v3.schema.json` en sitio (versionar a v4
       solo si un campo cambia de significado, no si solo se añade) para las
       emisiones nuevas del tracker; mantener `--validate` verde
-- [ ] 0.4 Open questions 1–7 resueltas (2026-09-20, ver design.md): budget
+- [x] 0.4 Open questions 1–7 resueltas (2026-09-20, ver design.md): budget
       efectivo informativo, sin pay-per-token real (campo assumed/cero), taxonomía
       inferida de repos con overrides, horarios default Mon–Fri 9–18, retro
       conservado (FPA-178 completo), CTAs a rutas relativas publicadas, idioma es

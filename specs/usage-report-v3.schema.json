@@ -28,6 +28,28 @@
         "cost_total_real": {"type": "number"},
         "subscription_fees": {"type": "number"},
         "token_accounting": {"type": "string"},
+        "timezone": {
+          "description": "FPA-142: TZ usada para bucketing horario/diario; ausente => vistas hora/día unverified",
+          "type": ["string", "null"]
+        },
+        "interaction_kinds": {
+          "description": "FPA-140: interacciones por kind (user prompts, assistant turns, tool calls)",
+          "type": "object",
+          "properties": {
+            "user_prompt": {"type": "integer", "minimum": 0},
+            "assistant_turn": {"type": "integer", "minimum": 0},
+            "tool_call": {"type": "integer", "minimum": 0}
+          }
+        },
+        "filtered": {
+          "description": "FPA-141: interacciones y coste de los proyectos excluidos por el charly-filter",
+          "type": "object",
+          "required": ["interactions", "cost_effective"],
+          "properties": {
+            "interactions": {"type": "integer", "minimum": 0},
+            "cost_effective": {"type": "number"}
+          }
+        },
         "total_hours": {"type": "integer", "minimum": 0},
         "total_days": {"type": "integer", "minimum": 0},
         "total_months": {"type": "integer", "minimum": 0},
@@ -150,6 +172,15 @@
         }
       }
     },
+    "concurrency": {
+      "description": "FPA-120: (a) proyectos distintos por hora (en hourlyBucket.projects_active), (b) pico de sesiones simultáneas, (c) project switches por hora activa",
+      "type": "object",
+      "properties": {
+        "peak_simultaneous_sessions": {"type": ["integer", "null"], "minimum": 0},
+        "switches_per_active_hour": {"type": ["number", "null"]},
+        "description": {"type": "string"}
+      }
+    },
     "subscription_config": {"type": "object"},
     "subscription_fees_by_month": {
       "type": "object",
@@ -176,7 +207,48 @@
       "allOf": [{"$ref": "#/definitions/simpleBucket"}],
       "required": ["subscription_fees"],
       "properties": {
-        "subscription_fees": {"type": "number"}
+        "subscription_fees": {"type": "number"},
+        "tokens_by_model": {
+          "description": "FPA-019: tokens input/output/cache-read/cache-write por mes y modelo",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": ["in", "out", "cache_read", "cache_write"],
+              "properties": {
+                "in": {"type": "integer", "minimum": 0},
+                "out": {"type": "integer", "minimum": 0},
+                "cache_read": {"type": "integer", "minimum": 0},
+                "cache_write": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        },
+        "pay_per_token_charges": {
+          "description": "FPA-013: cargas pay-per-token reales, separadas de la suscripción; el tracker no las registra => null o cero, provenance assumed",
+          "type": ["number", "null"]
+        },
+        "interaction_kinds": {
+          "description": "FPA-140: interacciones por kind en el mes",
+          "type": "object",
+          "properties": {
+            "user_prompt": {"type": "integer", "minimum": 0},
+            "assistant_turn": {"type": "integer", "minimum": 0},
+            "tool_call": {"type": "integer", "minimum": 0}
+          }
+        },
+        "outcomes_by_project": {
+          "description": "FPA-014: commits y releases por proyecto del mes (donde haya token de GitHub)",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "commits": {"type": "integer", "minimum": 0},
+              "releases": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
       }
     },
     "hourlyBucket": {
