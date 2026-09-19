@@ -1,0 +1,11 @@
+# Lefthook — git hooks manager
+# Instalar: `lefthook install` (una vez por clone)
+# Ejecutar manualmente: `lefthook run pre-commit`
+
+pre-commit:
+  commands:
+    typos:
+      run: typos {staged_files}
+    vale:
+      glob: "*.md"
+      run: vale {staged_files}

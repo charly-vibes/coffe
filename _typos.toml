@@ -1,0 +1,23 @@
+# typos (crate-ci) — config
+# `coffe` es el nombre del repo (intencional). El resto son palabras
+# válidas en español que colisionan con el diccionario inglés de typos;
+# self-mapearlas evita falsos positivos sin excluir archivos.
+
+[default.extend-words]
+"coffe" = "coffe"
+"serie" = "serie"
+"dependencias" = "dependencias"
+"reportes" = "reportes"
+"Reportes" = "Reportes"
+"comandos" = "comandos"
+"Comandos" = "Comandos"
+"Comando" = "Comando"
+"dominantes" = "dominantes"
+"requiere" = "requiere"
+"principales" = "principales"
+"posible" = "posible"
+"Posible" = "Posible"
+"patrones" = "patrones"
+"configurables" = "configurables"
+"autor" = "autor"
+"historial" = "historial"
