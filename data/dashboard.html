@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Uso de IA — dashboard</title>
+<style>
+  :root {
+    --bg: #16161d; --panel: #1c1c25; --fg: #d8d8e0; --muted: #7a7a8a;
+    --accent: #ff9f43; --accent2: #4fc3f7; --grid: #23232e; --good: #66bb6a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px; background: var(--bg); color: var(--fg);
+    font: 13px/1.5 ui-monospace, "JetBrains Mono", Menlo, monospace;
+  }
+  h1 { font-size: 18px; margin: 0 0 2px; }
+  h2 { font-size: 13px; color: var(--muted); margin: 28px 0 10px;
+       text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid var(--grid); padding-bottom: 6px; }
+  .sub { color: var(--muted); margin-bottom: 20px; font-size: 12px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .card { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 12px 14px; }
+  .card .v { font-size: 20px; color: var(--accent); }
+  .card .l { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .row { grid-template-columns: 1fr; } }
+  .panel { background: var(--panel); border: 1px solid var(--grid); border-radius: 6px; padding: 14px; }
+  svg { display: block; width: 100%; height: auto; }
+  svg text { fill: var(--muted); font: 10px ui-monospace, monospace; }
+  .bar:hover { opacity: .8; }
+  .tooltip { position: fixed; background: #26262f; border: 1px solid var(--grid); color: var(--fg);
+             padding: 8px 10px; border-radius: 4px; font-size: 12px; pointer-events: none;
+             display: none; z-index: 10; max-width: 340px; white-space: pre; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { color: var(--muted); text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--grid); }
+  td { padding: 4px 8px; border-bottom: 1px solid var(--grid); }
+  td.num, th.num { text-align: right; }
+  tr:hover td { background: #22222d; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+  .legend span::before { content: "■ "; }
+  footer { color: var(--muted); font-size: 11px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<h1>Uso de IA — dashboard</h1>
+<div class="sub" id="subtitle"></div>
+<div class="tooltip" id="tip"></div>
+
+<h2>Resumen</h2>
+<div class="cards" id="cards"></div>
+
+<h2>Tendencia mensual — interacciones y costo real</h2>
+<div class="panel"><div id="chart-monthly"></div><div class="legend"><span style="color:var(--accent)">interacciones</span><span style="color:var(--accent2)">costo real $</span></div></div>
+
+<h2>Costo efectivo por mes y herramienta</h2>
+<div class="panel"><div id="chart-tools-cost"></div><div class="legend" id="legend-tools"></div></div>
+
+<h2>Top 20 proyectos</h2>
+<div class="panel"><div id="chart-projects"></div></div>
+
+<h2>Cuándo se usa: día de la semana × hora</h2>
+<div class="panel"><div id="chart-heatmap"></div></div>
+
+<div class="row">
+  <div>
+    <h2>Top skills</h2>
+    <div class="panel"><div id="chart-skills"></div></div>
+  </div>
+  <div>
+    <h2>Top comandos slash</h2>
+    <div class="panel"><div id="chart-commands"></div></div>
+  </div>
+</div>
+
+<div class="row">
+  <div>
+    <h2>Sesiones</h2>
+    <div class="panel"><div id="chart-sessions"></div>
+    <div id="sessions-summary" class="sub" style="margin-top:8px"></div>
+    <table id="sessions-table" style="margin-top:10px"></table>
+    </div>
+  </div>
+  <div>
+    <h2>Timeline de herramientas</h2>
+    <div class="panel"><table id="tools-table"></table></div>
+  </div>
+</div>
+
+<footer id="footer" style="margin-top:24px"></footer>
+<script>
+const D = {"meta": {"start": "2026-01-11", "end": "2026-09-19", "total": 139609, "cost_effective": 3810.64, "cost_real": 379.38, "days": 153, "hours": 819, "projects": 40, "generated": "2026-09-19 10:35"}, "months": [{"label": "ene 26", "interactions": 929, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 929}, "models": {"amp": 929}, "sub_fees": 0}, {"label": "feb 26", "interactions": 719, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 719}, "models": {"amp": 719}, "sub_fees": 0}, {"label": "mar 26", "interactions": 263, "cost_effective": 0.0, "cost_real": 0.0, "input_tokens": 0, "output_tokens": 0, "tools": {"amp": 263}, "models": {"amp": 263}, "sub_fees": 0}, {"label": "abr 26", "interactions": 20675, "cost_effective": 1110.03, "cost_real": 110.0, "input_tokens": 34948263, "output_tokens": 4786696, "tools": {"claude-cli": 13859, "codex": 5738, "gemini-cli": 823, "amp": 253, "copilot": 2}, "models": {"claude-sonnet-4-6": 10737, "gpt-5.4": 5594, "claude-opus-4-6": 3120, "gemini-3-pro-preview": 514, "gemini-3-flash-preview": 259, "amp": 253, "gpt-5.3-codex": 145, "gemini-2.5-pro": 39, "gemini-3.1-pro-preview": 12, "<synthetic>": 2}, "sub_fees": 110.0}, {"label": "may 26", "interactions": 43602, "cost_effective": 2047.25, "cost_real": 161.76, "input_tokens": 33589999, "output_tokens": 10980253, "tools": {"claude-cli": 37449, "codex": 6074, "amp": 43, "gemini-cli": 36}, "models": {"claude-sonnet-4-6": 33014, "gpt-5.4": 3240, "gpt-5.5": 2834, "claude-opus-4-7": 2215, "claude-opus-4-6": 2179, "amp": 43, "<synthetic>": 40, "gemini-3-pro-preview": 19, "gemini-2.5-pro": 17, "claude-3-sonnet-20240229": 1}, "sub_fees": 100.0}, {"label": "jun 26", "interactions": 8276, "cost_effective": 339.98, "cost_real": 24.24, "input_tokens": 7365848, "output_tokens": 5426817, "tools": {"claude-cli": 7849, "openrouter": 332, "codex": 95}, "models": {"claude-sonnet-4-6": 7836, "deepseek/deepseek-v4-flash": 330, "gpt-5.4": 94, "<synthetic>": 13, "moonshotai/kimi-k2": 2, "gpt-5.3-codex": 1}, "sub_fees": 20.0}, {"label": "jul 26", "interactions": 52915, "cost_effective": 276.77, "cost_real": 276.77, "input_tokens": 1095189807, "output_tokens": 20967013, "tools": {"openrouter": 52915}, "models": {"deepseek/deepseek-v4-flash": 48516, "z-ai/glm-5.2": 3940, "anthropic/claude-sonnet-4.6": 353, "google/gemini-2.5-flash": 103, "google/gemini-2.5-pro": 2, "deepseek/deepseek-v4-flash:free": 1}, "sub_fees": 0}, {"label": "ago 26", "interactions": 6043, "cost_effective": 23.0, "cost_real": 23.0, "input_tokens": 37038206, "output_tokens": 2264636, "tools": {"openrouter": 6043}, "models": {"deepseek/deepseek-v4-flash": 5434, "z-ai/glm-5.3-flash": 520, "z-ai/glm-5.2": 89}, "sub_fees": 0}, {"label": "sep 26", "interactions": 6187, "cost_effective": 13.62, "cost_real": 13.62, "input_tokens": 38347185, "output_tokens": 3088845, "tools": {"openrouter": 6187}, "models": {"z-ai/glm-5.3-flash": 6123, "deepseek/deepseek-v4-flash": 64}, "sub_fees": 0}], "projects": [{"name": "charly-dont", "interactions": 17355, "cost_effective": 612.17, "cost_real": 29.42, "first": "2026-04-20", "last": "2026-09-15", "tools": {"claude-cli": 11887, "openrouter": 2998, "codex": 2129, "gemini-cli": 341}}, {"name": "charly-miblioteca", "interactions": 16027, "cost_effective": 946.29, "cost_real": 11.27, "first": "2026-05-06", "last": "2026-06-05", "tools": {"claude-cli": 14764, "codex": 1201, "openrouter": 53, "gemini-cli": 9}}, {"name": "charly-testaruda", "interactions": 10736, "cost_effective": 47.65, "cost_real": 47.65, "first": "2026-07-07", "last": "2026-08-28", "tools": {"openrouter": 10736}}, {"name": "sk-REPLy-jl", "interactions": 9137, "cost_effective": 252.94, "cost_real": 17.04, "first": "2026-04-17", "last": "2026-09-17", "tools": {"claude-cli": 4895, "openrouter": 2866, "codex": 1232, "gemini-cli": 144}}, {"name": "sk-Testimonial-jl", "interactions": 8445, "cost_effective": 49.32, "cost_real": 38.74, "first": "2026-05-06", "last": "2026-09-04", "tools": {"openrouter": 8228, "claude-cli": 217}}, {"name": "charly-pretender", "interactions": 7245, "cost_effective": 195.38, "cost_real": 28.94, "first": "2026-05-06", "last": "2026-08-05", "tools": {"claude-cli": 3633, "openrouter": 2865, "codex": 747}}, {"name": "charly-vampiro", "interactions": 6729, "cost_effective": 27.3, "cost_real": 27.3, "first": "2026-07-28", "last": "2026-08-05", "tools": {"openrouter": 6729}}, {"name": "charly-atril", "interactions": 6442, "cost_effective": 500.85, "cost_real": 0.0, "first": "2026-04-16", "last": "2026-05-13", "tools": {"claude-cli": 5383, "codex": 1020, "gemini-cli": 39}}, {"name": "charly-espectacular", "interactions": 6183, "cost_effective": 170.56, "cost_real": 24.51, "first": "2026-05-12", "last": "2026-09-05", "tools": {"claude-cli": 3423, "openrouter": 2242, "codex": 518}}, {"name": "charly-wai", "interactions": 5832, "cost_effective": 198.46, "cost_real": 15.41, "first": "2026-04-18", "last": "2026-09-17", "tools": {"openrouter": 2983, "claude-cli": 2066, "codex": 719, "gemini-cli": 64}}, {"name": "sk-Tray-jl", "interactions": 5047, "cost_effective": 25.06, "cost_real": 25.06, "first": "2026-07-17", "last": "2026-08-01", "tools": {"openrouter": 5047}}, {"name": "sk-titi", "interactions": 4590, "cost_effective": 24.55, "cost_real": 23.56, "first": "2026-04-22", "last": "2026-08-27", "tools": {"openrouter": 4557, "codex": 33}}, {"name": "charly", "interactions": 3777, "cost_effective": 101.17, "cost_real": 28.93, "first": "2026-04-29", "last": "2026-09-18", "tools": {"openrouter": 2226, "claude-cli": 1402, "codex": 149}}, {"name": "sk-XAct-jl", "interactions": 3606, "cost_effective": 108.81, "cost_real": 5.03, "first": "2026-04-16", "last": "2026-09-04", "tools": {"claude-cli": 1387, "codex": 1253, "openrouter": 859, "gemini-cli": 107}}, {"name": "charly-genesis", "interactions": 3035, "cost_effective": 9.85, "cost_real": 9.85, "first": "2026-07-28", "last": "2026-09-17", "tools": {"openrouter": 3035}}, {"name": "charly-incitaciones", "interactions": 2480, "cost_effective": 27.72, "cost_real": 13.39, "first": "2026-04-14", "last": "2026-09-18", "tools": {"openrouter": 1862, "codex": 407, "claude-cli": 134, "gemini-cli": 76, "copilot": 1}}, {"name": "charly-superficies", "interactions": 2405, "cost_effective": 88.76, "cost_real": 0.0, "first": "2026-05-04", "last": "2026-05-07", "tools": {"claude-cli": 1952, "codex": 451, "gemini-cli": 2}}, {"name": "sk-cositos", "interactions": 2381, "cost_effective": 10.85, "cost_real": 10.85, "first": "2026-07-10", "last": "2026-09-03", "tools": {"openrouter": 2381}}, {"name": "charly/amp-auto", "interactions": 2207, "cost_effective": 0.0, "cost_real": 0.0, "first": "2026-01-11", "last": "2026-05-05", "tools": {"amp": 2207}}, {"name": "sk-clojnder", "interactions": 2079, "cost_effective": 79.27, "cost_real": 0.0, "first": "2026-04-30", "last": "2026-05-04", "tools": {"claude-cli": 1687, "codex": 392}}], "skills": {"rule-of-5-universal": 115, "commit": 75, "issue-review": 38, "rule-of-5": 22, "openspec-proposal": 8, "grill-me": 5, "openspec-archive": 5, "openspec:proposal": 4, "tdd": 4, "resume-handoff": 3, "explore-video": 2, "ui-align": 2}, "commands": {"/clear": 307, "/rule-of-5-universal": 70, "/rate-limit-options": 58, "/new": 34, "/close": 29, "/renew": 24, "/next": 23, "/resume": 17, "/model": 13, "/issue-review": 13, "/commit": 12, "/add-dir": 10}, "heatmap": [[0, 0, 0, 0, 0, 0, 0, 0, 60, 669, 547, 479, 593, 755, 529, 291, 1062, 1258, 673, 1909, 1410, 1312, 929, 1135], [2062, 353, 0, 0, 0, 0, 0, 0, 491, 1409, 2433, 2724, 3490, 3055, 1675, 3923, 4175, 4839, 2540, 1669, 2154, 698, 727, 309], [0, 0, 0, 0, 0, 0, 0, 0, 166, 1219, 1827, 1833, 3222, 3092, 1704, 4209, 5009, 2489, 4128, 4237, 2310, 735, 688, 234], [8, 0, 0, 0, 0, 0, 0, 0, 207, 838, 1097, 846, 1990, 1678, 1475, 2965, 3694, 3447, 2570, 1645, 958, 616, 270, 0], [0, 0, 0, 0, 0, 0, 0, 0, 60, 1252, 1741, 1280, 1102, 1348, 1252, 1798, 2888, 1780, 1553, 1481, 1007, 507, 881, 35], [0, 0, 0, 0, 0, 0, 0, 0, 0, 45, 250, 35, 93, 206, 127, 80, 432, 562, 547, 560, 313, 150, 24, 333], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 191, 177, 37, 50, 214, 274, 144, 61, 109, 458, 298, 121, 10, 0]], "sessions": {"total": 1884, "with_agent": 346, "pct_agent": 18.4, "avg_turns": 26.528662420382165, "length_distribution": {"1-10": 914, "101-300": 94, "11-50": 700, "301-500": 8, "500+": 1, "51-100": 167}, "top_longest": [{"turns": 1001, "msgs": 723, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 480, "msgs": 322, "date": "2026-04-22", "project": "charly-atril"}, {"turns": 398, "msgs": 245, "date": "2026-05-05", "project": "sk-XAct-jl"}, {"turns": 393, "msgs": 248, "date": "2026-04-30", "project": "sk-REPLy-jl"}, {"turns": 360, "msgs": 248, "date": "2026-05-12", "project": "charly-miblioteca"}, {"turns": 354, "msgs": 262, "date": "2026-05-15", "project": "charly-miblioteca"}, {"turns": 336, "msgs": 230, "date": "2026-04-23", "project": "charly-atril"}, {"turns": 326, "msgs": 194, "date": "2026-05-06", "project": "sk-REPLy-jl"}]}, "tools_timeline": [{"tool": "amp", "first": "2026-01", "last": "2026-05", "total": 2207}, {"tool": "claude-cli", "first": "2026-04", "last": "2026-06", "total": 59157}, {"tool": "codex", "first": "2026-04", "last": "2026-06", "total": 11907}, {"tool": "gemini-cli", "first": "2026-04", "last": "2026-05", "total": 859}, {"tool": "copilot", "first": "2026-04", "last": "2026-04", "total": 2}, {"tool": "openrouter", "first": "2026-06", "last": "2026-09", "total": 65477}], "multitasking": {"pct_hours": 54.5, "avg_per_hour": 2.31, "pct_days": 51.6, "max": {"count": 10, "hours": ["2026-07-27 22:00"], "projects": ["charly-dont", "charly-espectacular", "charly-genesis", "charly-incitaciones", "charly-pretender", "charly-testaruda", "charly-vampiro", "charly-wai", "sk-Testimonial-jl", "sk-Tray-jl"]}}};
+
+// ---------- helpers ----------
+const tip = document.getElementById('tip');
+function showTip(e, txt) {
+  tip.textContent = txt; tip.style.display = 'block';
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 360) + 'px';
+  tip.style.top = (e.clientY + 14) + 'px';
+}
+function hideTip() { tip.style.display = 'none'; }
+document.addEventListener('mousemove', e => { if (tip.style.display === 'block') {
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - 360) + 'px';
+  tip.style.top = (e.clientY + 14) + 'px';
+}});
+
+function svgEl(w, h) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const s = document.createElementNS(NS, 'svg');
+  s.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  return s;
+}
+function line(svg, x1, y1, x2, y2, color, dash) {
+  const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+  l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+  l.setAttribute('stroke', color || '#23232e');
+  if (dash) l.setAttribute('stroke-dasharray', dash);
+  svg.appendChild(l);
+  return l;
+}
+function text(svg, x, y, str, size, anchor, fill) {
+  const t = document.createElementNS('text');
+  t.setAttribute('x', x); t.setAttribute('y', y);
+  t.setAttribute('font-size', size || 9);
+  if (anchor) t.setAttribute('text-anchor', anchor);
+  if (fill) t.setAttribute('fill', fill);
+  t.textContent = str;
+  svg.appendChild(t);
+  return t;
+}
+function rect(svg, x, y, w, h, fill, cls) {
+  const r = document.createElementNS('rect');
+  r.setAttribute('x', x); r.setAttribute('y', y);
+  r.setAttribute('width', Math.max(0, w)); r.setAttribute('height', Math.max(0, h));
+  r.setAttribute('fill', fill); r.setAttribute('rx', 1);
+  if (cls) r.setAttribute('class', cls);
+  svg.appendChild(r);
+  return r;
+}
+const fmtInt = n => n.toLocaleString('en-US');
+const fmtMoney = n => '$' + n.toLocaleString('en-US', {maximumFractionDigits: n < 100 ? 2 : 0});
+const fmtK = n => n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1000 ? Math.round(n/1000) + 'K' : String(Math.round(n));
+
+// ---------- resumen (cards) ----------
+{
+  const m = D.meta;
+  document.getElementById('subtitle').textContent =
+    `${m.start} → ${m.end} · generado ${m.generated} · fuente: usage_report_v3.json`;
+  const cards = [
+    [fmtInt(m.total), 'interacciones'],
+    [fmtMoney(m.cost_effective), 'costo efectivo'],
+    [fmtMoney(m.cost_real), 'costo real'],
+    [m.days, 'días activos'],
+    [m.hours, 'horas con actividad'],
+    [m.projects, 'proyectos'],
+    [D.multitasking.pct_hours + '%', 'horas con ≥2 proyectos'],
+    [D.sessions.total, 'sesiones'],
+  ];
+  document.querySelector('.cards').innerHTML =
+    cards.map(c => `<div class="card"><div class="v">${c[0]}</div><div class="l">${c[1]}</div></div>`).join('');
+}
+
+// ---------- chart 1: mensual interacciones + costo real ----------
+{
+  const W = 800, H = 240, padL = 60, padR = 60, padT = 20, padB = 34;
+  const svg = svgEl(W, H);
+  const data = D.months, n = data.length;
+  const maxI = Math.max(...data.map(d => d.interactions));
+  const maxC = Math.max(...data.map(d => d.cost_real), 1);
+  const iw = (W - padL - padR) / n;
+  const yI = v => padT + (H - padT - padB) * (1 - v / maxI);
+  const yC = v => padT + (H - padT - padB) * (1 - v / maxC);
+  // grid
+  for (let g = 0; g <= 4; g++) {
+    const y = padT + (H - padT - padB) * g / 4;
+    line(svg, padL, y, W - padR, y);
+    text(svg, padL - 6, y + 3, fmtK(maxI * (4 - g) / 4), 9, 'end');
+  }
+  data.forEach((d, i) => {
+    const x = padL + iw * i;
+    const bw = Math.min(38, iw * 0.55);
+    const bx = x + (iw - bw) / 2;
+    const by = yI(d.interactions);
+    const b = rect(svg, bx, by, bw, H - padB - by, 'var(--accent)', 'bar');
+    b.addEventListener('mousemove', e => showTip(e,
+      `${d.label}\ninteracciones: ${fmtInt(d.interactions)}\ncosto efectivo: ${fmtMoney(d.cost_effective)}\ncosto real: ${fmtMoney(d.cost_real)}`));
+    b.addEventListener('mouseleave', hideTip);
+    text(svg, x + iw / 2, H - padB + 14, d.label, 9, 'middle');
+  });
+  // línea de costo real
+  let path = '';
+  data.forEach((d, i) => {
+    const x = padL + iw * i + iw / 2, y = yC(d.cost_real);
+    path += (i === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+  });
+  const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  p.setAttribute('d', path); p.setAttribute('fill', 'none');
+  p.setAttribute('stroke', 'var(--accent2)'); p.setAttribute('stroke-width', '1.5');
+  svg.appendChild(p);
+  data.forEach((d, i) => {
+    const x = padL + iw * i + iw / 2, y = yC(d.cost_real);
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 2.5);
+    c.setAttribute('fill', 'var(--accent2)');
+    c.addEventListener('mousemove', e => showTip(e, `${d.label}\ncosto real: ${fmtMoney(d.cost_real)}`));
+    c.addEventListener('mouseleave', hideTip);
+    svg.appendChild(c);
+  });
+  text(svg, padL - 42, padT - 6, 'interacciones', 8);
+  text(svg, W - padR + 4, padT - 6, 'costo real', 8, 'start', 'var(--accent2)');
+  document.getElementById('chart-monthly').appendChild(svg);
+}
+
+// ---------- chart 2: costo efectivo apilado por herramienta ----------
+{
+  const tools = [...new Set(D.months.flatMap(d => Object.keys(d.tools)))];
+  const COLORS = ['#ff9f43', '#4fc3f7', '#66bb6a', '#ab47bc', '#ef5350', '#ffa726', '#26a69a', '#ec407a'];
+  const W = 800, H = 240, padL = 60, padR = 20, padT = 20, padB = 34;
+  const svg = svgEl(W, H);
+  const data = D.months, n = data.length;
+  const totals = data.map(d => Object.values(d.tools).reduce((a, b) => a + b, 0));
+  const maxT = Math.max(...totals);
+  const iw = (W - padL - padR) / n;
+  const y = v => padT + (H - padT - padB) * (1 - v / maxT);
+  for (let g = 0; g <= 4; g++) {
+    const gy = padT + (H - padT - padB) * g / 4;
+    line(svg, padL, gy, W - padR, gy);
+    text(svg, padL - 8, gy + 3, fmtInt(Math.round(maxT * (4 - g) / 4)), 9, 'end');
+  }
+  data.forEach((d, i) => {
+    const x = padL + iw * i;
+    const bw = Math.min(38, iw * 0.7);
+    let acc = 0;
+    tools.forEach((t, ti) => {
+      const v = d.tools[t] || 0;
+      if (!v) return;
+      const y0 = y(acc), y1 = y(acc + v);
+      const r = rect(svg, x + (iw - bw) / 2, y1, bw, y0 - y1, COLORS[ti % COLORS.length]);
+      r.addEventListener('mousemove', e => showTip(e,
+        `${d.label}\n${t}: ${fmtInt(v)} de ${fmtInt(totals[i])} (${Math.round(100 * v / totals[i])}%)`));
+      r.addEventListener('mouseleave', hideTip);
+      acc += v;
+    });
+    text(svg, x + iw / 2, H - padB + 14, d.label, 9, 'middle');
+  });
+  document.getElementById('legend-tools').innerHTML =
+    tools.map((t, i) => `<span style="color:${COLORS[i % COLORS.length]}">${t}</span>`).join('');
+  document.getElementById('chart-tools-cost').appendChild(svg);
+}
+
+// ---------- chart 3: top proyectos ----------
+{
+  const W = 800, rowH = 26, padL = 170, padR = 90, padT = 8;
+  const H = padT + D.projects.length * rowH + 8;
+  const svg = svgEl(W, H);
+  const maxP = D.projects[0].interactions;
+  const bw = W - padL - padR;
+  D.projects.forEach((p, i) => {
+    const y = padT + i * rowH;
+    text(svg, padL - 8, y + 15, p.name.replace(/^charly-/, ''), 10, 'end');
+    const w = bw * p.interactions / maxP;
+    const r = rect(svg, padL, y + 5, w, rowH - 10, 'var(--accent)');
+    r.addEventListener('mousemove', e => showTip(e,
+      `${p.name}\n${fmtInt(p.interactions)} interacciones\ncosto efectivo: ${fmtMoney(p.cost_effective)}\ncosto real: ${fmtMoney(p.cost_real)}\n${p.first || '?'} → ${p.last || '?'}`));
+    r.addEventListener('mouseleave', hideTip);
+    text(svg, padL + w + 6, y + 15, fmtInt(p.interactions), 9);
+  });
+  document.getElementById('chart-projects').appendChild(svg);
+}
+
+// ---------- heatmap ----------
+{
+  const W = 800, cell = 28, padL = 40, padT = 20;
+  const H = padT + 7 * cell + 30;
+  const svg = svgEl(W, H);
+  const max = Math.max(...D.heatmap.flat());
+  const maxV = max || 1;
+  const hours = [...Array(24).keys()];
+  hours.forEach(hh => {
+    if (hh % 3 === 0) text(svg, padL + cell * hh + cell / 2, padT - 6, hh + 'h', 9, 'middle');
+  });
+  const dowNames = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'];
+  D.heatmap.forEach((row, di) => {
+    text(svg, padL - 8, padT + di * cell + cell / 2 + 4, dowNames[di], 10, 'end');
+    row.forEach((v, hi) => {
+      const x = padL + hi * cell, y = padT + di * cell;
+      const inten = v / maxV;
+      const r = rect(svg, x + 1, y + 1, cell - 2, cell - 2,
+        inten === 0 ? 'var(--grid)' : `rgba(255,159,67,${0.12 + 0.88 * Math.pow(inten, 0.5)})`);
+      r.addEventListener('mousemove', e => showTip(e,
+        `${dowNames[di]} ${String(hi).padStart(2, '0')}:00\n${fmtInt(v)} interacciones`));
+      r.addEventListener('mouseleave', hideTip);
+      if (v > 0 && inten > 0.25) text(svg, x + cell / 2, y + cell / 2 + 3,
+        v >= 1000 ? Math.round(v / 1000) + 'k' : v, 8, 'middle', '#16161d');
+    });
+  });
+  text(svg, padL, H - 6, 'día de la semana (lun→dom) × hora local', 9);
+  document.getElementById('chart-heatmap').appendChild(svg);
+}
+
+// ---------- barras horizontales genéricas (skills, comandos) ----------
+function hbars(elId, obj, color) {
+  const entries = Object.entries(obj);
+  if (!entries.length) return;
+  const W = 380, rowH = 22, padL = 180, padR = 60;
+  const H = 10 + entries.length * rowH;
+  const svg = svgEl(W, H);
+  const max = Math.max(...entries.map(e => e[1]));
+  entries.forEach(([k, v], i) => {
+    const y = 10 + i * rowH;
+    text(svg, padL - 8, y + 13, k, 10, 'end');
+    const w = (W - padL - padR) * v / max;
+    const r = rect(svg, padL, y + 4, w, rowH - 8, color);
+    r.addEventListener('mousemove', e => showTip(e, `${k}\n${fmtInt(v)} usos`));
+    r.addEventListener('mouseleave', hideTip);
+    text(svg, padL + w + 6, y + 13, fmtInt(v), 9);
+  });
+  document.getElementById(elId).appendChild(svg);
+}
+
+// ---------- skills / comandos ----------
+hbars('chart-skills', D.skills, 'var(--good)');
+hbars('chart-commands', D.commands, 'var(--accent)');
+
+// ---------- sesiones ----------
+{
+  const dist = D.sessions.length_distribution;
+  const order = ['1-10', '11-50', '51-100', '101-300', '301-500', '500+'];
+  const entries = Object.keys(dist).sort((a, b) =>
+    order.indexOf(a) - order.indexOf(b)).map(k => [k, dist[k]]);
+  // barras simples
+  const W = 380, rowH = 26, padL = 90, padR = 60;
+  const H = 10 + entries.length * rowH;
+  const svg = svgEl(W, H);
+  const max = Math.max(...entries.map(e => e[1]));
+  entries.forEach(([k, v], i) => {
+    const y = 10 + i * rowH;
+    text(svg, padL - 8, y + 13, k + ' turns', 10, 'end');
+    const w = (W - padL - padR) * v / max;
+    rect(svg, padL, y + 4, w, rowH - 10, 'var(--accent2)');
+    text(svg, padL + w + 6, y + 13, fmtInt(v), 9);
+  });
+  document.getElementById('chart-sessions').appendChild(svg);
+  document.getElementById('sessions-summary').textContent =
+    `${fmtInt(D.sessions.total)} sesiones · ${D.sessions.pct_agent}% autónomas (con Agent) · promedio ${Math.round(D.sessions.avg_turns)} turnos`;
+  // tabla top sesiones
+  const rows = D.sessions.top_longest.map(s =>
+    `<tr><td class="num">${s.turns}</td><td>${s.date}</td><td>${s.project.replace(/^charly-/, '')}</td></tr>`).join('');
+  document.getElementById('sessions-table').innerHTML =
+    '<tr><th>turns</th><th>fecha</th><th>proyecto</th></tr>' + rows;
+}
+
+// ---------- tools timeline ----------
+{
+  document.getElementById('tools-table').innerHTML =
+    '<tr><th>herramienta</th><th class="num">primera</th><th class="num">última</th><th class="num">total</th></tr>' +
+    D.tools_timeline.map(t =>
+      `<tr><td>${t.tool}</td><td class="num">${t.first}</td><td class="num">${t.last}</td><td class="num">${fmtInt(t.total)}</td></tr>`
+    ).join('');
+}
+
+document.getElementById('footer').textContent =
+  `generado ${D.meta.generated} · scripts/viz-dashboard.py · datos solo-charly`;
+</script>
+</body>
+</html>

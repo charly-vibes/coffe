@@ -33,8 +33,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Regenerate Gantt from committed data
-        run: python3 scripts/viz-gantt.py
+      - name: Regenerate Gantt + dashboard from committed data
+        run: |
+          python3 scripts/viz-gantt.py
+          python3 scripts/viz-dashboard.py
 
       - name: Prepare site
         run: |
@@ -43,7 +45,6 @@ jobs:
           cp -r data _pages/data
           # La entrada del índice es estática; los JSON ya están versionados.
           rm -f _pages/data/daily_summary.json _pages/data/usage_hourly.json
-
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3

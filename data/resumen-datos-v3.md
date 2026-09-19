@@ -9,7 +9,7 @@ Extraído con `scripts/usage-tracker.py` el 2026-06-10.
 
 > **Nota de vigencia (2026-09-18):** estas cifras reflejan el snapshot de 2026-06-10.
 > `usage_report_v3.json` fue regenerado después con el periodo extendido hasta
-> septiembre (138,276 interacciones, 38 proyectos). Las tablas de abajo son
+> septiembre (139,609 interacciones, 40 proyectos). Las tablas de abajo son
 > históricas; para números actuales, consulta el JSON o regenera con
 > `python3 scripts/usage-tracker.py` en la máquina con los logs.
 

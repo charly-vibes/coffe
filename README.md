@@ -13,13 +13,15 @@ de los últimos meses.
 |---------|-----------|
 | `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force` (ver "Uso"). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
+| `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
 
 ### Datos generados
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 716K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-18 (138,276 interacciones). |
-| `data/gantt-multitasking.html` | 40K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
+| `data/usage_report_v3.json` | 716K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-19 (139,609 interacciones). |
+| `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffe/data/dashboard.html>. |
+| `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -34,7 +36,7 @@ de los últimos meses.
 
 > **Nota:** el boceto de la serie vive en `microdancing/drafts/serie-aprendizaje-6-meses-boceto.md`, no en este repo.
 
-> **Nota de vigencia (2026-09-18):** `usage_report_v3.json` fue regenerado el 2026-09-18 con el periodo extendido hasta septiembre (138,276 interacciones, 38 proyectos). Las cifras de `resumen-datos-v3.md` y de la sección "Estado de los datos" reflejan el snapshot de 2026-06-10 (81,887 interacciones); son históricas, no están actualizadas.
+> **Nota de vigencia (2026-09-19):** `usage_report_v3.json` fue regenerado el 2026-09-19 con el periodo extendido hasta septiembre (139,609 interacciones, 40 proyectos). Las cifras de `resumen-datos-v3.md` y de la sección "Estado de los datos" reflejan el snapshot de 2026-06-10 (81,887 interacciones); son históricas, no están actualizadas.
 
 Los JSON en `data/` son **derivados**: la fuente son los logs locales de cada herramienta (`~/.claude`, `~/.pi/agent`, `~/.amp`), que no están versionados. En una máquina sin esos logs el tracker no produce datos reales (ver guard en `main()`).
 
@@ -45,7 +47,8 @@ Requisitos: Python ≥ 3.9 — solo stdlib, sin dependencias que instalar.
 ```bash
 python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requiere los logs locales)
 python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON
-python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas
+python3 scripts/viz-dashboard.py   # regenera data/dashboard.html desde el JSON
+python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas (viz-dashboard.py igual)
 ```
 
 Notas de reproducibilidad entre máquinas:
