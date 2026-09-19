@@ -317,7 +317,7 @@ function line(svg, x1, y1, x2, y2, color, dash) {
   return l;
 }
 function text(svg, x, y, str, size, anchor, fill) {
-  const t = document.createElementNS('text');
+  const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
   t.setAttribute('x', x); t.setAttribute('y', y);
   t.setAttribute('font-size', size || 9);
   if (anchor) t.setAttribute('text-anchor', anchor);
@@ -327,7 +327,7 @@ function text(svg, x, y, str, size, anchor, fill) {
   return t;
 }
 function rect(svg, x, y, w, h, fill, cls) {
-  const r = document.createElementNS('rect');
+  const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   r.setAttribute('x', x); r.setAttribute('y', y);
   r.setAttribute('width', Math.max(0, w)); r.setAttribute('height', Math.max(0, h));
   r.setAttribute('fill', fill); r.setAttribute('rx', 1);
