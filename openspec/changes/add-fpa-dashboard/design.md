@@ -54,12 +54,29 @@ borrar el script y los artefactos nuevos.
 
 ## Open Questions
 
-De la spec (sección Open questions, responder con Sasha antes de la fase afectada):
+Resueltas el 2026-09-20 con Sasha:
 
-1. ¿El presupuesto de coste efectivo es soft cap o se trackea de verdad?
-2. ¿El tracker registra cargas pay-per-token (Codex, OpenRouter) reales?
-3. ¿Taxonomía de proyectos asignada a mano o inferida de los repos?
-4. ¿Qué horarios definen "after-hours" (FPA-111)?
-5. ¿Se conserva el estilo retro (banner Netscape, "under construction")? (FPA-178)
-6. ¿A qué URLs apuntan los CTAs? (FPA-165/168)
-7. ¿Idioma de la página? (FPA-162)
+1. **¿Presupuesto de coste efectivo trackeado?** No — no se trackea de verdad.
+   FPA-050 sigue exigiendo aceptarlo por config, pero se trata como informativo
+   (soft): el presupuesto activo es el de cash cost; el de efectivo se muestra
+   sin semántica de gestión.
+2. **¿Cargas pay-per-token reales?** No — el tracker no registra cargas reales
+   (Codex, OpenRouter). FPA-013: emitir el campo igualmente, con valor
+   ausente/cero y provenance *assumed*; el cash cost efectivo = solo
+   suscripciones. La alerta de reconciliación (FPA-082) sigue aplicando contra
+   las cargas implícitas del calendario.
+3. **¿Taxonomía?** Inferida de los nombres de repo. FPA-018: `config/fpa.json`
+   provee reglas de inferencia (patrones nombre→categoría) + overrides a mano;
+   lo no inferido cae en "Unclassified".
+4. **¿Horarios laborales?** Cualquiera vale — se usa el default de la spec:
+   Mon–Fri 09:00–18:00, configurable (FPA-111).
+5. **¿Estilo retro?** Sí, se conserva → FPA-178 aplica con todo: confinado a
+   header/footer, opcional por config (default on), sin animación bajo
+   `prefers-reduced-motion`, contraste ≥ 4.5:1.
+6. **¿URLs de CTAs?** Ok con los targets obvios: rutas relativas a los
+   artefactos publicados (`data/gantt-multitasking.html`,
+   `data/usage_report_v3.json`), URL del repo y URL de la serie. Valores
+   finales se fijan en config al reclamar F6 — FPA-168 exige que ninguno esté
+   vacío.
+7. **¿Idioma?** Español → config `language: "es"` (FPA-162), única lengua de
+   interfaz y texto generado.

@@ -10,8 +10,11 @@
       CTAs con targets (FPA-168), idioma (FPA-162), retro opcional (FPA-178)
 - [ ] 0.3 Extender `specs/usage-report-v3.schema.json` (o versionar a v4) para las
       emisiones nuevas del tracker; mantener `--validate` verde
-- [ ] 0.4 Resolver open questions 1–7 con Sasha donde bloqueen; defaults
-      documentados en config mientras tanto
+- [ ] 0.4 Open questions 1–7 resueltas (2026-09-20, ver design.md): budget
+      efectivo informativo, sin pay-per-token real (campo assumed/cero), taxonomía
+      inferida de repos con overrides, horarios default Mon–Fri 9–18, retro
+      conservado (FPA-178 completo), CTAs a rutas relativas publicadas, idioma es
+      — reflejarlas en config/fpa.json
 
 ## 1. Base y resumen ejecutivo (FPA-001…009)
 
