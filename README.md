@@ -1,5 +1,12 @@
 # coffe — Tracking de uso de IA
 
+> *Do you feel like a chain store /
+> Practically floored /
+> One of many zeroes /
+> Kicked around bored*
+>
+> — Blur, "Coffee & TV"
+
 Extractado de `microdancing` (branch `data/datos-uso-ia`, tip `09c063e`) para poder
 reutilizar y extender el tracker independientemente de la serie de posts.
 Propósito: recolectar, procesar y documentar el uso de IA (Claude CLI, Pi, Amp, Gemini)
