@@ -215,6 +215,11 @@ TEMPLATE = r"""<!DOCTYPE html>
     background: #000; color: #0f0; font-family: "Courier New", monospace;
     padding: 1px 4px; border: 1px inset #fff; font-size: 12px;
   }
+  /* móvil: los SVG escalan con viewBox — subir la fuente para legibilidad */
+  @media (max-width: 700px) {
+    svg text { font-size: 13px; }
+    .figcap { font-size: 11px; }
+  }
 </style>
 </head>
 <body>

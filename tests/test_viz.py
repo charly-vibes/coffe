@@ -73,6 +73,20 @@ class TestVizPages(unittest.TestCase):
                 else:  # gantt
                     n = pg.eval_on_selector_all(".cell", "els => els.length")
                     self.assertGreater(n, 100, f"gantt: solo {n} celdas")
+                    # sticky labels: pinned a CUALQUIER scrollLeft (viewport móvil,
+                    # donde el bug era visible). Con containing block = fila flex
+                    # completa el label queda en el borde izquierdo del scroller.
+                    pg.set_viewport_size({"width": 375, "height": 800})
+                    for sl in (600, 1500):
+                        pg.evaluate(f"document.querySelector('.wrap').scrollLeft = {sl}")
+                        pg.wait_for_timeout(100)
+                        off = pg.evaluate("""() => {
+                          const wrap = document.querySelector('.wrap');
+                          const l = document.querySelectorAll('.row')[1].querySelector('.label');
+                          return Math.round(l.getBoundingClientRect().left - wrap.getBoundingClientRect().left);
+                        }""")
+                        self.assertGreaterEqual(off, 0,
+                            f"gantt: sticky label se despega a scrollLeft={sl} (offset {off})")
                 pg.close()
             browser.close()
 

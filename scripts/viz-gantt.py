@@ -52,15 +52,20 @@ TEMPLATE = """<!DOCTYPE html>
   #legend { margin-left: auto; color: #000; display: flex; gap: 4px; align-items: center; font-size: 11px; }
   #legend .sw { width: 22px; height: 12px; display: inline-block; border: 1px solid #000; }
   .wrap { overflow-x: auto; background: #fff; border: 2px inset #fff; padding: 10px; }
-  .grid { display: grid; position: relative; }
-  .cell { width: 14px; height: 18px; }
+  /* filas flex (no CSS grid): el containing block de .label es la fila
+     completa, así sticky left:0 funciona a cualquier scrollLeft.
+     En grid el sticky se limita al grid-area de la columna de labels
+     (190px) y se despega al scrollear más allá — ver tests/test_viz.py */
+  .grid { display: block; position: relative; }
+  .row { display: flex; width: max-content; height: 20px; }
+  .cell { width: 14px; flex: none; margin-right: 1px; }
   .label {
     position: sticky; left: 0; z-index: 2; background: #fff;
+    flex: 0 0 190px; height: 20px; line-height: 20px;
     padding-right: 8px; white-space: nowrap; text-align: right;
-    font-size: 12px; overflow: hidden; text-overflow: ellipsis; max-width: 190px;
+    font-size: 12px; overflow: hidden; text-overflow: ellipsis;
     border-bottom: 1px solid #e0e0e0;
   }
-  .rowhead { height: 22px; }
   .weekend { background: #e8e8e8; }
   .monthtick { font-size: 10px; color: #000; white-space: nowrap; overflow: visible; font-weight: bold; }
   #tip {
@@ -127,33 +132,40 @@ const legendHTML = m => m === 'int'
 function fmt(n) { return n.toLocaleString('es'); }
 function dateEs(d) { return new Date(d + 'T00:00').toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }); }
 
-let html = [];
+const rows = [];
+function pushRow(labelHtml, cells) {
+  rows.push(`<div class="row"><div class="label">${labelHtml}</div>${cells}</div>`);
+}
 // fila de ticks de mes
-html.push(`<div class="label rowhead"></div>`);
-for (let i = 0; i < NCOL; i++) {
-  const d = days[i];
-  const tick = d.endsWith('-01') ? d.slice(0, 7) : (i % 14 === 0 ? d.slice(8) : '');
-  html.push(`<div class="monthtick${isWeekend[i] ? ' weekend' : ''}" style="width:${CW}px">${tick}</div>`);
+{
+  let cells = '';
+  for (let i = 0; i < NCOL; i++) {
+    const d = days[i];
+    const tick = d.endsWith('-01') ? d.slice(0, 7) : (i % 14 === 0 ? d.slice(8) : '');
+    cells += `<div class="monthtick${isWeekend[i] ? ' weekend' : ''}" style="width:${CW}px">${tick}</div>`;
+  }
+  rows.push(`<div class="row" style="height:auto"><div class="label"></div>${cells}</div>`);
 }
 // fila de concurrencia diaria
-html.push(`<div class="label" title="concurrencia diaria: proyectos distintos activos por día (la intensidad satura en 12)">→ proyectos/día</div>`);
-for (let i = 0; i < NCOL; i++) {
-  const { nproj } = dayInfo[i];
-  const t = nproj ? 0.15 + 0.85 * Math.min(1, nproj / 12) : 0;
-  html.push(`<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-day="${i}" data-conc="1" style="background:${nproj ? `rgba(0,128,128,${t})` : 'transparent'}"></div>`);
+{
+  let cells = '';
+  for (let i = 0; i < NCOL; i++) {
+    const { nproj } = dayInfo[i];
+    const t = nproj ? 0.15 + 0.85 * Math.min(1, nproj / 12) : 0;
+    cells += `<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-day="${i}" data-conc="1" style="background:${nproj ? `rgba(0,128,128,${t})` : 'transparent'}"></div>`;
+  }
+  pushRow('<span title="concurrencia diaria: proyectos distintos activos por día (la intensidad satura en 12)">→ proyectos/día</span>', cells);
 }
 // filas por proyecto
 for (const p of projects) {
-  html.push(`<div class="label" title="${p}">${p}</div>`);
+  let cells = '';
   for (let i = 0; i < NCOL; i++) {
     const v = M[p][i];
-    html.push(`<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-p="${p}" data-i="${i}" style="background:${color(v)}"></div>`);
+    cells += `<div class="cell${isWeekend[i] ? ' weekend' : ''}" data-p="${p}" data-i="${i}" style="background:${color(v)}"></div>`;
   }
+  pushRow(`<span title="${p}">${p}</span>`, cells);
 }
-grid.style.gridTemplateColumns = `${LABEL_W}px repeat(${NCOL}, ${CW}px)`;
-grid.style.gridAutoRows = 'minmax(18px, auto)';
-grid.style.gap = '2px 1px';
-grid.innerHTML = html.join('');
+grid.innerHTML = rows.join('');
 
 // leyenda
 const lg = document.getElementById('legend');
