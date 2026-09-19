@@ -22,6 +22,7 @@ REPO = Path(__file__).resolve().parent.parent
 PAGES = [
     REPO / "data" / "dashboard.html",
     REPO / "data" / "gantt-multitasking.html",
+    REPO / "data" / "fpa-dashboard.html",
 ]
 
 try:
@@ -70,6 +71,23 @@ class TestVizPages(unittest.TestCase):
                     n = pg.eval_on_selector_all("svg", "els => els.length")
                     self.assertGreaterEqual(n, 7,
                         f"dashboard: {n} SVGs renderizados, se esperaban ≥ 7")
+                elif page_path.name == "fpa-dashboard.html":
+                    # FPA-108: resumen ejecutivo no vacío y sin placeholders sin valor
+                    vals = pg.eval_on_selector_all(
+                        ".headline .val",
+                        "els => els.map(e => e.textContent.trim()).filter(t => t !== '')")
+                    self.assertGreaterEqual(len(vals), 3,
+                        f"fpa: {len(vals)} headlines con valor, se esperaban ≥ 3")
+                    nas = pg.eval_on_selector_all(
+                        ".headline .na",
+                        "els => els.map(e => e.textContent.trim()).filter(t => t !== '')")
+                    headlines = pg.eval_on_selector_all(
+                        ".headline", "els => els.length")
+                    self.assertEqual(len(vals) + len(nas), headlines,
+                        "fpa: headline sin valor ni n/a con razón (FPA-108)")
+                    n_ph = pg.eval_on_selector_all(
+                        "[class~='ph']", "els => els.length")
+                    self.assertEqual(0, n_ph, "fpa: placeholders sin valor")
                 else:  # gantt
                     n = pg.eval_on_selector_all(".cell", "els => els.length")
                     self.assertGreater(n, 100, f"gantt: solo {n} celdas")
