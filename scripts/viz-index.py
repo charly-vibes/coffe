@@ -6,9 +6,12 @@ quedaban viejas en cada refresh), este generador deriva TODO de
 data/usage_report_v3.json + data/charges.json — mismos insumos que los
 dashboards — así el índice nunca queda desactualizado (bd coffe-85z).
 
-Estética 90s-corporate deliberada (ver snap 2026-09-19); el contenido es
-una lista corta: los 3 dashboards + el reporte JSON crudo. Los JSON
-históricos/auxiliares (v2 sin filtrar, tool_timeline) NO se enlazan.
+Estética 90s-corporate deliberada (ver snap 2026-09-19); el tema vive en
+scripts/site_theme.py (coffe-gen.2) y el label del dashboard sale del
+site_name del config (sin jerga, coffe-gen.2/gen.3); el contenido es
+una lista corta: el dashboard + su guía de análisis + el Gantt + el
+reporte JSON crudo. Los JSON históricos/auxiliares (v2 sin filtrar,
+tool_timeline) NO se enlazan.
 
 Sin dependencias. Determinista: ninguna fecha viene del reloj; la fecha
 de actualización sale de metadata.date_range.end del reporte.
@@ -108,6 +111,10 @@ TEMPLATE = """<!DOCTYPE html>
     <tr>
       <td><a href="data/dashboard.html">Dashboard de insights</a><br>
           <span class="desc">Tendencias mensuales, top proyectos, skills, comandos, heatmap, sesiones</span></td>
+    </tr>
+    <tr>
+      <td><a href="data/fpa-guide.html">Guía de análisis</a><br>
+          <span class="desc">Cada análisis del dashboard explicado a 4 niveles: ELI5, cotidiano, practicante, experto</span></td>
     </tr>
     <tr>
       <td><a href="data/gantt-multitasking.html">Gantt de multitasking</a><br>

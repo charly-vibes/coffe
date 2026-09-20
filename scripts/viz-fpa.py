@@ -45,6 +45,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fpa_config  # noqa: E402
 import site_theme  # noqa: E402
+import viz_fpa_guide as guide  # noqa: E402
 
 REPORT = Path("data/usage_report_v3.json")
 CONFIG = Path("config/fpa.json")
@@ -3781,6 +3782,10 @@ def render_html(report, cfg, generated=None, today=None):
       <p class="small">Método de render: HTML único generado por
       viz-fpa.py (Python stdlib-only, SVG inline); las matemáticas se
       calculan en Python y el JS solo re-escala (FPA-145).</p>
+      <p class="small">¿Qué significa cada análisis? La
+      <a href="fpa-guide.html">guía de análisis a 4 niveles</a> explica
+      cada uno desde el nivel más simple hasta el más técnico (fuente:
+      docs/fpa-analyses-guide.md).</p>
       <p class="small">Descargas: botones Exportar CSV (tablas) y
       Descargar SVG (charts) en cada figura, sin librerías externas.</p>
     </details>
@@ -4255,12 +4260,17 @@ def main(argv=None):
 
     if args.check_docs:  # FPA-143/107: consistencia README ↔ JSON
         errors = check_docs(report, Path(args.readme))
+        # coffe-gen.3: grounding de la guía (mapeo + umbrales vs config)
+        guide_text = guide.GUIDE_MD.read_text(encoding="utf-8") \
+            if guide.GUIDE_MD.exists() else ""
+        errors += guide.check_documentation(cfg, guide_text)
         if errors:
             print("ERROR: check-docs falló:", file=sys.stderr)
             for e in errors:
                 print(f"  - {e}", file=sys.stderr)
             return 1
-        print("OK: README consistente con el reporte (FPA-143)")
+        print("OK: README consistente con el reporte (FPA-143) · "
+              "guía con grounding verificado (mapeo + umbrales)")
         return 0
 
     # FPA-006: schema validation con exit non-zero y campos fallidos listados

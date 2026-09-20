@@ -48,7 +48,7 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   magnitud modelada y una observada, así que en meses de cash bajo lo domina
   el denominador. Reportarlo como distribución por mes, no como un punto.
   Reconciliar el ledger (real) por separado del medidor de uso (efectivo),
-  como manda la higiene FP&A normal.
+  como manda la buena práctica financiera.
 
 ### 2. Costo por 1k interacciones (FPA-033, 034)
 
