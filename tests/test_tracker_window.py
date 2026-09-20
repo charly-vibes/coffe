@@ -117,7 +117,7 @@ class TestInWindow(unittest.TestCase):
 # ============================ filter_sessions ============================
 
 def session(first, last=None, **kw):
-    s = {"project": "charly-coffe", "first_ts": first,
+    s = {"project": "charly-coffee", "first_ts": first,
          "first_ts_full": f"{first}T10:00:00+00:00", "duration_msgs": 10,
          "n_turns": 5, "n_tools": 2, "n_skills": 0, "n_errors": 0,
          "n_compactions": 0, "has_agent": False}
@@ -157,7 +157,7 @@ class TestFilterSessions(unittest.TestCase):
         self.assertEqual(ut.filter_sessions([s], date(2026, 6, 1), None), [])
 
     def test_session_sin_timestamps_no_crashea(self):
-        s = {"project": "charly-coffe", "first_ts": "", "last_ts_full": None}
+        s = {"project": "charly-coffee", "first_ts": "", "last_ts_full": None}
         # sin fechas no se puede ubicar: se conserva (extractores ya filtran
         # filas por fecha; una sesión sin fecha no se descarta silenciosamente)
         self.assertEqual(ut.filter_sessions([s], date(2026, 5, 1), date(2026, 5, 31)), [s])
@@ -188,7 +188,7 @@ class TestExtractorsWindow(unittest.TestCase):
         return e
 
     def _fake_claude_dir(self):
-        d = Path(tempfile.mkdtemp()) / "projects" / "charly-coffe"
+        d = Path(tempfile.mkdtemp()) / "projects" / "charly-coffee"
         d.mkdir(parents=True)
         lines = [
             self._claude_entry("2026-04-20T10:00:00Z", "user"),       # fuera (antes)
@@ -201,7 +201,7 @@ class TestExtractorsWindow(unittest.TestCase):
         return d.parents[1]
 
     def _fake_pi_dir(self):
-        d = Path(tempfile.mkdtemp()) / "sessions" / "charly-coffe"
+        d = Path(tempfile.mkdtemp()) / "sessions" / "charly-coffee"
         d.mkdir(parents=True)
         lines = [
             {"type": "message", "timestamp": "2026-04-20T10:00:00Z",
@@ -253,11 +253,11 @@ class TestExtractorsWindow(unittest.TestCase):
         d = Path(tempfile.mkdtemp())
         (d / "dashboard-cache.json").write_text(json.dumps({
             "entries": {
-                "a": {"source": "claude", "project": "charly-coffe",
+                "a": {"source": "claude", "project": "charly-coffee",
                       "first_ts": "2026-04-30T22:00:00Z",
                       "last_ts": "2026-05-02T01:00:00Z",
                       "user_messages": 5, "turns": [1, 2]},
-                "b": {"source": "claude", "project": "charly-coffe",
+                "b": {"source": "claude", "project": "charly-coffee",
                       "first_ts": "2026-06-10T10:00:00Z",
                       "last_ts": "2026-06-10T11:00:00Z",
                       "user_messages": 1, "turns": [1]},

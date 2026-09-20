@@ -129,7 +129,7 @@ def f2_fixture():
         "sessions": {"total_sessions": 8},
         "multitasking": {}, "project_daily": {},
         "project_monthly": {
-            "charly-coffe": {"2026-05": {"interactions": 55, "cost_effective": 30.0},
+            "charly-coffee": {"2026-05": {"interactions": 55, "cost_effective": 30.0},
                              "2026-06": {"interactions": 60, "cost_effective": 40.0},
                              "2026-07": {"interactions": 30, "cost_effective": 15.0}},
             "charly-atril": {"2026-05": {"interactions": 35, "cost_effective": 15.0},
@@ -139,7 +139,7 @@ def f2_fixture():
         },
         # consistente con project_monthly (roll-up del drill, FPA-021)
         "project_models": {
-            "charly-coffe": {"claude-sonnet-4-6": {"interactions": 70, "cost_effective": 60.0},
+            "charly-coffee": {"claude-sonnet-4-6": {"interactions": 70, "cost_effective": 60.0},
                              "claude-opus-4.7": {"interactions": 75, "cost_effective": 25.0}},
             "charly-atril": {"gpt-5.4": {"interactions": 145, "cost_effective": 55.0}},
             "proyecto-externo": {"gpt-5.4": {"interactions": 10, "cost_effective": 5.0}},
@@ -240,7 +240,7 @@ class TestPortfolioTree(F2Base):
         """FPA-021/027: drill Project→Model solo en la vista 'all'."""
         full = self.model["views"]["all"]["trees"]["portfolio"]
         charly = next(c for c in full["children"] if c["label"] == "charly")
-        coffee = next(c for c in charly["children"] if c["label"] == "charly-coffe")
+        coffee = next(c for c in charly["children"] if c["label"] == "charly-coffee")
         self.assertEqual({"claude-sonnet-4-6", "claude-opus-4.7"},
                          {c["label"] for c in coffee["children"]})
         for c in coffee["children"]:

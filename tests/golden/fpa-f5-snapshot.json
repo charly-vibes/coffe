@@ -267,7 +267,7 @@
         {
           "first_seen": "2026-07-01",
           "last_seen": "2026-07-10",
-          "name": "charly-coffe",
+          "name": "charly-coffee",
           "status": "new"
         },
         {
@@ -290,7 +290,7 @@
         {
           "cost": 90.0,
           "cumulative_share": 0.45,
-          "name": "charly-coffe",
+          "name": "charly-coffee",
           "share": 0.45
         },
         {
@@ -405,7 +405,7 @@
           "cost": null,
           "cost_reason": "el tracker no emite coste por sesión (FPA-116/117)",
           "date": "2026-05-12",
-          "project": "charly-coffe",
+          "project": "charly-coffee",
           "turns": 260
         },
         {

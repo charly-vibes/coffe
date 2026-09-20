@@ -38,7 +38,7 @@ def load_tracker():
 ut = load_tracker()
 
 
-def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe", tool="claude-cli",
+def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffee", tool="claude-cli",
         model_raw="claude-sonnet-4-6", **kw):
     """Row sintético con el shape exacto que producen los extractores."""
     base = {
@@ -57,16 +57,16 @@ def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe", tool="claude-cli
 def synthetic_rows():
     """3 rows: 2 proyectos, 2 meses, 1 hora compartida (multitasking)."""
     return [
-        row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe"),
+        row(ts="2026-05-10T14:23:00+00:00", project="charly-coffee"),
         row(ts="2026-05-10T14:40:00+00:00", project="charly-atril", tool="codex",
             model_raw="gpt-5.4", model_family="codex", model_version="gpt-5.4"),
-        row(ts="2026-06-01T09:00:00+00:00", project="charly-coffe"),
+        row(ts="2026-06-01T09:00:00+00:00", project="charly-coffee"),
     ]
 
 
 def synthetic_sessions():
     return [
-        {"project": "charly-coffe", "first_ts": "2026-05-10", "duration_msgs": 10,
+        {"project": "charly-coffee", "first_ts": "2026-05-10", "duration_msgs": 10,
          "n_turns": 5, "n_tools": 2, "n_skills": 1, "n_errors": 0,
          "n_compactions": 0, "has_agent": False},
         {"project": "charly-atril", "first_ts": "2026-05-10", "duration_msgs": 300,
@@ -110,26 +110,28 @@ class TestPureFunctions(unittest.TestCase):
         self.assertEqual(ut.model_details("algo-desconocido")[0], "other")
 
     def test_clean_proj_name_strips_path_prefix(self):
-        self.assertEqual(
-            ut.clean_proj_name("-var-home-sasha-para-areas-dev-gh-charly-coffe"),
-            "charly-coffe")
-
-    def test_clean_proj_name_strips_renamed_dir(self):
-        # repo renombrado coffe→coffee: el dir nuevo mapea al label histórico
+        # logs históricos (path pre-rename) derivan el label viejo y se
+        # canonicalizan al nombre corregido (bd coffe-85z)
         self.assertEqual(
             ut.clean_proj_name("-var-home-sasha-para-areas-dev-gh-charly-coffee"),
-            "charly-coffe")
+            "charly-coffee")
+
+    def test_clean_proj_name_strips_renamed_dir(self):
+        # dir local post-rename y label histórico convergen al mismo label
+        self.assertEqual(
+            ut.clean_proj_name("-var-home-sasha-para-areas-dev-gh-charly-coffee"),
+            "charly-coffee")
 
     def test_clean_proj_name_aliases(self):
         self.assertEqual(ut.clean_proj_name("charly-mibilioteca"), "charly-miblioteca")
         self.assertEqual(ut.clean_proj_name("sk-sxAct"), "sk-XAct-jl")
-        self.assertEqual(ut.clean_proj_name("charly-coffee"), "charly-coffe")
+        self.assertEqual(ut.clean_proj_name("charly-coffee"), "charly-coffee")
 
     def test_clean_proj_name_julia_repos(self):
         self.assertEqual(ut.clean_proj_name("-sk-REPLy.jl"), "sk-REPLy-jl")
 
     def test_is_charly(self):
-        self.assertTrue(ut.is_charly("charly-coffe"))
+        self.assertTrue(ut.is_charly("charly-coffee"))
         self.assertTrue(ut.is_charly("sk-XAct-jl"))
         self.assertFalse(ut.is_charly("otro-proyecto"))
 
@@ -349,7 +351,7 @@ class TestAggregate(unittest.TestCase):
 
     def test_project_daily_dense_matrix(self):
         pd_ = self.report["project_daily"]
-        self.assertEqual(set(pd_["matrix"].keys()), {"charly-coffe", "charly-atril"})
+        self.assertEqual(set(pd_["matrix"].keys()), {"charly-coffee", "charly-atril"})
         for p, series in pd_["matrix"].items():
             self.assertEqual(len(series), len(pd_["days"]))  # densa, sin huecos
         # días continuos: 2026-05-10 → 2026-06-01 = 23 días

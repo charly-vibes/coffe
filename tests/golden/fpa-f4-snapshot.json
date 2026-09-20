@@ -55,14 +55,14 @@
       },
       "evidence": {
         "projects": [
-          "charly-coffe",
+          "charly-coffee",
           "charly-atril",
           "proyecto-externo"
         ],
         "threshold_pct": 50.0,
         "top3_share": 1.0
       },
-      "message": "Top-3 proyectos concentran 100.0% del efectivo (umbral 50%): charly-coffe ($85.00), charly-atril ($55.00), proyecto-externo ($5.00)",
+      "message": "Top-3 proyectos concentran 100.0% del efectivo (umbral 50%): charly-coffee ($85.00), charly-atril ($55.00), proyecto-externo ($5.00)",
       "rule": "concentration",
       "severity": "medium"
     },

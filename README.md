@@ -22,6 +22,7 @@ de los últimos meses.
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 | `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
 | `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard FP&A (presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON, FPA-143). |
+| `scripts/viz-index.py` | Genera `index.html`: entrada del sitio en Pages (estética 90s-corporate). Deriva las cifras del marquee y la fecha de actualización del reporte, así el índice nunca queda stale. Se regenera en el deploy de CI. |
 
 ### Datos generados
 
@@ -93,10 +94,10 @@ Cifras actuales del reporte, verificadas por
 `python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
 (FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
 
-- Interacciones: 141,549
+- Interacciones: 141,851
 - Proyectos: 42
-- Costo efectivo: $3,814.20
-- Costo real: $564.86
+- Costo efectivo: $3,814.72
+- Costo real: $565.38
 - Cash real (ledger): $1,086.73
 - Sesiones: 1,884
 - Periodo: 2026-01-11 → 2026-09-20

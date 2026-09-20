@@ -43,7 +43,7 @@ def _validate(self, doc):
 
 def rows():
     """Dos interacciones, dos modelos, un mes."""
-    base = {"source": "test", "tool": "claude-cli", "project": "charly-coffe",
+    base = {"source": "test", "tool": "claude-cli", "project": "charly-coffee",
             "model_family": "claude", "model_version": "sonnet-4.6",
             "hour": "2026-05-10T14", "input_tokens": 1000, "output_tokens": 500,
             "cache_read_tokens": 0, "cache_write_tokens": 0,
@@ -85,7 +85,7 @@ class TestConcurrencyReason(unittest.TestCase):
     """coffe-6i8: reason es null cuando el pico SÍ es computable."""
 
     def test_peak_computable_reason_null_valida(self):
-        sessions = [_session("charly-coffe", "2026-05-10T14:00:00+00:00",
+        sessions = [_session("charly-coffee", "2026-05-10T14:00:00+00:00",
                              "2026-05-10T15:00:00+00:00"),
                     _session("charly-atril", "2026-05-10T14:30:00+00:00",
                              "2026-05-10T15:30:00+00:00")]
@@ -97,7 +97,7 @@ class TestConcurrencyReason(unittest.TestCase):
 
     def test_peak_na_razon_no_vacia(self):
         """FPA-008: n/a siempre con razón — nunca vacío."""
-        sessions = [_session("charly-coffe", None, None)]
+        sessions = [_session("charly-coffee", None, None)]
         ps = ut.aggregate(rows(), sessions)["concurrency"]["peak_simultaneous_sessions"]
         self.assertIsNone(ps["peak"])
         self.assertTrue(ps["reason"])

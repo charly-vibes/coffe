@@ -100,7 +100,7 @@ def f5_fixture():
                                 "101-300": 2},
         "top_longest_by_turns": [
             {"turns": 260, "msgs": 180, "date": "2026-05-12",
-             "project": "charly-coffe"},
+             "project": "charly-coffee"},
             {"turns": 120, "msgs": 80, "date": "2026-06-03",
              "project": "charly-atril"},
         ],
@@ -108,7 +108,7 @@ def f5_fixture():
     fx["sessions_monthly"] = {"2026-05": {"total": 10, "with_agent": 2},
                               "2026-06": {"total": 10, "with_agent": 3}}
     fx["projects"] = {
-        "charly-coffe": {"cost_effective": 90.0, "first_seen": "2026-07-01",
+        "charly-coffee": {"cost_effective": 90.0, "first_seen": "2026-07-01",
                          "last_seen": "2026-07-10"},
         "charly-atril": {"cost_effective": 60.0, "first_seen": "2026-05-01",
                          "last_seen": "2026-06-01"},
@@ -323,7 +323,7 @@ class TestSessions(F5Base):
         sesión no lo emite el tracker → None con razón (FPA-008)."""
         longest = self.usage["sessions"]["longest"]
         self.assertEqual(260, longest[0]["turns"])
-        self.assertEqual("charly-coffe", longest[0]["project"])
+        self.assertEqual("charly-coffee", longest[0]["project"])
         self.assertIsNone(longest[0]["cost"])
         self.assertTrue(longest[0]["cost_reason"])
 
@@ -493,7 +493,7 @@ class TestLifecycle(F5Base):
         dormant >30 días sin actividad."""
         status = {p["name"]: p["status"]
                   for p in self.usage["lifecycle"]["projects"]}
-        self.assertEqual("new", status["charly-coffe"])       # 9 días
+        self.assertEqual("new", status["charly-coffee"])       # 9 días
         self.assertEqual("dormant", status["charly-atril"])   # 39 días
         self.assertEqual("active", status["charly-dont"])
         self.assertEqual("active", status["proyecto-externo"])
@@ -528,7 +528,7 @@ class TestLifecycle(F5Base):
         status = {p["name"]: p["status"]
                   for p in usage["lifecycle"]["projects"]}
         # coffe: 9 días ya no es new (new_days=5); atril: 39 días dormant
-        self.assertEqual("active", status["charly-coffe"])
+        self.assertEqual("active", status["charly-coffee"])
         self.assertEqual("dormant", status["charly-atril"])
 
     def test_overlay_repos_na(self):
@@ -552,7 +552,7 @@ class TestPareto(F5Base):
         """FPA-028: proyectos ordenados por coste desc con share y
         cumulative share."""
         rows = self.usage["pareto"]["rows"]
-        self.assertEqual(["charly-coffe", "charly-atril", "charly-dont",
+        self.assertEqual(["charly-coffee", "charly-atril", "charly-dont",
                           "proyecto-externo"], [r["name"] for r in rows])
         self.assertAlmostEqual(0.45, rows[0]["share"], places=6)
         self.assertAlmostEqual(0.45, rows[0]["cumulative_share"], places=6)

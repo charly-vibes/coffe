@@ -809,7 +809,7 @@
           "interactions": 2,
           "list": [
             "charly-atril",
-            "charly-coffe"
+            "charly-coffee"
           ],
           "projects": 2
         },
@@ -817,7 +817,7 @@
           "date": "2026-06-01",
           "interactions": 1,
           "list": [
-            "charly-coffe"
+            "charly-coffee"
           ],
           "projects": 1
         }
@@ -839,7 +839,7 @@
         ],
         "projects": [
           "charly-atril",
-          "charly-coffe"
+          "charly-coffee"
         ]
       },
       "pct_hours_multitasking": 50.0,
@@ -848,14 +848,14 @@
           "hour": "2026-05-10 11:00",
           "list": [
             "charly-atril",
-            "charly-coffe"
+            "charly-coffee"
           ],
           "projects": 2
         },
         {
           "hour": "2026-06-01 06:00",
           "list": [
-            "charly-coffe"
+            "charly-coffee"
           ],
           "projects": 1
         }
@@ -915,7 +915,7 @@
         0,
         0
       ],
-      "charly-coffe": [
+      "charly-coffee": [
         1,
         0,
         0,
@@ -949,7 +949,7 @@
         "interactions": 1
       }
     },
-    "charly-coffe": {
+    "charly-coffee": {
       "claude-sonnet-4-6": {
         "cost_effective": 0.02,
         "interactions": 2
@@ -963,7 +963,7 @@
         "interactions": 1
       }
     },
-    "charly-coffe": {
+    "charly-coffee": {
       "2026-05": {
         "cost_effective": 0.01,
         "interactions": 1
@@ -1002,7 +1002,7 @@
         "codex": 1
       }
     },
-    "charly-coffe": {
+    "charly-coffee": {
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.02,
@@ -1039,7 +1039,7 @@
       {
         "date": "2026-05-10",
         "msgs": 10,
-        "project": "charly-coffe",
+        "project": "charly-coffee",
         "turns": 5
       }
     ],

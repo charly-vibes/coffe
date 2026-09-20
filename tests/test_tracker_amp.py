@@ -43,7 +43,7 @@ class TestAmpProjFromUri(unittest.TestCase):
         self.assertEqual(
             ut.amp_proj_from_uri(
                 "file:///var/home/sasha/para/areas/dev/gh/charly/coffe/a.py"),
-            "charly-coffe")
+            "charly-coffee")
 
     def test_repo_sk_con_sufijo_jl(self):
         # REPLy.jl → REPLy-jl, igual que clean_proj_name (convención repos Julia)
@@ -60,7 +60,7 @@ class TestAmpProjFromUri(unittest.TestCase):
         # la derivación no depende del esquema: basta el marker para/areas/dev/gh
         self.assertEqual(
             ut.amp_proj_from_uri("/para/areas/dev/gh/charly/coffe/a.py"),
-            "charly-coffe")
+            "charly-coffee")
 
     def test_uri_vacio_da_none(self):
         self.assertIsNone(ut.amp_proj_from_uri(""))
@@ -96,7 +96,7 @@ class TestExtractAmp(unittest.TestCase):
             self._entry("file:///var/home/sasha/para/areas/dev/gh/phorma/site/x.html"))
         rows = ut.extract_amp()
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["project"], "charly-coffe")
+        self.assertEqual(rows[0]["project"], "charly-coffee")
 
     def test_filter_all_incluye_otros_proyectos(self):
         # el bug del ticket: con --filter all Amp seguía filtrado hardcode
@@ -113,7 +113,7 @@ class TestExtractAmp(unittest.TestCase):
             self._entry("file:///var/home/sasha/para/areas/dev/gh/charly/coffe/a.py"))
         rows = ut.extract_amp()
         self.assertNotEqual(rows[0]["project"], "charly/amp-auto")
-        self.assertEqual(rows[0]["project"], "charly-coffe")
+        self.assertEqual(rows[0]["project"], "charly-coffee")
 
     def test_uri_no_derivable_caen_en_amp_unknown(self):
         ut.CHARLY_FILTER = False
@@ -132,7 +132,7 @@ class TestExtractAmp(unittest.TestCase):
                         "2026-05-10T11:00:00+00:00"))
         rows = ut.extract_amp()
         projs = sorted(r["project"] for r in rows)
-        self.assertEqual(projs, ["charly-coffe", "sk-REPLy-jl"])
+        self.assertEqual(projs, ["charly-coffee", "sk-REPLy-jl"])
 
     def test_row_shape_igual_al_resto(self):
         ut.CHARLY_FILTER = True

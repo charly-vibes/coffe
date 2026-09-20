@@ -52,7 +52,7 @@ def load_tracker():
 ut = load_tracker()
 
 
-def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe",
+def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffee",
         tool="claude-cli", model_raw="claude-sonnet-4-6", **kw):
     """Row sintético con el shape exacto que producen los extractores."""
     base = {

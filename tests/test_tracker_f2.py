@@ -33,7 +33,7 @@ def load_tracker():
 ut = load_tracker()
 
 
-def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe", tool="claude-cli",
+def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffee", tool="claude-cli",
         model_raw="claude-sonnet-4-6", kind="assistant_turn", **kw):
     base = {
         "source": "test", "tool": tool, "model_raw": model_raw,
@@ -51,12 +51,12 @@ def row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe", tool="claude-cli
 def f2_rows():
     """2 meses, 2 tools, 2 modelos, 2 proyectos, kinds mezclados."""
     return [
-        row(ts="2026-05-10T14:23:00+00:00", project="charly-coffe",
+        row(ts="2026-05-10T14:23:00+00:00", project="charly-coffee",
             kind="tool_call"),
         row(ts="2026-05-11T09:00:00+00:00", project="charly-atril", tool="codex",
             model_raw="gpt-5.4", model_family="codex", model_version="gpt-5.4",
             kind="assistant_turn", input_tokens=0, output_tokens=0),
-        row(ts="2026-06-01T09:00:00+00:00", project="charly-coffe",
+        row(ts="2026-06-01T09:00:00+00:00", project="charly-coffee",
             kind="tool_call", input_tokens=2000, output_tokens=800),
     ]
 
@@ -72,10 +72,10 @@ def f2_excluded():
 
 def f2_sessions():
     return [
-        {"project": "charly-coffe", "first_ts": "2026-05-10", "duration_msgs": 10,
+        {"project": "charly-coffee", "first_ts": "2026-05-10", "duration_msgs": 10,
          "n_turns": 5, "n_tools": 2, "n_skills": 1, "n_errors": 0,
          "n_compactions": 0, "has_agent": False},
-        {"project": "charly-coffe", "first_ts": "2026-06-01", "duration_msgs": 30,
+        {"project": "charly-coffee", "first_ts": "2026-06-01", "duration_msgs": 30,
          "n_turns": 40, "n_tools": 3, "n_skills": 0, "n_errors": 0,
          "n_compactions": 0, "has_agent": True},
     ]
@@ -125,9 +125,9 @@ class TestProjectMonthly(unittest.TestCase):
 
     def test_project_monthly_existe_y_suma(self):
         pm = self.report["project_monthly"]
-        self.assertEqual({"charly-coffe", "charly-atril"}, set(pm))
-        self.assertEqual(1, pm["charly-coffe"]["2026-05"]["interactions"])
-        self.assertEqual(1, pm["charly-coffe"]["2026-06"]["interactions"])
+        self.assertEqual({"charly-coffee", "charly-atril"}, set(pm))
+        self.assertEqual(1, pm["charly-coffee"]["2026-05"]["interactions"])
+        self.assertEqual(1, pm["charly-coffee"]["2026-06"]["interactions"])
 
     def test_project_monthly_rollup_vs_monthly(self):
         """FPA-025 (base): suma de project_monthly = total mensual."""
@@ -139,8 +139,8 @@ class TestProjectMonthly(unittest.TestCase):
     def test_project_models_para_drill(self):
         """FPA-021: proyecto → modelo con interacciones y coste."""
         pm = self.report["project_models"]
-        self.assertIn("charly-coffe", pm)
-        self.assertIn("claude-sonnet-4-6", pm["charly-coffe"])
+        self.assertIn("charly-coffee", pm)
+        self.assertIn("claude-sonnet-4-6", pm["charly-coffee"])
 
 
 class TestPayPerToken(unittest.TestCase):
@@ -213,7 +213,7 @@ class TestConcurrency(unittest.TestCase):
 
     def test_concurrency_block_labeled(self):
         sessions = [
-            {"project": "charly-coffe", "first_ts": "2026-05-10T14:00:00+00:00",
+            {"project": "charly-coffee", "first_ts": "2026-05-10T14:00:00+00:00",
              "last_ts": "2026-05-10T14:30:00+00:00", "duration_msgs": 10,
              "n_turns": 5, "n_tools": 2, "n_skills": 1, "n_errors": 0,
              "n_compactions": 0, "has_agent": False},
