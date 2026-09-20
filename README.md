@@ -127,6 +127,31 @@ y difieren porque las cuotas implícitas son un calendario, no un gasto.
 - **38 proyectos charly** (tras normalizar nombres duplicados entre fuentes; antes contaban 59)
 - **38 proyectos:** miblioteca ($870), atril ($471), dont ($403) top 3
 
+### ⚠️ Alcance de las métricas de sesión (sesgo conocido, coffe-i31)
+
+- **Las métricas de sesión son solo de Claude Code.** `extract_session_stats()`
+  lee `~/.claude/dashboard-cache.json` (fuente histórica superior: Claude Code
+  rota/borra los JSONL viejos del disco) — las ~557 sesiones Pi charly/sk desde
+  enero 2026 no están en `sessions`, buckets FPA-116, `/clear` per 100
+  (FPA-117/118) ni concurrencia (FPA-120). El dashboard las presenta como
+  globales sin nota de provenance: subestimadas ~30%.
+- **`/clear` es de Claude Code; Pi usa `/new`** ("Start a new session") y el
+  TUI lo intercepta — nunca aparece como user message en el JSONL de Pi. El
+  contador de `commands` (solo `~/.claude/history.jsonl`) no ve comandos de Pi.
+- **Semántica distinta:** en Claude Code `/clear` resetea contexto *dentro* del
+  mismo archivo de sesión; en Pi cada `/new` abre archivo nuevo — la señal de
+  reset correcta para Pi es el conteo de archivos por proyecto.
+- **`path-cli` (crate [toolpath](https://github.com/empathic/toolpath)):**
+  evaluado como fuente de sesiones Pi (spike 2026-09-20). SÍ sirve:
+  `path p cache sync` → `~/.toolpath/documents/*.json` con `token_usage`
+  por paso, modelo, timestamps, `working_dir` y el árbol de sesiones Pi
+  preservado (semántica correcta para FPA-116/120). NO reemplaza al tracker:
+  solo ve 107 sesiones Claude (las on-disk) vs 1,884 del dashboard-cache, no
+  soporta Amp, y el schema (`agent-coding-session/v1.x`) evoluciona rápido —
+  cualquier uso requiere preflight (binario, versión de kind, frescura del
+  cache). Plan: híbrido — Pi vía cache toolpath (o conteo de archivos como v1),
+  Claude vía dashboard-cache, Amp hand-rolled, provenance por fuente.
+
 ## Lo único que sigue sin resolver
 
 - **Enero 1-10.** Información no disponible. Los primeros commits (jams, fabbro) son del 6-7 de enero pero no hay logs de qué herramienta se usó. Amp arranca recién el 11. Posiblemente Claude Code sin persistencia de sesiones en ese entonces.
