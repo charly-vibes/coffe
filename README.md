@@ -97,9 +97,16 @@ Cifras actuales del reporte, verificadas por
 - Proyectos: 42
 - Costo efectivo: $3,812.88
 - Costo real: $611.62
+- Cash real (ledger): n/a
 - Sesiones: 1,884
 - Periodo: 2026-01-11 → 2026-09-20
 <!-- CHECK-DOCS:END -->
+
+Nota: `Costo real` es la suma mensual del tracker (fees implícitos del
+calendario + p2p tracker, *assumed*); `Cash real (ledger)` es la cifra
+nueva de coffe-a31.3 y queda `n/a` porque el reporte commiteado todavía
+no incluye el ledger `data/charges.json` (se refresca en CRG-F3 /
+coffe-a31.4; el dashboard ya lo consume con provenance *reported*).
 
 ### ✅ Extraído y documentado
 

@@ -100,33 +100,60 @@ class TestAlertEngine(unittest.TestCase):
 # ======================================================================
 
 class TestVerifyPlan(unittest.TestCase):
-    """FPA-081: Claude efectivo ÷ precio del plan > 25× → alerta."""
+    """FPA-081: Claude efectivo ÷ precio del plan > 25× → alerta.
+
+    coffe-a31.3 (calendario corregido): un mes con uso de Claude sin plan
+    que lo cubra también dispara la alerta (jun/jul del fixture; el caso
+    real es jun-sep 2026)."""
 
     def setUp(self):
         self.fx = f2.f2_fixture()
 
-    def _with_claude_cost(self, cost):
+    def _with_claude_cost(self, cost, jun=None, jul=None):
         fx = self.fx
         fx["monthly"]["2026-05"]["tools"]["claude-cli"]["cost_effective"] = cost
+        if jun is not None:
+            fx["monthly"]["2026-06"]["tools"]["claude-cli"]["cost_effective"] = jun
+        if jul is not None:
+            fx["monthly"]["2026-07"]["tools"]["claude-cli"]["cost_effective"] = jul
         return fx
 
     def test_no_fira_bajo_umbral(self):
-        alerts = viz.build_alerts(self._with_claude_cost(40.0), CONFIG, today=TODAY)
+        """Sin excedente en ningún mes ni meses sin plan con uso → sin alerta."""
+        alerts = viz.build_alerts(self._with_claude_cost(40.0, jun=0.0, jul=0.0),
+                                  CONFIG, today=TODAY)
         self.assertNotIn("verify-plan", _rules(alerts))
 
     def test_fira_sobre_umbral(self):
         """3000 efectivo ÷ $20 (mayo inicia en Pro tras el 19-05,
-        calendario corregido a facturas) = 150× > 25×."""
+        calendario corregido a facturas) = 150× > 25×; además jun/jul
+        tienen uso de Claude sin plan activo → 3 alertas."""
         alerts = viz.build_alerts(self._with_claude_cost(3000.0), CONFIG, today=TODAY)
         ev = _by_rule(alerts, "verify-plan")
-        self.assertEqual(1, len(ev))
-        self.assertEqual("2026-05", ev[0]["evidence"]["month"])
-        self.assertEqual(150.0, ev[0]["evidence"]["multiple"])
+        self.assertEqual(3, len(ev))
+        may = next(a for a in ev if a["evidence"]["month"] == "2026-05")
+        self.assertEqual(150.0, may["evidence"]["multiple"])
+        for a in ev:
+            if a["evidence"]["month"] != "2026-05":
+                self.assertIsNone(a["evidence"]["multiple"])
+                self.assertEqual(0.0, a["evidence"]["plan_fee"])
 
     def test_umbral_configurable(self):
-        fx = self._with_claude_cost(2000.0)  # 2000 ÷ $20 = 100× (no > 100)
+        fx = self._with_claude_cost(2000.0, jun=0.0, jul=0.0)  # 100× (no > 100)
         alerts = viz.build_alerts(fx, _cfg(plan_usage_multiple=100.0), today=TODAY)
         self.assertNotIn("verify-plan", _rules(alerts))
+
+    def test_sin_plan_activo_fira(self):
+        """coffe-a31.3: jun/jul con uso de Claude y sin plan que cubra el
+        mes (calendario corregido: claude cancelado tras jun) → alerta."""
+        alerts = viz.build_alerts(self._with_claude_cost(40.0), CONFIG, today=TODAY)
+        ev = _by_rule(alerts, "verify-plan")
+        meses = {a["evidence"]["month"] for a in ev}
+        self.assertEqual({"2026-06", "2026-07"}, meses)
+        for a in ev:
+            self.assertEqual("high", a["severity"])
+            self.assertEqual(0.0, a["evidence"]["plan_fee"])
+            self.assertIsNone(a["evidence"]["multiple"])
 
 
 class TestReconciliation(unittest.TestCase):

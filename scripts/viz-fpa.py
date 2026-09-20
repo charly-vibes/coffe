@@ -54,6 +54,46 @@ MONTH_SHORT = {"01": "ene", "02": "feb", "03": "mar", "04": "abr",
 
 
 # ======================================================================
+# Ledger de cargos reales (coffe-a31.3, CRG-F2; epic coffe-a31 FPA-013/082)
+# cash cost = cargos reales del ledger data/charges.json (*reported*).
+# Efectivo (tracker) y cash (ledger) jamás se suman (FPA-002).
+# ======================================================================
+
+def _charges_state(report):
+    """Estado del ledger en el reporte: (by_month, provenance, source, reason).
+
+    by_month: {provider: {YYYY-MM: amount}} tal como lo emite el tracker
+    (solo kinds IA; api_cycle aporta $0 y storage queda fuera). Si el
+    reporte no trae el ledger (shape previo a coffe-a31.2 o ledger
+    ilegible), provenance = "unavailable" y razón no vacía (FPA-008):
+    el cash cae al fallback del tracker con provenance *assumed*.
+    """
+    meta = report.get("metadata", {}) or {}
+    by_month = report.get("charges_real_by_month") or {}
+    source = meta.get("charges_source") or "data/charges.json"
+    if meta.get("charges_provenance") == "reported" and isinstance(by_month, dict):
+        return {"by_month": by_month, "provenance": "reported",
+                "source": source, "reason": None}
+    return {"by_month": {}, "provenance": "unavailable",
+            "source": source,
+            "reason": (meta.get("charges_reason")
+                       or "el reporte no incluye el ledger de cargos reales "
+                       "(shape previo a coffe-a31.2); cash = suma del tracker "
+                       "(assumed)")}
+
+
+def _charges_cash_by_ym(report):
+    """{ym: cash real del ledger} restringido a los meses del reporte.
+    Refund negativo descuenta (dinero devuelto, no gastado)."""
+    state = _charges_state(report)
+    out = {}
+    for ym in report.get("monthly", {}):
+        out[ym] = round(sum(pv.get(ym, 0.0) or 0.0
+                            for pv in state["by_month"].values()), 2)
+    return out
+
+
+# ======================================================================
 # Formatos (FPA-095): USD con separadores, enteros con separadores
 # ======================================================================
 
@@ -101,20 +141,39 @@ def build_months(report):
 
     has_data=False marca meses sin datos (FPA-017): se excluyen de trends y
     unit-cost; el generador los muestra con marker n/a.
+
+    coffe-a31.3 (CRG-F2, FPA-031 cambia de semántica): cost_cash = cargos
+    reales del ledger (*reported*, con refund que descuenta); sin ledger
+    en el reporte, fallback a la suma del tracker con provenance *assumed*
+    y razón (FPA-008). Efectivo y cash jamás se suman (FPA-002).
     """
     end = report["metadata"]["date_range"]["end"]
+    state = _charges_state(report)
+    cash_by_ym = _charges_cash_by_ym(report)
     months = []
     for ym in sorted(report["monthly"].keys()):
         mo = report["monthly"][ym]
         total_days = month_total_days(ym)
         last = date.fromisoformat(end) if end else None
         partial = last is not None and end[:7] == ym and last.day < total_days
+        if state["provenance"] == "reported":
+            cash = cash_by_ym[ym]
+            cash_prov, cash_reason = "reported", None
+            charges_prov = {p: round(pv[ym], 2) for p, pv in
+                            state["by_month"].items() if ym in pv}
+        else:
+            cash = mo["cost_real"]
+            cash_prov, cash_reason = "assumed", state["reason"]
+            charges_prov = None
         months.append({
             "ym": ym,
             "label": month_label(ym),
             "interactions": mo["interactions"],
             "cost_effective": mo["cost_effective"],
-            "cost_cash": mo["cost_real"],
+            "cost_cash": cash,
+            "cash_provenance": cash_prov,
+            "cash_reason": cash_reason,
+            "charges_by_provider": charges_prov,
             "subscription_fees": mo.get("subscription_fees", 0.0),
             "total_days": total_days,
             "elapsed": last.day if partial else total_days,
@@ -135,6 +194,8 @@ def build_headlines(report):
     eff = sum(m["cost_effective"] for m in months)
     cash = sum(m["cost_cash"] for m in months)
     n = len(months)
+    cash_reported = all(m["cash_provenance"] == "reported" for m in months) \
+        if months else False
 
     heads = []
 
@@ -154,10 +215,17 @@ def build_headlines(report):
         head("cost_effective", "Coste efectivo", None, "reported", "",
              reason="sin meses con datos en el reporte")
 
-    head("cost_cash", "Coste cash", cash, "reported",
-         f"cuotas de suscripción + cargas reales (≈ {fmt_usd(cash / n)}/mes)"
+    head("cost_cash", "Coste cash", cash if cash else None,
+         "reported" if cash_reported else "assumed",
+         (f"cargos reales del ledger ({_charges_state(report)['source']}) "
+          f"en {n} {'mes' if n == 1 else 'meses'} de datos "
+          f"(≈ {fmt_usd(cash / n)}/mes)") if cash_reported and cash > 0
+         else (f"cuotas de suscripción + cargas del tracker, sin ledger "
+               f"en el reporte (≈ {fmt_usd(cash / n)}/mes)")
          if cash > 0 else "",
          reason="sin meses con datos en el reporte" if n == 0
+         else "sin facturas en el periodo (ledger)"
+         if cash_reported and cash == 0
          else "sin cargas cash registradas" if cash == 0 else None)
 
     if eff > 0 and cash > 0:
@@ -244,6 +312,8 @@ def build_model(report, cfg):
         "bridge": build_bridge_section(report),
         "forecast": build_forecast(report, cfg),
         "usage": build_usage_patterns(report, cfg),
+        # coffe-a31.3 (CRG-F2): cash por proveedor y reconciliación FPA-082
+        "reconciliation": build_reconciliation(report),
     }
 
 
@@ -671,10 +741,11 @@ def build_forecast(report, cfg):
                  for m in base_months) / 3
     rate_base = eff_base / q_base if q_base else None
 
-    # cash base: cuota de suscripción del último mes + p2p implícito escalado
+    # cash base: p2p del cash real del último mes (ledger *reported* cuando
+    # hay ledger; suma tracker assumed si no) menos la cuota del calendario
     mo_last = report["monthly"][months[-1]["ym"]]
     fees_last = mo_last.get("subscription_fees", 0.0) or 0.0
-    p2p_last = max(mo_last["cost_real"] - fees_last, 0.0)
+    p2p_last = max(months[-1]["cost_cash"] - fees_last, 0.0)
     f_last = (months[-1]["total_days"] / months[-1]["elapsed"]
               if months[-1]["elapsed"] else 1.0)
     p2p_base = p2p_last * f_last
@@ -870,14 +941,34 @@ def _plan_fee_for_month(cfg, ym, tool="claude-cli"):
 
 def _check_verify_plan(report, cfg, months, alerts):
     """FPA-081: efectivo de Claude ÷ precio del plan > 25× → alerta.
-    "Revisar fechas del plan u otras cuentas pagas"."""
+    "Revisar fechas del plan u otras cuentas pagas".
+
+    coffe-a31.3 (calendario corregido a las facturas): un mes con uso de
+    Claude sin ningún plan que lo cubra (suscripción cancelada/expirada,
+    p.ej. jun-sep 2026) también dispara la alerta — el efectivo no está
+    respaldado por ninguna cuota. Solo con uso y sin calendario de claude
+    en el config no hay señal que fabricar."""
     th = _th(cfg, "plan_usage_multiple", 25.0)
+    calendario = cfg.get("subscriptions", {}).get("claude-cli", [])
+    tiene_calendario = any(e.get("monthly_fee", 0) > 0 for e in calendario)
     for m in months:
         eff = _tool_eff_month(report, m["ym"], "claude-cli")
         if not eff:
             continue
         fee = _plan_fee_for_month(cfg, m["ym"])
         if not fee:
+            if not tiene_calendario:
+                continue
+            alerts.append({
+                "severity": "high", "rule": "verify-plan",
+                "message": (f"{month_label(m['ym'])}: efectivo Claude "
+                            f"{fmt_usd(eff)} sin plan activo en el calendario "
+                            f"(suscripción cancelada/expirada) — revisar "
+                            f"fechas del plan u otras cuentas pagas"),
+                "evidence": {"month": m["ym"], "claude_eff": round(eff, 2),
+                             "plan_fee": 0.0, "multiple": None,
+                             "threshold": th},
+            })
             continue
         multiple = eff / fee
         if multiple > th:
@@ -895,36 +986,80 @@ def _check_verify_plan(report, cfg, months, alerts):
 
 
 def _check_reconciliation(report, cfg, alerts):
-    """FPA-082: coste cash reportado vs cargas implícitas del calendario.
+    """FPA-082: cash real del ledger (*reported*) vs cargas implícitas del
+    calendario (*assumed*) + p2p reportado del ledger.
 
-    Implícito = fees del calendario + cargas p2p del mes
-    (max(cost_real − fee, 0)). Con el tracker actual los fees ya van
-    plegados en cost_real y no hay discrepancia; el caso motivador
-    (README $65.58 vs ~$220) es un reporte donde el cash registrado no
-    incluye las cuotas del calendario."""
+    coffe-a31.3: con ledger disponible, por mes del reporte se compara
+    real = Σ cargos del ledger contra implícito = fees del calendario +
+    pay_per_token_charges (solo si es *reported*: los créditos/reembolsos
+    del ledger no son cargas del calendario, no se fabrican como
+    implícitos). El caso motivador queda resuelto con el calendario
+    corregido (jun 2026: real $0 vs implícito $0).
+
+    Sin ledger en el reporte → fallback al chequeo previo: cash del
+    tracker vs fees + p2p tracker (reportes de shape antiguo)."""
+    state = _charges_state(report)
+    tol = _th(cfg, "reconcile_tolerance_pct", 10.0) / 100.0
+    if state["provenance"] != "reported":
+        fees_by_month = report.get("subscription_fees_by_month") or {}
+        reported = implied = 0.0
+        for ym, mo in report["monthly"].items():
+            cash = mo.get("cost_real", 0.0) or 0.0
+            fee = fees_by_month.get(ym, 0.0) or 0.0
+            reported += cash
+            implied += fee + max(cash - fee, 0.0)
+        if implied <= 0:
+            return
+        diff_pct = abs(reported - implied) / implied
+        if diff_pct > tol:
+            alerts.append({
+                "severity": "high", "rule": "reconciliation",
+                "message": (f"Reconciliación: cash reportado {fmt_usd(reported)} "
+                            f"vs cargas implícitas del calendario "
+                            f"{fmt_usd(implied)} ({diff_pct * 100:.1f}% off, "
+                            f"tolerancia {tol * 100:.0f}%) — revisar suscripciones "
+                            f"o cargas no registradas"),
+                "evidence": {"reported": round(reported, 2),
+                             "implied": round(implied, 2),
+                             "diff_pct": round(diff_pct, 4),
+                             "tolerance_pct": tol * 100},
+            })
+        return
     fees_by_month = report.get("subscription_fees_by_month") or {}
     reported = implied = 0.0
+    divergentes = []
     for ym, mo in report["monthly"].items():
-        cash = mo.get("cost_real", 0.0) or 0.0
+        real = round(sum(pv.get(ym, 0.0) or 0.0
+                         for pv in state["by_month"].values()), 2)
+        p2p = ((mo.get("pay_per_token_charges") or 0.0)
+               if mo.get("pay_per_token_provenance") == "reported" else 0.0)
         fee = fees_by_month.get(ym, 0.0) or 0.0
-        reported += cash
-        implied += fee + max(cash - fee, 0.0)
-    tol = _th(cfg, "reconcile_tolerance_pct", 10.0) / 100.0
-    if implied <= 0:
+        imp = round(fee + p2p, 2)
+        reported += real
+        implied += imp
+        if abs(real - imp) > 0.005:
+            divergentes.append({"month": ym, "real": real, "implicit": imp})
+    if implied <= 0 and reported <= 0:
         return
-    diff_pct = abs(reported - implied) / implied
+    if implied > 0:
+        diff_pct = abs(reported - implied) / implied
+    else:
+        diff_pct = 1.0 if reported > 0 else 0.0
     if diff_pct > tol:
         alerts.append({
             "severity": "high", "rule": "reconciliation",
-            "message": (f"Reconciliación: cash reportado {fmt_usd(reported)} "
-                        f"vs cargas implícitas del calendario "
-                        f"{fmt_usd(implied)} ({diff_pct * 100:.1f}% off, "
-                        f"tolerancia {tol * 100:.0f}%) — revisar suscripciones "
-                        f"o cargas no registradas"),
+            "message": (f"Reconciliación: cash real del ledger "
+                        f"{fmt_usd(reported)} vs cargas implícitas del "
+                        f"calendario {fmt_usd(implied)} "
+                        f"({diff_pct * 100:.1f}% off, tolerancia "
+                        f"{tol * 100:.0f}%) — revisar suscripciones o "
+                        f"cargas no registradas"),
             "evidence": {"reported": round(reported, 2),
                          "implied": round(implied, 2),
                          "diff_pct": round(diff_pct, 4),
-                         "tolerance_pct": tol * 100},
+                         "tolerance_pct": tol * 100,
+                         "source": state["source"],
+                         "divergent_months": divergentes[:5]},
         })
 
 
@@ -1220,7 +1355,10 @@ def build_plan_economy(report, cfg):
             })
     plans.sort(key=lambda p: (p["tool"], p["start"]))
 
-    # FPA-132: 4 casos sobre el cash del periodo
+    # FPA-132: 4 casos sobre el cash del periodo. El caso actual usa el
+    # cash real (ledger *reported* cuando hay ledger; suma tracker si no) —
+    # la misma medida que los KPIs (coffe-a31.3).
+    cash_by_ym = {m["ym"]: m["cost_cash"] for m in build_months(report)}
     claude_fees = [e["monthly_fee"] for e in
                    cfg.get("subscriptions", {}).get("claude-cli", [])
                    if e.get("monthly_fee", 0) > 0]
@@ -1230,7 +1368,7 @@ def build_plan_economy(report, cfg):
     for ym, mo in sorted(report["monthly"].items()):
         if not mo["interactions"]:  # FPA-017
             continue
-        actual += mo.get("cost_real", 0.0) or 0.0
+        actual += cash_by_ym.get(ym, 0.0)
         all_p2p += mo.get("cost_effective", 0.0) or 0.0
         tools = mo.get("tools", {})
         claude_active = bool(tools.get("claude-cli"))
@@ -1259,6 +1397,58 @@ def build_plan_economy(report, cfg):
             "La equivalencia por coste efectivo ignora los usage limits del "
             "plan: un plan puede no alcanzar el consumo mostrado (FPA-133)."),
     }
+
+
+def build_reconciliation(report):
+    """coffe-a31.3 (CRG-F2): sección de reconciliación FPA-082.
+
+    - providers: cash real del ledger por proveedor dentro del periodo del
+      reporte (*reported*). Proveedor sin facturas en el periodo → n/a con
+      razón (FPA-008), nunca $0 inventado; mes sin factura de un proveedor
+      con facturas → $0 (la ausencia de factura es un dato, no un hueco).
+    - rows: por tool y mes, real pagado (*reported*) vs fee implícito del
+      calendario (*assumed*) vs efectivo estimado (*assumed*), tal como lo
+      emite el tracker (charges_reconciliation_by_month).
+
+    Sin ledger en el reporte → provenance unavailable + razón (FPA-008).
+    """
+    state = _charges_state(report)
+    meses = sorted(report.get("monthly", {}).keys())
+    if state["provenance"] != "reported":
+        return {"provenance": "unavailable", "source": state["source"],
+                "reason": state["reason"], "providers": [], "rows": [],
+                "months": meses}
+    providers = []
+    for prov in sorted(state["by_month"]):
+        serie = {ym: round(float(state["by_month"][prov].get(ym, 0.0) or 0.0), 2)
+                 for ym in meses}
+        tiene = any(ym in state["by_month"][prov] for ym in meses)
+        providers.append({
+            "provider": prov,
+            "months": serie,
+            "total_in_period": round(sum(serie.values()), 2) if tiene else None,
+            "n_a_reason": None if tiene else "sin facturas en el periodo",
+            "provenance": "reported",
+        })
+    rec = report.get("charges_reconciliation_by_month") or {}
+    rows = []
+    for ym in sorted(rec):
+        for tool in sorted(rec[ym]):
+            c = rec[ym][tool]
+            rows.append({
+                "ym": ym, "tool": tool,
+                "charges_real": round(float(c.get("charges_real", 0.0) or 0.0), 2),
+                "charges_provenance": "reported",
+                "subscription_fee_implicit": round(float(
+                    c.get("subscription_fee_implicit", 0.0) or 0.0), 2),
+                "cost_effective": round(float(
+                    c.get("cost_effective", 0.0) or 0.0), 2),
+                "fee_month_total": round(float(
+                    c.get("fee_month_total", 0.0) or 0.0), 2),
+            })
+    return {"provenance": "reported", "source": state["source"],
+            "reason": None, "providers": providers, "rows": rows,
+            "months": meses}
 
 
 # ======================================================================
@@ -2002,7 +2192,9 @@ def kpi_ingredients(report, cfg):
         sm = sessions_m.get(ym, {})
         ing[ym] = {
             "cost_effective": mo["cost_effective"],
-            "cost_cash": mo["cost_real"],
+            # coffe-a31.3: cash = ledger (*reported*) o fallback tracker (assumed)
+            "cost_cash": meta["cost_cash"],
+            "cash_provenance": meta["cash_provenance"],
             "interactions": mo["interactions"],
             "days": meta["elapsed"],  # FPA-041: días efectivos (parciales: elapsed)
             "partial": meta["partial"],
@@ -2118,6 +2310,12 @@ def kpis_for_window(ing, window, prior):
     excluded_share = (excluded_inter / inter) if inter else None
 
     kpis = []
+    # coffe-a31.3: la provenance del cash KPI sigue al ledger (reported si
+    # todo el window viene del ledger; assumed con fallback)
+    en_ventana = [ing[ym] for ym in window if ym in ing]
+    prov_cash = ("reported" if en_ventana and all(
+        i.get("cash_provenance") == "reported" for i in en_ventana)
+        else "assumed")
 
     # FPA-030/031: costes con delta de tasa diaria (siempre tasa diaria: es
     # la comparación justa incluso entre meses completos de distinta longitud)
@@ -2131,6 +2329,7 @@ def kpis_for_window(ing, window, prior):
     kpis.append(_kpi(
         "cost_cash", "Coste cash", cash if cash else None, fmt_usd,
         reason="sin coste cash en el periodo" if not cash else None,
+        provenance=prov_cash,
         cur_rate=cash / days if days else None,
         prev_rate=(p_cash / p_days) if p_days else None,
         spark=_spark(ing, lambda i: i["cost_cash"] / i["days"]
@@ -2140,6 +2339,7 @@ def kpis_for_window(ing, window, prior):
         "leverage", "Leverage", eff / cash if cash else None,
         lambda v: f"{v:.1f}×",
         reason="requiere coste cash > 0" if not cash else None,
+        provenance=prov_cash,
         prev=(p_eff / p_cash) if p_cash else None,
         spark=_spark(ing, lambda i: i["cost_effective"] / i["cost_cash"]
                      if i["cost_cash"] else None)))
@@ -2154,6 +2354,7 @@ def kpis_for_window(ing, window, prior):
         "cost_per_1k_cash", "Coste cash por 1k",
         cash / (inter / 1000) if inter else None, fmt_usd,
         reason="sin interacciones en el periodo" if not inter else None,
+        provenance=prov_cash,
         prev=(p_cash / (p_inter / 1000)) if p_inter else None,
         spark=_spark(ing, lambda i: i["cost_cash"] / (i["interactions"] / 1000)
                      if i["interactions"] else None)))
@@ -3077,6 +3278,81 @@ def plan_economy_html(econ):
 </details>'''
 
 
+def reconciliation_html(rec):
+    """coffe-a31.3 (CRG-F2): HTML de la sección de reconciliación FPA-082.
+
+    Dos tablas: cash real por proveedor (*reported*, con n/a con razón
+    para proveedores sin facturas en el periodo, FPA-008) y la matriz por
+    tool y mes (real pagado vs fee implícito vs efectivo estimado). Las
+    filas todo-cero de la matriz se omiten con nota visible (el detalle
+    completo queda en el JSON embebido)."""
+    if rec.get("provenance") != "reported":
+        reason = esc_html(rec.get("reason") or "n/a")
+        return (f'<details class="tree" id="reconciliation"><summary>'
+                f'<h2>Cash real y reconciliación (FPA-082)</h2></summary>'
+                f'<p class="f3-nv">n/a — {reason}</p></details>')
+    prov_rows = []
+    for p in rec["providers"]:
+        if p["total_in_period"] is not None:
+            detalle = " · ".join(
+                f"{esc_html(month_label(ym))}: {fmt_usd(v)}"
+                for ym, v in sorted(p["months"].items()) if v)
+            celda = (f'{fmt_usd(p["total_in_period"])} '
+                     f'{prov_tag("reported")}'
+                     f'<span class="small">{" — " + detalle if detalle else ""}</span>')
+        else:  # FPA-008: n/a con razón, nunca vacío ni cero inventado
+            celda = (f'<span class="na" title="{esc_html(p["n_a_reason"] or "")}">'
+                     f'n/a</span> — {esc_html(p["n_a_reason"] or "")}')
+        prov_rows.append(f'<tr><td>{esc_html(p["provider"])}</td>'
+                         f'<td>{celda}</td></tr>')
+    filas = [r for r in rec["rows"]
+             if r["charges_real"] or r["subscription_fee_implicit"]
+             or r["cost_effective"]]
+    omitidas = len(rec["rows"]) - len(filas)
+    row_rows = []
+    for r in filas:
+        pr = f' <span class="small">({esc_html(r["ym"])})</span>'
+        row_rows.append(
+            f'<tr data-ym="{r["ym"]}"><td>{esc_html(month_label(r["ym"]))}{pr}</td>'
+            f'<td>{esc_html(r["tool"])}</td>'
+            f'<td>{fmt_usd(r["charges_real"])} {prov_tag("reported")}</td>'
+            f'<td>{fmt_usd(r["subscription_fee_implicit"])} '
+            f'{prov_tag("assumed")}</td>'
+            f'<td>{fmt_usd(r["cost_effective"])} {prov_tag("assumed")}</td>'
+            f'<td>{fmt_usd(r["fee_month_total"])}</td></tr>')
+    nota = (f'<p class="small">{omitidas} filas todo-cero omitidas '
+            f'(el detalle completo queda en el JSON embebido del dashboard).</p>'
+            if omitidas else "")
+    tabla_prov = ("".join(prov_rows) or
+                  '<tr><td colspan="2"><span class="na">n/a</span> — sin '
+                  'proveedores en el ledger</td></tr>')
+    tabla_rows = ("".join(row_rows) or
+                  '<tr><td colspan="6"><span class="na">n/a</span> — la '
+                  'reconciliación no está disponible en este reporte '
+                  '(regenerar con scripts/usage-tracker.py)</td></tr>')
+    return f'''<details class="tree" id="reconciliation" open>
+<summary><h2>Cash real y reconciliación (FPA-082)</h2></summary>
+<p class="small">Cash real = cargos reales del ledger
+({esc_html(rec["source"])}) {prov_tag("reported")}; los fees implícitos del
+calendario {prov_tag("assumed")} NO son cash: solo reconciliación y economía
+de planes. El efectivo estimado {prov_tag("assumed")} es otra medida:
+jamás se suma al cash (FPA-002).</p>
+<h3 class="small">Cash real por proveedor (periodo del reporte)</h3>
+<table class="btable" id="charges-providers">
+<thead><tr><th>Proveedor</th><th>Cash periodo (*reported*)</th></tr></thead>
+<tbody>{tabla_prov}</tbody>
+</table>
+<h3 class="small">Reconciliación por tool y mes</h3>
+<table class="btable" id="reconciliation-rows">
+<thead><tr><th>Mes</th><th>Tool</th><th>Real pagado</th>
+<th>Fee implícito</th><th>Efectivo estimado</th><th>Fee total mes</th>
+</tr></thead>
+<tbody>{tabla_rows}</tbody>
+</table>
+{nota}
+</details>'''
+
+
 # ======================================================================
 # F5: HTML de patrones de uso, concurrencia y lifecycle
 # ======================================================================
@@ -3434,6 +3710,8 @@ def render_html(report, cfg, generated=None, today=None):
     # F4: alertas y economía de suscripción (pre-calculadas)
     f4_html = (alerts_html(model["alerts"])
                + plan_economy_html(model["plan_economy"]))
+    # coffe-a31.3 (CRG-F2): cash real del ledger y reconciliación FPA-082
+    recon_html = reconciliation_html(model["reconciliation"])
     # F5: patrones de uso, concurrencia y lifecycle (pre-calculados)
     f5_html = usage_html(model["usage"])
     # F6: pareto/timeline/timeline separados del bloque F5 (FPA-157/158)
@@ -3482,6 +3760,7 @@ def render_html(report, cfg, generated=None, today=None):
     <h2>¿Qué estoy gastando?</h2>
     {budget_bridge_html}
     {f4_html}
+    {recon_html}
   </section>
   <section id="breakdown" class="fpa-view" aria-label="Desglose">
     <h2>¿A dónde va el gasto?</h2>
@@ -3866,19 +4145,31 @@ def render_html(report, cfg, generated=None, today=None):
 
 def expected_doc_figures(report):
     """FPA-143: cifras del reporte con el formato del bloque CHECK-DOCS del
-    README (interacciones, proyectos, coste, sesiones, periodo)."""
+    README (interacciones, proyectos, coste, sesiones, periodo).
+
+    'Costo real' queda acoplado a la suma mensual del tracker (línea
+    histórica del README); 'Cash real (ledger)' es la cifra nueva de
+    coffe-a31.3 y sale del ledger (*reported*; n/a si el reporte no lo
+    trae — se refresca en CRG-F3 / coffe-a31.4)."""
     md = report["metadata"]
     daily = sorted(report.get("daily") or {})
     monthly = report.get("monthly") or {}
     cost_eff = round(sum(mo["cost_effective"] for mo in monthly.values()), 2)
     cost_real = round(sum(mo.get("cost_real", 0) or 0
                           for mo in monthly.values()), 2)
+    state = _charges_state(report)
+    if state["provenance"] == "reported":
+        cash_by_ym = _charges_cash_by_ym(report)
+        cash_ledger = fmt_usd(round(sum(cash_by_ym.values()), 2))
+    else:
+        cash_ledger = "n/a"
     sessions = (report.get("sessions") or {}).get("total_sessions") or 0
     return {
         "Interacciones": fmt_int(md["total_interactions"]),
         "Proyectos": fmt_int(len(report.get("projects") or {})),
         "Costo efectivo": fmt_usd(cost_eff),
         "Costo real": fmt_usd(cost_real),
+        "Cash real (ledger)": cash_ledger,
         "Sesiones": fmt_int(sessions),
         "Periodo": f"{daily[0]} → {daily[-1]}" if daily else "n/a",
     }

@@ -876,10 +876,10 @@
     },
     {
       "display": "$611.62",
-      "interp": "cuotas de suscripción + cargas reales (≈ $67.96/mes)",
+      "interp": "cuotas de suscripción + cargas del tracker, sin ledger en el reporte (≈ $67.96/mes)",
       "key": "cost_cash",
       "label": "Coste cash",
-      "provenance": "reported",
+      "provenance": "assumed",
       "reason": null,
       "value": 611.62
     },
@@ -913,6 +913,9 @@
   ],
   "months": [
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 0.0,
       "cost_effective": 0.0,
       "elapsed": 31,
@@ -925,6 +928,9 @@
       "ym": "2026-01"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 0.0,
       "cost_effective": 0.0,
       "elapsed": 28,
@@ -937,6 +943,9 @@
       "ym": "2026-02"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 0.0,
       "cost_effective": 0.0,
       "elapsed": 31,
@@ -949,6 +958,9 @@
       "ym": "2026-03"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 110.0,
       "cost_effective": 1110.03,
       "elapsed": 30,
@@ -961,6 +973,9 @@
       "ym": "2026-04"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 161.76,
       "cost_effective": 2047.25,
       "elapsed": 31,
@@ -973,6 +988,9 @@
       "ym": "2026-05"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 24.24,
       "cost_effective": 339.98,
       "elapsed": 30,
@@ -985,6 +1003,9 @@
       "ym": "2026-06"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 276.77,
       "cost_effective": 276.77,
       "elapsed": 31,
@@ -997,6 +1018,9 @@
       "ym": "2026-07"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 23.0,
       "cost_effective": 23.0,
       "elapsed": 31,
@@ -1009,6 +1033,9 @@
       "ym": "2026-08"
     },
     {
+      "cash_provenance": "assumed",
+      "cash_reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+      "charges_by_provider": null,
       "cost_cash": 15.85,
       "cost_effective": 15.85,
       "elapsed": 20,
@@ -1024,6 +1051,24 @@
   "period": {
     "end": "2026-09-20",
     "start": "2026-01-11"
+  },
+  "reconciliation": {
+    "months": [
+      "2026-01",
+      "2026-02",
+      "2026-03",
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+    ],
+    "provenance": "unavailable",
+    "providers": [],
+    "reason": "el reporte no incluye el ledger de cargos reales (shape previo a coffe-a31.2); cash = suma del tracker (assumed)",
+    "rows": [],
+    "source": "data/charges.json"
   },
   "views": {
     "all": {
@@ -1085,7 +1130,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -1134,7 +1179,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -1220,7 +1265,7 @@
           "display": "$4.35",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -5073,7 +5118,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -5122,7 +5167,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -5208,7 +5253,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -6789,7 +6834,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -6838,7 +6883,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -6924,7 +6969,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -8505,7 +8550,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -8554,7 +8599,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -8640,7 +8685,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -10221,7 +10266,7 @@
           "display": "$110.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -10270,7 +10315,7 @@
           "display": "10.1×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -10356,7 +10401,7 @@
           "display": "$5.32",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -11937,7 +11982,7 @@
           "display": "$161.76",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -11986,7 +12031,7 @@
           "display": "12.7×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -12072,7 +12117,7 @@
           "display": "$3.71",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -13653,7 +13698,7 @@
           "display": "$24.24",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -13702,7 +13747,7 @@
           "display": "14.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -13788,7 +13833,7 @@
           "display": "$2.93",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -15369,7 +15414,7 @@
           "display": "$276.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -15418,7 +15463,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -15504,7 +15549,7 @@
           "display": "$5.23",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -17085,7 +17130,7 @@
           "display": "$23.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -17134,7 +17179,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -17220,7 +17265,7 @@
           "display": "$3.81",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -18797,7 +18842,7 @@
           "display": "$15.85",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -18846,7 +18891,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -18932,7 +18977,7 @@
           "display": "$2.17",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -20513,7 +20558,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -20562,7 +20607,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -20648,7 +20693,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -22231,7 +22276,7 @@
           "display": "$296.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -22280,7 +22325,7 @@
           "display": "11.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -22366,7 +22411,7 @@
           "display": "$4.08",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -23949,7 +23994,7 @@
           "display": "$315.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -23998,7 +24043,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -24084,7 +24129,7 @@
           "display": "$4.76",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -25667,7 +25712,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -25716,7 +25761,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -25802,7 +25847,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -27384,7 +27429,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -27433,7 +27478,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -27519,7 +27564,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -29102,7 +29147,7 @@
           "display": "$110.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -29151,7 +29196,7 @@
           "display": "10.1×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -29237,7 +29282,7 @@
           "display": "$4.87",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -30821,7 +30866,7 @@
           "display": "$271.76",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -30870,7 +30915,7 @@
           "display": "11.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -30956,7 +31001,7 @@
           "display": "$4.11",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -32541,7 +32586,7 @@
           "display": "$296.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -32590,7 +32635,7 @@
           "display": "11.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -32676,7 +32721,7 @@
           "display": "$3.98",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -34262,7 +34307,7 @@
           "display": "$572.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -34311,7 +34356,7 @@
           "display": "6.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -34397,7 +34442,7 @@
           "display": "$4.50",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -35984,7 +36029,7 @@
           "display": "$595.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -36033,7 +36078,7 @@
           "display": "6.4×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -36119,7 +36164,7 @@
           "display": "$4.47",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -37707,7 +37752,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -37756,7 +37801,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -37842,7 +37887,7 @@
           "display": "$4.35",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -39431,7 +39476,7 @@
           "display": "n/a",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "sin coste cash en el periodo",
           "spark": [
             {
@@ -39480,7 +39525,7 @@
           "display": "n/a",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": "requiere coste cash > 0",
           "spark": [
             {
@@ -39566,7 +39611,7 @@
           "display": "$0.00",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -41148,7 +41193,7 @@
           "display": "$110.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -41197,7 +41242,7 @@
           "display": "10.1×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -41283,7 +41328,7 @@
           "display": "$5.08",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -42866,7 +42911,7 @@
           "display": "$271.76",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -42915,7 +42960,7 @@
           "display": "11.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -43001,7 +43046,7 @@
           "display": "$4.16",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -44585,7 +44630,7 @@
           "display": "$296.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -44634,7 +44679,7 @@
           "display": "11.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -44720,7 +44765,7 @@
           "display": "$4.03",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -46305,7 +46350,7 @@
           "display": "$572.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -46354,7 +46399,7 @@
           "display": "6.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -46440,7 +46485,7 @@
           "display": "$4.53",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -48026,7 +48071,7 @@
           "display": "$595.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -48075,7 +48120,7 @@
           "display": "6.4×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -48161,7 +48206,7 @@
           "display": "$4.50",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -49748,7 +49793,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -49797,7 +49842,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -49883,7 +49928,7 @@
           "display": "$4.38",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -51471,7 +51516,7 @@
           "display": "$110.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -51520,7 +51565,7 @@
           "display": "10.1×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -51606,7 +51651,7 @@
           "display": "$5.25",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -53188,7 +53233,7 @@
           "display": "$271.76",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -53237,7 +53282,7 @@
           "display": "11.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -53323,7 +53368,7 @@
           "display": "$4.21",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -54906,7 +54951,7 @@
           "display": "$296.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -54955,7 +55000,7 @@
           "display": "11.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -55041,7 +55086,7 @@
           "display": "$4.07",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -56625,7 +56670,7 @@
           "display": "$572.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -56674,7 +56719,7 @@
           "display": "6.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -56760,7 +56805,7 @@
           "display": "$4.56",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -58345,7 +58390,7 @@
           "display": "$595.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -58394,7 +58439,7 @@
           "display": "6.4×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -58480,7 +58525,7 @@
           "display": "$4.52",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -60066,7 +60111,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -60115,7 +60160,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -60201,7 +60246,7 @@
           "display": "$4.40",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -61788,7 +61833,7 @@
           "display": "$271.76",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -61837,7 +61882,7 @@
           "display": "11.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -61923,7 +61968,7 @@
           "display": "$4.23",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -63505,7 +63550,7 @@
           "display": "$296.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -63554,7 +63599,7 @@
           "display": "11.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -63640,7 +63685,7 @@
           "display": "$4.08",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -65223,7 +65268,7 @@
           "display": "$572.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -65272,7 +65317,7 @@
           "display": "6.6×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -65358,7 +65403,7 @@
           "display": "$4.57",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -66942,7 +66987,7 @@
           "display": "$595.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -66991,7 +67036,7 @@
           "display": "6.4×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -67077,7 +67122,7 @@
           "display": "$4.53",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -68662,7 +68707,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -68711,7 +68756,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -68797,7 +68842,7 @@
           "display": "$4.41",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -70383,7 +70428,7 @@
           "display": "$186.00",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -70432,7 +70477,7 @@
           "display": "12.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -70518,7 +70563,7 @@
           "display": "$3.59",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -72100,7 +72145,7 @@
           "display": "$462.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -72149,7 +72194,7 @@
           "display": "5.8×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -72235,7 +72280,7 @@
           "display": "$4.42",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -73818,7 +73863,7 @@
           "display": "$485.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -73867,7 +73912,7 @@
           "display": "5.5×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -73953,7 +73998,7 @@
           "display": "$4.38",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -75537,7 +75582,7 @@
           "display": "$501.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -75586,7 +75631,7 @@
           "display": "5.4×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -75672,7 +75717,7 @@
           "display": "$4.25",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -77257,7 +77302,7 @@
           "display": "$301.01",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -77306,7 +77351,7 @@
           "display": "2.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -77392,7 +77437,7 @@
           "display": "$4.92",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -78974,7 +79019,7 @@
           "display": "$324.01",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -79023,7 +79068,7 @@
           "display": "2.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -79109,7 +79154,7 @@
           "display": "$4.82",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -80692,7 +80737,7 @@
           "display": "$339.86",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -80741,7 +80786,7 @@
           "display": "1.9×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -80827,7 +80872,7 @@
           "display": "$4.56",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -82411,7 +82456,7 @@
           "display": "$299.77",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -82460,7 +82505,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -82546,7 +82591,7 @@
           "display": "$5.08",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -84128,7 +84173,7 @@
           "display": "$315.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -84177,7 +84222,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -84263,7 +84308,7 @@
           "display": "$4.76",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -85846,7 +85891,7 @@
           "display": "$38.85",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -85895,7 +85940,7 @@
           "display": "1.0×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -85981,7 +86026,7 @@
           "display": "$2.91",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -87563,7 +87608,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -87612,7 +87657,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -87698,7 +87743,7 @@
           "display": "$4.35",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -89287,7 +89332,7 @@
           "display": "$611.62",
           "key": "cost_cash",
           "label": "Coste cash",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -89336,7 +89381,7 @@
           "display": "6.2×",
           "key": "leverage",
           "label": "Leverage",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {
@@ -89422,7 +89467,7 @@
           "display": "$4.35",
           "key": "cost_per_1k_cash",
           "label": "Coste cash por 1k",
-          "provenance": "reported",
+          "provenance": "assumed",
           "reason": null,
           "spark": [
             {

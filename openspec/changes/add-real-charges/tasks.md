@@ -43,16 +43,24 @@
       implícitos (`subscription_fees_by_month`) — sin doble conteo
 - [x] Schema aditivo (`specs/usage-report-v3.schema.json`) + golden
       regenerado (solo emisiones nuevas y las 4 líneas del p2p/cost_total_real)
-- [ ] `viz-fpa.py`: cash mensual/por proveedor del ledger, tag *reported* en
-      toda cifra del ledger (ticket posterior, CRG-F2)
-- [ ] Proveedor sin facturas en el periodo → "n/a" con razón (FPA-008)
+- [x] `viz-fpa.py`: cash mensual/por proveedor del ledger, tag *reported* en
+      toda cifra del ledger (coffe-a31.3, CRG-F2): cost_cash mensual =
+      cargos del ledger (refund descuenta); fallback tracker *assumed* con
+      razón si el reporte no trae el ledger; KPIs/árboles/budget/forecast/
+      plan-economy usan el mismo cash (FPA-031 cambia de semántica)
+- [x] Proveedor sin facturas en el periodo → "n/a" con razón (FPA-008)
       en el dashboard (la serie ya emite 0.0 + razón en charges_reason)
-- [ ] Reconciliación FPA-082 en el dashboard: comparar cash real (ledger)
-      vs cargas implícitas del calendario; evidencia con ambos montos
-- [ ] Actualizar `data/fpa-dashboard.html` regenerado con el calendario
+- [x] Reconciliación FPA-082 en el dashboard: sección cash real por
+      proveedor + matriz por tool y mes (real pagado vs fee implícito vs
+      efectivo estimado); alerta compara cash real del ledger vs fees del
+      calendario + p2p reportado (fallback al chequeo previo sin ledger)
+- [x] FPA-081 sobre el calendario corregido: mes con uso de Claude sin
+      plan que lo cubra → alerta high (jun-sep 2026)
+- [x] Actualizar `data/fpa-dashboard.html` regenerado con el calendario
       corregido y el cash del ledger
-- [ ] README/docs: cifras de cash citadas pasan a venir del ledger
-      (`--check-docs`)
+- [x] README/docs: cifra nueva `Cash real (ledger)` en check-docs (n/a
+      mientras el reporte commiteado no traiga el ledger — CRG-F3/
+      coffe-a31.4); `Costo real` queda acoplado a la suma mensual
 
 ## 4. Validación
 

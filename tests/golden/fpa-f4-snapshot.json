@@ -2,6 +2,38 @@
   "alerts": [
     {
       "action": {
+        "label": "Revisar el plan",
+        "target": "config/fpa.json"
+      },
+      "evidence": {
+        "claude_eff": 60.0,
+        "month": "2026-06",
+        "multiple": null,
+        "plan_fee": 0.0,
+        "threshold": 25.0
+      },
+      "message": "jun 26: efectivo Claude $60.00 sin plan activo en el calendario (suscripción cancelada/expirada) — revisar fechas del plan u otras cuentas pagas",
+      "rule": "verify-plan",
+      "severity": "high"
+    },
+    {
+      "action": {
+        "label": "Revisar el plan",
+        "target": "config/fpa.json"
+      },
+      "evidence": {
+        "claude_eff": 30.0,
+        "month": "2026-07",
+        "multiple": null,
+        "plan_fee": 0.0,
+        "threshold": 25.0
+      },
+      "message": "jul 26: efectivo Claude $30.00 sin plan activo en el calendario (suscripción cancelada/expirada) — revisar fechas del plan u otras cuentas pagas",
+      "rule": "verify-plan",
+      "severity": "high"
+    },
+    {
+      "action": {
         "label": "Ver el reporte",
         "target": "data/usage_report_v3.json"
       },
