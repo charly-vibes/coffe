@@ -1,4 +1,254 @@
 {
+  "bridge": {
+    "mix_stack": {
+      "2026-05": {
+        "label": "may 26",
+        "metric": "coste efectivo",
+        "proxy": false,
+        "proxy_reason": null,
+        "segments": [
+          {
+            "cost": 30.0,
+            "interactions": 40,
+            "model": "claude-sonnet-4-6",
+            "share": 0.6
+          },
+          {
+            "cost": 10.0,
+            "interactions": 20,
+            "model": "claude-opus-4.7",
+            "share": 0.2
+          },
+          {
+            "cost": 10.0,
+            "interactions": 40,
+            "model": "gpt-5.4",
+            "share": 0.2
+          }
+        ]
+      },
+      "2026-06": {
+        "label": "jun 26",
+        "metric": "coste efectivo",
+        "proxy": false,
+        "proxy_reason": null,
+        "segments": [
+          {
+            "cost": 60.0,
+            "interactions": 80,
+            "model": "claude-opus-4.7",
+            "share": 0.923077
+          },
+          {
+            "cost": 5.0,
+            "interactions": 20,
+            "model": "gpt-5.4",
+            "share": 0.076923
+          }
+        ]
+      },
+      "2026-07": {
+        "label": "jul 26",
+        "metric": "coste efectivo",
+        "proxy": false,
+        "proxy_reason": null,
+        "segments": [
+          {
+            "cost": 30.0,
+            "interactions": 30,
+            "model": "claude-sonnet-4-6",
+            "share": 1.0
+          }
+        ]
+      }
+    },
+    "pairs": {
+      "2026-06": {
+        "axis_label": "eje completo",
+        "cost0": 50.0,
+        "cost1": 65.0,
+        "delta": 15.0,
+        "fme": false,
+        "identity_residual": 0.0,
+        "label": "jun 26",
+        "mix": -5.0,
+        "rate": 20.0,
+        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jun 26: Volumen $0.00, Mix $-5.00, Rate $20.00\"><rect x=\"12.0\" y=\"94.7\" width=\"60.0\" height=\"31.3\" class=\"wfb\"/><rect x=\"97.0\" y=\"94.7\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"182.0\" y=\"94.7\" width=\"60.0\" height=\"23.7\" class=\"wfdn\"/><rect x=\"267.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\"/><rect x=\"352.0\" y=\"23.6\" width=\"60.0\" height=\"102.4\" class=\"wfb\"/><text x=\"42.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">$50.00</text><text x=\"127.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"212.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">-$5.00</text><text x=\"297.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$20.00</text><text x=\"382.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "truncated": false,
+        "volume": 0.0,
+        "ym": "2026-06"
+      },
+      "2026-07": {
+        "axis_label": "eje completo",
+        "cost0": 65.0,
+        "cost1": 93.0,
+        "delta": 28.0,
+        "fme": true,
+        "identity_residual": 0.0,
+        "label": "jul 26 (FME: jun 26 ×1.00 · jul 26 ×3.10)",
+        "mix": -54.25,
+        "rate": -54.25,
+        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jul 26 (FME: jun 26 ×1.00 · jul 26 ×3.10): Volumen $136.50, Mix $-54.25, Rate $-54.25\"><rect x=\"12.0\" y=\"118.4\" width=\"60.0\" height=\"7.6\" class=\"wfb\"/><rect x=\"97.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\"/><rect x=\"182.0\" y=\"23.6\" width=\"60.0\" height=\"37.7\" class=\"wfdn\"/><rect x=\"267.0\" y=\"61.3\" width=\"60.0\" height=\"37.7\" class=\"wfdn\"/><rect x=\"352.0\" y=\"99.0\" width=\"60.0\" height=\"27.0\" class=\"wfb\"/><text x=\"42.0\" y=\"115.4\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"127.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$136.50</text><text x=\"212.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"297.0\" y=\"58.3\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"382.0\" y=\"96.0\" class=\"wft\" text-anchor=\"middle\">$93.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "truncated": false,
+        "volume": 136.5,
+        "ym": "2026-07"
+      }
+    },
+    "provenance": "reported"
+  },
+  "budget": {
+    "inputs": {
+      "cash_monthly": 100.0,
+      "effective_monthly": 200.0,
+      "start_month": "2026-04",
+      "target_per_1k": 3.0
+    },
+    "provenance": "assumed",
+    "rows": [
+      {
+        "actual_cash": 20.0,
+        "actual_display_cash": "$20.00",
+        "actual_display_eff": "$50.00",
+        "actual_eff": 50.0,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 31,
+        "in_budget": true,
+        "label": "may 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 31,
+        "variance_cash": -80.0,
+        "variance_display_cash": "-$80.00",
+        "variance_display_eff": "-$150.00",
+        "variance_eff": -150.0,
+        "variance_pct_cash": -0.8,
+        "variance_pct_display_cash": "-80.0%",
+        "variance_pct_display_eff": "-75.0%",
+        "variance_pct_eff": -0.75,
+        "ym": "2026-05"
+      },
+      {
+        "actual_cash": 25.0,
+        "actual_display_cash": "$25.00",
+        "actual_display_eff": "$65.00",
+        "actual_eff": 65.0,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 30,
+        "in_budget": true,
+        "label": "jun 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 30,
+        "variance_cash": -75.0,
+        "variance_display_cash": "-$75.00",
+        "variance_display_eff": "-$135.00",
+        "variance_eff": -135.0,
+        "variance_pct_cash": -0.75,
+        "variance_pct_display_cash": "-75.0%",
+        "variance_pct_display_eff": "-67.5%",
+        "variance_pct_eff": -0.675,
+        "ym": "2026-06"
+      },
+      {
+        "actual_cash": 0.0,
+        "actual_display_cash": "$0.00",
+        "actual_display_eff": "$30.00",
+        "actual_eff": 30.0,
+        "budget_cash": 32.26,
+        "budget_display_cash": "$32.26",
+        "budget_display_eff": "$64.52",
+        "budget_eff": 64.52,
+        "elapsed": 10,
+        "in_budget": true,
+        "label": "jul 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "partial": true,
+        "pro_rate": 0.322581,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 31,
+        "variance_cash": -32.26,
+        "variance_display_cash": "-$32.26",
+        "variance_display_eff": "-$34.52",
+        "variance_eff": -34.52,
+        "variance_pct_cash": -1.0,
+        "variance_pct_display_cash": "-100.0%",
+        "variance_pct_display_eff": "-53.5%",
+        "variance_pct_eff": -0.535,
+        "ym": "2026-07"
+      }
+    ],
+    "soft_eff": true,
+    "ytd_cash": {
+      "actual": 45.0,
+      "actual_display": "$45.00",
+      "budget": 232.26,
+      "budget_display": "$232.26",
+      "marker": {
+        "favorable": true,
+        "symbol": "▼",
+        "text": "bajo"
+      },
+      "variance": -187.26,
+      "variance_display": "-$187.26",
+      "variance_pct": -0.8063,
+      "variance_pct_display": "-80.6%"
+    },
+    "ytd_eff": {
+      "actual": 145.0,
+      "actual_display": "$145.00",
+      "budget": 464.52,
+      "budget_display": "$464.52",
+      "marker": {
+        "favorable": true,
+        "symbol": "▼",
+        "text": "bajo"
+      },
+      "variance": -319.52,
+      "variance_display": "-$319.52",
+      "variance_pct": -0.6878,
+      "variance_pct_display": "-68.8%"
+    }
+  },
   "claims": [
     {
       "metric_name": "coste por 1k interacciones",
@@ -38,6 +288,143 @@
     "timezone_missing_reason": null,
     "tool_call_share": 0.1667,
     "unverified_time": false
+  },
+  "forecast": {
+    "base": {
+      "eff_base": 69.333333,
+      "fee_base": 0.0,
+      "months_used": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ],
+      "p2p_base": 0.0,
+      "q_base": 170.0,
+      "rate_base": 0.407843
+    },
+    "default_plan": "claude-cli:2",
+    "future_months": [
+      "2026-08",
+      "2026-09",
+      "2026-10",
+      "2026-11",
+      "2026-12"
+    ],
+    "outlook": {
+      "actual_cash": 45.0,
+      "actual_eff": 145.0,
+      "budget_cash": 732.26,
+      "budget_eff": 1464.52,
+      "marker_cash": {
+        "favorable": true,
+        "symbol": "▼",
+        "text": "bajo"
+      },
+      "marker_eff": {
+        "favorable": true,
+        "symbol": "▼",
+        "text": "bajo"
+      },
+      "projected_cash": 145.0,
+      "projected_eff": 554.65,
+      "provenance": "assumed",
+      "variance_cash": -587.26,
+      "variance_eff": -909.87,
+      "variance_pct_cash": -0.802,
+      "variance_pct_eff": -0.6213,
+      "ym_to": "2026-12"
+    },
+    "plans": [
+      {
+        "fee": 20,
+        "key": "claude-cli:0",
+        "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 100,
+        "key": "claude-cli:1",
+        "label": "Max $100/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 20,
+        "key": "claude-cli:2",
+        "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      }
+    ],
+    "provenance": "assumed",
+    "remainder": {
+      "cash": 0.0,
+      "eff": 63.0,
+      "elapsed": 10,
+      "label": "jul 26",
+      "marker": {
+        "favorable": null,
+        "symbol": "△",
+        "text": "forecast"
+      },
+      "total_days": 31,
+      "ym": "2026-07"
+    },
+    "rows": [
+      {
+        "cash": 20.0,
+        "eff": 69.33,
+        "label": "ago 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-08"
+      },
+      {
+        "cash": 20.0,
+        "eff": 69.33,
+        "label": "sep 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-09"
+      },
+      {
+        "cash": 20.0,
+        "eff": 69.33,
+        "label": "oct 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-10"
+      },
+      {
+        "cash": 20.0,
+        "eff": 69.33,
+        "label": "nov 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-11"
+      },
+      {
+        "cash": 20.0,
+        "eff": 69.33,
+        "label": "dic 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-12"
+      }
+    ]
   },
   "headlines": [
     {

@@ -1,4 +1,794 @@
 {
+  "bridge": {
+    "mix_stack": {
+      "2026-01": {
+        "label": "ene 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 929,
+            "model": "amp",
+            "share": 1.0
+          }
+        ]
+      },
+      "2026-02": {
+        "label": "feb 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 719,
+            "model": "amp",
+            "share": 1.0
+          }
+        ]
+      },
+      "2026-03": {
+        "label": "mar 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 263,
+            "model": "amp",
+            "share": 1.0
+          }
+        ]
+      },
+      "2026-04": {
+        "label": "abr 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 10737,
+            "model": "claude-sonnet-4-6",
+            "share": 0.519323
+          },
+          {
+            "cost": 0.0,
+            "interactions": 5594,
+            "model": "gpt-5.4",
+            "share": 0.270568
+          },
+          {
+            "cost": 0.0,
+            "interactions": 3120,
+            "model": "claude-opus-4-6",
+            "share": 0.150907
+          },
+          {
+            "cost": 0.0,
+            "interactions": 514,
+            "model": "gemini-3-pro-preview",
+            "share": 0.024861
+          },
+          {
+            "cost": 0.0,
+            "interactions": 259,
+            "model": "gemini-3-flash-preview",
+            "share": 0.012527
+          },
+          {
+            "cost": 0.0,
+            "interactions": 253,
+            "model": "amp",
+            "share": 0.012237
+          },
+          {
+            "cost": 0.0,
+            "interactions": 145,
+            "model": "gpt-5.3-codex",
+            "share": 0.007013
+          },
+          {
+            "cost": 0.0,
+            "interactions": 39,
+            "model": "gemini-2.5-pro",
+            "share": 0.001886
+          },
+          {
+            "cost": 0.0,
+            "interactions": 12,
+            "model": "gemini-3.1-pro-preview",
+            "share": 0.00058
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2,
+            "model": "<synthetic>",
+            "share": 9.7e-05
+          }
+        ]
+      },
+      "2026-05": {
+        "label": "may 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 33014,
+            "model": "claude-sonnet-4-6",
+            "share": 0.757167
+          },
+          {
+            "cost": 0.0,
+            "interactions": 3240,
+            "model": "gpt-5.4",
+            "share": 0.074309
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2834,
+            "model": "gpt-5.5",
+            "share": 0.064997
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2215,
+            "model": "claude-opus-4-7",
+            "share": 0.0508
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2179,
+            "model": "claude-opus-4-6",
+            "share": 0.049975
+          },
+          {
+            "cost": 0.0,
+            "interactions": 43,
+            "model": "amp",
+            "share": 0.000986
+          },
+          {
+            "cost": 0.0,
+            "interactions": 40,
+            "model": "<synthetic>",
+            "share": 0.000917
+          },
+          {
+            "cost": 0.0,
+            "interactions": 19,
+            "model": "gemini-3-pro-preview",
+            "share": 0.000436
+          },
+          {
+            "cost": 0.0,
+            "interactions": 17,
+            "model": "gemini-2.5-pro",
+            "share": 0.00039
+          },
+          {
+            "cost": 0.0,
+            "interactions": 1,
+            "model": "claude-3-sonnet-20240229",
+            "share": 2.3e-05
+          }
+        ]
+      },
+      "2026-06": {
+        "label": "jun 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 7836,
+            "model": "claude-sonnet-4-6",
+            "share": 0.946834
+          },
+          {
+            "cost": 0.0,
+            "interactions": 330,
+            "model": "deepseek/deepseek-v4-flash",
+            "share": 0.039874
+          },
+          {
+            "cost": 0.0,
+            "interactions": 94,
+            "model": "gpt-5.4",
+            "share": 0.011358
+          },
+          {
+            "cost": 0.0,
+            "interactions": 13,
+            "model": "<synthetic>",
+            "share": 0.001571
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2,
+            "model": "moonshotai/kimi-k2",
+            "share": 0.000242
+          },
+          {
+            "cost": 0.0,
+            "interactions": 1,
+            "model": "gpt-5.3-codex",
+            "share": 0.000121
+          }
+        ]
+      },
+      "2026-07": {
+        "label": "jul 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 48516,
+            "model": "deepseek/deepseek-v4-flash",
+            "share": 0.916867
+          },
+          {
+            "cost": 0.0,
+            "interactions": 3940,
+            "model": "z-ai/glm-5.2",
+            "share": 0.074459
+          },
+          {
+            "cost": 0.0,
+            "interactions": 353,
+            "model": "anthropic/claude-sonnet-4.6",
+            "share": 0.006671
+          },
+          {
+            "cost": 0.0,
+            "interactions": 103,
+            "model": "google/gemini-2.5-flash",
+            "share": 0.001947
+          },
+          {
+            "cost": 0.0,
+            "interactions": 2,
+            "model": "google/gemini-2.5-pro",
+            "share": 3.8e-05
+          },
+          {
+            "cost": 0.0,
+            "interactions": 1,
+            "model": "deepseek/deepseek-v4-flash:free",
+            "share": 1.9e-05
+          }
+        ]
+      },
+      "2026-08": {
+        "label": "ago 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 5434,
+            "model": "deepseek/deepseek-v4-flash",
+            "share": 0.899222
+          },
+          {
+            "cost": 0.0,
+            "interactions": 520,
+            "model": "z-ai/glm-5.3-flash",
+            "share": 0.08605
+          },
+          {
+            "cost": 0.0,
+            "interactions": 89,
+            "model": "z-ai/glm-5.2",
+            "share": 0.014728
+          }
+        ]
+      },
+      "2026-09": {
+        "label": "sep 26",
+        "metric": "interacciones (proxy)",
+        "proxy": true,
+        "proxy_reason": "modelos sin coste desglosado en el reporte; shares por interacciones (proxy)",
+        "segments": [
+          {
+            "cost": 0.0,
+            "interactions": 6249,
+            "model": "z-ai/glm-5.3-flash",
+            "share": 0.989862
+          },
+          {
+            "cost": 0.0,
+            "interactions": 64,
+            "model": "deepseek/deepseek-v4-flash",
+            "share": 0.010138
+          }
+        ]
+      }
+    },
+    "pairs": {
+      "2026-02": {
+        "axis_label": "eje truncado (Δ pequeño vs totales)",
+        "cost0": 0.0,
+        "cost1": 0.0,
+        "delta": 0.0,
+        "fme": false,
+        "identity_residual": 0.0,
+        "label": "feb 26",
+        "mix": 0.0,
+        "rate": 0.0,
+        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge feb 26: Volumen $-0.00, Mix $0.00, Rate $0.00\"><text x=\"12\" y=\"14\" class=\"wfl\">eje truncado (Δ pequeño vs totales)</text><rect x=\"12.0\" y=\"71.0\" width=\"60.0\" height=\"55.0\" class=\"wfb\"/><rect x=\"97.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"182.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"267.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"352.0\" y=\"71.0\" width=\"60.0\" height=\"55.0\" class=\"wfb\"/><text x=\"42.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">$0.00</text><text x=\"127.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"212.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"297.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"382.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">$0.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "truncated": true,
+        "volume": -0.0,
+        "ym": "2026-02"
+      },
+      "2026-03": {
+        "axis_label": "eje truncado (Δ pequeño vs totales)",
+        "cost0": 0.0,
+        "cost1": 0.0,
+        "delta": 0.0,
+        "fme": false,
+        "identity_residual": 0.0,
+        "label": "mar 26",
+        "mix": 0.0,
+        "rate": 0.0,
+        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge mar 26: Volumen $-0.00, Mix $0.00, Rate $0.00\"><text x=\"12\" y=\"14\" class=\"wfl\">eje truncado (Δ pequeño vs totales)</text><rect x=\"12.0\" y=\"71.0\" width=\"60.0\" height=\"55.0\" class=\"wfb\"/><rect x=\"97.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"182.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"267.0\" y=\"71.0\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"352.0\" y=\"71.0\" width=\"60.0\" height=\"55.0\" class=\"wfb\"/><text x=\"42.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">$0.00</text><text x=\"127.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"212.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"297.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"382.0\" y=\"68.0\" class=\"wft\" text-anchor=\"middle\">$0.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "truncated": true,
+        "volume": -0.0,
+        "ym": "2026-03"
+      },
+      "2026-04": {
+        "axis_label": "eje completo",
+        "cost0": 0.0,
+        "cost1": 1110.03,
+        "delta": 1110.03,
+        "fme": false,
+        "identity_residual": null,
+        "label": "abr 26",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": false,
+        "volume": null,
+        "ym": "2026-04"
+      },
+      "2026-05": {
+        "axis_label": "eje completo",
+        "cost0": 1110.03,
+        "cost1": 2047.25,
+        "delta": 937.22,
+        "fme": false,
+        "identity_residual": null,
+        "label": "may 26",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": false,
+        "volume": null,
+        "ym": "2026-05"
+      },
+      "2026-06": {
+        "axis_label": "eje completo",
+        "cost0": 2047.25,
+        "cost1": 339.98,
+        "delta": -1707.27,
+        "fme": false,
+        "identity_residual": null,
+        "label": "jun 26",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": false,
+        "volume": null,
+        "ym": "2026-06"
+      },
+      "2026-07": {
+        "axis_label": "eje completo",
+        "cost0": 339.98,
+        "cost1": 276.77,
+        "delta": -63.21,
+        "fme": false,
+        "identity_residual": null,
+        "label": "jul 26",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": false,
+        "volume": null,
+        "ym": "2026-07"
+      },
+      "2026-08": {
+        "axis_label": "eje completo",
+        "cost0": 276.77,
+        "cost1": 23.0,
+        "delta": -253.77,
+        "fme": false,
+        "identity_residual": null,
+        "label": "ago 26",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": false,
+        "volume": null,
+        "ym": "2026-08"
+      },
+      "2026-09": {
+        "axis_label": "eje completo",
+        "cost0": 23.0,
+        "cost1": 21.98,
+        "delta": -1.02,
+        "fme": true,
+        "identity_residual": null,
+        "label": "sep 26 (FME: ago 26 ×1.00 · sep 26 ×1.58)",
+        "mix": null,
+        "n_a_reason": "el reporte no desglosa coste por modelo; el bridge requiere rates por modelo (FPA-061…063)",
+        "rate": null,
+        "truncated": true,
+        "volume": null,
+        "ym": "2026-09"
+      }
+    },
+    "provenance": "reported"
+  },
+  "budget": {
+    "inputs": {
+      "cash_monthly": 100.0,
+      "effective_monthly": 200.0,
+      "start_month": "2026-04",
+      "target_per_1k": 3.0
+    },
+    "provenance": "assumed",
+    "rows": [
+      {
+        "actual_cash": null,
+        "actual_display_cash": null,
+        "actual_display_eff": null,
+        "actual_eff": null,
+        "budget_cash": null,
+        "budget_display_cash": null,
+        "budget_display_eff": null,
+        "budget_eff": null,
+        "elapsed": 31,
+        "in_budget": false,
+        "label": "ene 26",
+        "marker_cash": null,
+        "marker_eff": null,
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": "fuera del periodo presupuestado (desde 2026-04)",
+        "reason_eff": "fuera del periodo presupuestado (desde 2026-04)",
+        "total_days": 31,
+        "variance_cash": null,
+        "variance_display_cash": null,
+        "variance_display_eff": null,
+        "variance_eff": null,
+        "variance_pct_cash": null,
+        "variance_pct_display_cash": null,
+        "variance_pct_display_eff": null,
+        "variance_pct_eff": null,
+        "ym": "2026-01"
+      },
+      {
+        "actual_cash": null,
+        "actual_display_cash": null,
+        "actual_display_eff": null,
+        "actual_eff": null,
+        "budget_cash": null,
+        "budget_display_cash": null,
+        "budget_display_eff": null,
+        "budget_eff": null,
+        "elapsed": 28,
+        "in_budget": false,
+        "label": "feb 26",
+        "marker_cash": null,
+        "marker_eff": null,
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": "fuera del periodo presupuestado (desde 2026-04)",
+        "reason_eff": "fuera del periodo presupuestado (desde 2026-04)",
+        "total_days": 28,
+        "variance_cash": null,
+        "variance_display_cash": null,
+        "variance_display_eff": null,
+        "variance_eff": null,
+        "variance_pct_cash": null,
+        "variance_pct_display_cash": null,
+        "variance_pct_display_eff": null,
+        "variance_pct_eff": null,
+        "ym": "2026-02"
+      },
+      {
+        "actual_cash": null,
+        "actual_display_cash": null,
+        "actual_display_eff": null,
+        "actual_eff": null,
+        "budget_cash": null,
+        "budget_display_cash": null,
+        "budget_display_eff": null,
+        "budget_eff": null,
+        "elapsed": 31,
+        "in_budget": false,
+        "label": "mar 26",
+        "marker_cash": null,
+        "marker_eff": null,
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": "fuera del periodo presupuestado (desde 2026-04)",
+        "reason_eff": "fuera del periodo presupuestado (desde 2026-04)",
+        "total_days": 31,
+        "variance_cash": null,
+        "variance_display_cash": null,
+        "variance_display_eff": null,
+        "variance_eff": null,
+        "variance_pct_cash": null,
+        "variance_pct_display_cash": null,
+        "variance_pct_display_eff": null,
+        "variance_pct_eff": null,
+        "ym": "2026-03"
+      },
+      {
+        "actual_cash": 110.0,
+        "actual_display_cash": "$110.00",
+        "actual_display_eff": "$1,110.03",
+        "actual_eff": 1110.03,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 30,
+        "in_budget": true,
+        "label": "abr 26",
+        "marker_cash": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "marker_eff": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 30,
+        "variance_cash": 10.0,
+        "variance_display_cash": "+$10.00",
+        "variance_display_eff": "+$910.03",
+        "variance_eff": 910.03,
+        "variance_pct_cash": 0.1,
+        "variance_pct_display_cash": "+10.0%",
+        "variance_pct_display_eff": "+455.0%",
+        "variance_pct_eff": 4.5501,
+        "ym": "2026-04"
+      },
+      {
+        "actual_cash": 161.76,
+        "actual_display_cash": "$161.76",
+        "actual_display_eff": "$2,047.25",
+        "actual_eff": 2047.25,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 31,
+        "in_budget": true,
+        "label": "may 26",
+        "marker_cash": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "marker_eff": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 31,
+        "variance_cash": 61.76,
+        "variance_display_cash": "+$61.76",
+        "variance_display_eff": "+$1,847.25",
+        "variance_eff": 1847.25,
+        "variance_pct_cash": 0.6176,
+        "variance_pct_display_cash": "+61.8%",
+        "variance_pct_display_eff": "+923.6%",
+        "variance_pct_eff": 9.2363,
+        "ym": "2026-05"
+      },
+      {
+        "actual_cash": 24.24,
+        "actual_display_cash": "$24.24",
+        "actual_display_eff": "$339.98",
+        "actual_eff": 339.98,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 30,
+        "in_budget": true,
+        "label": "jun 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 30,
+        "variance_cash": -75.76,
+        "variance_display_cash": "-$75.76",
+        "variance_display_eff": "+$139.98",
+        "variance_eff": 139.98,
+        "variance_pct_cash": -0.7576,
+        "variance_pct_display_cash": "-75.8%",
+        "variance_pct_display_eff": "+70.0%",
+        "variance_pct_eff": 0.6999,
+        "ym": "2026-06"
+      },
+      {
+        "actual_cash": 276.77,
+        "actual_display_cash": "$276.77",
+        "actual_display_eff": "$276.77",
+        "actual_eff": 276.77,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 31,
+        "in_budget": true,
+        "label": "jul 26",
+        "marker_cash": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "marker_eff": {
+          "favorable": false,
+          "symbol": "▲",
+          "text": "sobre"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 31,
+        "variance_cash": 176.77,
+        "variance_display_cash": "+$176.77",
+        "variance_display_eff": "+$76.77",
+        "variance_eff": 76.77,
+        "variance_pct_cash": 1.7677,
+        "variance_pct_display_cash": "+176.8%",
+        "variance_pct_display_eff": "+38.4%",
+        "variance_pct_eff": 0.3838,
+        "ym": "2026-07"
+      },
+      {
+        "actual_cash": 23.0,
+        "actual_display_cash": "$23.00",
+        "actual_display_eff": "$23.00",
+        "actual_eff": 23.0,
+        "budget_cash": 100.0,
+        "budget_display_cash": "$100.00",
+        "budget_display_eff": "$200.00",
+        "budget_eff": 200.0,
+        "elapsed": 31,
+        "in_budget": true,
+        "label": "ago 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "partial": false,
+        "pro_rate": 1.0,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 31,
+        "variance_cash": -77.0,
+        "variance_display_cash": "-$77.00",
+        "variance_display_eff": "-$177.00",
+        "variance_eff": -177.0,
+        "variance_pct_cash": -0.77,
+        "variance_pct_display_cash": "-77.0%",
+        "variance_pct_display_eff": "-88.5%",
+        "variance_pct_eff": -0.885,
+        "ym": "2026-08"
+      },
+      {
+        "actual_cash": 13.92,
+        "actual_display_cash": "$13.92",
+        "actual_display_eff": "$13.92",
+        "actual_eff": 13.92,
+        "budget_cash": 63.33,
+        "budget_display_cash": "$63.33",
+        "budget_display_eff": "$126.67",
+        "budget_eff": 126.67,
+        "elapsed": 19,
+        "in_budget": true,
+        "label": "sep 26",
+        "marker_cash": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "marker_eff": {
+          "favorable": true,
+          "symbol": "▼",
+          "text": "bajo"
+        },
+        "partial": true,
+        "pro_rate": 0.633333,
+        "reason_cash": null,
+        "reason_eff": null,
+        "total_days": 30,
+        "variance_cash": -49.41,
+        "variance_display_cash": "-$49.41",
+        "variance_display_eff": "-$112.75",
+        "variance_eff": -112.75,
+        "variance_pct_cash": -0.7802,
+        "variance_pct_display_cash": "-78.0%",
+        "variance_pct_display_eff": "-89.0%",
+        "variance_pct_eff": -0.8901,
+        "ym": "2026-09"
+      }
+    ],
+    "soft_eff": true,
+    "ytd_cash": {
+      "actual": 609.69,
+      "actual_display": "$609.69",
+      "budget": 563.33,
+      "budget_display": "$563.33",
+      "marker": {
+        "favorable": false,
+        "symbol": "▲",
+        "text": "sobre"
+      },
+      "variance": 46.36,
+      "variance_display": "+$46.36",
+      "variance_pct": 0.0823,
+      "variance_pct_display": "+8.2%"
+    },
+    "ytd_eff": {
+      "actual": 3810.95,
+      "actual_display": "$3,810.95",
+      "budget": 1126.67,
+      "budget_display": "$1,126.67",
+      "marker": {
+        "favorable": false,
+        "symbol": "▲",
+        "text": "sobre"
+      },
+      "variance": 2684.28,
+      "variance_display": "+$2,684.28",
+      "variance_pct": 2.3825,
+      "variance_pct_display": "+238.2%"
+    }
+  },
   "claims": [
     {
       "metric_name": "coste por 1k interacciones",
@@ -23,6 +813,119 @@
     "timezone_missing_reason": "el reporte no registra timezone (FPA-142); vistas hora/día sin verificar",
     "tool_call_share": null,
     "unverified_time": true
+  },
+  "forecast": {
+    "base": {
+      "eff_base": 107.249649,
+      "fee_base": 0.0,
+      "months_used": [
+        "2026-07",
+        "2026-08",
+        "2026-09"
+      ],
+      "p2p_base": 21.978947,
+      "q_base": 22975.298246,
+      "rate_base": 0.004668
+    },
+    "default_plan": "claude-cli:2",
+    "future_months": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+    ],
+    "outlook": {
+      "actual_cash": 609.69,
+      "actual_eff": 3810.95,
+      "budget_cash": 863.33,
+      "budget_eff": 1726.67,
+      "marker_cash": {
+        "favorable": true,
+        "symbol": "▼",
+        "text": "bajo"
+      },
+      "marker_eff": {
+        "favorable": false,
+        "symbol": "▲",
+        "text": "sobre"
+      },
+      "projected_cash": 743.69,
+      "projected_eff": 4140.76,
+      "provenance": "assumed",
+      "variance_cash": -119.64,
+      "variance_eff": 2414.09,
+      "variance_pct_cash": -0.1386,
+      "variance_pct_eff": 1.3981,
+      "ym_to": "2026-12"
+    },
+    "plans": [
+      {
+        "fee": 20,
+        "key": "claude-cli:0",
+        "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 100,
+        "key": "claude-cli:1",
+        "label": "Max $100/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 20,
+        "key": "claude-cli:2",
+        "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      }
+    ],
+    "provenance": "assumed",
+    "remainder": {
+      "cash": 8.06,
+      "eff": 8.06,
+      "elapsed": 19,
+      "label": "sep 26",
+      "marker": {
+        "favorable": null,
+        "symbol": "△",
+        "text": "forecast"
+      },
+      "total_days": 30,
+      "ym": "2026-09"
+    },
+    "rows": [
+      {
+        "cash": 41.98,
+        "eff": 107.25,
+        "label": "oct 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-10"
+      },
+      {
+        "cash": 41.98,
+        "eff": 107.25,
+        "label": "nov 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-11"
+      },
+      {
+        "cash": 41.98,
+        "eff": 107.25,
+        "label": "dic 26",
+        "marker": {
+          "favorable": null,
+          "symbol": "△",
+          "text": "forecast"
+        },
+        "ym": "2026-12"
+      }
+    ]
   },
   "headlines": [
     {

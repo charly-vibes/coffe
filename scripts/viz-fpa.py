@@ -217,7 +217,9 @@ def build_claims(report, cfg):
 def build_model(report, cfg):
     """Modelo completo del dashboard (va embebido como JSON en el HTML).
     F2 añade vistas pre-calculadas por periodo, árboles con roll-up
-    verificado y la sección Data (FPA-140/141/142/120)."""
+    verificado y la sección Data (FPA-140/141/142/120).
+    F3 añade budget (pro-rating/varianza/YTD), bridge PVM y forecast
+    (FPA-050…077); las fórmulas viven en Python, JS solo re-escala."""
     months = build_months(report)
     return {
         "period": report["metadata"]["date_range"],
@@ -226,6 +228,556 @@ def build_model(report, cfg):
         "claims": build_claims(report, cfg),
         "views": build_views(report, cfg),
         "data_notes": build_data_notes(report),
+        "budget": build_budget(report, cfg),
+        "bridge": build_bridge_section(report),
+        "forecast": build_forecast(report, cfg),
+    }
+
+
+# ======================================================================
+# F3 (coffe-lat.4): presupuesto, bridge PVM y forecast
+# (FPA-050…077) — maths puras en Python; JS solo re-escala varianza y
+# forecast con las fórmulas reproducidas (design.md). El presupuesto de
+# efectivo es informativo (soft, design.md OQ-1); el gestionado es el de
+# cash. Efectivo y cash jamás se suman (FPA-002).
+# ======================================================================
+
+def esc_html(s):
+    """Escape mínimo HTML para texto/atributos con datos del reporte."""
+    return (str(s).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;").replace('"', "&quot;"))
+
+
+def _fmt_signed(x):
+    """FPA-053: signo explícito — +$12.00 / -$12.00."""
+    return f"{'+' if x >= 0 else '-'}${abs(x):,.2f}"
+
+
+def _fmt_pct_signed(frac):
+    """Porcentaje con signo: +12.3% / -12.3%; None → n/a."""
+    if frac is None:
+        return "n/a"
+    return f"{'+' if frac >= 0 else ''}{frac * 100:.1f}%"
+
+
+def _variance(actual, budget):
+    """FPA-053: varianza = actual − presupuesto; positivo = over budget."""
+    return actual - budget
+
+
+def _marker(variance, tol=0.005):
+    """FPA-054: favorable/desfavorable con símbolo Y texto (no solo color)."""
+    if variance < -tol:
+        return {"symbol": "▼", "text": "bajo", "favorable": True}
+    if variance > tol:
+        return {"symbol": "▲", "text": "sobre", "favorable": False}
+    return {"symbol": "●", "text": "en", "favorable": None}
+
+
+def _budget_for(cfg, ym):
+    """FPA-050/051: presupuestos (cash, efectivo) aplicables a `ym` según
+    budgets.start_month; None si el mes es anterior al inicio."""
+    b = cfg["budgets"]
+    start = b.get("start_month")
+    if not start or ym < start:
+        return None
+    return b["cash_monthly"], b["effective_monthly"]
+
+
+def build_budget(report, cfg):
+    """FPA-050…056: tabla de varianza mensual con YTD.
+
+    Pro-rating de meses parciales (FPA-052: presupuesto ×
+    días transcurridos/días del mes), varianza con signo (FPA-053),
+    markers favorable/desfavorable no-solo-color (FPA-054). El
+    presupuesto de efectivo es informativo (soft, design.md OQ-1); el
+    gestionado es el de cash. Efectivo y cash jamás se suman (FPA-002).
+    Valor no computable → None + razón (FPA-008/017).
+    """
+    b = cfg["budgets"]
+    inputs = {"cash_monthly": b["cash_monthly"],
+              "effective_monthly": b["effective_monthly"],
+              "target_per_1k": b["target_per_1k"],
+              "start_month": b.get("start_month")}
+    start = inputs["start_month"]
+    none_cells = {
+        "budget_cash": None, "budget_eff": None,
+        "actual_cash": None, "actual_eff": None,
+        "variance_cash": None, "variance_eff": None,
+        "variance_pct_cash": None, "variance_pct_eff": None,
+        "budget_display_cash": None, "budget_display_eff": None,
+        "actual_display_cash": None, "actual_display_eff": None,
+        "variance_display_cash": None, "variance_display_eff": None,
+        "variance_pct_display_cash": None, "variance_pct_display_eff": None,
+        "marker_cash": None, "marker_eff": None,
+    }
+    rows = []
+    tot = {"actual_cash": 0.0, "budget_cash": 0.0,
+           "actual_eff": 0.0, "budget_eff": 0.0}
+    any_budget = False
+    for meta in build_months(report):
+        ym = meta["ym"]
+        bvals = _budget_for(cfg, ym)
+        pro_rate = meta["elapsed"] / meta["total_days"]  # FPA-052
+        row = {
+            "ym": ym, "label": meta["label"], "in_budget": bvals is not None,
+            "partial": meta["partial"],
+            "elapsed": meta["elapsed"], "total_days": meta["total_days"],
+            "pro_rate": round(pro_rate, 6),
+            "reason_cash": None, "reason_eff": None,
+        }
+        row.update(none_cells)
+        if bvals is None:
+            reason = f"fuera del periodo presupuestado (desde {start})"
+            row["reason_cash"] = row["reason_eff"] = reason
+        elif not meta["has_data"]:  # FPA-017/008
+            reason = "mes sin datos en el reporte"
+            row["reason_cash"] = row["reason_eff"] = reason
+        else:
+            budget_cash = round(bvals[0] * pro_rate, 2)
+            budget_eff = round(bvals[1] * pro_rate, 2)
+            actual_cash = round(meta["cost_cash"], 2)
+            actual_eff = round(meta["cost_effective"], 2)
+            var_cash = round(_variance(actual_cash, budget_cash), 2)
+            var_eff = round(_variance(actual_eff, budget_eff), 2)
+            pct_cash = round(var_cash / budget_cash, 4) if budget_cash else None
+            pct_eff = round(var_eff / budget_eff, 4) if budget_eff else None
+            row.update({
+                "budget_cash": budget_cash, "budget_eff": budget_eff,
+                "actual_cash": actual_cash, "actual_eff": actual_eff,
+                "variance_cash": var_cash, "variance_eff": var_eff,
+                "variance_pct_cash": pct_cash, "variance_pct_eff": pct_eff,
+                "budget_display_cash": fmt_usd(budget_cash),
+                "budget_display_eff": fmt_usd(budget_eff),
+                "actual_display_cash": fmt_usd(actual_cash),
+                "actual_display_eff": fmt_usd(actual_eff),
+                "variance_display_cash": _fmt_signed(var_cash),
+                "variance_display_eff": _fmt_signed(var_eff),
+                "variance_pct_display_cash": _fmt_pct_signed(pct_cash),
+                "variance_pct_display_eff": _fmt_pct_signed(pct_eff),
+                "marker_cash": _marker(var_cash),
+                "marker_eff": _marker(var_eff),
+            })
+            tot["actual_cash"] += actual_cash
+            tot["budget_cash"] += budget_cash
+            tot["actual_eff"] += actual_eff
+            tot["budget_eff"] += budget_eff
+            any_budget = True
+        rows.append(row)
+
+    def _ytd(actual, budget):
+        """FPA-055: totales YTD por medida (nunca efectivo+cash juntos)."""
+        if not any_budget:
+            return False
+        var = round(actual - budget, 2)
+        y = {
+            "actual": round(actual, 2), "budget": round(budget, 2),
+            "variance": var, "marker": _marker(var),
+            "actual_display": fmt_usd(actual),
+            "budget_display": fmt_usd(budget),
+            "variance_display": _fmt_signed(var),
+        }
+        if budget:
+            y["variance_pct"] = round(var / budget, 4)
+            y["variance_pct_display"] = _fmt_pct_signed(var / budget)
+        else:
+            y["variance_pct"] = None
+            y["variance_pct_display"] = "n/a"
+        return y
+
+    return {
+        "provenance": "assumed",  # FPA-003: deriva de config
+        "inputs": inputs,
+        "soft_eff": True,  # design.md OQ-1: presupuesto efectivo informativo
+        "rows": rows,
+        "ytd_cash": _ytd(tot["actual_cash"], tot["budget_cash"]),
+        "ytd_eff": _ytd(tot["actual_eff"], tot["budget_eff"]),
+    }
+
+
+def build_pvm(q0, q1, by_model):
+    """FPA-061…063: descomposición precio-volumen-mix del coste efectivo.
+
+    by_model: lista (model, q0_i, p0_i, q1_i, p1_i) por modelo.
+    Volume = (Q1−Q0)×rate₀ con rate₀ = coste medio previo por interacción;
+    Mix = Σ q1ᵢ·p0ᵢ − Q1·rate₀; Rate = Σ q1ᵢ·(p1ᵢ−p0ᵢ).
+    """
+    rate0 = (sum(q * p for _, q, p, _, _ in by_model) / q0) if q0 else 0.0
+    volume = (q1 - q0) * rate0
+    mix = sum(q1 * p0 for _, _, p0, q1, _ in by_model) - q1 * rate0
+    rate = sum(q1 * (p1 - p0) for _, _, p0, q1, p1 in by_model)
+    return volume, mix, rate
+
+
+def build_bridge(prev, cur, prev_meta, cur_meta):
+    """FPA-060…067: bridge del coste efectivo prior→seleccionado.
+
+    Con mes parcial usa valores FME y lo etiqueta (FPA-066). Modelos sin
+    mes previo usan su rate actual como prior — contribuyen solo a Mix
+    (FPA-064). Identidad Volume+Mix+Rate = Δcoste dentro de $0.01 (FPA-065):
+    el residuo de redondeo se absorbe en Mix y se verifica con falla ruidosa.
+    Sin desglose de coste por modelo → componentes n/a con razón (FPA-008).
+    Eje truncado etiquetado cuando |Δ| es pequeño vs los totales (FPA-067).
+    """
+    def scale(meta):
+        return meta["total_days"] / meta["elapsed"] if meta["partial"] else 1.0
+
+    sp, sc = scale(prev_meta), scale(cur_meta)
+    fme = abs(sp - 1.0) > 1e-9 or abs(sc - 1.0) > 1e-9
+
+    def eff_by_model(mo):
+        out = {}
+        for model, v in (mo or {}).items():
+            if isinstance(v, dict):
+                out[model] = {"q": v.get("interactions", 0),
+                              "cost": v.get("cost_effective", 0.0) or 0.0}
+            else:  # counters del reporte viejo: sin coste por modelo
+                out[model] = {"q": v, "cost": 0.0}
+        return out
+
+    pm, cm = eff_by_model(prev.get("models")), eff_by_model(cur.get("models"))
+    q0, q1 = prev["interactions"], cur["interactions"]
+    cost0, cost1 = prev["cost_effective"], cur["cost_effective"]
+    if fme:
+        q0, q1 = q0 * sp, q1 * sc
+        cost0, cost1 = cost0 * sp, cost1 * sc
+
+    label = month_label(cur_meta["ym"])
+    fme_note = (f" (FME: {month_label(prev_meta['ym'])} ×{sp:.2f} · "
+                f"{label} ×{sc:.2f})") if fme else ""
+    common = {
+        "ym": cur_meta["ym"], "label": label + fme_note, "fme": fme,
+        "cost0": round(cost0, 2), "cost1": round(cost1, 2),
+        "delta": round(cost1 - cost0, 2),
+        "truncated": abs(cost1 - cost0) < 0.1 * max(abs(cost0), abs(cost1), 1e-9),
+    }
+
+    # FPA-008: sin coste por modelo no hay rates → PVM no computable
+    if (cost0 and not sum(d["cost"] for d in pm.values())) or \
+       (cost1 and not sum(d["cost"] for d in cm.values())):
+        common.update({
+            "volume": None, "mix": None, "rate": None,
+            "identity_residual": None, "axis_label": "eje completo",
+            "n_a_reason": ("el reporte no desglosa coste por modelo; el bridge "
+                           "requiere rates por modelo (FPA-061…063)"),
+        })
+        return common
+
+    by_model = []
+    for m in sorted(set(pm) | set(cm)):
+        d0, d1 = pm.get(m, {}), cm.get(m, {})
+        # cantidades escaladas al factor FME de su mes (coherentes con Q0/Q1)
+        q0_i, c0_i = d0.get("q", 0) * sp, d0.get("cost", 0.0) * sp
+        q1_i, c1_i = d1.get("q", 0) * sc, d1.get("cost", 0.0) * sc
+        # FPA-064: sin mes previo → rate prior = rate actual (solo Mix)
+        p0 = (c0_i / q0_i) if q0_i else ((c1_i / q1_i) if q1_i else 0.0)
+        p1 = (c1_i / q1_i) if q1_i else 0.0
+        by_model.append((m, q0_i, p0, q1_i, p1))
+
+    volume, mix, rate = build_pvm(q0, q1, by_model)
+    delta = cost1 - cost0
+    residual = volume + mix + rate - delta
+    mix -= residual  # FPA-065: absorbe el residuo de redondeo en Mix
+    residual = volume + mix + rate - delta
+    if abs(residual) > 0.01:
+        raise ValueError(
+            f"identidad del bridge rota (FPA-065): V+M+R = "
+            f"{volume + mix + rate:.4f} vs Δ {delta:.4f} (residuo {residual:.4f})")
+    common.update({
+        "volume": round(volume, 2), "mix": round(mix, 2),
+        "rate": round(rate, 2),
+        "identity_residual": round(residual, 6),
+        "axis_label": ("eje truncado (Δ pequeño vs totales)"
+                       if common["truncated"] else "eje completo"),
+    })
+    return common
+
+
+def waterfall_svg(b, w=420, h=150):
+    """FPA-060: waterfall Volume/Mix/Rate como SVG inline determinista.
+    Barras flotantes desde cost₀ hasta cost₁; eje truncado etiquetado
+    cuando aplica (FPA-067)."""
+    steps = [("Volumen", b["volume"]), ("Mix", b["mix"]), ("Rate", b["rate"])]
+    base = b["cost0"]
+    floats = []
+    lvl = base
+    for _, v in steps:
+        floats.append((lvl, lvl + v))
+        lvl += v
+    end = lvl
+    lo = min([base, end] + [min(a, z) for a, z in floats])
+    hi = max([base, end] + [max(a, z) for a, z in floats])
+    span = (hi - lo) or 1.0
+    pad = 0.08 * span
+    lo, hi = lo - pad, hi + pad
+
+    def Y(v):
+        return h - 24 - (v - lo) / (hi - lo) * (h - 40)
+
+    n = len(steps) + 2
+    bw = min(60.0, (w - 30) / n - 12)
+    gap = (w - 20 - n * bw) / (n - 1)
+
+    def rect(x, y_a, y_b, cls):
+        top, bot = min(y_a, y_b), max(y_a, y_b)
+        return (f'<rect x="{x:.1f}" y="{top:.1f}" width="{bw:.1f}" '
+                f'height="{max(bot - top, 1.0):.1f}" class="{cls}"/>')
+
+    bars, texts = [], []
+    x = 12.0
+    bars.append(rect(x, Y(lo), Y(base), "wfb"))
+    texts.append(f'<text x="{x + bw / 2:.1f}" y="{Y(base) - 3:.1f}" class="wft" '
+                 f'text-anchor="middle">{fmt_usd(b["cost0"])}</text>')
+    x += bw + gap
+    for (name, v), (fa, fz) in zip(steps, floats):
+        bars.append(rect(x, Y(fa), Y(fz), "wfup" if v >= 0 else "wfdn"))
+        ytxt = Y(max(fa, fz)) - 3
+        texts.append(f'<text x="{x + bw / 2:.1f}" y="{ytxt:.1f}" class="wft" '
+                     f'text-anchor="middle">{_fmt_signed(v)}</text>')
+        x += bw + gap
+    bars.append(rect(x, Y(lo), Y(end), "wfb"))
+    texts.append(f'<text x="{x + bw / 2:.1f}" y="{Y(end) - 3:.1f}" class="wft" '
+                 f'text-anchor="middle">{fmt_usd(b["cost1"])}</text>')
+    labels = []
+    lx = 12.0
+    for name in ["cost₀"] + [n for n, _ in steps] + ["cost₁"]:
+        labels.append(f'<text x="{lx + bw / 2:.1f}" y="{h - 6:.1f}" class="wfl" '
+                      f'text-anchor="middle">{name}</text>')
+        lx += bw + gap
+    axis = (f'<text x="12" y="14" class="wfl">{esc_html(b["axis_label"])}</text>'
+            if b.get("truncated") else "")
+    return (f'<svg class="wf" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
+            f'role="img" aria-label="bridge {esc_html(b["label"] or "")}: '
+            f'Volumen {fmt_usd(b["volume"])}, Mix {fmt_usd(b["mix"])}, '
+            f'Rate {fmt_usd(b["rate"])}">'
+            f'{axis}{"".join(bars)}{"".join(texts)}{"".join(labels)}</svg>')
+
+
+def build_mix_stack(report):
+    """FPA-068: mix de modelos por mes como shares que suman 100%.
+    Share de coste efectivo cuando hay desglose; con counters (sin coste
+    por modelo) → proxy por interacciones, señalado como proxy (FPA-008)."""
+    stack = {}
+    for meta in build_months(report):
+        if not meta["has_data"]:
+            continue
+        models = report["monthly"][meta["ym"]].get("models") or {}
+        segs, proxy = [], False
+        for model, v in models.items():
+            if isinstance(v, dict):
+                segs.append({"model": model,
+                             "cost": v.get("cost_effective", 0.0) or 0.0,
+                             "interactions": v.get("interactions", 0)})
+            else:
+                segs.append({"model": model, "cost": 0.0, "interactions": v})
+                proxy = True
+        total_cost = sum(s["cost"] for s in segs)
+        total_inter = sum(s["interactions"] for s in segs)
+        if total_cost > 0:
+            metric = "coste efectivo"
+            for s in segs:
+                s["share"] = round(s["cost"] / total_cost, 6)
+        elif total_inter > 0:
+            metric = "interacciones (proxy)"
+            proxy = True
+            for s in segs:
+                s["share"] = round(s["interactions"] / total_inter, 6)
+        else:
+            continue
+        segs = sorted((s for s in segs if s["share"] > 0),
+                      key=lambda s: -s["share"])
+        stack[meta["ym"]] = {
+            "label": meta["label"], "segments": segs, "proxy": proxy,
+            "metric": metric,
+            "proxy_reason": ("modelos sin coste desglosado en el reporte; "
+                             "shares por interacciones (proxy)" if proxy else None),
+        }
+    return stack
+
+
+def build_bridge_section(report):
+    """FPA-060/068: pares prior→mes con datos (waterfall por par) + stack
+    100% del mix por mes."""
+    months = [m for m in build_months(report) if m["has_data"]]
+    raw = report["monthly"]
+    pairs = {}
+    prev = None
+    for meta in months:
+        if prev is not None:
+            b = build_bridge(raw[prev["ym"]], raw[meta["ym"]], prev, meta)
+            if not b.get("n_a_reason"):
+                b["svg"] = waterfall_svg(b)
+            pairs[meta["ym"]] = b
+        prev = meta
+    return {"provenance": "reported", "pairs": pairs,
+            "mix_stack": build_mix_stack(report)}
+
+
+def _plan_for(cfg, tool, when):
+    """Entrada de suscripción activa para `tool` en `when` (date)."""
+    for entry in cfg["subscriptions"].get(tool, []):
+        start = date.fromisoformat(entry["start"])
+        end = date.fromisoformat(entry["end"]) if entry.get("end") else None
+        if start <= when and (end is None or when < end):
+            return entry
+    return None
+
+
+def build_forecast(report, cfg):
+    """FPA-070…077: forecast desde run-rate base = media FME de los últimos
+    3 meses con datos (FPA-070); <3 meses → n/a con razón (FPA-008), nunca
+    un forecast inventado. Escenario default (g=0, r=0) pre-calculado;
+    apply_scenario() re-calcula en JS sin reload (FPA-077). Planes futuros
+    = calendario de suscripciones del config (FPA-071). Resto del mes
+    parcial como fila separada (FPA-075)."""
+    end = report["metadata"]["date_range"]["end"]
+    end_ym = end[:7] if end else None
+    end_date = date.fromisoformat(end) if end else None
+    n_a = {
+        "provenance": "assumed", "rows": [], "outlook": False,
+        "remainder": None,
+    }
+    if not end_date or not end_ym:
+        n_a["n_a_reason"] = "el reporte no registra fecha de fin"
+        return n_a
+    months = [m for m in build_months(report) if m["has_data"]]
+    if len(months) < 3:
+        n_a["n_a_reason"] = (f"se requieren 3 meses con datos para el run-rate "
+                             f"base; el reporte cubre {len(months)}")
+        return n_a
+
+    base_months = months[-3:]
+    eff_base = sum(m["cost_effective"] * m["total_days"] / m["elapsed"]
+                   for m in base_months) / 3
+    q_base = sum(m["interactions"] * m["total_days"] / m["elapsed"]
+                 for m in base_months) / 3
+    rate_base = eff_base / q_base if q_base else None
+
+    # cash base: cuota de suscripción del último mes + p2p implícito escalado
+    mo_last = report["monthly"][months[-1]["ym"]]
+    fees_last = mo_last.get("subscription_fees", 0.0) or 0.0
+    p2p_last = max(mo_last["cost_real"] - fees_last, 0.0)
+    f_last = (months[-1]["total_days"] / months[-1]["elapsed"]
+              if months[-1]["elapsed"] else 1.0)
+    p2p_base = p2p_last * f_last
+
+    # FPA-075: resto del mes parcial como fila forecast separada
+    last = months[-1]
+    remainder = None
+    if last["partial"]:
+        remainder = {
+            "ym": last["ym"], "label": month_label(last["ym"]),
+            "eff": round(last["cost_effective"] * (f_last - 1.0), 2),
+            "cash": round(p2p_last * (f_last - 1.0), 2),
+            "elapsed": last["elapsed"], "total_days": last["total_days"],
+            "marker": {"symbol": "△", "text": "forecast", "favorable": None},
+        }
+
+    # FPA-071: planes futuros del calendario de suscripciones del config;
+    # la suscripción primaria es la de mayor cuota activa al cierre
+    primary, best_fee = None, -1.0
+    for tool in cfg["subscriptions"]:
+        e = _plan_for(cfg, tool, end_date)
+        if e and e["monthly_fee"] > best_fee:
+            primary, best_fee = tool, e["monthly_fee"]
+    entries = cfg["subscriptions"].get(primary, [])
+    plans = [{"key": f"{primary}:{i}", "tool": primary,
+              "label": e["label"], "fee": e["monthly_fee"]}
+             for i, e in enumerate(entries)]
+    default_plan = plans[0]["key"] if plans else None
+    for i, e in enumerate(entries):
+        s = date.fromisoformat(e["start"])
+        e_end = date.fromisoformat(e["end"]) if e.get("end") else None
+        if s <= end_date and (e_end is None or end_date < e_end):
+            default_plan = f"{primary}:{i}"
+            break
+
+    # meses futuros: del mes siguiente al cierre hasta diciembre (FPA-070)
+    fut = [f"{end_ym[:4]}-{mm:02d}"
+           for mm in range(int(end_ym[5:7]) + 1, 13)]
+
+    fc = {
+        "provenance": "assumed",  # FPA-003: run-rate y planes derivan de config
+        "base": {
+            "eff_base": round(eff_base, 6),
+            "q_base": round(q_base, 6),
+            "rate_base": round(rate_base, 6) if rate_base is not None else None,
+            "fee_base": round(fees_last, 2),
+            "p2p_base": round(p2p_base, 6),
+            "months_used": [m["ym"] for m in base_months],
+        },
+        "plans": plans,
+        "default_plan": default_plan,
+        "future_months": fut,
+        "remainder": remainder,
+    }
+    fc["rows"] = apply_scenario(fc, 0.0, 0.0, default_plan)["rows"]
+    fc["outlook"] = build_outlook(report, cfg, fc)
+    return fc
+
+
+def apply_scenario(fc, growth, rate_chg, plan_key):
+    """FPA-072/073: escenario sobre el run-rate base.
+    Efectivo: base×(1+g)ⁿ×(1+r) (FPA-072; equivale a Q×(1+g)ⁿ×rate×(1+r)).
+    Cash: cuota del plan + p2p base escalado por volumen (FPA-073).
+    Misma fórmula reproducida en JS para el recompute sin reload (FPA-077)."""
+    if not fc or fc.get("n_a_reason"):
+        return {"rows": []}
+    base = fc["base"]
+    fee = next((p["fee"] for p in fc["plans"] if p["key"] == plan_key),
+               base["fee_base"])
+    rows = []
+    for i, ym in enumerate(fc["future_months"]):
+        f = (1 + growth) ** (i + 1)
+        rows.append({
+            "ym": ym, "label": month_label(ym),
+            "eff": round(base["eff_base"] * f * (1 + rate_chg), 2),
+            "cash": round(fee + base["p2p_base"] * f, 2),
+            "marker": {"symbol": "△", "text": "forecast", "favorable": None},
+        })
+    return {"rows": rows}
+
+
+def build_outlook(report, cfg, fc):
+    """FPA-074: YTD real + outlook vs presupuesto, con varianza y markers.
+    Presupuesto pro-rateado en meses parciales del reporte (FPA-052)."""
+    months = [m for m in build_months(report) if m["has_data"]]
+    actual_cash = sum(m["cost_cash"] for m in months)
+    actual_eff = sum(m["cost_effective"] for m in months)
+    rem = fc["remainder"]
+    projected_cash = (actual_cash + rem["cash"]
+                      + sum(r["cash"] for r in fc["rows"]))
+    projected_eff = (actual_eff + rem["eff"]
+                     + sum(r["eff"] for r in fc["rows"]))
+    budget_cash = budget_eff = 0.0
+    for m in build_months(report):
+        bv = _budget_for(cfg, m["ym"])
+        if bv:
+            budget_cash += bv[0] * m["elapsed"] / m["total_days"]
+            budget_eff += bv[1] * m["elapsed"] / m["total_days"]
+    for ym in fc["future_months"]:
+        bv = _budget_for(cfg, ym)
+        if bv:
+            budget_cash += bv[0]
+            budget_eff += bv[1]
+    var_cash = projected_cash - budget_cash
+    var_eff = projected_eff - budget_eff
+    return {
+        "actual_cash": round(actual_cash, 2),
+        "actual_eff": round(actual_eff, 2),
+        "budget_cash": round(budget_cash, 2),
+        "budget_eff": round(budget_eff, 2),
+        "projected_cash": round(projected_cash, 2),
+        "projected_eff": round(projected_eff, 2),
+        "variance_cash": round(var_cash, 2),
+        "variance_eff": round(var_eff, 2),
+        "variance_pct_cash": (round(var_cash / budget_cash, 4)
+                              if budget_cash else None),
+        "variance_pct_eff": (round(var_eff / budget_eff, 4)
+                             if budget_eff else None),
+        "marker_cash": _marker(var_cash), "marker_eff": _marker(var_eff),
+        "ym_to": fc["future_months"][-1] if fc["future_months"] else None,
+        "provenance": "assumed",
     }
 
 
@@ -919,7 +1471,199 @@ def build_data_notes(report):
     }
 
 
+# ======================================================================
+# F3: render de presupuesto, bridge y forecast (valores pre-calculados;
+# JS solo re-escala varianza y forecast — design.md)
+# ======================================================================
+
+def marker_html(mk, cls=""):
+    """FPA-054/076: marker favorable/desfavorable — símbolo + texto."""
+    if not mk:
+        return ""
+    fav = {True: "mk-fav", False: "mk-unfav", None: "mk-neutral"}[mk.get("favorable")]
+    return (f'<span class="marker {fav} {cls}" title="{esc_html(mk["text"])}">'
+            f'{mk["symbol"]} {esc_html(mk["text"])}</span>')
+
+
+def budget_html(budget):
+    """FPA-050…055: tabla de varianza mensual + YTD + inputs editables.
+    El presupuesto de efectivo se muestra como informativo (soft, OQ-1)."""
+    rows_html = []
+    for r in budget["rows"]:
+        if r["in_budget"] and r["actual_cash"] is not None:
+            cells_cash = (f'<td>{r["actual_display_cash"]}</td>'
+                          f'<td>{r["budget_display_cash"]}</td>'
+                          f'<td>{_fmt_signed(r["variance_cash"])} '
+                          f'{marker_html(r["marker_cash"])}</td>'
+                          f'<td>{r["variance_pct_display_cash"]}</td>')
+            cells_eff = (f'<td>{r["actual_display_eff"]}</td>'
+                         f'<td>{r["budget_display_eff"]}</td>'
+                         f'<td>{_fmt_signed(r["variance_eff"])} '
+                         f'{marker_html(r["marker_eff"])}</td>'
+                         f'<td>{r["variance_pct_display_eff"]}</td>')
+        else:  # FPA-008: n/a con razón, nunca vacío
+            reason = esc_html(r["reason_cash"] or "")
+            na = f'<span class="na" title="{reason}">n/a</span>'
+            cells_cash = (f'<td colspan="4">{na} — {reason}</td>' if reason
+                          else '<td colspan="4"><span class="na">n/a</span></td>')
+            cells_eff = cells_cash
+        pr = (f' <span class="small" title="pro-rata FPA-052">'
+              f'({r["elapsed"]}/{r["total_days"]})</span>' if r["partial"] else "")
+        rows_html.append(
+            f'<tr data-ym="{r["ym"]}"><td>{r["label"]}{pr}</td>'
+            f'<td>{"sí" if r["in_budget"] else "no"}</td>'
+            f'{cells_cash}{cells_eff}</tr>')
+    ytd_cash, ytd_eff = budget["ytd_cash"], budget["ytd_eff"]
+    if ytd_cash:
+        ytd_row = (f'<tr class="ytd"><td><strong>YTD</strong></td><td></td>'
+                   f'<td>{ytd_cash["actual_display"]}</td>'
+                   f'<td>{ytd_cash["budget_display"]}</td>'
+                   f'<td>{ytd_cash["variance_display"]} '
+                   f'{marker_html(ytd_cash["marker"])}</td>'
+                   f'<td>{ytd_cash["variance_pct_display"]}</td>'
+                   f'<td>{ytd_eff["actual_display"]}</td>'
+                   f'<td>{ytd_eff["budget_display"]}</td>'
+                   f'<td>{ytd_eff["variance_display"]} '
+                   f'{marker_html(ytd_eff["marker"])}</td>'
+                   f'<td>{ytd_eff["variance_pct_display"]}</td></tr>')
+    else:
+        ytd_row = (f'<tr class="ytd"><td><strong>YTD</strong></td>'
+                   f'<td colspan="9"><span class="na">n/a</span> — sin meses '
+                   f'dentro del periodo presupuestado</td></tr>')
+    inputs = budget["inputs"]
+    return f'''<details class="tree" id="budget" open>
+<summary><h2>Presupuesto y varianza</h2></summary>
+<p class="small">El presupuesto de <strong>efectivo</strong> es informativo
+(soft); el gestionado es el de <strong>cash</strong>. Editá los valores —
+las varianzas se recalculan sin recargar (FPA-056). Cifras del config:
+{prov_tag("assumed")}. El YTD suma solo meses con datos dentro del periodo
+presupuestado (los meses sin datos no fabrican actual=0, FPA-017).</p>
+<label>Cash $/mes <input class="b-input" id="budget-cash" type="number"
+ step="0.01" min="0" value="{inputs["cash_monthly"]}"></label>
+<label>Efectivo $/mes <input class="b-input" id="budget-eff" type="number"
+ step="0.01" min="0" value="{inputs["effective_monthly"]}"></label>
+<label>Objetivo $/1k <input class="b-input" id="budget-target" type="number"
+ step="0.01" min="0" value="{inputs["target_per_1k"]}"></label>
+<table class="btable">
+<thead><tr><th>Mes</th><th>En presupuesto</th>
+<th>Cash real</th><th>Budget cash</th><th>Var cash</th><th>Var %</th>
+<th>Efectivo real</th><th>Budget efectivo</th><th>Var efectivo</th><th>Var %</th>
+</tr></thead>
+<tbody>{"".join(rows_html)}{ytd_row}</tbody>
+</table>
+</details>'''
+
+
+def bridge_html(bridge):
+    """FPA-060/067/068: waterfalls por par + mix 100% stacked por mes."""
+    pairs = []
+    for b in bridge["pairs"].values():
+        if b.get("n_a_reason"):  # FPA-008: n/a con razón
+            pairs.append(f'<h3>{esc_html(b["label"])}</h3>'
+                         f'<p class="f3-nv">n/a — {esc_html(b["n_a_reason"])}</p>')
+            continue
+        pairs.append(
+            f'<figure><h3>{esc_html(b["label"])}</h3>{b["svg"]}'
+            f'<figcaption class="small">Δ {fmt_usd(b["delta"])} = Volumen '
+            f'{fmt_usd(b["volume"])} + Mix {fmt_usd(b["mix"])} + Rate '
+            f'{fmt_usd(b["rate"])} (identidad ≤ $0.01, residuo '
+            f'{abs(b["identity_residual"]):.4f})</figcaption></figure>')
+    stack_rows = []
+    for s in bridge["mix_stack"].values():
+        cells = []
+        for i, seg in enumerate(s["segments"]):
+            pct = f"{100 * seg['share']:.1f}%"
+            title = f"{esc_html(seg['model'])}: {pct} ({esc_html(s['metric'])})"
+            cells.append(f'<span class="stackbar" title="{title}" '
+                         f'style="width:{100 * seg["share"]:.1f}%; '
+                         f'background:var(--acc);opacity:{0.35 + 0.13 * i:.2f}">'
+                         f'</span>')
+        proxy = (f' <span class="na">(proxy: {esc_html(s["proxy_reason"])})</span>'
+                 if s["proxy"] else "")
+        stack_rows.append(
+            f'<tr><td>{esc_html(s["label"])}</td>'
+            f'<td><span class="stackrow">{"".join(cells)}</span>{proxy}</td></tr>')
+    return f'''<details class="tree" id="bridge" open>
+<summary><h2>Bridge precio-volumen-mix (efectivo)</h2></summary>
+{"".join(pairs)}
+<h3>Mix de modelos por mes (100% stacked)</h3>
+<table class="small" id="mix-stack">
+<tbody>{"".join(stack_rows)}</tbody>
+</table>
+</details>'''
+
+
+def forecast_html(fc):
+    """FPA-070…077: forecast con escenarios editables (update sin reload),
+    filas forecast marcadas con △ (no solo color) y outlook vs presupuesto."""
+    if fc.get("n_a_reason"):  # FPA-008: nunca forecast inventado
+        return (f'<details class="tree" id="forecast" open>\n'
+                f'<summary><h2>Forecast y outlook</h2></summary>\n'
+                f'<p class="f3-nv">n/a — {esc_html(fc["n_a_reason"])}</p>\n'
+                f'</details>')
+    base = fc["base"]
+    plan_opts = "".join(
+        f'<option value="{esc_html(p["key"])}"'
+        f'{" selected" if p["key"] == fc["default_plan"] else ""}>'
+        f'{esc_html(p["label"])} (${p["fee"]:,.2f}/mes)</option>'
+        for p in fc["plans"])
+    rows = []
+    rem = fc["remainder"]
+    if rem:  # FPA-075: resto del mes parcial, fila separada y marcada
+        rows.append(
+            f'<tr data-fc-ym="{rem["ym"]}"><td>{esc_html(rem["label"])} '
+            f'<span class="small">(resto: {rem["elapsed"]}/{rem["total_days"]})</span></td>'
+            f'<td>{fmt_usd(rem["eff"])} {marker_html(rem["marker"])}</td>'
+            f'<td>{fmt_usd(rem["cash"])} {marker_html(rem["marker"])}</td></tr>')
+    for r in fc["rows"]:
+        rows.append(
+            f'<tr data-fc-ym="{r["ym"]}"><td>{esc_html(r["label"])}</td>'
+            f'<td>{fmt_usd(r["eff"])} {marker_html(r["marker"])}</td>'
+            f'<td>{fmt_usd(r["cash"])} {marker_html(r["marker"])}</td></tr>')
+    out = fc["outlook"]
+    # FPA-074: YTD real + outlook vs presupuesto, con varianza
+    outlook = (f'<h3>Outlook: YTD + forecast vs presupuesto'
+               f' (hasta {esc_html(out["ym_to"] or "")})</h3>'
+               f'<table class="fc-tbl"><tbody>'
+               f'<tr><td>Real YTD cash</td><td>{fmt_usd(out["actual_cash"])}</td></tr>'
+               f'<tr><td>Proyección cash (YTD + outlook)</td>'
+               f'<td>{fmt_usd(out["projected_cash"])} '
+               f'{marker_html(out["marker_cash"])}</td></tr>'
+               f'<tr><td>Budget cash</td><td>{fmt_usd(out["budget_cash"])}</td></tr>'
+               f'<tr><td>Varianza cash</td><td>{_fmt_signed(out["variance_cash"])} '
+               f'({_fmt_pct_signed(out["variance_pct_cash"])}) '
+               f'{marker_html(out["marker_cash"])}</td></tr>'
+               f'<tr><td>Real YTD efectivo</td><td>{fmt_usd(out["actual_eff"])}</td></tr>'
+               f'<tr><td>Proyección efectivo (YTD + outlook)</td>'
+               f'<td>{fmt_usd(out["projected_eff"])} '
+               f'{marker_html(out["marker_eff"])}</td></tr>'
+               f'<tr><td>Budget efectivo (informativo)</td>'
+               f'<td>{fmt_usd(out["budget_eff"])}</td></tr>'
+               f'<tr><td>Varianza efectivo</td><td>{_fmt_signed(out["variance_eff"])} '
+               f'({_fmt_pct_signed(out["variance_pct_eff"])}) '
+               f'{marker_html(out["marker_eff"])}</td></tr>'
+               f'</tbody></table>')
+    return f'''<details class="tree" id="forecast" open>
+<summary><h2>Forecast y outlook</h2></summary>
+<p class="small">Run-rate base = media FME de los últimos 3 meses con datos
+({", ".join(base["months_used"])}). Escenario default pre-calculado en
+Python; los cambios se recalculan sin recargar (FPA-077). Cifras forecast:
+{prov_tag("assumed")}.</p>
+<label>Crecimiento mensual % <input class="fc-input" id="fc-growth" type="number"
+ step="0.5" value="0"></label>
+<label>Cambio de rate % <input class="fc-input" id="fc-rate" type="number"
+ step="0.5" value="0"></label>
+<label>Plan futuro <select id="fc-plan">{plan_opts}</select></label>
+<table class="fc-tbl">
+<thead><tr><th>Mes</th><th>Efectivo</th><th>Cash</th></tr></thead>
+<tbody>{"".join(rows)}</tbody>
+</table>
+{outlook}
+</details>'''
+
+
 def fig(value_html, provenance, extra_cls=""):
+
     """Envoltorio de cifra con provenance tag (FPA-003)."""
     cls = f' class="fig{"" if not extra_cls else " " + extra_cls}"'
     return f'<span{cls} data-provenance="{provenance}">{value_html}</span>'
@@ -1004,6 +1748,26 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 #data th, #data td { padding: .2rem .7rem; border-bottom: 1px solid var(--line);
   text-align: left; }
 #view-limitation { color: var(--muted); }
+.wf .wfb { fill: var(--line); stroke: var(--muted); stroke-width: .5; }
+.wf .wfup { fill: var(--bad); opacity: .75; }
+.wf .wfdn { fill: var(--ok); opacity: .75; }
+.wf .wft { font-size: 9px; font-variant-numeric: tabular-nums; fill: var(--fg); }
+.wf .wfl { font-size: 9px; fill: var(--muted); }
+.stackbar { display: inline-block; height: 14px; }
+.fc-tbl, .btable { border-collapse: collapse; font-size: .85rem;
+  font-variant-numeric: tabular-nums; }
+.fc-tbl th, .btable th { text-align: right; padding: .2rem .5rem;
+  border-bottom: 1px solid var(--line); color: var(--muted); font-weight: 600; }
+.fc-tbl th:first-child, .btable th:first-child { text-align: left; }
+.fc-tbl td, .btable td { text-align: right; padding: .15rem .5rem;
+  border-bottom: 1px solid var(--line); }
+.fc-tbl td:first-child, .btable td:first-child { text-align: left; }
+.mk-fav { color: var(--ok); }
+.mk-unfav { color: var(--bad); }
+.mk-neutral { color: var(--muted); }
+.fc-input, .b-input { font: inherit; width: 5.5em; }
+.fc-input:invalid, .b-input:invalid { border-color: var(--bad); }
+.f3-nv { color: var(--muted); }
 """
 
 CSS_LEGACY = (  # retro confinado a header/footer, sin animación (FPA-178)
@@ -1172,9 +1936,11 @@ def render_html(report, cfg, generated=None):
         + tree_section("portfolio", "Árbol Portfolio (Categoría → Proyecto)",
                        all_view["trees"]["portfolio"]))
     notes_html = data_notes_html(model["data_notes"])
+    # F3: presupuesto, bridge y forecast (valores pre-calculados en el modelo)
+    f3_html = (budget_html(model["budget"]) + bridge_html(model["bridge"])
+               + forecast_html(model["forecast"]))
 
     model_json = json.dumps(model, ensure_ascii=False, sort_keys=True)
-
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -1213,6 +1979,7 @@ def render_html(report, cfg, generated=None):
     <div id="tree-box">{trees_html}</div>
   </section>
   {notes_html}
+  {f3_html}
 </main>
 <footer class="site">
   <p class="retro small">Dashboard FP&A · generado por viz-fpa.py (stdlib-only,
@@ -1291,6 +2058,113 @@ def render_html(report, cfg, generated=None):
   }}
   var sel = document.getElementById("period-select");
   if (sel) sel.addEventListener("change", function () {{ renderView(sel.value); }});
+
+  // ============ F3: recompute sin reload (FPA-056/077) ============
+  // Las fórmulas replican apply_scenario/build_budget de Python; un test
+  // de paridad Playwright verifica que igualan los golden pre-calculados.
+  function fmtUsd(x) {{
+    // FPA-053: signo explícito (+/-$), igual que _fmt_signed de Python
+    return (x < 0 ? "-$" : "+$") + Math.abs(x).toLocaleString("en-US",
+      {{minimumFractionDigits: 2, maximumFractionDigits: 2}});
+  }}
+  function fmtPct(f) {{
+    return (f >= 0 ? "+" : "") + (f * 100).toFixed(1) + "%";
+  }}
+  function markerFor(v) {{
+    if (v < -0.005) return {{symbol: "\u25bc", text: "bajo", favorable: true}};
+    if (v > 0.005) return {{symbol: "\u25b2", text: "sobre", favorable: false}};
+    return {{symbol: "\u25cf", text: "en", favorable: null}};
+  }}
+  function markerHtml(mk) {{
+    var cls = mk.favorable === true ? "mk-fav" :
+              mk.favorable === false ? "mk-unfav" : "mk-neutral";
+    return '<span class="marker ' + cls + '">' + mk.symbol + ' ' + mk.text + '</span>';
+  }}
+  function budgetRecompute() {{
+    // FPA-056: editar presupuesto → re-calcular varianzas sin reload
+    var cash = parseFloat(document.getElementById("budget-cash").value) || 0;
+    var eff = parseFloat(document.getElementById("budget-eff").value) || 0;
+    var rows = document.querySelectorAll("#budget tbody tr[data-ym]");
+    var budgetData = MODEL.budget.rows;
+    var totA = 0, totB = 0, totE = 0, totBef = 0;
+    rows.forEach(function (tr) {{
+      var ym = tr.getAttribute("data-ym");
+      var r = budgetData.find(function (x) {{ return x.ym === ym; }});
+      if (!r || !r.in_budget || r.actual_cash === null) return;
+      var pr = r.pro_rate;
+      var bCash = Math.round(cash * pr * 100) / 100;
+      var bEff = Math.round(eff * pr * 100) / 100;
+      var vCash = Math.round((r.actual_cash - bCash) * 100) / 100;
+      var vEff = Math.round((r.actual_eff - bEff) * 100) / 100;
+      var tds = tr.querySelectorAll("td");
+      tds[2].innerHTML = '$' + r.actual_cash.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      tds[3].textContent = '$' + bCash.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      tds[4].innerHTML = fmtUsd(vCash) + ' ' + markerHtml(markerFor(vCash));
+      tds[5].textContent = bCash ? fmtPct(vCash / bCash) : "n/a";
+      tds[6].innerHTML = '$' + r.actual_eff.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      tds[7].textContent = '$' + bEff.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      tds[8].innerHTML = fmtUsd(vEff) + ' ' + markerHtml(markerFor(vEff));
+      tds[9].textContent = bEff ? fmtPct(vEff / bEff) : "n/a";
+      totA += r.actual_cash; totB += bCash;
+      totE += r.actual_eff; totBef += bEff;
+    }});
+    var ytd = document.querySelector("#budget tr.ytd");
+    if (ytd) {{
+      var t = ytd.querySelectorAll("td");
+      var vC = Math.round((totA - totB) * 100) / 100;
+      var vE = Math.round((totE - totBef) * 100) / 100;
+      t[2].textContent = '$' + totA.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      t[3].textContent = '$' + totB.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      t[4].innerHTML = fmtUsd(vC) + ' ' + markerHtml(markerFor(vC));
+      t[5].textContent = totB ? fmtPct(vC / totB) : "n/a";
+      t[6].textContent = '$' + totE.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      t[7].textContent = '$' + totBef.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",");
+      t[8].innerHTML = fmtUsd(vE) + ' ' + markerHtml(markerFor(vE));
+      t[9].textContent = totBef ? fmtPct(vE / totBef) : "n/a";
+    }}
+  }}
+  function applyScenario(growth, rateChg, planKey) {{
+    // FPA-072/073: replica de viz.apply_scenario
+    var fc = MODEL.forecast;
+    if (!fc || fc.n_a_reason) return [];
+    var fee = fc.base.fee_base;
+    fc.plans.forEach(function (p) {{ if (p.key === planKey) fee = p.fee; }});
+    return fc.future_months.map(function (ym, i) {{
+      var f = Math.pow(1 + growth, i + 1);
+      return {{
+        ym: ym,
+        eff: Math.round(fc.base.eff_base * f * (1 + rateChg) * 100) / 100,
+        cash: Math.round((fee + fc.base.p2p_base * f) * 100) / 100
+      }};
+    }});
+  }}
+  function forecastRecompute() {{
+    var g = (parseFloat(document.getElementById("fc-growth").value) || 0) / 100;
+    var r = (parseFloat(document.getElementById("fc-rate").value) || 0) / 100;
+    var plan = document.getElementById("fc-plan").value;
+    var rows = applyScenario(g, r, plan);
+    var trs = document.querySelectorAll("#forecast tr[data-fc-ym]");
+    var fc = MODEL.forecast;
+    var nStatic = fc.remainder ? 1 : 0;
+    trs.forEach(function (tr, idx) {{
+      var i = idx - nStatic;
+      if (i < 0 || i >= rows.length) return;  // fila del mes parcial: fija
+      var tds = tr.querySelectorAll("td");
+      tds[1].innerHTML = '$' + rows[i].eff.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",")
+        + ' ' + markerHtml({{symbol: "\u25b3", text: "forecast", favorable: null}});
+      tds[2].innerHTML = '$' + rows[i].cash.toFixed(2).replace(/\\B(?=(\\d{{3}})+(?!\\d))/g, ",")
+        + ' ' + markerHtml({{symbol: "\u25b3", text: "forecast", favorable: null}});
+    }});
+  }}
+  ["budget-cash", "budget-eff", "budget-target"].forEach(function (id) {{
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("input", budgetRecompute);
+  }});
+  ["fc-growth", "fc-rate", "fc-plan"].forEach(function (id) {{
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("input", forecastRecompute);
+    if (el && el.tagName === "SELECT") el.addEventListener("change", forecastRecompute);
+  }});
 }})();
 </script>
 </body>
