@@ -2678,7 +2678,7 @@ def budget_html(budget):
                    f'<td colspan="9"><span class="na">n/a</span> — sin meses '
                    f'dentro del periodo presupuestado</td></tr>')
     inputs = budget["inputs"]
-    return f'''<details class="tree" id="budget" open>
+    return f'''<details class="tree" data-tree="budget" id="budget" open>
 <summary><h2>Presupuesto y varianza</h2></summary>
 <p class="small">El presupuesto de <strong>efectivo</strong> es informativo
 (soft); el gestionado es el de <strong>cash</strong>. Editá los valores —
@@ -2730,7 +2730,7 @@ def bridge_html(bridge):
         stack_rows.append(
             f'<tr><td>{esc_html(s["label"])}</td>'
             f'<td><span class="stackrow">{"".join(cells)}</span>{proxy}</td></tr>')
-    return f'''<details class="tree" id="bridge" open>
+    return f'''<details class="tree" data-tree="bridge" id="bridge">
 <summary><h2>Bridge precio-volumen-mix (efectivo)</h2></summary>
 {"".join(pairs)}
 <h3>Mix de modelos por mes (100% stacked)</h3>
@@ -2744,7 +2744,8 @@ def forecast_html(fc):
     """FPA-070…077: forecast con escenarios editables (update sin reload),
     filas forecast marcadas con △ (no solo color) y outlook vs presupuesto."""
     if fc.get("n_a_reason"):  # FPA-008: nunca forecast inventado
-        return (f'<details class="tree" id="forecast" open>\n'
+        return (f'<details class="tree" data-tree="forecast" '
+                f'id="forecast" open>\n'
                 f'<summary><h2>Forecast y outlook</h2></summary>\n'
                 f'<p class="f3-nv">n/a — {esc_html(fc["n_a_reason"])}</p>\n'
                 f'</details>')
@@ -2790,7 +2791,7 @@ def forecast_html(fc):
                f'({_fmt_pct_signed(out["variance_pct_eff"])}) '
                f'{marker_html(out["marker_eff"])}</td></tr>'
                f'</tbody></table>')
-    return f'''<details class="tree" id="forecast" open>
+    return f'''<details class="tree" data-tree="forecast" id="forecast" open>
 <summary><h2>Forecast y outlook</h2></summary>
 <p class="small">Run-rate base = media FME de los últimos 3 meses con datos
 ({", ".join(base["months_used"])}). Escenario default pre-calculado en
@@ -2942,7 +2943,8 @@ def claim_html(c):
             + prov_tag(c["threshold_provenance"]) + '</p>')
 
 
-CSS = site_theme.base_css() + site_theme.STRUCTURE_CSS + """
+CSS = (site_theme.base_css() + site_theme.STRUCTURE_CSS
+       + site_theme.DISCLOSURE_CSS + """
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--fg); line-height:1.5; }
 header.site, footer.site { border-bottom: 1px solid var(--line);
@@ -3064,6 +3066,16 @@ body[data-view="data"] #data { display: block; }
 @media (max-width:599px) {
   /* FPA-092: una columna (.cards-grid ya colapsa sola con auto-fit) */
   header.site h1 { font-size: 1.1rem; }
+  /* coffe-2ni/FPA-109: primer viewport 390x844 con título + selector +
+     primera headline — ritmo vertical compacto (estructura, no tokens):
+     la línea decorativa retro sale, la topbar y los márgenes se aprietan. */
+  header.site .retro { display: none; }
+  .topbar { padding: .25rem .4rem; gap: .3rem; }
+  main .fpa-view > h2 { font-size: 1.2rem; margin: .3rem 0 .1rem; }
+  #summary { margin: .5rem 0; }
+  .banner-partial { padding: .3rem .6rem; }
+  .marginalia { margin: .3rem 0 .4rem; }
+  .claims { margin: .5rem 0; }
   /* FPA-092/177: tablas anchas en contenedor con scroll horizontal y
      primera columna fija */
   .ttree, .btable, .fc-tbl, #data table, table.small {
@@ -3073,7 +3085,7 @@ body[data-view="data"] #data { display: block; }
   table.small th:first-child, table.small td:first-child {
     position:sticky; left: 0; background: var(--bg); }
 }
-"""
+""")
 
 CSS_LEGACY = (  # retro confinado a header/footer, sin animación (FPA-178)
     ".retro::before { content: '▚▞ '; color: var(--acc); }"
@@ -3235,14 +3247,15 @@ def sparkline_svg(series, w=120, h=28):
             f'stroke="currentColor" stroke-width="1.5" points="{pts}"/></svg>')
 
 
-def tree_section(name, title, root, is_time=False):
+def tree_section(name, title, root, is_time=False, open_=False):
     """Sección de árbol expandible (FPA-020/022) con columnas pre-formateadas."""
     cols = ("Nodo", "Coste", "% total", "Interacciones", "$/1k", "Δ vs prior")
     if is_time:
         cols += ("Presupuesto*", "Varianza", "Var %")
     head = "".join(f"<th>{c}</th>" for c in cols)
     rows = _tree_html(root, is_time)
-    return (f'<details class="tree" data-tree="{name}" open>'
+    open_attr = " open" if open_ else ""
+    return (f'<details class="tree" data-tree="{name}"{open_attr}>'
             f'<summary><h2>{title}</h2></summary>'
             f'<table class="ttree"><thead><tr>{head}</tr></thead>'
             f'<tbody>{rows}</tbody></table>'
@@ -3316,7 +3329,8 @@ def alerts_html(alerts):
     """FPA-080: lista de alertas con severity, regla y evidencia.
     Sin alertas → estado visible "sin alertas", nunca sección vacía."""
     if not alerts:
-        return ('<details class="tree" id="alerts"><summary><h2>Alertas</h2>'
+        return ('<details class="tree" data-tree="alerts" id="alerts">'
+                '<summary><h2>Alertas</h2>'
                 '</summary><p class="small" id="alerts-none">Sin alertas — '
                 'ninguna regla se disparó con los umbrales del config '
                 '(FPA-088).</p></details>')
@@ -3337,7 +3351,8 @@ def alerts_html(alerts):
             f'{esc_html(a["message"])}'
             f'<span class="small">Evidencia: {esc_html(ev)}</span>'
             f'{action}</li>')
-    return (f'<details class="tree" id="alerts" open><summary>'
+    return (f'<details class="tree" data-tree="alerts" id="alerts">'
+            f'<summary>'
             f'<h2>Alertas <span class="small">({len(alerts)})</span></h2>'
             f'</summary><ul class="alert-list">{"".join(items)}</ul>'
             f'</details>')
@@ -3377,7 +3392,8 @@ def plan_economy_html(econ):
     case_rows = "".join(
         f'<tr><td>{esc_html(label)}</td><td>{fmt_usd(val)}</td>'
         f'<td>{prov_tag("assumed")}</td></tr>' for label, val in cases)
-    return f'''<details class="tree" id="plan-economy" open>
+    return f'''<details class="tree" data-tree="plan-economy" 
+id="plan-economy">
 <summary><h2>Economía de suscripción</h2></summary>
 <p class="small">{esc_html(econ["usage_limits_disclaimer"])}</p>
 <table class="btable">
@@ -3405,7 +3421,8 @@ def reconciliation_html(rec):
     completo queda en el JSON embebido)."""
     if rec.get("provenance") != "reported":
         reason = esc_html(rec.get("reason") or "n/a")
-        return (f'<details class="tree" id="reconciliation"><summary>'
+        return (f'<details class="tree" data-tree="reconciliation" '
+                f'id="reconciliation"><summary>'
                 f'<h2>Cash real y reconciliación (FPA-082)</h2></summary>'
                 f'<p class="f3-nv">n/a — {reason}</p></details>')
     prov_rows = []
@@ -3447,7 +3464,8 @@ def reconciliation_html(rec):
                   '<tr><td colspan="6"><span class="na">n/a</span> — la '
                   'reconciliación no está disponible en este reporte '
                   '(regenerar con scripts/usage-tracker.py)</td></tr>')
-    return f'''<details class="tree" id="reconciliation" open>
+    return f'''<details class="tree" data-tree="reconciliation" 
+id="reconciliation">
 <summary><h2>Cash real y reconciliación (FPA-082)</h2></summary>
 <p class="small">Cash real = cargos reales del ledger
 ({esc_html(rec["source"])}) {prov_tag("reported")}; los fees implícitos del
@@ -3757,7 +3775,7 @@ def pareto_html(usage):
         "50% del coste en top-3 (config FPA-088)",
         "Tres proyectos concentran el {0} del coste efectivo",
         "Pareto de proyectos")
-    return f'''<details class="tree" data-tree="pareto" id="pareto" open>
+    return f'''<details class="tree" data-tree="pareto" id="pareto">
 <summary><h2 class="finding">{esc_html(title)}</h2></summary>
 <p class="small finding-meta">Pareto de proyectos · {meta}</p>
 <table class="small"><caption>Pareto por coste efectivo (FPA-028; fuera del
@@ -3839,7 +3857,7 @@ def render_html(report, cfg, generated=None, today=None):
         + tree_section("tool", "Árbol Tool (Tool → Model)",
                        all_view["trees"]["tool"])
         + tree_section("portfolio", "Árbol Portfolio (Categoría → Proyecto)",
-                       all_view["trees"]["portfolio"]))
+                       all_view["trees"]["portfolio"], open_=True))
     # F4: alertas y economía de suscripción (pre-calculadas)
     f4_html = (alerts_html(model["alerts"])
                + plan_economy_html(model["plan_economy"]))
@@ -3928,7 +3946,7 @@ def render_html(report, cfg, generated=None, today=None):
   <section id="data" class="fpa-view" aria-label="Datos y método">
     <h2>Datos y método</h2>
     {marginalia["data"]}
-    <details id="data-method">
+    <details class="tree" data-tree="data-method" id="data-method" open>
       <summary><h3>Datos y método</h3></summary>
       {notes_inner}
       {timeline_block}
@@ -4049,7 +4067,11 @@ def render_html(report, cfg, generated=None, today=None):
     var cols = ["Nodo", "Coste", "% total", "Interacciones", "$/1k", "Δ vs prior"];
     if (isTime) cols.push("Presupuesto*", "Varianza", "Var %");
     var head = cols.map(function (c) {{ return "<th>" + c + "</th>"; }}).join("");
-    return '<details class="tree" data-tree="' + name + '" open><summary><h2>' + title
+    // coffe-x6l F5: solo la primaria (portfolio) abre por defecto;
+    // espeja los defaults del render Python.
+    var openAttr = (name === "portfolio") ? " open" : "";
+    return '<details class="tree" data-tree="' + name + '"' + openAttr
+      + '><summary><h2>' + title
       + '</h2></summary><button class="export-csv" type="button">Exportar CSV</button>'
       + '<table class="ttree"><thead><tr>' + head
       + '</tr></thead><tbody>' + treeRows(root, isTime, 0) + '</tbody></table>'

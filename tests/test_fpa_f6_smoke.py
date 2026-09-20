@@ -113,10 +113,15 @@ class TestF6Smoke(unittest.TestCase):
         p.wait_for_timeout(100)
 
     def test_mostrar_todo(self):
-        """FPA-155: el botón revela las filas extra sin recargar."""
+        """FPA-155: el botón revela las filas extra sin recargar.
+        coffe-2ni: el pareto ya no abre por defecto (política de
+        disclosure D5/F5.1 — solo la primaria de la vista) → el test lo
+        abre explícito antes de operar."""
         self._fresh()
         p = self.page
         p.click('.tab[data-view="breakdown"]')  # pareto vive en Breakdown
+        p.wait_for_timeout(100)
+        p.click("#pareto > summary")  # abrir sección colapsada por defecto
         p.wait_for_timeout(100)
         n_hidden = p.evaluate(
             "document.querySelectorAll('#pareto tr.extra-row').length")
@@ -131,11 +136,14 @@ class TestF6Smoke(unittest.TestCase):
             0, p.evaluate("document.querySelectorAll('#pareto .show-all').length"))
 
     def test_skills_commands_toggle(self):
-        """FPA-156: el toggle muestra comandos y oculta skills."""
+        """FPA-156: el toggle muestra comandos y oculta skills.
+        coffe-2ni: skills-commands ya no abre por defecto (política de
+        disclosure D5/F5.1) → se abre el summary antes de operar."""
         self._fresh()
         p = self.page
         p.click('.tab[data-view="habits"]')  # skills-commands vive en Habits
-        self.assertTrue(p.locator("#skills-panel").is_visible())
+        p.click("#skills-commands > summary")  # abrir sección colapsada
+        p.wait_for_timeout(100)
         self.assertFalse(p.locator("#commands-panel").is_visible())
         p.click('.ptoggle[data-panel="commands-panel"]')
         p.wait_for_timeout(100)
@@ -196,9 +204,13 @@ class TestF6Smoke(unittest.TestCase):
         self._sin_errores()
 
     def test_readout_persistente(self):
-        """FPA-175: focus en una barra del chart actualiza el readout."""
+        """FPA-175: focus en una barra del chart actualiza el readout.
+        coffe-2ni: el bridge ya no abre por defecto (D5/F5.1) → se abre
+        el summary antes de enfocar una barra del waterfall."""
+        self._fresh()
         p = self.page
         p.click('.tab[data-view="cost"]')  # el waterfall vive en Costo
+        p.click("#bridge > summary")  # abrir sección colapsada
         p.wait_for_timeout(100)
         p.focus(".wf.chart rect[data-label]")
         p.wait_for_timeout(100)

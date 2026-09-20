@@ -15,6 +15,11 @@ Responsibilities:
   (base_css(): box-sizing, tipografía Arial del sitio) para que cada
   generador (viz-fpa.py, viz-index.py, viz-gantt.py) las interpolate en su
   <style> en lugar de duplicar definiciones divergentes
+- emitir DISCLOSURE_CSS (coffe-x6l F5): estructura/disclosure de las
+  secciones <details class=tree> — summary como group-box del tema con el
+  marcador ▸/▾ integrado vía ::before (nunca nodo de texto: el marcador
+  nativo se suprime con list-style:none) y target táctil >=44px. Solo
+  estructura: ningún token de color/tipografía nuevo.
 
 Rationale: copiar el CSS a mano garantiza divergencia futura entre los
 dashboards; un módulo stdlib es el patrón del repo (fpa_config.py). Un solo
@@ -59,6 +64,27 @@ STRUCTURE_CSS = (
     'margin: .8rem 0 0; }\n'
     '.ctas .cta { font-size: .82rem; padding: .35rem .6rem; '
     'min-height: 44px; max-height: 64px; white-space: nowrap; }\n'
+)
+
+# Disclosure de secciones (coffe-x6l F5/D5): summary como group-box 90s
+# con marcador integrado. Selectores acotados a details.tree > summary
+# (secciones de nivel de vista); los expanders internos (.ttree, tlabel,
+# mchip) conservan sus reglas propias. Estructura compartible: sin
+# colores/tipografía fuera de los tokens.
+DISCLOSURE_CSS = (
+    'details.tree { margin: .6rem 0; }\n'
+    'details.tree > summary { display: flex; align-items: center; '
+    'min-height: 44px; cursor: pointer; list-style: none; '
+    'background: var(--card); border: 2px outset #fff; '
+    'padding: .2rem .6rem; }\n'
+    'details.tree > summary::-webkit-details-marker { display: none; }\n'
+    'details.tree > summary::before { content: "\u25b8"; '
+    'color: var(--muted); flex: none; padding-right: .35em; }\n'
+    'details.tree[open] > summary { border-style: inset; }\n'
+    'details.tree[open] > summary::before { content: "\u25be"; }\n'
+    'details.tree > summary:hover { color: var(--acc); }\n'
+    'details.tree > summary > h2, details.tree > summary > h3 '
+    '{ margin: 0; font-size: 1rem; }\n'
 )
 
 # Marginalia progressive disclosure (coffe-gen.4): chips expandibles
