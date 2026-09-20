@@ -140,6 +140,17 @@ def validate_config(cfg):
             for cta in [ctas.get("primary", {}), *secondary]:
                 if not isinstance(cta, dict) or not cta.get("target"):
                     errors.append(f"cta con target vacío: {cta.get('label', '?') if isinstance(cta, dict) else cta}")
+            # FPA-167/168: acciones de alertas también salen del config, con
+            # target obligatorio (nunca vacío).
+            actions = ctas.get("alert_actions", {})
+            if not isinstance(actions, dict):
+                errors.append("ctas.alert_actions debe ser un objeto")
+            else:
+                for rule, act in actions.items():
+                    if not isinstance(act, dict) or not act.get("target"):
+                        errors.append(f"cta con target vacío: {rule}")
+                    elif not act.get("label"):
+                        errors.append(f"cta sin label: {rule}")
 
     return errors
 

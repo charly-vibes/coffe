@@ -420,7 +420,7 @@ class TestRenderF3(unittest.TestCase):
 
     def test_seccion_bridge(self):
         self.assertIn('id="bridge"', self.html)
-        self.assertEqual(2, self.html.count('class="wf"'))  # un waterfall por par
+        self.assertEqual(2, self.html.count('class="wf chart"'))  # un waterfall por par
         self.assertIn("Mix", self.html)
         self.assertIn('id="mix-stack"', self.html)
 

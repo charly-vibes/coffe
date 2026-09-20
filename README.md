@@ -81,6 +81,19 @@ El deploy es vía **GitHub Actions** (no hay branch `gh-pages`): `.github/workfl
 
 ## Estado de los datos
 
+<!-- CHECK-DOCS:BEGIN -->
+Cifras actuales del reporte, verificadas por
+`python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
+(FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
+
+- Interacciones: 139,735
+- Proyectos: 40
+- Costo efectivo: $3,810.95
+- Costo real: $609.69
+- Sesiones: 1,884
+- Periodo: 2026-01-11 → 2026-09-19
+<!-- CHECK-DOCS:END -->
+
 ### ✅ Extraído y documentado
 
 - **81,887 interacciones** de enero 11 a junio 10 (solo charly)

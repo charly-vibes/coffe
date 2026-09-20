@@ -3,6 +3,14 @@
 viz-fpa.py — Dashboard FP&A de uso de IA (epic coffe-lat).
 
 Fase 1 (coffe-lat.2): esqueleto stdlib-only con resumen ejecutivo.
+Fase 6 (coffe-lat.7): arquitectura de 5 vistas por pregunta + Data & method
+colapsado (FPA-150…157), presets de periodo YTD/Q/rango custom (FPA-090),
+selector único fijo (FPA-153), top-5 + Mostrar todo (FPA-155), merges
+(FPA-156), títulos-hallazgo con fallback (FPA-160/161), CTAs del config con
+fail si target vacío (FPA-165…168, 172), Export CSV / Download SVG (FPA-169),
+Share view con restauración y params inválidos ignorados (FPA-170/171),
+accesibilidad móvil (FPA-175…179, 094), numeración de figuras (FPA-144) y
+--check-docs contra el README (FPA-143).
 
 Lee data/usage_report_v3.json + config/fpa.json y produce
 data/fpa-dashboard.html: un único HTML autocontenido (FPA-001) con SVG inline,
@@ -21,6 +29,7 @@ como JSON (`id="fpa-model"`) para que las fases siguientes (F2+) re-escale
 en JS sin recalcular.
 
 Uso: python3 scripts/viz-fpa.py [--report PATH] [--config PATH] [--out PATH]
+     python3 scripts/viz-fpa.py --check-docs [--readme PATH]
 """
 
 import argparse
@@ -522,24 +531,29 @@ def waterfall_svg(b, w=420, h=150):
     bw = min(60.0, (w - 30) / n - 12)
     gap = (w - 20 - n * bw) / (n - 1)
 
-    def rect(x, y_a, y_b, cls):
+    def rect(x, y_a, y_b, cls, name, val):
         top, bot = min(y_a, y_b), max(y_a, y_b)
+        label = f"{name}: {_fmt_signed(val)}"
         return (f'<rect x="{x:.1f}" y="{top:.1f}" width="{bw:.1f}" '
-                f'height="{max(bot - top, 1.0):.1f}" class="{cls}"/>')
+                f'height="{max(bot - top, 1.0):.1f}" class="{cls}" '
+                f'tabindex="0" role="img" aria-label="{esc_html(label)}" '
+                f'data-label="{esc_html(name)}" '
+                f'data-value="{esc_html(_fmt_signed(val))}"/>')
 
     bars, texts = [], []
     x = 12.0
-    bars.append(rect(x, Y(lo), Y(base), "wfb"))
+    bars.append(rect(x, Y(lo), Y(base), "wfb", "cost₀", b["cost0"]))
     texts.append(f'<text x="{x + bw / 2:.1f}" y="{Y(base) - 3:.1f}" class="wft" '
                  f'text-anchor="middle">{fmt_usd(b["cost0"])}</text>')
     x += bw + gap
     for (name, v), (fa, fz) in zip(steps, floats):
-        bars.append(rect(x, Y(fa), Y(fz), "wfup" if v >= 0 else "wfdn"))
+        bars.append(rect(x, Y(fa), Y(fz), "wfup" if v >= 0 else "wfdn",
+                         name, v))
         ytxt = Y(max(fa, fz)) - 3
         texts.append(f'<text x="{x + bw / 2:.1f}" y="{ytxt:.1f}" class="wft" '
                      f'text-anchor="middle">{_fmt_signed(v)}</text>')
         x += bw + gap
-    bars.append(rect(x, Y(lo), Y(end), "wfb"))
+    bars.append(rect(x, Y(lo), Y(end), "wfb", "cost₁", b["cost1"]))
     texts.append(f'<text x="{x + bw / 2:.1f}" y="{Y(end) - 3:.1f}" class="wft" '
                  f'text-anchor="middle">{fmt_usd(b["cost1"])}</text>')
     labels = []
@@ -550,7 +564,7 @@ def waterfall_svg(b, w=420, h=150):
         lx += bw + gap
     axis = (f'<text x="12" y="14" class="wfl">{esc_html(b["axis_label"])}</text>'
             if b.get("truncated") else "")
-    return (f'<svg class="wf" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
+    return (f'<svg class="wf chart" width="{w}" height="{h}" viewBox="0 0 {w} {h}" '
             f'role="img" aria-label="bridge {esc_html(b["label"] or "")}: '
             f'Volumen {fmt_usd(b["volume"])}, Mix {fmt_usd(b["mix"])}, '
             f'Rate {fmt_usd(b["rate"])}">'
@@ -1039,6 +1053,8 @@ def build_alerts(report, cfg, today=None):
     valores de evidencia. Reglas: verify-plan (081), reconciliación (082),
     budget (083), unit-cost (084), mix premium (085), concentración (086),
     staleness (087). Todos los umbrales salen del config (FPA-088).
+    Cada alerta lleva exactamente una acción (FPA-167): target del config
+    (ctas.alert_actions), con fallback a los defaults del código.
     `today` inyectable para tests/golden; default fecha de hoy."""
     if today is None:
         today = date.today()
@@ -1051,12 +1067,34 @@ def build_alerts(report, cfg, today=None):
     _check_premium_mix(report, cfg, months, alerts)
     _check_concentration(report, cfg, alerts)
     _check_staleness(report, cfg, today, alerts)
+    actions = dict(DEFAULT_ALERT_ACTIONS)
+    actions.update((cfg.get("ctas") or {}).get("alert_actions") or {})
+    for a in alerts:
+        act = actions.get(a["rule"])
+        if act:
+            a["action"] = act
     return alerts
 
 
 # ----------------------------------------------------------------------
 # Economía de suscripción (FPA-130…133)
 # ----------------------------------------------------------------------
+
+# FPA-167: acción default por regla de alerta (el config puede
+# sobrescribirla vía ctas.alert_actions; targets nunca vacíos — FPA-168).
+DEFAULT_ALERT_ACTIONS = {
+    "verify-plan": {"label": "Revisar el plan", "target": "config/fpa.json"},
+    "reconciliation": {"label": "Ver el reporte",
+                       "target": "data/usage_report_v3.json"},
+    "budget": {"label": "Ajustar presupuesto", "target": "#budget"},
+    "unit-cost": {"label": "Ver el reporte",
+                  "target": "data/usage_report_v3.json"},
+    "mix": {"label": "Comparar planes", "target": "config/fpa.json"},
+    "concentration": {"label": "Ver proyectos", "target": "#pareto"},
+    "staleness": {"label": "Regenerar datos",
+                  "target": "https://github.com/charly-vibes/coffe"},
+}
+
 
 def _plan_price_prorated(entry, period_start, period_end):
     """Precio del plan para el periodo: cuota mensual pro-rateada por
@@ -1283,6 +1321,7 @@ def build_rhythm(report, cfg):
     return {
         "after_hours_share": after / total if total else None,
         "weekend_share": weekend / total if total else None,
+        "working_hours_text": _wh_text(wh),
         "weeks": weeks,
         "variance": {
             "interactions": var_i,
@@ -2165,16 +2204,19 @@ def kpis_for_window(ing, window, prior):
 # ----------------------------------------------------------------------
 
 def _windows(months):
-    """Ventanas predefinidas: periodo completo, cada año, cada trimestre y
-    cada mes con datos. El selector JS solo elige entre vistas ya calculadas."""
+    """Ventanas predefinidas (FPA-090): periodo completo, YTD por año, cada
+    año, cada trimestre y cada mes con datos, más todo rango contiguo
+    custom de ≥2 meses — todas pre-calculadas; el selector JS solo elige
+    entre vistas ya calculadas."""
     out = [("all", "Todo el periodo", list(months), None)]
     years = sorted({ym[:4] for ym in months})
     for y in years:
         wy = [ym for ym in months if ym.startswith(y)]
         py = str(int(y) - 1)
         pwy = [ym for ym in months if ym.startswith(py)]
-        out.append((f"year:{y}", y, wy,
-                    pwy if len(pwy) == len(wy) else None))
+        prior = pwy if len(pwy) == len(wy) else None
+        out.append((f"ytd:{y}", f"YTD {y}", wy, prior))
+        out.append((f"year:{y}", y, wy, prior))
         for q in range(1, 5):
             qms = [f"{y}-{m:02d}" for m in range(3 * q - 2, 3 * q + 1)
                    if f"{y}-{m:02d}" in months]
@@ -2190,6 +2232,19 @@ def _windows(months):
         idx = months.index(ym)
         p = [months[idx - 1]] if idx else None
         out.append((f"month:{ym}", month_label(ym), [ym], p))
+    # FPA-090: rangos custom — todo rango contiguo de ≥2 meses que no sea
+    # ya un preset; prior = rango inmediato anterior de la misma longitud.
+    known = {k for k, *_ in out}
+    for i in range(len(months)):
+        for j in range(i + 2, len(months) + 1):
+            window = months[i:j]
+            key = f"range:{window[0]}..{window[-1]}"
+            if key in known:
+                continue
+            plen = j - i
+            prior = months[i - plen:i] if i - plen >= 0 else None
+            label = f"{month_label(window[0])} → {month_label(window[-1])}"
+            out.append((key, label, window, prior))
     return out
 
 
@@ -2613,11 +2668,178 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 .fc-input, .b-input { font: inherit; width: 5.5em; }
 .fc-input:invalid, .b-input:invalid { border-color: var(--bad); }
 .f3-nv { color: var(--muted); }
+
+/* ===== F6: topbar, tabs, CTAs, export, hallazgos, accesibilidad ===== */
+.topbar { position: sticky; top: 0; z-index: 5; background: var(--bg);
+  border-bottom: 1px solid var(--line); max-width: 960px; margin: 0 auto;
+  padding: .35rem .5rem; display: flex; flex-wrap: wrap; gap: .4rem;
+  align-items: center; }
+.topbar .tabs { display: flex; flex-wrap: wrap; gap: .25rem; }
+.topbar .tab { display: inline-flex; align-items: center; padding: .4rem .7rem;
+  min-height:44px; color: var(--fg); text-decoration: none;
+  border-radius: 6px; border: 1px solid transparent; font-size: .9rem; }
+.topbar .tab[aria-current] { border-color: var(--acc); color: var(--acc);
+  font-weight: 600; }
+#period-select { font: inherit; min-height:44px; margin-left: auto; }
+#share-view { font: inherit; min-height:44px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+button, .cta, .ptoggle, .show-all, .export-csv, .dl-svg {
+  min-height:44px; font: inherit; cursor: pointer; }
+.cta { display: inline-flex; align-items: center; padding: .4rem .8rem;
+  border: 1px solid var(--line); border-radius: 6px; text-decoration: none;
+  color: var(--fg); background: var(--card); }
+.cta-primary { border-color: var(--acc); color: var(--acc); font-weight: 600; }
+.ctas { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.show-all, .export-csv, .dl-svg { font-size: .8rem; background: var(--card);
+  border: 1px solid var(--line); border-radius: 6px; padding: .2rem .6rem;
+  margin: .3rem 0; }
+.ptoggle { background: var(--card); border: 1px solid var(--line);
+  border-radius: 6px 6px 0 0; padding: .2rem .8rem; }
+.ptoggle.active { border-color: var(--acc); color: var(--acc); font-weight: 600; }
+.finding { margin: .4rem 0 0; font-size: 1.05rem; }
+.finding-meta, .sub { color: var(--muted); font-weight: 400;
+  font-size: .8rem; margin: .1rem 0 .5rem; }
+#wf-readout { font-size: .82rem; min-height: 1.2em;
+  font-variant-numeric: tabular-nums; color: var(--muted); }
+.wf rect:focus-visible, button:focus-visible, .cta:focus-visible,
+.tab:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--acc); outline-offset: 1px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+@media (max-width:599px) {
+  /* FPA-152: una vista a la vez; FPA-092: una columna */
+  #summary, #cost, #breakdown, #habits, #outlook, #data { display: none; }
+  body[data-view="summary"] #summary,
+  body[data-view="cost"] #cost,
+  body[data-view="breakdown"] #breakdown,
+  body[data-view="habits"] #habits,
+  body[data-view="outlook"] #outlook,
+  body[data-view="data"] #data { display: block; }
+  #summary { grid-template-columns: 1fr; }
+  header.site h1 { font-size: 1.1rem; }
+  /* FPA-092/177: tablas anchas en contenedor con scroll horizontal y
+     primera columna fija */
+  .ttree, .btable, .fc-tbl, #data table, table.small {
+    display: block; overflow-x:auto; white-space: nowrap; }
+  .ttree th:first-child, .ttree td:first-child, .btable td:first-child,
+  .fc-tbl td:first-child, #data th:first-child, #data td:first-child,
+  table.small th:first-child, table.small td:first-child {
+    position:sticky; left: 0; background: var(--bg); }
+}
 """
 
 CSS_LEGACY = (  # retro confinado a header/footer, sin animación (FPA-178)
     ".retro::before { content: '▚▞ '; color: var(--acc); }"
 )
+
+
+def finding(value, metric_name, threshold_text, template, fallback,
+            _fmt=None):
+    """FPA-160/161: bloque título-hallazgo. Título computado de una métrica
+    nombrada + threshold, ambos visibles (FPA-009); valor no disponible →
+    fallback al label descriptivo."""
+    title, meta = finding_parts(value, metric_name, threshold_text, template,
+                                fallback, _fmt)
+    return (f'<h2 class="finding">{esc_html(title)}</h2>'
+            f'<p class="small finding-meta">{meta}</p>')
+
+
+def finding_parts(value, metric_name, threshold_text, template, fallback,
+                  _fmt=None):
+    """Partes del hallazgo: (título, meta) — para armar summary + meta en
+    details. meta trae métrica, valor (o n/a) y threshold, nunca vacío."""
+    _fmt = _fmt or (lambda v: f"{100 * v:.1f}%")
+    if value is None:  # FPA-161: fallback al label descriptivo
+        title = fallback
+        val = '<span class="na">n/a</span>'
+    else:
+        title = template.format(_fmt(value))
+        val = _fmt(value)
+    meta = (f'métrica: {esc_html(metric_name)} = {val} · '
+            f'threshold: {esc_html(threshold_text)}')
+    return title, meta
+
+
+def top5_rows(rows_html):
+    """FPA-155: primeras 5 filas visibles, el resto oculto (extra-row) con
+    botón 'Mostrar todo (N)'. Devuelve (filas_html, botón_html)."""
+    trs = re.findall(r"<tr.*?</tr>", rows_html, flags=re.S)
+    if len(trs) <= 5:
+        return rows_html, ""
+    extra = "".join(t.replace("<tr", '<tr class="extra-row" hidden', 1)
+                    for t in trs[5:])
+    btn = (f'<button class="show-all" type="button">Mostrar todo '
+           f'({len(trs) - 5})</button>')
+    return "".join(trs[:5]) + extra, btn
+
+
+def number_figures(html):
+    """FPA-144: numeración automática de tablas (<caption>) y figuras
+    (<figcaption>) — sin duplicados (verificado por FPA-106)."""
+    n = [0]
+
+    def _cap(m):
+        n[0] += 1
+        return f"<caption>Tabla {n[0]} — {m.group(1)}</caption>"
+
+    html = re.sub(r"<caption>(.*?)</caption>", _cap, html, flags=re.S)
+    f = [0]
+
+    def _fig(m):
+        f[0] += 1
+        return f'<figcaption class="small">Figura {f[0]} — {m.group(1)}</figcaption>'
+
+    html = re.sub(r'<figcaption class="small">(.*?)</figcaption>', _fig,
+                  html, flags=re.S)
+    return html
+
+
+def add_export_buttons(html):
+    """FPA-169: inserta botón 'Exportar CSV' delante de cada tabla y
+    'Descargar SVG' delante de cada chart SVG (clase chart). El click lo
+    maneja el JS por delegación; sin librerías externas."""
+    html = re.sub(
+        r"<table",
+        '<button class="export-csv" type="button">Exportar CSV</button><table',
+        html)
+    html = re.sub(
+        r'<svg class="wf chart"',
+        '<button class="dl-svg" type="button">Descargar SVG</button>'
+        '<svg class="wf chart"',
+        html)
+    return html
+
+
+def ctas_html(cfg):
+    """FPA-165/168: CTAs del Summary desde el config — 1 primario + hasta 3
+    secundarios. Los targets vacíos ya hicieron fallar validate_config
+    (FPA-168); labels verb-first ≤4 palabras (FPA-172)."""
+    ctas = cfg.get("ctas") or {}
+    out = ['<div class="ctas" id="view-ctas">']
+    p = ctas.get("primary") or {}
+    if p.get("target"):
+        out.append(f'<a class="cta cta-primary" '
+                   f'href="{esc_html(p["target"])}">'
+                   f'{esc_html(p["label"])}</a>')
+    for c in (ctas.get("secondary") or [])[:3]:
+        if c.get("target"):
+            out.append(f'<a class="cta" href="{esc_html(c["target"])}">'
+                       f'{esc_html(c["label"])}</a>')
+    out.append("</div>")
+    return "".join(out)
+
+
+_DOW_NAMES = {1: "lun", 2: "mar", 3: "mié", 4: "jue", 5: "vie",
+              6: "sáb", 7: "dom"}
+
+
+def _wh_text(wh):
+    """Horario laboral del config como texto (para el threshold visible)."""
+    days = sorted(wh.get("days", []))
+    names = (f"{_DOW_NAMES.get(days[0], '?')}–"
+             f"{_DOW_NAMES.get(days[-1], '?')}" if days else "n/a")
+    return f"{names} {wh.get('start', '?')}–{wh.get('end', '?')}"
 
 
 def prov_tag(kind):
@@ -2717,8 +2939,8 @@ def data_notes_html(notes):
     sw = conc.get("project_switches_per_active_hour") or {}
     ps_peak = (fmt_int(ps["peak"]) if ps.get("peak") is not None
                else 'n/a — ' + (ps.get("reason") or "sin datos"))
-    return f'''<section id="data" aria-label="Datos y definiciones">
-  <h2>Datos y definiciones</h2>
+    return f'''<div class="data-notes">
+  <h3>Datos y definiciones</h3>
   <p>{notes["interaction_definition"]}</p>
   <table class="small"><caption>Interacciones por kind</caption>
     <thead><tr><th>kind</th><th>Eventos</th><th>Share</th></tr></thead>
@@ -2730,7 +2952,7 @@ def data_notes_html(notes):
   <p>Concurrencia — proyectos distintos/hora ({dp.get("measure", "n/a")}): pico {fmt_int(dp.get("peak", 0))},
      media {dp.get("avg", 0)}/h · pico de sesiones simultáneas ({ps.get("measure", "parallel-agent")}):
      {ps_peak} · switches de proyecto/hora activa ({sw.get("measure", "human-context-switching")}): {sw.get("value", "n/a")}</p>
-</section>'''
+</div>'''
 
 
 def share_fig(v):
@@ -2750,13 +2972,19 @@ def alerts_html(alerts):
     items = []
     for a in alerts:
         ev = ", ".join(f"{k}: {v}" for k, v in sorted(a["evidence"].items()))
+        action = ""
+        if a.get("action"):
+            action = (f'<a class="cta alert-action" '
+                      f'href="{esc_html(a["action"]["target"])}">'
+                      f'{esc_html(a["action"]["label"])}</a>')
         items.append(
             f'<li class="alert {sev_cls.get(a["severity"], "")}" '
             f'data-rule="{esc_html(a["rule"])}">'
             f'<span class="sev">{esc_html(a["severity"])}</span> '
             f'<strong>{esc_html(a["rule"])}</strong> — '
             f'{esc_html(a["message"])}'
-            f'<span class="small">Evidencia: {esc_html(ev)}</span></li>')
+            f'<span class="small">Evidencia: {esc_html(ev)}</span>'
+            f'{action}</li>')
     return (f'<details class="tree" id="alerts" open><summary>'
             f'<h2>Alertas <span class="small">({len(alerts)})</span></h2>'
             f'</summary><ul class="alert-list">{"".join(items)}</ul>'
@@ -2848,8 +3076,15 @@ def heatmap_html(usage):
             else:
                 cells.append("<td></td>")
         rows.append(f'<tr><th scope="row">{_DOW_SHORT[dow]}</th>{"".join(cells)}</tr>')
+    rh = usage["rhythm"]
+    title, meta = finding_parts(
+        rh["after_hours_share"], "after_hours_share",
+        f"fuera de {rh['working_hours_text']} (config, assumed)",
+        "El {0} del uso ocurre fuera del horario laboral",
+        "After-hours y weekend")
     return f'''<details class="tree" data-tree="heatmap" open id="heatmap">
-<summary><h2>Heatmap día×hora</h2></summary>
+<summary><h2 class="finding">{esc_html(title)}</h2></summary>
+<p class="small finding-meta">Heatmap día×hora · {meta}</p>
 {_provenance_note(usage)}
 <table class="small heatmap"><caption>Interacciones por día de semana y hora
 (día = isoweekday, lunes arriba)</caption>
@@ -2889,36 +3124,46 @@ def weekly_html(usage):
 </details>'''
 
 
-def skills_html(usage):
-    """FPA-113/114: top skills, once-uso, zero-uso y trend."""
+def _skills_inner(usage):
+    """Contenido de skills: top, once-uso, zero-uso y trend (FPA-113/114)."""
     s = usage["skills"]
-    top_rows = "".join(f'<tr><td>{esc_html(x["name"])}</td>'
-                       f'<td>{fmt_int(x["uses"])}</td></tr>' for x in s["top"])
+    top_rows, show_all = top5_rows("".join(
+        f'<tr><td>{esc_html(x["name"])}</td>'
+        f'<td>{fmt_int(x["uses"])}</td></tr>' for x in s["top"]))
     once = ", ".join(s["once"]) if s["once"] else 'n/a — sin skills de un solo uso'
     zero = (", ".join(s["zero"]) if s["zero"] else _na_cell(s["zero_reason"]))
     trend = s["trend"] if s["trend"] else _na_cell(s["trend_reason"])
-    return f'''<details class="tree" data-tree="skills" id="skills">
-<summary><h2>Skills</h2></summary>
-<table class="small"><caption>Skills más usadas (FPA-113)</caption>
-<thead><tr><th>Skill</th><th>Usos</th></tr></thead>
-<tbody>{top_rows}</tbody></table>
-<p>Usadas exactamente una vez (FPA-114): {esc_html(once)} ·
-sin uso: {zero} · trend mensual: {trend}</p>
-</details>'''
+    return (f'<table class="small"><caption>Skills más usadas (FPA-113)</caption>'
+            f'<thead><tr><th>Skill</th><th>Usos</th></tr></thead>'
+            f'<tbody>{top_rows}</tbody></table>{show_all}'
+            f'<p>Usadas exactamente una vez (FPA-114): {esc_html(once)} · '
+            f'sin uso: {zero} · trend mensual: {trend}</p>')
 
 
-def commands_html(usage):
-    """FPA-115: slash commands más ejecutados."""
+def _commands_inner(usage):
+    """Contenido de slash commands (FPA-115)."""
     c = usage["commands"]
-    top_rows = "".join(f'<tr><td>{esc_html(x["name"])}</td>'
-                       f'<td>{fmt_int(x["uses"])}</td></tr>' for x in c["top"])
+    top_rows, show_all = top5_rows("".join(
+        f'<tr><td>{esc_html(x["name"])}</td>'
+        f'<td>{fmt_int(x["uses"])}</td></tr>' for x in c["top"]))
     trend = c["trend"] if c["trend"] else _na_cell(c["trend_reason"])
-    return f'''<details class="tree" data-tree="commands" id="commands">
-<summary><h2>Slash commands</h2></summary>
-<table class="small"><caption>Comandos más ejecutados (FPA-115)</caption>
-<thead><tr><th>Comando</th><th>Ejecuciones</th></tr></thead>
-<tbody>{top_rows}</tbody></table>
-<p>Trend mensual: {trend}</p>
+    return (f'<table class="small"><caption>Comandos más ejecutados '
+            f'(FPA-115)</caption>'
+            f'<thead><tr><th>Comando</th><th>Ejecuciones</th></tr></thead>'
+            f'<tbody>{top_rows}</tbody></table>{show_all}'
+            f'<p>Trend mensual: {trend}</p>')
+
+
+def skills_commands_html(usage):
+    """FPA-156: skills y comandos en una sola vista con toggle."""
+    return f'''<details class="tree" data-tree="skills-commands" id="skills-commands" open>
+<summary><h2>Skills y comandos</h2></summary>
+<div class="panel-toggle">
+<button class="ptoggle active" data-panel="skills-panel" type="button">Skills</button>
+<button class="ptoggle" data-panel="commands-panel" type="button">Comandos</button>
+</div>
+<div id="skills-panel">{_skills_inner(usage)}</div>
+<div id="commands-panel" hidden>{_commands_inner(usage)}</div>
 </details>'''
 
 
@@ -2932,11 +3177,12 @@ def sessions_html(usage):
                    else _na_cell(s["cost_by_bucket_reason"]))
     median_p90 = (s["median_p90"] if s["median_p90"]
                   else _na_cell(s["median_p90_reason"]))
-    long_rows = "".join(
+    long_raw = "".join(
         f'<tr><td>{fmt_int(x["turns"])}</td><td>{esc_html(x["date"] or "")}</td>'
         f'<td>{esc_html(x["project"] or "")}</td>'
         f'<td>{fmt_usd(x["cost"]) if x["cost"] is not None else _na_cell(x["cost_reason"])}</td></tr>'
         for x in s["longest"])
+    long_rows, show_all = top5_rows(long_raw)
     clear = (f"{s['clear_per_100']:.1f}" if s["clear_per_100"] is not None
              else "n/a")
     clear_monthly = (s["clear_monthly"] if s["clear_monthly"]
@@ -2951,6 +3197,7 @@ def sessions_html(usage):
 <table class="small"><caption>Sesiones más largas (FPA-116)</caption>
 <thead><tr><th>Turns</th><th>Fecha</th><th>Proyecto</th><th>Coste</th></tr></thead>
 <tbody>{long_rows}</tbody></table>
+{show_all}
 <p>Coste por bucket: {cost_bucket} · mediana/p90 por sesión: {median_p90}</p>
 <p>/clear por 100 sesiones (FPA-118):
 {fig(clear, "reported")} · por mes: {clear_monthly} ·
@@ -2965,16 +3212,17 @@ def timeline_html(usage):
             else 'fechas verificadas con la timezone del tracker')
 
     def _table(items, caption):
-        rows = "".join(
+        raw = "".join(
             f'<tr><td>{esc_html(x["name"])}</td><td>{x["first"]}</td>'
             f'<td>{x["last"]}</td>'
             f'<td>{x["max_gap_days"]}</td>'
             f'<td>{"⚠ gap > " + str(usage["timeline"]["gap_days"]) + " días" if x["flagged"] else "—"}</td></tr>'
             for x in items)
+        rows, show_all = top5_rows(raw)
         return (f'<table class="small"><caption>{caption}</caption>'
                 '<thead><tr><th>Nombre</th><th>Primera</th><th>Última</th>'
                 '<th>Gap máx (días)</th><th>Flag</th></tr></thead>'
-                f'<tbody>{rows}</tbody></table>')
+                f'<tbody>{rows}</tbody></table>{show_all}')
 
     return f'''<details class="tree" data-tree="timeline" id="timeline">
 <summary><h2>Timeline de tools y models</h2></summary>
@@ -3022,10 +3270,11 @@ def concurrency_html(usage):
 def lifecycle_html(usage):
     """FPA-122/123: new/active/dormant + coste dormante + activos por mes."""
     lc = usage["lifecycle"]
-    rows = "".join(
+    raw = "".join(
         f'<tr><td>{esc_html(p["name"])}</td><td>{p["status"]}</td>'
         f'<td>{p["first_seen"]}</td><td>{p["last_seen"]}</td></tr>'
         for p in lc["projects"])
+    rows, show_all = top5_rows(raw)
     if lc["active_by_month"]:
         m_rows = "".join(f'<tr><td>{m["ym"]}</td><td>{fmt_int(m["count"])}</td></tr>'
                          for m in lc["active_by_month"])
@@ -3048,6 +3297,7 @@ dormant > {lc["dormant_days"]} días sin actividad (config, assumed)</p>
 <table class="small"><caption>Clasificación de proyectos (FPA-122)</caption>
 <thead><tr><th>Proyecto</th><th>Estado</th><th>Primera</th><th>Última</th></tr></thead>
 <tbody>{rows}</tbody></table>
+{show_all}
 <p>Coste efectivo dormante (FPA-123): total
 {fig(fmt_usd(dormant["cost_total"]), "reported")} ·
 por proyecto {fig(per_project, "reported")} ({dormant["count"]} proyectos)</p>
@@ -3063,34 +3313,41 @@ def pareto_html(usage):
         f'<tr><td>{esc_html(r["name"])}</td><td>{fmt_usd(r["cost"])}</td>'
         f'<td>{_share(r["share"])}</td><td>{_share(r["cumulative_share"])}</td></tr>'
         for r in p["rows"])
-    tail = (f'<tr class="tail"><td>Cola agrupada ({p["tail"]["count"]} proyectos)</td>'
-            f'<td>{fmt_usd(p["tail"]["cost"])}</td>'
-            f'<td>{_share(p["tail"]["share"])}</td>'
-            f'<td>{_share(p["tail"]["cumulative_share"])}</td></tr>'
-            if p["tail"] else
-            '<tr class="tail"><td>Cola agrupada (0 proyectos)</td><td>$0.00</td>'
-            '<td>0.0%</td><td>100.0%</td></tr>')
-    return f'''<details class="tree" data-tree="pareto" id="pareto">
-<summary><h2>Pareto de proyectos</h2></summary>
+    rows_html, show_all = top5_rows(rows)
+    tail_html = (f'<tr class="tail"><td>Cola agrupada ({p["tail"]["count"]} '
+                 f'proyectos)</td>'
+                 f'<td>{fmt_usd(p["tail"]["cost"])}</td>'
+                 f'<td>{_share(p["tail"]["share"])}</td>'
+                 f'<td>{_share(p["tail"]["cumulative_share"])}</td></tr>'
+                 if p["tail"] else
+                 '<tr class="tail"><td>Cola agrupada (0 proyectos)</td>'
+                 '<td>$0.00</td><td>0.0%</td><td>100.0%</td></tr>')
+    title, meta = finding_parts(
+        p["top3_share"], "top3_share",
+        "50% del coste en top-3 (config FPA-088)",
+        "Tres proyectos concentran el {0} del coste efectivo",
+        "Pareto de proyectos")
+    return f'''<details class="tree" data-tree="pareto" id="pareto" open>
+<summary><h2 class="finding">{esc_html(title)}</h2></summary>
+<p class="small finding-meta">Pareto de proyectos · {meta}</p>
 <table class="small"><caption>Pareto por coste efectivo (FPA-028; fuera del
 top {_PARETO_TOP} la cola se agrupa)</caption>
 <thead><tr><th>Proyecto</th><th>Coste</th><th>Share</th><th>Share acum.</th></tr></thead>
-<tbody>{rows}{tail}</tbody></table>
+<tbody>{rows_html}{tail_html}</tbody></table>
+{show_all}
 <p>Concentración top-3 (FPA-036): {fig(_share(p["top3_share"]), "reported")}
 del coste efectivo · total {fig(fmt_usd(p["total"]), "reported")}</p>
 </details>'''
 
 
 def usage_html(usage):
-    """Sección F5 completa: patrones de uso, concurrencia y lifecycle."""
-    return (f'<section id="usage-patterns" '
-            f'aria-label="Patrones de uso, concurrencia y ciclo de vida">'
-            f'<h2>Patrones de uso, concurrencia y ciclo de vida</h2>'
-            + heatmap_html(usage) + weekly_html(usage) + skills_html(usage)
-            + commands_html(usage) + sessions_html(usage)
-            + timeline_html(usage) + concurrency_html(usage)
-            + lifecycle_html(usage) + pareto_html(usage)
-            + '</section>')
+    """Contenido de la vista Habits (FPA-150): patrones de uso, concurrencia
+    y lifecycle, sin wrapper de sección (la vista la provee render_html).
+    El Pareto vive en Breakdown (FPA-158) y el timeline en Data & method
+    (FPA-157)."""
+    return (heatmap_html(usage) + weekly_html(usage)
+            + skills_commands_html(usage) + sessions_html(usage)
+            + concurrency_html(usage) + lifecycle_html(usage))
 
 
 def render_html(report, cfg, generated=None, today=None):
@@ -3140,17 +3397,90 @@ def render_html(report, cfg, generated=None, today=None):
                        all_view["trees"]["tool"])
         + tree_section("portfolio", "Árbol Portfolio (Categoría → Proyecto)",
                        all_view["trees"]["portfolio"]))
-    notes_html = data_notes_html(model["data_notes"])
-    # F3: presupuesto, bridge y forecast (valores pre-calculados en el modelo)
-    f3_html = (budget_html(model["budget"]) + bridge_html(model["bridge"])
-               + forecast_html(model["forecast"]))
     # F4: alertas y economía de suscripción (pre-calculadas)
     f4_html = (alerts_html(model["alerts"])
                + plan_economy_html(model["plan_economy"]))
     # F5: patrones de uso, concurrencia y lifecycle (pre-calculados)
     f5_html = usage_html(model["usage"])
+    # F6: pareto/timeline/timeline separados del bloque F5 (FPA-157/158)
+    pareto_only_html = pareto_html(model["usage"])
+    timeline_block = timeline_html(model["usage"])
+    notes_inner = data_notes_html(model["data_notes"])
+    # F3: presupuesto + bridge quedan en Costo; forecast en Outlook
+    budget_bridge_html = (budget_html(model["budget"])
+                          + bridge_html(model["bridge"]))
+    forecast_only_html = forecast_html(model["forecast"])
+    # F6: CTAs del Summary desde el config (FPA-165/168)
+    ctas_block = ctas_html(cfg)
 
     model_json = json.dumps(model, ensure_ascii=False, sort_keys=True)
+    tabs = ("summary", "cost", "breakdown", "habits", "outlook", "data")
+    tab_labels = {"summary": "Resumen", "cost": "Costo",
+                  "breakdown": "Desglose", "habits": "Hábitos",
+                  "outlook": "Pronóstico", "data": "Datos y método"}
+    tab_html = "".join(
+        f'<a class="tab" role="tab" href="#{k}" data-view="{k}"'
+        f'{" aria-current=\"true\"" if k == "summary" else ""}>'
+        f'{tab_labels[k]}</a>' for k in tabs)
+    # Selector de periodo: presets + rangos custom, todos pre-calculados
+    preset_opts = "".join(
+        f'<option value="{esc_html(k)}">{esc_html(v["label"])}</option>'
+        for k, v in views.items() if not k.startswith("range:"))
+    range_opts = "".join(
+        f'<option value="{esc_html(k)}">{esc_html(v["label"])}</option>'
+        for k, v in views.items() if k.startswith("range:"))
+    period_options = (
+        f'<optgroup label="Presets">{preset_opts}</optgroup>'
+        f'<optgroup label="Rango custom">{range_opts}</optgroup>')
+
+    body_inner = f"""<main id="main">
+  {banner}
+  <section id="summary" class="fpa-view" aria-label="Resumen ejecutivo">
+    <h2>¿Cuál es el estado de las cosas?</h2>
+    <div class="cards">{cards}</div>
+    {claims_html}
+    <h2 class="sub">KPIs del periodo</h2>
+    <div class="cards" id="kpi-cards">{kpis_html}</div>
+    <p class="small" id="view-limitation" hidden></p>
+    {ctas_block}
+  </section>
+  <section id="cost" class="fpa-view" aria-label="Costo">
+    <h2>¿Qué estoy gastando?</h2>
+    {budget_bridge_html}
+    {f4_html}
+  </section>
+  <section id="breakdown" class="fpa-view" aria-label="Desglose">
+    <h2>¿A dónde va el gasto?</h2>
+    <div id="tree-box">{trees_html}</div>
+    {pareto_only_html}
+  </section>
+  <section id="habits" class="fpa-view" aria-label="Hábitos">
+    <h2>¿Cómo trabajo?</h2>
+    {f5_html}
+  </section>
+  <section id="outlook" class="fpa-view" aria-label="Pronóstico">
+    <h2>¿Qué viene después?</h2>
+    {forecast_only_html}
+  </section>
+  <section id="data" class="fpa-view" aria-label="Datos y método">
+    <h2>Datos y método</h2>
+    <details id="data-method">
+      <summary><h3>Datos y método</h3></summary>
+      {notes_inner}
+      {timeline_block}
+      <p class="small">Método de render: HTML único generado por
+      viz-fpa.py (Python stdlib-only, SVG inline); las matemáticas se
+      calculan en Python y el JS solo re-escala (FPA-145).</p>
+      <p class="small">Descargas: botones Exportar CSV (tablas) y
+      Descargar SVG (charts) en cada figura, sin librerías externas.</p>
+    </details>
+  </section>
+</main>"""
+    # FPA-144: numeración automática de tablas/figuras, luego botones de
+    # export (sobre el contenido del main, nunca sobre el JS embebido)
+    body_inner = number_figures(body_inner)
+    body_inner = add_export_buttons(body_inner)
+
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -3159,7 +3489,7 @@ def render_html(report, cfg, generated=None, today=None):
 <title>Dashboard FP&A — uso de IA</title>
 <style>{CSS}{CSS_LEGACY if retro else ""}</style>
 </head>
-<body>
+<body data-view="summary">
 <a class="skip" href="#summary">Saltar al contenido</a>
 <header class="site">
   <h1>Dashboard FP&A — uso de IA</h1>
@@ -3167,32 +3497,15 @@ def render_html(report, cfg, generated=None, today=None):
   {period_cell}</p>
   {'<p class="retro">FP&A desk · edición quarterly</p>' if retro else ""}
 </header>
-<main id="main">
-  {banner}
-  <section id="summary" aria-label="Resumen ejecutivo">
-    <h2>Resumen ejecutivo</h2>
-    <div class="cards">{cards}</div>
-    {claims_html}
-  </section>
-  <section id="kpi-strip" aria-label="KPIs del periodo">
-    <h2>KPIs <span class="small">del periodo:</span>
-      <select id="period-select" aria-label="Seleccionar periodo">
-        <option value="all" selected>Todo el periodo</option>
-        {''.join(f'<option value="{k}">{v["label"]}</option>' for k, v in views.items() if k != 'all')}
-      </select>
-    </h2>
-    <div class="cards" id="kpi-cards">{kpis_html}</div>
-    <p class="small" id="view-limitation" hidden></p>
-  </section>
-  <section id="trees" aria-label="Árboles expandibles">
-    <h2>Árboles</h2>
-    <div id="tree-box">{trees_html}</div>
-  </section>
-  {notes_html}
-  {f3_html}
-  {f4_html}
-  {f5_html}
-</main>
+<nav class="topbar" aria-label="Vistas y periodo">
+  <div class="tabs" role="tablist">{tab_html}</div>
+  <select id="period-select" aria-label="Seleccionar periodo">
+    {period_options}
+  </select>
+  <button id="share-view" type="button">Compartir vista</button>
+  <span id="wf-readout" aria-live="polite"></span>
+</nav>
+{body_inner}
 <footer class="site">
   <p class="retro small">Dashboard FP&A · generado por viz-fpa.py (stdlib-only,
   SVG inline) · cifras con tag reported/assumed</p>
@@ -3263,7 +3576,8 @@ def render_html(report, cfg, generated=None, today=None):
     if (isTime) cols.push("Presupuesto*", "Varianza", "Var %");
     var head = cols.map(function (c) {{ return "<th>" + c + "</th>"; }}).join("");
     return '<details class="tree" data-tree="' + name + '" open><summary><h2>' + title
-      + '</h2></summary><table class="ttree"><thead><tr>' + head
+      + '</h2></summary><button class="export-csv" type="button">Exportar CSV</button>'
+      + '<table class="ttree"><thead><tr>' + head
       + '</tr></thead><tbody>' + treeRows(root, isTime, 0) + '</tbody></table>'
       + (isTime ? '<p class="small">* presupuesto cash del config (assumed).</p>' : "")
       + '</details>';
@@ -3377,10 +3691,198 @@ def render_html(report, cfg, generated=None, today=None):
     if (el) el.addEventListener("input", forecastRecompute);
     if (el && el.tagName === "SELECT") el.addEventListener("change", forecastRecompute);
   }});
+
+  // ============ F6: vistas, tabs, top-5, export, share, readout ============
+  var VIEWS = ["summary", "cost", "breakdown", "habits", "outlook", "data"];
+  function setView(key) {{
+    if (VIEWS.indexOf(key) < 0) return;
+    document.body.setAttribute("data-view", key);
+    document.querySelectorAll(".tab").forEach(function (t) {{
+      if (t.getAttribute("data-view") === key) t.setAttribute("aria-current", "true");
+      else t.removeAttribute("aria-current");
+    }});
+  }}
+  document.querySelectorAll(".tab").forEach(function (t) {{
+    t.addEventListener("click", function (e) {{
+      // FPA-152: en mobile el tab cambia de vista (las demás están ocultas);
+      // en desktop las vistas van en secuencia y el ancla navega in-page.
+      if (window.matchMedia &&
+          window.matchMedia("(max-width:599px)").matches) {{
+        e.preventDefault();
+        window.scrollTo(0, 0);
+      }}
+      setView(t.getAttribute("data-view"));
+    }});
+  }});
+  // FPA-155: Mostrar todo — revela las filas extra-row de su bloque
+  document.addEventListener("click", function (e) {{
+    var b = e.target.closest && e.target.closest("button.show-all");
+    if (!b) return;
+    var zone = b.closest("details") || document;
+    zone.querySelectorAll("tr.extra-row").forEach(function (r) {{ r.hidden = false; }});
+    b.remove();
+  }});
+  // FPA-156: toggle skills/comandos en una sola vista
+  document.querySelectorAll(".ptoggle").forEach(function (b) {{
+    b.addEventListener("click", function () {{
+      var root = b.closest("details");
+      root.querySelectorAll(".ptoggle").forEach(function (x) {{
+        x.classList.toggle("active", x === b);
+      }});
+      root.querySelectorAll("div[id$='-panel']").forEach(function (p) {{
+        p.hidden = p.id !== b.getAttribute("data-panel");
+      }});
+    }});
+  }});
+  // FPA-169: Export CSV (tablas) / Download SVG (charts), sin librerías
+  function tableToCSV(table) {{
+    var rows = Array.prototype.slice.call(table.querySelectorAll("tr"))
+      .filter(function (tr) {{ return !tr.hidden; }});
+    return rows.map(function (tr) {{
+      return Array.prototype.slice.call(tr.querySelectorAll("th,td")).map(function (c) {{
+        var t = c.textContent.replace(/\\s+/g, " ").trim();
+        return /[",\\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+      }}).join(",");
+    }}).join("\\n");
+  }}
+  function svgXml(svg) {{
+    return '<?xml version="1.0" encoding="UTF-8"?>\\n' + svg.outerHTML;
+  }}
+  function downloadText(name, text, mime) {{
+    var blob = new Blob([text], {{type: mime}});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(a.href);
+  }}
+  document.addEventListener("click", function (e) {{
+    var b = e.target.closest && e.target.closest("button.export-csv");
+    if (b) {{
+      var t = b.nextElementSibling;
+      while (t && t.tagName !== "TABLE") t = t.nextElementSibling;
+      if (t) downloadText("fpa-tabla.csv", tableToCSV(t), "text/csv");
+      return;
+    }}
+    b = e.target.closest && e.target.closest("button.dl-svg");
+    if (b) {{
+      var s = b.nextElementSibling;
+      while (s && s.tagName !== "SVG" && s.tagName !== "svg") s = s.nextElementSibling;
+      if (s) downloadText("fpa-chart.svg", svgXml(s), "image/svg+xml");
+    }}
+  }});
+  // FPA-175: readout persistente del chart por tap/focus/hover
+  var readout = document.getElementById("wf-readout");
+  document.querySelectorAll(".wf.chart rect[data-label]").forEach(function (r) {{
+    function show() {{ if (readout) readout.textContent = r.getAttribute("aria-label"); }}
+    r.addEventListener("mouseenter", show);
+    r.addEventListener("click", show);
+    r.addEventListener("focus", show);
+  }});
+  // FPA-170/171: Share view — URL con periodo, vista y expansión de árbol;
+  // al cargar se restaura solo con parámetros válidos (los inválidos se
+  // ignoran y quedan los defaults).
+  function shareUrl() {{
+    var p = new URLSearchParams();
+    p.set("view", document.body.getAttribute("data-view") || "summary");
+    p.set("period", sel ? sel.value : "all");
+    var open = [], closed = [];
+    document.querySelectorAll("details[data-tree]").forEach(function (d) {{
+      (d.open ? open : closed).push(d.getAttribute("data-tree"));
+    }});
+    if (open.length) p.set("open", open.join(","));
+    if (closed.length) p.set("closed", closed.join(","));
+    return location.href.split("?")[0] + "?" + p.toString();
+  }}
+  var shareBtn = document.getElementById("share-view");
+  if (shareBtn) shareBtn.addEventListener("click", function () {{
+    var url = shareUrl();
+    function done() {{ shareBtn.title = "URL copiada: " + url; }}
+    if (navigator.clipboard && navigator.clipboard.writeText) {{
+      navigator.clipboard.writeText(url).then(done, done);
+    }} else {{ done(); }}
+  }});
+  (function applyParams() {{
+    try {{ var q = new URLSearchParams(location.search); }} catch (err) {{ return; }}
+    var v = q.get("view");
+    if (v && VIEWS.indexOf(v) >= 0) setView(v);  // FPA-171: inválidos ignorados
+    var pd = q.get("period");
+    if (pd && sel && MODEL.views[pd]) {{ sel.value = pd; renderView(pd); }}
+    var open = q.get("open");
+    if (open) open.split(",").forEach(function (name) {{
+      if (!/^[a-z0-9-]+$/.test(name)) return;  // FPA-171: inválidos ignorados
+      var d = document.querySelector('details[data-tree="' + name + '"]');
+      if (d) d.open = true;
+    }});
+    var closed = q.get("closed");
+    if (closed) closed.split(",").forEach(function (name) {{
+      if (!/^[a-z0-9-]+$/.test(name)) return;  // FPA-171: inválidos ignorados
+      var d = document.querySelector('details[data-tree="' + name + '"]');
+      if (d) d.open = false;
+    }});
+  }})();
+  // Exposición mínima para los tests Playwright (no es parte del UI)
+  window.__fpa = {{ setView: setView, tableToCSV: tableToCSV, svgXml: svgXml,
+                   shareUrl: shareUrl, VIEWS: VIEWS }};
 }})();
 </script>
 </body>
 </html>"""
+
+
+def expected_doc_figures(report):
+    """FPA-143: cifras del reporte con el formato del bloque CHECK-DOCS del
+    README (interacciones, proyectos, coste, sesiones, periodo)."""
+    md = report["metadata"]
+    daily = sorted(report.get("daily") or {})
+    monthly = report.get("monthly") or {}
+    cost_eff = round(sum(mo["cost_effective"] for mo in monthly.values()), 2)
+    cost_real = round(sum(mo.get("cost_real", 0) or 0
+                          for mo in monthly.values()), 2)
+    sessions = (report.get("sessions") or {}).get("total_sessions") or 0
+    return {
+        "Interacciones": fmt_int(md["total_interactions"]),
+        "Proyectos": fmt_int(len(report.get("projects") or {})),
+        "Costo efectivo": fmt_usd(cost_eff),
+        "Costo real": fmt_usd(cost_real),
+        "Sesiones": fmt_int(sessions),
+        "Periodo": f"{daily[0]} → {daily[-1]}" if daily else "n/a",
+    }
+
+
+DOC_BEGIN = "<!-- CHECK-DOCS:BEGIN -->"
+DOC_END = "<!-- CHECK-DOCS:END -->"
+
+
+def check_docs(report, readme_path):
+    """FPA-143: las cifras del bloque CHECK-DOCS del README deben salir del
+    JSON. Devuelve la lista de desvíos ([] = consistente)."""
+    try:
+        text = Path(readme_path).read_text()
+    except OSError as e:
+        return [f"no se pudo leer {readme_path}: {e}"]
+    if DOC_BEGIN not in text or DOC_END not in text:
+        return ["README sin bloque CHECK-DOCS (marcadores "
+                f"{DOC_BEGIN} … {DOC_END})"]
+    block = text.split(DOC_BEGIN, 1)[1].split(DOC_END, 1)[0]
+    expected = expected_doc_figures(report)
+    seen = set()
+    errors = []
+    for line in block.splitlines():
+        m = re.match(r"-\s+([^:]+):\s*(.+)$", line.strip())
+        if not m:
+            continue
+        key, val = m.group(1).strip(), m.group(2).strip()
+        seen.add(key)
+        exp = expected.get(key)
+        if exp is None:
+            errors.append(f"cifra desconocida en README: {key}")
+        elif val != exp:
+            errors.append(f"{key}: README dice {val}, JSON dice {exp}")
+    for key in expected:
+        if key not in seen:
+            errors.append(f"falta cifra en README: {key}")
+    return errors
 
 
 def check_placeholders(html):
@@ -3404,27 +3906,47 @@ def main(argv=None):
     ap.add_argument("--report", default=str(REPORT))
     ap.add_argument("--config", default=str(CONFIG))
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--check-docs", action="store_true",
+                    help="verificar cifras del README contra el JSON (FPA-143)")
+    ap.add_argument("--readme", default="README.md")
     args = ap.parse_args(argv)
 
-    # FPA-006: schema validation con exit non-zero y campos fallidos listados
+    # FPA-168: targets de CTAs vacíos hacen fallar el generador (se valida
+    # antes del reporte: no depende de los datos)
+    try:
+        cfg = fpa_config.load_fpa_config(args.config)
+        cfg_errors = fpa_config.validate_config(cfg)
+    except (OSError, json.JSONDecodeError) as e:
+        print(f"ERROR: config inválida: {e}", file=sys.stderr)
+        return 1
+    if cfg_errors:
+        print("ERROR: config inválida:", file=sys.stderr)
+        for e in cfg_errors:
+            print(f"  - {e}", file=sys.stderr)
+        return 1
+
     try:
         report = json.loads(Path(args.report).read_text())
     except (OSError, json.JSONDecodeError) as e:
         print(f"ERROR: no se pudo leer el reporte: {e}", file=sys.stderr)
         return 1
+
+    if args.check_docs:  # FPA-143/107: consistencia README ↔ JSON
+        errors = check_docs(report, Path(args.readme))
+        if errors:
+            print("ERROR: check-docs falló:", file=sys.stderr)
+            for e in errors:
+                print(f"  - {e}", file=sys.stderr)
+            return 1
+        print("OK: README consistente con el reporte (FPA-143)")
+        return 0
+
+    # FPA-006: schema validation con exit non-zero y campos fallidos listados
     errors = validate_report(report)
     if errors:
         print(f"ERROR: schema validation falló ({len(errors)} campos):",
               file=sys.stderr)
         for e in errors:
-            print(f"  - {e}", file=sys.stderr)
-        return 1
-
-    cfg = fpa_config.load_fpa_config(args.config)
-    cfg_errors = fpa_config.validate_config(cfg)
-    if cfg_errors:
-        print("ERROR: config inválida:", file=sys.stderr)
-        for e in cfg_errors:
             print(f"  - {e}", file=sys.stderr)
         return 1
 

@@ -1,0 +1,105 @@
+{
+  "ctas_html": "<div class=\"ctas\" id=\"view-ctas\"><a class=\"cta cta-primary\" href=\"https://github.com/charly-vibes/coffe\">Leer la serie</a><a class=\"cta\" href=\"data/gantt-multitasking.html\">Explorar el Gantt</a><a class=\"cta\" href=\"data/usage_report_v3.json\">Descargar los datos</a><a class=\"cta\" href=\"https://github.com/charly-vibes/coffe\">Correr en tus logs</a></div>",
+  "findings": [],
+  "windows": [
+    {
+      "has_prior": false,
+      "key": "all",
+      "label": "Todo el periodo",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "ytd:2026",
+      "label": "YTD 2026",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "year:2026",
+      "label": "2026",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "q:2026Q2",
+      "label": "Q2 26",
+      "months": [
+        "2026-05",
+        "2026-06"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "q:2026Q3",
+      "label": "Q3 26",
+      "months": [
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "month:2026-05",
+      "label": "may 26",
+      "months": [
+        "2026-05"
+      ]
+    },
+    {
+      "has_prior": true,
+      "key": "month:2026-06",
+      "label": "jun 26",
+      "months": [
+        "2026-06"
+      ]
+    },
+    {
+      "has_prior": true,
+      "key": "month:2026-07",
+      "label": "jul 26",
+      "months": [
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "range:2026-05..2026-06",
+      "label": "may 26 → jun 26",
+      "months": [
+        "2026-05",
+        "2026-06"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "range:2026-05..2026-07",
+      "label": "may 26 → jul 26",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ]
+    },
+    {
+      "has_prior": false,
+      "key": "range:2026-06..2026-07",
+      "label": "jun 26 → jul 26",
+      "months": [
+        "2026-06",
+        "2026-07"
+      ]
+    }
+  ]
+}

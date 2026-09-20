@@ -73,7 +73,7 @@
         "label": "jun 26",
         "mix": -5.0,
         "rate": 20.0,
-        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jun 26: Volumen $0.00, Mix $-5.00, Rate $20.00\"><rect x=\"12.0\" y=\"94.7\" width=\"60.0\" height=\"31.3\" class=\"wfb\"/><rect x=\"97.0\" y=\"94.7\" width=\"60.0\" height=\"1.0\" class=\"wfup\"/><rect x=\"182.0\" y=\"94.7\" width=\"60.0\" height=\"23.7\" class=\"wfdn\"/><rect x=\"267.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\"/><rect x=\"352.0\" y=\"23.6\" width=\"60.0\" height=\"102.4\" class=\"wfb\"/><text x=\"42.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">$50.00</text><text x=\"127.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"212.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">-$5.00</text><text x=\"297.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$20.00</text><text x=\"382.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "svg": "<svg class=\"wf chart\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jun 26: Volumen $0.00, Mix $-5.00, Rate $20.00\"><rect x=\"12.0\" y=\"94.7\" width=\"60.0\" height=\"31.3\" class=\"wfb\" tabindex=\"0\" role=\"img\" aria-label=\"cost₀: +$50.00\" data-label=\"cost₀\" data-value=\"+$50.00\"/><rect x=\"97.0\" y=\"94.7\" width=\"60.0\" height=\"1.0\" class=\"wfup\" tabindex=\"0\" role=\"img\" aria-label=\"Volumen: +$0.00\" data-label=\"Volumen\" data-value=\"+$0.00\"/><rect x=\"182.0\" y=\"94.7\" width=\"60.0\" height=\"23.7\" class=\"wfdn\" tabindex=\"0\" role=\"img\" aria-label=\"Mix: -$5.00\" data-label=\"Mix\" data-value=\"-$5.00\"/><rect x=\"267.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\" tabindex=\"0\" role=\"img\" aria-label=\"Rate: +$20.00\" data-label=\"Rate\" data-value=\"+$20.00\"/><rect x=\"352.0\" y=\"23.6\" width=\"60.0\" height=\"102.4\" class=\"wfb\" tabindex=\"0\" role=\"img\" aria-label=\"cost₁: +$65.00\" data-label=\"cost₁\" data-value=\"+$65.00\"/><text x=\"42.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">$50.00</text><text x=\"127.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">+$0.00</text><text x=\"212.0\" y=\"91.7\" class=\"wft\" text-anchor=\"middle\">-$5.00</text><text x=\"297.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$20.00</text><text x=\"382.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
         "truncated": false,
         "volume": 0.0,
         "ym": "2026-06"
@@ -88,7 +88,7 @@
         "label": "jul 26 (FME: jun 26 ×1.00 · jul 26 ×3.10)",
         "mix": -54.25,
         "rate": -54.25,
-        "svg": "<svg class=\"wf\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jul 26 (FME: jun 26 ×1.00 · jul 26 ×3.10): Volumen $136.50, Mix $-54.25, Rate $-54.25\"><rect x=\"12.0\" y=\"118.4\" width=\"60.0\" height=\"7.6\" class=\"wfb\"/><rect x=\"97.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\"/><rect x=\"182.0\" y=\"23.6\" width=\"60.0\" height=\"37.7\" class=\"wfdn\"/><rect x=\"267.0\" y=\"61.3\" width=\"60.0\" height=\"37.7\" class=\"wfdn\"/><rect x=\"352.0\" y=\"99.0\" width=\"60.0\" height=\"27.0\" class=\"wfb\"/><text x=\"42.0\" y=\"115.4\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"127.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$136.50</text><text x=\"212.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"297.0\" y=\"58.3\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"382.0\" y=\"96.0\" class=\"wft\" text-anchor=\"middle\">$93.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
+        "svg": "<svg class=\"wf chart\" width=\"420\" height=\"150\" viewBox=\"0 0 420 150\" role=\"img\" aria-label=\"bridge jul 26 (FME: jun 26 ×1.00 · jul 26 ×3.10): Volumen $136.50, Mix $-54.25, Rate $-54.25\"><rect x=\"12.0\" y=\"118.4\" width=\"60.0\" height=\"7.6\" class=\"wfb\" tabindex=\"0\" role=\"img\" aria-label=\"cost₀: +$65.00\" data-label=\"cost₀\" data-value=\"+$65.00\"/><rect x=\"97.0\" y=\"23.6\" width=\"60.0\" height=\"94.8\" class=\"wfup\" tabindex=\"0\" role=\"img\" aria-label=\"Volumen: +$136.50\" data-label=\"Volumen\" data-value=\"+$136.50\"/><rect x=\"182.0\" y=\"23.6\" width=\"60.0\" height=\"37.7\" class=\"wfdn\" tabindex=\"0\" role=\"img\" aria-label=\"Mix: -$54.25\" data-label=\"Mix\" data-value=\"-$54.25\"/><rect x=\"267.0\" y=\"61.3\" width=\"60.0\" height=\"37.7\" class=\"wfdn\" tabindex=\"0\" role=\"img\" aria-label=\"Rate: -$54.25\" data-label=\"Rate\" data-value=\"-$54.25\"/><rect x=\"352.0\" y=\"99.0\" width=\"60.0\" height=\"27.0\" class=\"wfb\" tabindex=\"0\" role=\"img\" aria-label=\"cost₁: +$93.00\" data-label=\"cost₁\" data-value=\"+$93.00\"/><text x=\"42.0\" y=\"115.4\" class=\"wft\" text-anchor=\"middle\">$65.00</text><text x=\"127.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">+$136.50</text><text x=\"212.0\" y=\"20.6\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"297.0\" y=\"58.3\" class=\"wft\" text-anchor=\"middle\">-$54.25</text><text x=\"382.0\" y=\"96.0\" class=\"wft\" text-anchor=\"middle\">$93.00</text><text x=\"42.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₀</text><text x=\"127.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Volumen</text><text x=\"212.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Mix</text><text x=\"297.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">Rate</text><text x=\"382.0\" y=\"144.0\" class=\"wfl\" text-anchor=\"middle\">cost₁</text></svg>",
         "truncated": false,
         "volume": 136.5,
         "ym": "2026-07"
@@ -4061,6 +4061,1756 @@
         }
       }
     },
+    "range:2026-05..2026-06": {
+      "has_prior": false,
+      "kpis": [
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$115.00",
+          "key": "cost_effective",
+          "label": "Coste efectivo",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.612903,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.166667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 3.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 115.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$45.00",
+          "key": "cost_cash",
+          "label": "Coste cash",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.645161,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.833333,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 45.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "2.6×",
+          "key": "leverage",
+          "label": "Leverage",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 2.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.6,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 2.5555555555555554
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$575.00",
+          "key": "cost_per_1k_eff",
+          "label": "Coste efectivo por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 500.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 650.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 300.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 575.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$225.00",
+          "key": "cost_per_1k_cash",
+          "label": "Coste cash por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 200.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 250.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 225.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$14.38",
+          "key": "cost_per_session",
+          "label": "Coste por sesión",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 12.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 16.25,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 14.375
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "100.0%",
+          "key": "top3_concentration",
+          "label": "Concentración top-3",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 1.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "60.9%",
+          "key": "premium_share",
+          "label": "Share premium",
+          "provenance": "assumed",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.2,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.923077,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.6086956521739131
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "37.5%",
+          "key": "autonomous_share",
+          "label": "Autonomous share",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.25,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 0.375
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "30.0%",
+          "key": "multitasking_share",
+          "label": "Multitasking",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.6,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.3
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "31.0%",
+          "excluded_display": "20.0%",
+          "excluded_share": 0.2,
+          "key": "cache_hit_rate",
+          "label": "Cache-hit rate",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.357143,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.266667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.4,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.3103448275862069
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "0.50",
+          "excluded_display": "20.0%",
+          "excluded_share": 0.2,
+          "key": "out_in_ratio",
+          "label": "Ratio out/in",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.5
+        }
+      ],
+      "label": "may 26 → jun 26",
+      "limitation": "el drill Project→Model solo está disponible para el periodo completo (no hay project-by-model por mes)",
+      "months": [
+        "2026-05",
+        "2026-06"
+      ],
+      "trees": {
+        "portfolio": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 70.0,
+                  "cost_display": "$70.00",
+                  "delta_display": "n/a",
+                  "interactions": 115,
+                  "interactions_display": "115",
+                  "key": "pf:charly-coffe",
+                  "label": "charly-coffe",
+                  "pct_display": "60.9%",
+                  "per_1k_display": "$608.70",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 40.0,
+                  "cost_display": "$40.00",
+                  "delta_display": "n/a",
+                  "interactions": 75,
+                  "interactions_display": "75",
+                  "key": "pf:charly-atril",
+                  "label": "charly-atril",
+                  "pct_display": "34.8%",
+                  "per_1k_display": "$533.33",
+                  "totals_only": false
+                }
+              ],
+              "cost": 110.0,
+              "cost_display": "$110.00",
+              "delta_display": "n/a",
+              "interactions": 190,
+              "interactions_display": "190",
+              "key": "pf:charly",
+              "label": "charly",
+              "pct_display": "95.7%",
+              "per_1k_display": "$578.95",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 5.0,
+                  "cost_display": "$5.00",
+                  "delta_display": "n/a",
+                  "interactions": 10,
+                  "interactions_display": "10",
+                  "key": "pf:proyecto-externo",
+                  "label": "proyecto-externo",
+                  "pct_display": "4.3%",
+                  "per_1k_display": "$500.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 5.0,
+              "cost_display": "$5.00",
+              "delta_display": "n/a",
+              "interactions": 10,
+              "interactions_display": "10",
+              "key": "pf:Unclassified",
+              "label": "Unclassified",
+              "pct_display": "4.3%",
+              "per_1k_display": "$500.00",
+              "totals_only": false
+            }
+          ],
+          "cost": 115.0,
+          "cost_display": "$115.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "pf:__all__",
+          "label": "Portfolio",
+          "pct_display": "100.0%",
+          "per_1k_display": "$575.00",
+          "totals_only": false
+        },
+        "time": {
+          "budget_display": "$200.00 *",
+          "children": [
+            {
+              "budget_display": "$200.00 *",
+              "children": [
+                {
+                  "budget_display": "$200.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 20.0,
+                      "cost_display": "$20.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-05",
+                      "label": "may 26",
+                      "pct_display": "44.4%",
+                      "per_1k_display": "$200.00",
+                      "totals_only": false,
+                      "variance_display": "-$80.00",
+                      "variance_pct_display": "-80.0%"
+                    },
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 25.0,
+                      "cost_display": "$25.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-06",
+                      "label": "jun 26",
+                      "pct_display": "55.6%",
+                      "per_1k_display": "$250.00",
+                      "totals_only": false,
+                      "variance_display": "-$75.00",
+                      "variance_pct_display": "-75.0%"
+                    }
+                  ],
+                  "cost": 45.0,
+                  "cost_display": "$45.00",
+                  "delta_display": "n/a",
+                  "interactions": 200,
+                  "interactions_display": "200",
+                  "key": "time:2026-Q2",
+                  "label": "Q2 26",
+                  "pct_display": "100.0%",
+                  "per_1k_display": "$225.00",
+                  "totals_only": false,
+                  "variance_display": "-$155.00",
+                  "variance_pct_display": "-77.5%"
+                },
+                {
+                  "budget_display": "n/a",
+                  "children": [
+                    {
+                      "budget_display": "n/a",
+                      "children": [],
+                      "cost": 0,
+                      "cost_display": "n/a",
+                      "delta_display": "n/a",
+                      "interactions": 0,
+                      "interactions_display": "0",
+                      "key": "time:2026-07",
+                      "label": "jul 26",
+                      "pct_display": "n/a",
+                      "per_1k_display": "n/a",
+                      "totals_only": false,
+                      "variance_display": "n/a",
+                      "variance_pct_display": "n/a"
+                    }
+                  ],
+                  "cost": 0,
+                  "cost_display": "n/a",
+                  "delta_display": "n/a",
+                  "interactions": 0,
+                  "interactions_display": "0",
+                  "key": "time:2026-Q3",
+                  "label": "Q3 26",
+                  "pct_display": "n/a",
+                  "per_1k_display": "n/a",
+                  "totals_only": false,
+                  "variance_display": "n/a",
+                  "variance_pct_display": "n/a"
+                }
+              ],
+              "cost": 45.0,
+              "cost_display": "$45.00",
+              "delta_display": "n/a",
+              "interactions": 200,
+              "interactions_display": "200",
+              "key": "time:2026",
+              "label": "2026",
+              "pct_display": "100.0%",
+              "per_1k_display": "$225.00",
+              "totals_only": false,
+              "variance_display": "-$155.00",
+              "variance_pct_display": "-77.5%"
+            }
+          ],
+          "cost": 45.0,
+          "cost_display": "$45.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "time:__all__",
+          "label": "Todo el periodo",
+          "pct_display": "100.0%",
+          "per_1k_display": "$225.00",
+          "totals_only": false,
+          "variance_display": "-$155.00",
+          "variance_pct_display": "-77.5%"
+        },
+        "tool": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 70.0,
+                  "cost_display": "$70.00",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "model:claude-cli:claude-opus-4.7",
+                  "label": "claude-opus-4.7",
+                  "pct_display": "60.9%",
+                  "per_1k_display": "$700.00",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 30.0,
+                  "cost_display": "$30.00",
+                  "delta_display": "n/a",
+                  "interactions": 40,
+                  "interactions_display": "40",
+                  "key": "model:claude-cli:claude-sonnet-4-6",
+                  "label": "claude-sonnet-4-6",
+                  "pct_display": "26.1%",
+                  "per_1k_display": "$750.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 100.0,
+              "cost_display": "$100.00",
+              "delta_display": "n/a",
+              "interactions": 140,
+              "interactions_display": "140",
+              "key": "tool:claude-cli",
+              "label": "claude-cli",
+              "pct_display": "87.0%",
+              "per_1k_display": "$714.29",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 15.0,
+                  "cost_display": "$15.00",
+                  "delta_display": "n/a",
+                  "interactions": 60,
+                  "interactions_display": "60",
+                  "key": "model:codex:gpt-5.4",
+                  "label": "gpt-5.4",
+                  "pct_display": "13.0%",
+                  "per_1k_display": "$250.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 15.0,
+              "cost_display": "$15.00",
+              "delta_display": "n/a",
+              "interactions": 60,
+              "interactions_display": "60",
+              "key": "tool:codex",
+              "label": "codex",
+              "pct_display": "13.0%",
+              "per_1k_display": "$250.00",
+              "totals_only": false
+            }
+          ],
+          "cost": 115.0,
+          "cost_display": "$115.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "tool:__all__",
+          "label": "Todas las tools",
+          "pct_display": "100.0%",
+          "per_1k_display": "$575.00",
+          "totals_only": false
+        }
+      }
+    },
+    "range:2026-05..2026-07": {
+      "has_prior": false,
+      "kpis": [
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$145.00",
+          "key": "cost_effective",
+          "label": "Coste efectivo",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.612903,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.166667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 3.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 145.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$45.00",
+          "key": "cost_cash",
+          "label": "Coste cash",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.645161,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.833333,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 45.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "3.2×",
+          "key": "leverage",
+          "label": "Leverage",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 2.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.6,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 3.2222222222222223
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$483.33",
+          "key": "cost_per_1k_eff",
+          "label": "Coste efectivo por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 500.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 650.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 300.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 483.33333333333337
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$150.00",
+          "key": "cost_per_1k_cash",
+          "label": "Coste cash por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 200.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 250.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 150.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$18.12",
+          "key": "cost_per_session",
+          "label": "Coste por sesión",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 12.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 16.25,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 18.125
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "100.0%",
+          "key": "top3_concentration",
+          "label": "Concentración top-3",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 1.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "48.3%",
+          "key": "premium_share",
+          "label": "Share premium",
+          "provenance": "assumed",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.2,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.923077,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.4827586206896552
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "37.5%",
+          "key": "autonomous_share",
+          "label": "Autonomous share",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.25,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 0.375
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "20.0%",
+          "key": "multitasking_share",
+          "label": "Multitasking",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.6,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.2
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "32.9%",
+          "excluded_display": "36.7%",
+          "excluded_share": 0.3667,
+          "key": "cache_hit_rate",
+          "label": "Cache-hit rate",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.357143,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.266667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.4,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.3287671232876712
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "0.50",
+          "excluded_display": "36.7%",
+          "excluded_share": 0.3667,
+          "key": "out_in_ratio",
+          "label": "Ratio out/in",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.5
+        }
+      ],
+      "label": "may 26 → jul 26",
+      "limitation": "el drill Project→Model solo está disponible para el periodo completo (no hay project-by-model por mes)",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ],
+      "trees": {
+        "portfolio": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 85.0,
+                  "cost_display": "$85.00",
+                  "delta_display": "n/a",
+                  "interactions": 145,
+                  "interactions_display": "145",
+                  "key": "pf:charly-coffe",
+                  "label": "charly-coffe",
+                  "pct_display": "58.6%",
+                  "per_1k_display": "$586.21",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 55.0,
+                  "cost_display": "$55.00",
+                  "delta_display": "n/a",
+                  "interactions": 145,
+                  "interactions_display": "145",
+                  "key": "pf:charly-atril",
+                  "label": "charly-atril",
+                  "pct_display": "37.9%",
+                  "per_1k_display": "$379.31",
+                  "totals_only": false
+                }
+              ],
+              "cost": 140.0,
+              "cost_display": "$140.00",
+              "delta_display": "n/a",
+              "interactions": 290,
+              "interactions_display": "290",
+              "key": "pf:charly",
+              "label": "charly",
+              "pct_display": "96.6%",
+              "per_1k_display": "$482.76",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 5.0,
+                  "cost_display": "$5.00",
+                  "delta_display": "n/a",
+                  "interactions": 10,
+                  "interactions_display": "10",
+                  "key": "pf:proyecto-externo",
+                  "label": "proyecto-externo",
+                  "pct_display": "3.4%",
+                  "per_1k_display": "$500.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 5.0,
+              "cost_display": "$5.00",
+              "delta_display": "n/a",
+              "interactions": 10,
+              "interactions_display": "10",
+              "key": "pf:Unclassified",
+              "label": "Unclassified",
+              "pct_display": "3.4%",
+              "per_1k_display": "$500.00",
+              "totals_only": false
+            }
+          ],
+          "cost": 145.0,
+          "cost_display": "$145.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "pf:__all__",
+          "label": "Portfolio",
+          "pct_display": "100.0%",
+          "per_1k_display": "$483.33",
+          "totals_only": false
+        },
+        "time": {
+          "budget_display": "$300.00 *",
+          "children": [
+            {
+              "budget_display": "$300.00 *",
+              "children": [
+                {
+                  "budget_display": "$200.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 20.0,
+                      "cost_display": "$20.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-05",
+                      "label": "may 26",
+                      "pct_display": "44.4%",
+                      "per_1k_display": "$200.00",
+                      "totals_only": false,
+                      "variance_display": "-$80.00",
+                      "variance_pct_display": "-80.0%"
+                    },
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 25.0,
+                      "cost_display": "$25.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-06",
+                      "label": "jun 26",
+                      "pct_display": "55.6%",
+                      "per_1k_display": "$250.00",
+                      "totals_only": false,
+                      "variance_display": "-$75.00",
+                      "variance_pct_display": "-75.0%"
+                    }
+                  ],
+                  "cost": 45.0,
+                  "cost_display": "$45.00",
+                  "delta_display": "n/a",
+                  "interactions": 200,
+                  "interactions_display": "200",
+                  "key": "time:2026-Q2",
+                  "label": "Q2 26",
+                  "pct_display": "100.0%",
+                  "per_1k_display": "$225.00",
+                  "totals_only": false,
+                  "variance_display": "-$155.00",
+                  "variance_pct_display": "-77.5%"
+                },
+                {
+                  "budget_display": "$100.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 0.0,
+                      "cost_display": "n/a",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-07",
+                      "label": "jul 26",
+                      "pct_display": "n/a",
+                      "per_1k_display": "n/a",
+                      "totals_only": false,
+                      "variance_display": "-$100.00",
+                      "variance_pct_display": "-100.0%"
+                    }
+                  ],
+                  "cost": 0.0,
+                  "cost_display": "n/a",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "time:2026-Q3",
+                  "label": "Q3 26",
+                  "pct_display": "n/a",
+                  "per_1k_display": "n/a",
+                  "totals_only": false,
+                  "variance_display": "-$100.00",
+                  "variance_pct_display": "-100.0%"
+                }
+              ],
+              "cost": 45.0,
+              "cost_display": "$45.00",
+              "delta_display": "n/a",
+              "interactions": 300,
+              "interactions_display": "300",
+              "key": "time:2026",
+              "label": "2026",
+              "pct_display": "100.0%",
+              "per_1k_display": "$150.00",
+              "totals_only": false,
+              "variance_display": "-$255.00",
+              "variance_pct_display": "-85.0%"
+            }
+          ],
+          "cost": 45.0,
+          "cost_display": "$45.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "time:__all__",
+          "label": "Todo el periodo",
+          "pct_display": "100.0%",
+          "per_1k_display": "$150.00",
+          "totals_only": false,
+          "variance_display": "-$255.00",
+          "variance_pct_display": "-85.0%"
+        },
+        "tool": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 70.0,
+                  "cost_display": "$70.00",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "model:claude-cli:claude-opus-4.7",
+                  "label": "claude-opus-4.7",
+                  "pct_display": "48.3%",
+                  "per_1k_display": "$700.00",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 60.0,
+                  "cost_display": "$60.00",
+                  "delta_display": "n/a",
+                  "interactions": 70,
+                  "interactions_display": "70",
+                  "key": "model:claude-cli:claude-sonnet-4-6",
+                  "label": "claude-sonnet-4-6",
+                  "pct_display": "41.4%",
+                  "per_1k_display": "$857.14",
+                  "totals_only": false
+                }
+              ],
+              "cost": 130.0,
+              "cost_display": "$130.00",
+              "delta_display": "n/a",
+              "interactions": 170,
+              "interactions_display": "170",
+              "key": "tool:claude-cli",
+              "label": "claude-cli",
+              "pct_display": "89.7%",
+              "per_1k_display": "$764.71",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 15.0,
+                  "cost_display": "$15.00",
+                  "delta_display": "n/a",
+                  "interactions": 130,
+                  "interactions_display": "130",
+                  "key": "model:codex:gpt-5.4",
+                  "label": "gpt-5.4",
+                  "pct_display": "10.3%",
+                  "per_1k_display": "$115.38",
+                  "totals_only": false
+                }
+              ],
+              "cost": 15.0,
+              "cost_display": "$15.00",
+              "delta_display": "n/a",
+              "interactions": 130,
+              "interactions_display": "130",
+              "key": "tool:codex",
+              "label": "codex",
+              "pct_display": "10.3%",
+              "per_1k_display": "$115.38",
+              "totals_only": false
+            }
+          ],
+          "cost": 145.0,
+          "cost_display": "$145.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "tool:__all__",
+          "label": "Todas las tools",
+          "pct_display": "100.0%",
+          "per_1k_display": "$483.33",
+          "totals_only": false
+        }
+      }
+    },
+    "range:2026-06..2026-07": {
+      "has_prior": false,
+      "kpis": [
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$95.00",
+          "key": "cost_effective",
+          "label": "Coste efectivo",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.612903,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.166667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 3.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 95.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$25.00",
+          "key": "cost_cash",
+          "label": "Coste cash",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.645161,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.833333,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 25.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "3.8×",
+          "key": "leverage",
+          "label": "Leverage",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 2.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.6,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 3.8
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$475.00",
+          "key": "cost_per_1k_eff",
+          "label": "Coste efectivo por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 500.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 650.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 300.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 475.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$125.00",
+          "key": "cost_per_1k_cash",
+          "label": "Coste cash por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 200.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 250.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 125.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$23.75",
+          "key": "cost_per_session",
+          "label": "Coste por sesión",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 12.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 16.25,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 23.75
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "100.0%",
+          "key": "top3_concentration",
+          "label": "Concentración top-3",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 1.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "63.2%",
+          "key": "premium_share",
+          "label": "Share premium",
+          "provenance": "assumed",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.2,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.923077,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.631578947368421
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "50.0%",
+          "key": "autonomous_share",
+          "label": "Autonomous share",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.25,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 0.5
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "0.0%",
+          "key": "multitasking_share",
+          "label": "Multitasking",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.6,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "31.1%",
+          "excluded_display": "35.0%",
+          "excluded_share": 0.35,
+          "key": "cache_hit_rate",
+          "label": "Cache-hit rate",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.357143,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.266667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.4,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.3111111111111111
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "0.50",
+          "excluded_display": "35.0%",
+          "excluded_share": 0.35,
+          "key": "out_in_ratio",
+          "label": "Ratio out/in",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.5
+        }
+      ],
+      "label": "jun 26 → jul 26",
+      "limitation": "el drill Project→Model solo está disponible para el periodo completo (no hay project-by-model por mes)",
+      "months": [
+        "2026-06",
+        "2026-07"
+      ],
+      "trees": {
+        "portfolio": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 55.0,
+                  "cost_display": "$55.00",
+                  "delta_display": "n/a",
+                  "interactions": 90,
+                  "interactions_display": "90",
+                  "key": "pf:charly-coffe",
+                  "label": "charly-coffe",
+                  "pct_display": "57.9%",
+                  "per_1k_display": "$611.11",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 40.0,
+                  "cost_display": "$40.00",
+                  "delta_display": "n/a",
+                  "interactions": 110,
+                  "interactions_display": "110",
+                  "key": "pf:charly-atril",
+                  "label": "charly-atril",
+                  "pct_display": "42.1%",
+                  "per_1k_display": "$363.64",
+                  "totals_only": false
+                }
+              ],
+              "cost": 95.0,
+              "cost_display": "$95.00",
+              "delta_display": "n/a",
+              "interactions": 200,
+              "interactions_display": "200",
+              "key": "pf:charly",
+              "label": "charly",
+              "pct_display": "100.0%",
+              "per_1k_display": "$475.00",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 0,
+                  "cost_display": "n/a",
+                  "delta_display": "n/a",
+                  "interactions": 0,
+                  "interactions_display": "0",
+                  "key": "pf:proyecto-externo",
+                  "label": "proyecto-externo",
+                  "pct_display": "n/a",
+                  "per_1k_display": "n/a",
+                  "totals_only": false
+                }
+              ],
+              "cost": 0,
+              "cost_display": "n/a",
+              "delta_display": "n/a",
+              "interactions": 0,
+              "interactions_display": "0",
+              "key": "pf:Unclassified",
+              "label": "Unclassified",
+              "pct_display": "n/a",
+              "per_1k_display": "n/a",
+              "totals_only": false
+            }
+          ],
+          "cost": 95.0,
+          "cost_display": "$95.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "pf:__all__",
+          "label": "Portfolio",
+          "pct_display": "100.0%",
+          "per_1k_display": "$475.00",
+          "totals_only": false
+        },
+        "time": {
+          "budget_display": "$200.00 *",
+          "children": [
+            {
+              "budget_display": "$200.00 *",
+              "children": [
+                {
+                  "budget_display": "$100.00 *",
+                  "children": [
+                    {
+                      "budget_display": "n/a",
+                      "children": [],
+                      "cost": 0,
+                      "cost_display": "n/a",
+                      "delta_display": "n/a",
+                      "interactions": 0,
+                      "interactions_display": "0",
+                      "key": "time:2026-05",
+                      "label": "may 26",
+                      "pct_display": "n/a",
+                      "per_1k_display": "n/a",
+                      "totals_only": false,
+                      "variance_display": "n/a",
+                      "variance_pct_display": "n/a"
+                    },
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 25.0,
+                      "cost_display": "$25.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-06",
+                      "label": "jun 26",
+                      "pct_display": "100.0%",
+                      "per_1k_display": "$250.00",
+                      "totals_only": false,
+                      "variance_display": "-$75.00",
+                      "variance_pct_display": "-75.0%"
+                    }
+                  ],
+                  "cost": 25.0,
+                  "cost_display": "$25.00",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "time:2026-Q2",
+                  "label": "Q2 26",
+                  "pct_display": "100.0%",
+                  "per_1k_display": "$250.00",
+                  "totals_only": false,
+                  "variance_display": "-$75.00",
+                  "variance_pct_display": "-75.0%"
+                },
+                {
+                  "budget_display": "$100.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 0.0,
+                      "cost_display": "n/a",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-07",
+                      "label": "jul 26",
+                      "pct_display": "n/a",
+                      "per_1k_display": "n/a",
+                      "totals_only": false,
+                      "variance_display": "-$100.00",
+                      "variance_pct_display": "-100.0%"
+                    }
+                  ],
+                  "cost": 0.0,
+                  "cost_display": "n/a",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "time:2026-Q3",
+                  "label": "Q3 26",
+                  "pct_display": "n/a",
+                  "per_1k_display": "n/a",
+                  "totals_only": false,
+                  "variance_display": "-$100.00",
+                  "variance_pct_display": "-100.0%"
+                }
+              ],
+              "cost": 25.0,
+              "cost_display": "$25.00",
+              "delta_display": "n/a",
+              "interactions": 200,
+              "interactions_display": "200",
+              "key": "time:2026",
+              "label": "2026",
+              "pct_display": "100.0%",
+              "per_1k_display": "$125.00",
+              "totals_only": false,
+              "variance_display": "-$175.00",
+              "variance_pct_display": "-87.5%"
+            }
+          ],
+          "cost": 25.0,
+          "cost_display": "$25.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "time:__all__",
+          "label": "Todo el periodo",
+          "pct_display": "100.0%",
+          "per_1k_display": "$125.00",
+          "totals_only": false,
+          "variance_display": "-$175.00",
+          "variance_pct_display": "-87.5%"
+        },
+        "tool": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 60.0,
+                  "cost_display": "$60.00",
+                  "delta_display": "n/a",
+                  "interactions": 80,
+                  "interactions_display": "80",
+                  "key": "model:claude-cli:claude-opus-4.7",
+                  "label": "claude-opus-4.7",
+                  "pct_display": "63.2%",
+                  "per_1k_display": "$750.00",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 30.0,
+                  "cost_display": "$30.00",
+                  "delta_display": "n/a",
+                  "interactions": 30,
+                  "interactions_display": "30",
+                  "key": "model:claude-cli:claude-sonnet-4-6",
+                  "label": "claude-sonnet-4-6",
+                  "pct_display": "31.6%",
+                  "per_1k_display": "$1,000.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 90.0,
+              "cost_display": "$90.00",
+              "delta_display": "n/a",
+              "interactions": 110,
+              "interactions_display": "110",
+              "key": "tool:claude-cli",
+              "label": "claude-cli",
+              "pct_display": "94.7%",
+              "per_1k_display": "$818.18",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 5.0,
+                  "cost_display": "$5.00",
+                  "delta_display": "n/a",
+                  "interactions": 90,
+                  "interactions_display": "90",
+                  "key": "model:codex:gpt-5.4",
+                  "label": "gpt-5.4",
+                  "pct_display": "5.3%",
+                  "per_1k_display": "$55.56",
+                  "totals_only": false
+                }
+              ],
+              "cost": 5.0,
+              "cost_display": "$5.00",
+              "delta_display": "n/a",
+              "interactions": 90,
+              "interactions_display": "90",
+              "key": "tool:codex",
+              "label": "codex",
+              "pct_display": "5.3%",
+              "per_1k_display": "$55.56",
+              "totals_only": false
+            }
+          ],
+          "cost": 95.0,
+          "cost_display": "$95.00",
+          "delta_display": "n/a",
+          "interactions": 200,
+          "interactions_display": "200",
+          "key": "tool:__all__",
+          "label": "Todas las tools",
+          "pct_display": "100.0%",
+          "per_1k_display": "$475.00",
+          "totals_only": false
+        }
+      }
+    },
     "year:2026": {
       "has_prior": false,
       "kpis": [
@@ -4358,6 +6108,590 @@
         }
       ],
       "label": "2026",
+      "limitation": "el drill Project→Model solo está disponible para el periodo completo (no hay project-by-model por mes)",
+      "months": [
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ],
+      "trees": {
+        "portfolio": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 85.0,
+                  "cost_display": "$85.00",
+                  "delta_display": "n/a",
+                  "interactions": 145,
+                  "interactions_display": "145",
+                  "key": "pf:charly-coffe",
+                  "label": "charly-coffe",
+                  "pct_display": "58.6%",
+                  "per_1k_display": "$586.21",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 55.0,
+                  "cost_display": "$55.00",
+                  "delta_display": "n/a",
+                  "interactions": 145,
+                  "interactions_display": "145",
+                  "key": "pf:charly-atril",
+                  "label": "charly-atril",
+                  "pct_display": "37.9%",
+                  "per_1k_display": "$379.31",
+                  "totals_only": false
+                }
+              ],
+              "cost": 140.0,
+              "cost_display": "$140.00",
+              "delta_display": "n/a",
+              "interactions": 290,
+              "interactions_display": "290",
+              "key": "pf:charly",
+              "label": "charly",
+              "pct_display": "96.6%",
+              "per_1k_display": "$482.76",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 5.0,
+                  "cost_display": "$5.00",
+                  "delta_display": "n/a",
+                  "interactions": 10,
+                  "interactions_display": "10",
+                  "key": "pf:proyecto-externo",
+                  "label": "proyecto-externo",
+                  "pct_display": "3.4%",
+                  "per_1k_display": "$500.00",
+                  "totals_only": false
+                }
+              ],
+              "cost": 5.0,
+              "cost_display": "$5.00",
+              "delta_display": "n/a",
+              "interactions": 10,
+              "interactions_display": "10",
+              "key": "pf:Unclassified",
+              "label": "Unclassified",
+              "pct_display": "3.4%",
+              "per_1k_display": "$500.00",
+              "totals_only": false
+            }
+          ],
+          "cost": 145.0,
+          "cost_display": "$145.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "pf:__all__",
+          "label": "Portfolio",
+          "pct_display": "100.0%",
+          "per_1k_display": "$483.33",
+          "totals_only": false
+        },
+        "time": {
+          "budget_display": "$300.00 *",
+          "children": [
+            {
+              "budget_display": "$300.00 *",
+              "children": [
+                {
+                  "budget_display": "$200.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 20.0,
+                      "cost_display": "$20.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-05",
+                      "label": "may 26",
+                      "pct_display": "44.4%",
+                      "per_1k_display": "$200.00",
+                      "totals_only": false,
+                      "variance_display": "-$80.00",
+                      "variance_pct_display": "-80.0%"
+                    },
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 25.0,
+                      "cost_display": "$25.00",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-06",
+                      "label": "jun 26",
+                      "pct_display": "55.6%",
+                      "per_1k_display": "$250.00",
+                      "totals_only": false,
+                      "variance_display": "-$75.00",
+                      "variance_pct_display": "-75.0%"
+                    }
+                  ],
+                  "cost": 45.0,
+                  "cost_display": "$45.00",
+                  "delta_display": "n/a",
+                  "interactions": 200,
+                  "interactions_display": "200",
+                  "key": "time:2026-Q2",
+                  "label": "Q2 26",
+                  "pct_display": "100.0%",
+                  "per_1k_display": "$225.00",
+                  "totals_only": false,
+                  "variance_display": "-$155.00",
+                  "variance_pct_display": "-77.5%"
+                },
+                {
+                  "budget_display": "$100.00 *",
+                  "children": [
+                    {
+                      "budget_display": "$100.00 *",
+                      "children": [],
+                      "cost": 0.0,
+                      "cost_display": "n/a",
+                      "delta_display": "n/a",
+                      "interactions": 100,
+                      "interactions_display": "100",
+                      "key": "time:2026-07",
+                      "label": "jul 26",
+                      "pct_display": "n/a",
+                      "per_1k_display": "n/a",
+                      "totals_only": false,
+                      "variance_display": "-$100.00",
+                      "variance_pct_display": "-100.0%"
+                    }
+                  ],
+                  "cost": 0.0,
+                  "cost_display": "n/a",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "time:2026-Q3",
+                  "label": "Q3 26",
+                  "pct_display": "n/a",
+                  "per_1k_display": "n/a",
+                  "totals_only": false,
+                  "variance_display": "-$100.00",
+                  "variance_pct_display": "-100.0%"
+                }
+              ],
+              "cost": 45.0,
+              "cost_display": "$45.00",
+              "delta_display": "n/a",
+              "interactions": 300,
+              "interactions_display": "300",
+              "key": "time:2026",
+              "label": "2026",
+              "pct_display": "100.0%",
+              "per_1k_display": "$150.00",
+              "totals_only": false,
+              "variance_display": "-$255.00",
+              "variance_pct_display": "-85.0%"
+            }
+          ],
+          "cost": 45.0,
+          "cost_display": "$45.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "time:__all__",
+          "label": "Todo el periodo",
+          "pct_display": "100.0%",
+          "per_1k_display": "$150.00",
+          "totals_only": false,
+          "variance_display": "-$255.00",
+          "variance_pct_display": "-85.0%"
+        },
+        "tool": {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 70.0,
+                  "cost_display": "$70.00",
+                  "delta_display": "n/a",
+                  "interactions": 100,
+                  "interactions_display": "100",
+                  "key": "model:claude-cli:claude-opus-4.7",
+                  "label": "claude-opus-4.7",
+                  "pct_display": "48.3%",
+                  "per_1k_display": "$700.00",
+                  "totals_only": false
+                },
+                {
+                  "children": [],
+                  "cost": 60.0,
+                  "cost_display": "$60.00",
+                  "delta_display": "n/a",
+                  "interactions": 70,
+                  "interactions_display": "70",
+                  "key": "model:claude-cli:claude-sonnet-4-6",
+                  "label": "claude-sonnet-4-6",
+                  "pct_display": "41.4%",
+                  "per_1k_display": "$857.14",
+                  "totals_only": false
+                }
+              ],
+              "cost": 130.0,
+              "cost_display": "$130.00",
+              "delta_display": "n/a",
+              "interactions": 170,
+              "interactions_display": "170",
+              "key": "tool:claude-cli",
+              "label": "claude-cli",
+              "pct_display": "89.7%",
+              "per_1k_display": "$764.71",
+              "totals_only": false
+            },
+            {
+              "children": [
+                {
+                  "children": [],
+                  "cost": 15.0,
+                  "cost_display": "$15.00",
+                  "delta_display": "n/a",
+                  "interactions": 130,
+                  "interactions_display": "130",
+                  "key": "model:codex:gpt-5.4",
+                  "label": "gpt-5.4",
+                  "pct_display": "10.3%",
+                  "per_1k_display": "$115.38",
+                  "totals_only": false
+                }
+              ],
+              "cost": 15.0,
+              "cost_display": "$15.00",
+              "delta_display": "n/a",
+              "interactions": 130,
+              "interactions_display": "130",
+              "key": "tool:codex",
+              "label": "codex",
+              "pct_display": "10.3%",
+              "per_1k_display": "$115.38",
+              "totals_only": false
+            }
+          ],
+          "cost": 145.0,
+          "cost_display": "$145.00",
+          "delta_display": "n/a",
+          "interactions": 300,
+          "interactions_display": "300",
+          "key": "tool:__all__",
+          "label": "Todas las tools",
+          "pct_display": "100.0%",
+          "per_1k_display": "$483.33",
+          "totals_only": false
+        }
+      }
+    },
+    "ytd:2026": {
+      "has_prior": false,
+      "kpis": [
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$145.00",
+          "key": "cost_effective",
+          "label": "Coste efectivo",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.612903,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.166667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 3.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 145.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "daily-rate",
+          "display": "$45.00",
+          "key": "cost_cash",
+          "label": "Coste cash",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.645161,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.833333,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 45.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "3.2×",
+          "key": "leverage",
+          "label": "Leverage",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 2.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 2.6,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 3.2222222222222223
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$483.33",
+          "key": "cost_per_1k_eff",
+          "label": "Coste efectivo por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 500.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 650.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 300.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 483.33333333333337
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$150.00",
+          "key": "cost_per_1k_cash",
+          "label": "Coste cash por 1k",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 200.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 250.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 150.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "$18.12",
+          "key": "cost_per_session",
+          "label": "Coste por sesión",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 12.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 16.25,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 18.125
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "100.0%",
+          "key": "top3_concentration",
+          "label": "Concentración top-3",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 1.0,
+              "ym": "2026-05"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 1.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 1.0
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "48.3%",
+          "key": "premium_share",
+          "label": "Share premium",
+          "provenance": "assumed",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.2,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.923077,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.4827586206896552
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "37.5%",
+          "key": "autonomous_share",
+          "label": "Autonomous share",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.25,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            }
+          ],
+          "value": 0.375
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "20.0%",
+          "key": "multitasking_share",
+          "label": "Multitasking",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.6,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.0,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.2
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "32.9%",
+          "excluded_display": "36.7%",
+          "excluded_share": 0.3667,
+          "key": "cache_hit_rate",
+          "label": "Cache-hit rate",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.357143,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.266667,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.4,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.3287671232876712
+        },
+        {
+          "delta": null,
+          "delta_display": "n/a",
+          "delta_kind": "periodo",
+          "display": "0.50",
+          "excluded_display": "36.7%",
+          "excluded_share": 0.3667,
+          "key": "out_in_ratio",
+          "label": "Ratio out/in",
+          "provenance": "reported",
+          "reason": null,
+          "spark": [
+            {
+              "value": 0.5,
+              "ym": "2026-05"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-06"
+            },
+            {
+              "value": 0.5,
+              "ym": "2026-07"
+            }
+          ],
+          "value": 0.5
+        }
+      ],
+      "label": "YTD 2026",
       "limitation": "el drill Project→Model solo está disponible para el periodo completo (no hay project-by-model por mes)",
       "months": [
         "2026-05",

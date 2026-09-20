@@ -1,6 +1,10 @@
 {
   "alerts": [
     {
+      "action": {
+        "label": "Ver el reporte",
+        "target": "data/usage_report_v3.json"
+      },
       "evidence": {
         "cur_per_1k": 650.0,
         "month": "2026-06",
@@ -13,6 +17,10 @@
       "severity": "medium"
     },
     {
+      "action": {
+        "label": "Ver proyectos",
+        "target": "#pareto"
+      },
       "evidence": {
         "projects": [
           "charly-coffe",
@@ -27,6 +35,10 @@
       "severity": "medium"
     },
     {
+      "action": {
+        "label": "Regenerar datos",
+        "target": "https://github.com/charly-vibes/coffe"
+      },
       "evidence": {
         "age_days": 72,
         "end": "2026-07-10",

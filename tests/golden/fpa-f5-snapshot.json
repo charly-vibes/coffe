@@ -370,7 +370,8 @@
           "wow_cost": null,
           "wow_interactions": null
         }
-      ]
+      ],
+      "working_hours_text": "lun–vie 09:00–18:00"
     },
     "sessions": {
       "buckets": [

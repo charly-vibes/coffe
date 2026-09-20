@@ -597,9 +597,11 @@ class TestRender(F5Base):
         cls.html = viz.render_html(f5_fixture(), CONFIG, generated="T")
 
     def test_seccion_usage_patterns(self):
-        self.assertIn('id="usage-patterns"', self.html)
+        # F6: los patrones viven en la vista Habits y skills/comandos van
+        # mergeados en una sola vista (FPA-150/156)
+        self.assertIn('id="habits"', self.html)
         self.assertIn('id="heatmap"', self.html)
-        self.assertIn('id="skills"', self.html)
+        self.assertIn('id="skills-commands"', self.html)
         self.assertIn('id="timeline"', self.html)
         self.assertIn('id="lifecycle"', self.html)
         self.assertIn('id="weekly"', self.html)

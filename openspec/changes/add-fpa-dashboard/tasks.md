@@ -99,29 +99,29 @@
 
 ## 6. UX, CTA y export (FPA-090…098, 150–179)
 
-- [ ] 6.1 Arquitectura de información: 5 vistas + Data & method (FPA-150/151),
+- [x] 6.1 Arquitectura de información: 5 vistas + Data & method (FPA-150/151),
       presets de periodo YTD/Q1–Q3 y custom range (FPA-090), navegación de vistas
       (FPA-091), mobile tabs /
       desktop secuencia (FPA-152), period selector fijo único (FPA-153), above the
       fold (FPA-154), top-5 + Show all (FPA-155), merges (FPA-156), Data & method
       colapsado (FPA-157), sin duplicación Pareto/árbol (FPA-158)
-- [ ] 6.2 Títulos-hallazgo computados con fallback (FPA-160/161), idioma única
+- [x] 6.2 Títulos-hallazgo computados con fallback (FPA-160/161), idioma única
       (FPA-162), Data section con definición de interaction y gaps (FPA-096/140),
       numeración automática de figuras (FPA-144), sin placeholders vacíos (FPA-146),
       método de render documentado (FPA-145)
-- [ ] 6.3 CTAs: 1 primario + ≤3 secundarios en Summary (FPA-165), máx 1 primario
+- [x] 6.3 CTAs: 1 primario + ≤3 secundarios en Summary (FPA-165), máx 1 primario
       por vista (FPA-166), alerta→1 botón de acción (FPA-167), targets de config
       con fail si vacío — check activo desde que exista la clave `ctas`, obligatorio
       en F6 (FPA-168), labels verb-first ≤4 palabras (FPA-172)
-- [ ] 6.4 Export/share: Export CSV en toda tabla + Download SVG en todo chart
+- [x] 6.4 Export/share: Export CSV en toda tabla + Download SVG en todo chart
       (FPA-169), Share view con URL que restaura estado (FPA-170), params inválidos
       ignorados (FPA-171)
-- [ ] 6.5 Accesibilidad móvil: tap/focus/hover readout persistente (FPA-175),
+- [x] 6.5 Accesibilidad móvil: tap/focus/hover readout persistente (FPA-175),
       targets 44px (FPA-176), primera columna fija en tablas anchas (FPA-177),
       retro confinado+opcional+reduced-motion+4.5:1 (FPA-178), skip-link +
       lang (FPA-179), teclado y focus visible (FPA-094), scroll horizontal
       <600px (FPA-092), presets de periodo (FPA-090), navegación de vistas (FPA-091)
-- [ ] 6.6 Tests: sin primario duplicado, sin target vacío, URL share restaura
+- [x] 6.6 Tests: sin primario duplicado, sin target vacío, URL share restaura
       (FPA-149); numeración sin duplicados (FPA-106); doc-consistency de cifras del
       README (FPA-143) y CI (FPA-107); smoke 390×844 (FPA-109)
 

@@ -85,8 +85,18 @@
   "ctas": {
     "primary": {"label": "Leer la serie", "target": "https://github.com/charly-vibes/coffe"},
     "secondary": [
-      {"label": "Gantt multitasking", "target": "data/gantt-multitasking.html"},
-      {"label": "Reporte de datos", "target": "data/usage_report_v3.json"}
-    ]
+      {"label": "Explorar el Gantt", "target": "data/gantt-multitasking.html"},
+      {"label": "Descargar los datos", "target": "data/usage_report_v3.json"},
+      {"label": "Correr en tus logs", "target": "https://github.com/charly-vibes/coffe"}
+    ],
+    "alert_actions": {
+      "verify-plan": {"label": "Revisar el plan", "target": "config/fpa.json"},
+      "reconciliation": {"label": "Ver el reporte", "target": "data/usage_report_v3.json"},
+      "budget": {"label": "Ajustar presupuesto", "target": "#budget"},
+      "unit-cost": {"label": "Ver el reporte", "target": "data/usage_report_v3.json"},
+      "mix": {"label": "Comparar planes", "target": "config/fpa.json"},
+      "concentration": {"label": "Ver proyectos", "target": "#pareto"},
+      "staleness": {"label": "Regenerar datos", "target": "https://github.com/charly-vibes/coffe"}
+    }
   }
 }
