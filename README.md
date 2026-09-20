@@ -93,12 +93,12 @@ Cifras actuales del reporte, verificadas por
 `python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
 (FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
 
-- Interacciones: 140,564
-- Proyectos: 40
-- Costo efectivo: $3,812.70
-- Costo real: $611.44
+- Interacciones: 140,714
+- Proyectos: 42
+- Costo efectivo: $3,812.88
+- Costo real: $611.62
 - Sesiones: 1,884
-- Periodo: 2026-01-11 → 2026-09-19
+- Periodo: 2026-01-11 → 2026-09-20
 <!-- CHECK-DOCS:END -->
 
 ### ✅ Extraído y documentado

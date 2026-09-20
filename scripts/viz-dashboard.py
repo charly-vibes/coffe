@@ -81,9 +81,11 @@ def prepare(report):
     tool_first, tool_last, tool_total = {}, {}, defaultdict(int)
     for ym in months:
         for tool, cnt in monthly[ym]["tools"].items():
+            # F2: tools mensual es tool→{interactions, ...}; diario/horario sigue int
+            n = cnt["interactions"] if isinstance(cnt, dict) else cnt
             tool_first.setdefault(tool, ym)
             tool_last[tool] = ym
-            tool_total[tool] += cnt
+            tool_total[tool] += n
     tools_timeline = sorted(
         ({"tool": t, "first": tool_first[t], "last": tool_last[t],
           "total": tool_total[t]} for t in tool_total),

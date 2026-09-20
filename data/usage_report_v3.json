@@ -5,22 +5,22 @@
       "end": "2026-09-20"
     },
     "filter": "charly-only",
-    "total_interactions": 140564,
-    "total_input_tokens": 1253837595,
-    "total_output_tokens": 48097661,
-    "total_cache_read_tokens": 9528888460,
+    "total_interactions": 140714,
+    "total_input_tokens": 1254573447,
+    "total_output_tokens": 48147355,
+    "total_cache_read_tokens": 9534805452,
     "total_cache_write_tokens": 72256689,
-    "cost_total_effective": 3812.69,
-    "cost_total_real": 381.43,
+    "cost_total_effective": 3812.88,
+    "cost_total_real": 381.62,
     "subscription_fees": 230.0,
     "timezone": "-03",
     "pay_per_token_note": "pay_per_token_charges es *assumed*: estimado con tokens \u00d7 pricing; el tracker no registra cargas reales (FPA-013)",
     "outcomes": "unavailable: mapeo proyecto\u2192repo GitHub pendiente (ver README)",
     "token_accounting": "cache_read/cache_write se reportan aparte de input/output. cache_read no se factura a input rate (10x mas barato); total tokens = input + output + cache_read + cache_write",
-    "total_hours": 826,
-    "total_days": 153,
+    "total_hours": 828,
+    "total_days": 154,
     "total_months": 9,
-    "total_projects": 40,
+    "total_projects": 42,
     "config_source": "config/fpa.json"
   },
   "hourly": {
@@ -910,7 +910,7 @@
       "models": {
         "amp": 9
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-01-24 21:00": {
       "interactions": 31,
@@ -1702,7 +1702,7 @@
       "models": {
         "amp": 35
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-02-01 20:00": {
       "interactions": 51,
@@ -1726,7 +1726,7 @@
       "models": {
         "amp": 51
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-02-04 23:00": {
       "interactions": 5,
@@ -2062,7 +2062,7 @@
       "models": {
         "amp": 13
       },
-      "projects_active": 1
+      "projects_active": 3
     },
     "2026-02-11 16:00": {
       "interactions": 5,
@@ -2086,7 +2086,7 @@
       "models": {
         "amp": 5
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-02-11 17:00": {
       "interactions": 24,
@@ -2110,7 +2110,7 @@
       "models": {
         "amp": 24
       },
-      "projects_active": 1
+      "projects_active": 3
     },
     "2026-02-11 18:00": {
       "interactions": 3,
@@ -2614,7 +2614,7 @@
       "models": {
         "amp": 9
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-02-18 18:00": {
       "interactions": 1,
@@ -2662,7 +2662,7 @@
       "models": {
         "amp": 10
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-02-18 20:00": {
       "interactions": 6,
@@ -3214,7 +3214,7 @@
       "models": {
         "amp": 6
       },
-      "projects_active": 1
+      "projects_active": 2
     },
     "2026-03-02 22:00": {
       "interactions": 3,
@@ -5495,7 +5495,7 @@
         "claude-sonnet-4-6": 245,
         "amp": 3
       },
-      "projects_active": 4
+      "projects_active": 3
     },
     "2026-04-22 10:00": {
       "interactions": 425,
@@ -5540,7 +5540,7 @@
         "claude-opus-4-6": 64,
         "amp": 1
       },
-      "projects_active": 6
+      "projects_active": 5
     },
     "2026-04-22 11:00": {
       "interactions": 21,
@@ -21616,26 +21616,74 @@
       "projects_active": 1
     },
     "2026-09-19 23:00": {
-      "interactions": 363,
-      "input_tokens": 1781353,
-      "output_tokens": 176322,
-      "cache_read_tokens": 27184064,
+      "interactions": 437,
+      "input_tokens": 1952511,
+      "output_tokens": 201756,
+      "cache_read_tokens": 30167360,
       "cache_write_tokens": 0,
-      "cost_effective": 0.7,
-      "cost_real": 0.7,
+      "cost_effective": 0.78,
+      "cost_real": 0.78,
       "tools": {
         "openrouter": {
-          "req": 363,
-          "in": 1781353,
-          "out": 176322,
-          "cache_read": 27184064,
+          "req": 437,
+          "in": 1952511,
+          "out": 201756,
+          "cache_read": 30167360,
           "cache_write": 0,
-          "cost_eff": 0.70253152,
-          "cost_real": 0.70253152
+          "cost_eff": 0.77926527,
+          "cost_real": 0.77926527
         }
       },
       "models": {
-        "z-ai/glm-5.3-flash": 363
+        "z-ai/glm-5.3-flash": 437
+      },
+      "projects_active": 1
+    },
+    "2026-09-20 00:00": {
+      "interactions": 73,
+      "input_tokens": 484906,
+      "output_tokens": 23596,
+      "cache_read_tokens": 2775488,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.1,
+      "cost_real": 0.1,
+      "tools": {
+        "openrouter": {
+          "req": 73,
+          "in": 484906,
+          "out": 23596,
+          "cache_read": 2775488,
+          "cache_write": 0,
+          "cost_eff": 0.10067912,
+          "cost_real": 0.10067912
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 73
+      },
+      "projects_active": 1
+    },
+    "2026-09-20 10:00": {
+      "interactions": 3,
+      "input_tokens": 79788,
+      "output_tokens": 664,
+      "cache_read_tokens": 158208,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.01,
+      "cost_real": 0.01,
+      "tools": {
+        "openrouter": {
+          "req": 3,
+          "in": 79788,
+          "out": 664,
+          "cache_read": 158208,
+          "cache_write": 0,
+          "cost_eff": 0.01022786,
+          "cost_real": 0.01022786
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 3
       },
       "projects_active": 1
     }
@@ -24089,18 +24137,33 @@
       }
     },
     "2026-09-19": {
-      "interactions": 1052,
-      "input_tokens": 8951456,
-      "output_tokens": 616401,
-      "cache_read_tokens": 74240768,
+      "interactions": 1126,
+      "input_tokens": 9122614,
+      "output_tokens": 641835,
+      "cache_read_tokens": 77224064,
       "cache_write_tokens": 0,
-      "cost_effective": 2.33,
-      "cost_real": 2.33,
+      "cost_effective": 2.4,
+      "cost_real": 2.4,
       "tools": {
-        "openrouter": 1052
+        "openrouter": 1126
       },
       "models": {
-        "z-ai/glm-5.3-flash": 1052
+        "z-ai/glm-5.3-flash": 1126
+      }
+    },
+    "2026-09-20": {
+      "interactions": 76,
+      "input_tokens": 564694,
+      "output_tokens": 24260,
+      "cache_read_tokens": 2933696,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.11,
+      "cost_real": 0.11,
+      "tools": {
+        "openrouter": 76
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 76
       }
     }
   },
@@ -24943,26 +25006,26 @@
       "outcomes_by_project": {}
     },
     "2026-09": {
-      "interactions": 7142,
-      "input_tokens": 45705472,
-      "output_tokens": 3672246,
-      "cache_read_tokens": 484686144,
+      "interactions": 7292,
+      "input_tokens": 46441324,
+      "output_tokens": 3721940,
+      "cache_read_tokens": 490603136,
       "cache_write_tokens": 0,
-      "cost_effective": 15.67,
-      "cost_real": 15.67,
+      "cost_effective": 15.85,
+      "cost_real": 15.85,
       "tools": {
         "openrouter": {
-          "interactions": 7142,
-          "cost_effective": 15.66724519,
-          "cost_real": 15.66724519,
+          "interactions": 7292,
+          "cost_effective": 15.85488592,
+          "cost_real": 15.85488592,
           "models": {
             "deepseek/deepseek-v4-flash": {
               "interactions": 64,
               "cost_effective": 0.16162898
             },
             "z-ai/glm-5.3-flash": {
-              "interactions": 7078,
-              "cost_effective": 15.50561621
+              "interactions": 7228,
+              "cost_effective": 15.69325695
             }
           }
         }
@@ -24973,8 +25036,8 @@
           "cost_effective": 0.16162898
         },
         "z-ai/glm-5.3-flash": {
-          "interactions": 7078,
-          "cost_effective": 15.50561621
+          "interactions": 7228,
+          "cost_effective": 15.69325695
         }
       },
       "subscription_fees": 0.0,
@@ -24986,17 +25049,17 @@
           "cache_write": 0
         },
         "z-ai/glm-5.3-flash": {
-          "in": 45002497,
-          "out": 3625767,
-          "cache_read": 478678848,
+          "in": 45738349,
+          "out": 3675461,
+          "cache_read": 484595840,
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 15.67,
+      "pay_per_token_charges": 15.85,
       "interaction_kinds": {
-        "tool_call": 6667,
-        "assistant_turn": 475,
-        "user_prompt": 488
+        "tool_call": 6813,
+        "assistant_turn": 479,
+        "user_prompt": 491
       },
       "outcomes_by_project": {}
     }
@@ -25157,7 +25220,7 @@
       }
     },
     "charly-wai": {
-      "interactions": 5832,
+      "interactions": 6055,
       "input_tokens": 33643162,
       "output_tokens": 1610850,
       "cache_read_tokens": 458001884,
@@ -25168,6 +25231,7 @@
         "openrouter": 2983,
         "claude-cli": 2066,
         "codex": 719,
+        "amp": 223,
         "gemini-cli": 64
       },
       "models": {
@@ -25177,13 +25241,14 @@
         "gpt-5.4": 622,
         "z-ai/glm-5.2": 557,
         "z-ai/glm-5.3-flash": 244,
+        "amp": 223,
         "gpt-5.5": 97,
         "gemini-3-flash-preview": 64,
         "claude-opus-4-7": 34,
         "<synthetic>": 6,
         "anthropic/claude-sonnet-4.6": 2
       },
-      "first_seen": "2026-04-18",
+      "first_seen": "2026-01-31",
       "last_seen": "2026-09-17",
       "skills": {
         "rule-of-5-universal": 4,
@@ -25262,7 +25327,7 @@
       }
     },
     "sk-XAct-jl": {
-      "interactions": 3606,
+      "interactions": 3613,
       "input_tokens": 29304281,
       "output_tokens": 927868,
       "cache_read_tokens": 180706940,
@@ -25273,7 +25338,8 @@
         "claude-cli": 1387,
         "codex": 1253,
         "openrouter": 859,
-        "gemini-cli": 107
+        "gemini-cli": 107,
+        "amp": 7
       },
       "models": {
         "claude-sonnet-4-6": 1387,
@@ -25284,9 +25350,10 @@
         "z-ai/glm-5.3-flash": 43,
         "gemini-3-pro-preview": 33,
         "anthropic/claude-sonnet-4.6": 22,
+        "amp": 7,
         "deepseek/deepseek-v4-flash:free": 1
       },
-      "first_seen": "2026-04-16",
+      "first_seen": "2026-01-22",
       "last_seen": "2026-09-04",
       "skills": {
         "rule-of-5": 5,
@@ -25531,7 +25598,7 @@
       "skills": {}
     },
     "charly-paranoid": {
-      "interactions": 1178,
+      "interactions": 1393,
       "input_tokens": 732528,
       "output_tokens": 322689,
       "cache_read_tokens": 24211065,
@@ -25540,10 +25607,12 @@
       "cost_real": 0.02,
       "tools": {
         "claude-cli": 985,
+        "amp": 215,
         "codex": 193
       },
       "models": {
         "claude-sonnet-4-6": 985,
+        "amp": 215,
         "gpt-5.4": 154,
         "gpt-5.5": 39
       },
@@ -25557,7 +25626,7 @@
       }
     },
     "charly-incitaciones": {
-      "interactions": 2480,
+      "interactions": 2487,
       "input_tokens": 18910700,
       "output_tokens": 1242761,
       "cache_read_tokens": 177921298,
@@ -25569,6 +25638,7 @@
         "codex": 407,
         "claude-cli": 134,
         "gemini-cli": 76,
+        "amp": 7,
         "copilot": 1
       },
       "models": {
@@ -25580,9 +25650,10 @@
         "gpt-5.5": 86,
         "gemini-2.5-pro": 45,
         "gemini-3-flash-preview": 20,
-        "gemini-3-pro-preview": 12
+        "gemini-3-pro-preview": 12,
+        "amp": 7
       },
-      "first_seen": "2026-04-14",
+      "first_seen": "2026-01-21",
       "last_seen": "2026-09-18",
       "skills": {
         "rule-of-5-universal": 1
@@ -25671,7 +25742,7 @@
       "skills": {}
     },
     "charly-fabbro": {
-      "interactions": 301,
+      "interactions": 1432,
       "input_tokens": 3244011,
       "output_tokens": 118823,
       "cache_read_tokens": 24118886,
@@ -25679,16 +25750,18 @@
       "cost_effective": 13.77,
       "cost_real": 0.0,
       "tools": {
+        "amp": 1131,
         "codex": 269,
         "gemini-cli": 31,
         "copilot": 1
       },
       "models": {
+        "amp": 1131,
         "gpt-5.4": 269,
         "gemini-3-flash-preview": 31,
         "gpt-5.3-codex": 1
       },
-      "first_seen": "2026-04-14",
+      "first_seen": "2026-01-11",
       "last_seen": "2026-04-17",
       "skills": {}
     },
@@ -25775,25 +25848,25 @@
       "skills": {}
     },
     "charly-coffe": {
-      "interactions": 1027,
-      "input_tokens": 7928798,
-      "output_tokens": 608615,
-      "cache_read_tokens": 69383936,
+      "interactions": 1177,
+      "input_tokens": 8664650,
+      "output_tokens": 658309,
+      "cache_read_tokens": 75300928,
       "cache_write_tokens": 0,
-      "cost_effective": 2.15,
-      "cost_real": 2.15,
+      "cost_effective": 2.33,
+      "cost_real": 2.33,
       "tools": {
-        "openrouter": 1027
+        "openrouter": 1177
       },
       "models": {
-        "z-ai/glm-5.3-flash": 1027
+        "z-ai/glm-5.3-flash": 1177
       },
       "first_seen": "2026-09-19",
       "last_seen": "2026-09-20",
       "skills": {}
     },
     "charly-jams": {
-      "interactions": 667,
+      "interactions": 683,
       "input_tokens": 4694228,
       "output_tokens": 310106,
       "cache_read_tokens": 86829248,
@@ -25801,13 +25874,15 @@
       "cost_effective": 2.06,
       "cost_real": 2.06,
       "tools": {
-        "openrouter": 667
+        "openrouter": 667,
+        "amp": 16
       },
       "models": {
         "deepseek/deepseek-v4-flash": 624,
-        "z-ai/glm-5.3-flash": 43
+        "z-ai/glm-5.3-flash": 43,
+        "amp": 16
       },
-      "first_seen": "2026-08-02",
+      "first_seen": "2026-02-11",
       "last_seen": "2026-09-16",
       "skills": {}
     },
@@ -25866,7 +25941,7 @@
       "skills": {}
     },
     "charly-microdancing": {
-      "interactions": 485,
+      "interactions": 497,
       "input_tokens": 6422979,
       "output_tokens": 233372,
       "cache_read_tokens": 23852096,
@@ -25874,13 +25949,15 @@
       "cost_effective": 1.15,
       "cost_real": 1.15,
       "tools": {
-        "openrouter": 485
+        "openrouter": 485,
+        "amp": 12
       },
       "models": {
         "z-ai/glm-5.3-flash": 247,
-        "deepseek/deepseek-v4-flash": 238
+        "deepseek/deepseek-v4-flash": 238,
+        "amp": 12
       },
-      "first_seen": "2026-06-10",
+      "first_seen": "2026-01-24",
       "last_seen": "2026-09-17",
       "skills": {}
     },
@@ -25974,8 +26051,8 @@
       "last_seen": "2026-09-01",
       "skills": {}
     },
-    "charly/amp-auto": {
-      "interactions": 2207,
+    "charly-nayra": {
+      "interactions": 291,
       "input_tokens": 0,
       "output_tokens": 0,
       "cache_read_tokens": 0,
@@ -25983,13 +26060,49 @@
       "cost_effective": 0.0,
       "cost_real": 0.0,
       "tools": {
-        "amp": 2207
+        "amp": 291
       },
       "models": {
-        "amp": 2207
+        "amp": 291
       },
-      "first_seen": "2026-01-11",
-      "last_seen": "2026-05-05",
+      "first_seen": "2026-01-19",
+      "last_seen": "2026-03-30",
+      "skills": {}
+    },
+    "charly-rizomas": {
+      "interactions": 261,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.0,
+      "cost_real": 0.0,
+      "tools": {
+        "amp": 261
+      },
+      "models": {
+        "amp": 261
+      },
+      "first_seen": "2026-02-11",
+      "last_seen": "2026-02-20",
+      "skills": {}
+    },
+    "charly-bichos": {
+      "interactions": 44,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.0,
+      "cost_real": 0.0,
+      "tools": {
+        "amp": 44
+      },
+      "models": {
+        "amp": 44
+      },
+      "first_seen": "2026-04-11",
+      "last_seen": "2026-04-13",
       "skills": {}
     }
   },
@@ -26136,15 +26249,15 @@
   "multitasking": {
     "description": "Proyectos distintos con actividad en la misma ventana. 'context_switches' cuenta cambios de proyecto entre requests consecutivos (puede inflarse por agentes paralelos en el mismo minuto).",
     "hourly": {
-      "total_active_hours": 826,
-      "hours_with_multiple_projects": 446,
-      "pct_hours_multitasking": 54.0,
-      "avg_projects_per_active_hour": 2.29,
+      "total_active_hours": 828,
+      "hours_with_multiple_projects": 455,
+      "pct_hours_multitasking": 55.0,
+      "avg_projects_per_active_hour": 2.3,
       "distribution": {
-        "1": 380,
-        "4+": 166,
-        "2": 146,
-        "3": 134
+        "1": 373,
+        "4+": 165,
+        "2": 153,
+        "3": 137
       },
       "max_projects_in_one_hour": {
         "count": 10,
@@ -26258,8 +26371,8 @@
           "list": [
             "charly-atril",
             "charly-dont",
+            "charly-paranoid",
             "charly-wai",
-            "charly/amp-auto",
             "sk-REPLy-jl",
             "sk-XAct-jl",
             "sk-elegua"
@@ -26307,10 +26420,10 @@
       ]
     },
     "daily": {
-      "total_active_days": 153,
-      "days_with_multiple_projects": 79,
-      "pct_days_multitasking": 51.6,
-      "avg_projects_per_active_day": 3.11,
+      "total_active_days": 154,
+      "days_with_multiple_projects": 89,
+      "pct_days_multitasking": 57.8,
+      "avg_projects_per_active_day": 3.16,
       "top_10_days": [
         {
           "date": "2026-07-27",
@@ -26421,22 +26534,6 @@
           "interactions": 6778
         },
         {
-          "date": "2026-04-22",
-          "projects": 9,
-          "list": [
-            "charly-atril",
-            "charly-dont",
-            "charly-incitaciones",
-            "charly-paranoid",
-            "charly-ruta",
-            "charly-wai",
-            "charly/amp-auto",
-            "sk-REPLy-jl",
-            "sk-titi"
-          ],
-          "interactions": 4109
-        },
-        {
           "date": "2026-04-28",
           "projects": 9,
           "list": [
@@ -26444,8 +26541,8 @@
             "charly-atril",
             "charly-dont",
             "charly-incitaciones",
+            "charly-paranoid",
             "charly-wai",
-            "charly/amp-auto",
             "sk-REPLy-jl",
             "sk-XAct-jl",
             "sk-elegua"
@@ -26469,25 +26566,40 @@
           "interactions": 6469
         },
         {
-          "date": "2026-04-23",
+          "date": "2026-04-22",
           "projects": 8,
           "list": [
             "charly-atril",
+            "charly-dont",
+            "charly-incitaciones",
             "charly-paranoid",
             "charly-ruta",
-            "charly/amp-auto",
+            "charly-wai",
             "sk-REPLy-jl",
-            "sk-XAct-jl",
-            "sk-chacana",
-            "sk-elegua"
+            "sk-titi"
           ],
-          "interactions": 2533
+          "interactions": 4109
+        },
+        {
+          "date": "2026-05-07",
+          "projects": 8,
+          "list": [
+            "charly-atril",
+            "charly-dont",
+            "charly-incitaciones",
+            "charly-miblioteca",
+            "charly-superficies",
+            "charly-wai",
+            "sk-XAct-jl",
+            "sk-clojure-tutor"
+          ],
+          "interactions": 5282
         }
       ]
     },
     "context_switches": {
-      "total": 57901,
-      "avg_per_active_day": 378.4,
+      "total": 57937,
+      "avg_per_active_day": 376.2,
       "max_in_one_day": 10748,
       "top_10_days": {
         "2026-07-28": 10748,
@@ -26756,7 +26868,8 @@
       "2026-09-16",
       "2026-09-17",
       "2026-09-18",
-      "2026-09-19"
+      "2026-09-19",
+      "2026-09-20"
     ],
     "matrix": {
       "charly-dont": [
@@ -27011,6 +27124,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-miblioteca": [
@@ -27160,6 +27274,7 @@
         0,
         0,
         227,
+        0,
         0,
         0,
         0,
@@ -27519,6 +27634,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-REPLy-jl": [
@@ -27772,6 +27888,7 @@
         0,
         0,
         382,
+        0,
         0,
         0
       ],
@@ -28027,6 +28144,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-pretender": [
@@ -28237,6 +28355,7 @@
         0,
         0,
         393,
+        0,
         0,
         0,
         0,
@@ -28535,6 +28654,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-atril": [
@@ -28661,6 +28781,7 @@
         0,
         0,
         145,
+        0,
         0,
         0,
         0,
@@ -29043,6 +29164,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-wai": [
@@ -29066,6 +29188,8 @@
         0,
         0,
         0,
+        25,
+        38,
         0,
         0,
         0,
@@ -29074,6 +29198,8 @@
         0,
         0,
         0,
+        134,
+        1,
         0,
         0,
         0,
@@ -29130,11 +29256,7 @@
         0,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        25,
         0,
         0,
         0,
@@ -29296,6 +29418,7 @@
         0,
         0,
         161,
+        0,
         0,
         0
       ],
@@ -29503,6 +29626,7 @@
         0,
         0,
         152,
+        0,
         0,
         0,
         0,
@@ -29805,6 +29929,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly": [
@@ -30059,6 +30184,7 @@
         0,
         0,
         88,
+        0,
         0
       ],
       "sk-XAct-jl": [
@@ -30073,7 +30199,7 @@
         0,
         0,
         0,
-        0,
+        7,
         0,
         0,
         0,
@@ -30299,6 +30425,7 @@
         0,
         0,
         43,
+        0,
         0,
         0,
         0,
@@ -30567,6 +30694,7 @@
         10,
         282,
         0,
+        0,
         0
       ],
       "charly-incitaciones": [
@@ -30579,6 +30707,7 @@
         0,
         0,
         0,
+        5,
         0,
         0,
         0,
@@ -30599,8 +30728,7 @@
         0,
         0,
         0,
-        0,
-        0,
+        2,
         0,
         0,
         0,
@@ -30821,6 +30949,7 @@
         0,
         0,
         146,
+        0,
         0
       ],
       "charly-superficies": [
@@ -30941,6 +31070,7 @@
         1061,
         196,
         2,
+        0,
         0,
         0,
         0,
@@ -31329,259 +31459,6 @@
         0,
         0,
         0,
-        0
-      ],
-      "charly/amp-auto": [
-        60,
-        111,
-        67,
-        167,
-        0,
-        0,
-        0,
-        0,
-        33,
-        42,
-        0,
-        19,
-        59,
-        40,
-        53,
-        46,
-        38,
-        46,
-        62,
-        41,
-        45,
-        51,
-        0,
-        0,
-        5,
-        42,
-        24,
-        0,
-        39,
-        0,
-        138,
-        32,
-        22,
-        39,
-        31,
-        55,
-        41,
-        29,
-        26,
-        8,
-        5,
-        0,
-        33,
-        28,
-        10,
-        40,
-        0,
-        21,
-        0,
-        0,
-        19,
-        13,
-        28,
-        26,
-        13,
-        18,
-        18,
-        34,
-        23,
-        26,
-        8,
-        1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        36,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        12,
-        0,
-        25,
-        0,
-        26,
-        0,
-        18,
-        0,
-        0,
-        0,
-        0,
-        24,
-        15,
-        18,
-        12,
-        10,
-        18,
-        0,
-        0,
-        0,
-        37,
-        8,
-        6,
-        24,
-        10,
-        0,
-        0,
-        29,
-        4,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
         0,
         0
       ],
@@ -31700,6 +31577,7 @@
         0,
         0,
         9,
+        0,
         0,
         0,
         0,
@@ -32091,6 +31969,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-tRAGar": [
@@ -32345,6 +32224,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-ruta": [
@@ -32451,6 +32331,7 @@
         489,
         1029,
         154,
+        0,
         0,
         0,
         0,
@@ -32853,6 +32734,262 @@
         0,
         0,
         0,
+        0,
+        0
+      ],
+      "charly-fabbro": [
+        60,
+        111,
+        67,
+        167,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        33,
+        53,
+        46,
+        38,
+        46,
+        62,
+        41,
+        20,
+        13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0,
+        33,
+        28,
+        10,
+        40,
+        0,
+        21,
+        0,
+        0,
+        15,
+        13,
+        28,
+        26,
+        13,
+        18,
+        18,
+        34,
+        23,
+        26,
+        8,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        203,
+        0,
+        38,
+        60,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
       ],
       "charly-dulce-de-leche": [
@@ -33107,6 +33244,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-paranoid": [
@@ -33207,24 +33345,24 @@
         0,
         31,
         0,
-        0,
-        176,
-        0,
-        0,
-        76,
-        282,
+        24,
+        191,
+        18,
+        12,
+        86,
+        300,
         7,
         0,
         0,
+        37,
+        8,
+        6,
+        24,
+        10,
         0,
         0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        29,
+        4,
         0,
         0,
         0,
@@ -33266,6 +33404,7 @@
         0,
         54,
         34,
+        0,
         0,
         0,
         0,
@@ -33615,7 +33754,8 @@
         0,
         0,
         0,
-        1027
+        1101,
+        76
       ],
       "charly-whisper": [
         0,
@@ -33869,6 +34009,7 @@
         0,
         176,
         0,
+        0,
         0
       ],
       "charly-jams": [
@@ -33903,6 +34044,7 @@
         0,
         0,
         0,
+        4,
         0,
         0,
         0,
@@ -33957,8 +34099,7 @@
         0,
         0,
         0,
-        0,
-        0,
+        12,
         0,
         0,
         0,
@@ -34121,6 +34262,7 @@
         0,
         0,
         43,
+        0,
         0,
         0,
         0
@@ -34377,6 +34519,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-microdancing": [
@@ -34393,6 +34536,7 @@
         0,
         0,
         0,
+        7,
         0,
         0,
         0,
@@ -34415,8 +34559,7 @@
         0,
         0,
         0,
-        0,
-        0,
+        5,
         0,
         0,
         0,
@@ -34630,6 +34773,7 @@
         96,
         0,
         54,
+        0,
         0,
         0
       ],
@@ -34871,6 +35015,7 @@
         0,
         226,
         209,
+        0,
         0,
         0,
         0,
@@ -35139,9 +35284,10 @@
         0,
         0,
         0,
+        0,
         0
       ],
-      "charly-fabbro": [
+      "charly-nayra": [
         0,
         0,
         0,
@@ -35150,7 +35296,11 @@
         0,
         0,
         0,
+        33,
+        37,
         0,
+        12,
+        59,
         0,
         0,
         0,
@@ -35162,7 +35312,11 @@
         0,
         0,
         0,
+        5,
+        42,
+        24,
         0,
+        39,
         0,
         0,
         0,
@@ -35184,6 +35338,7 @@
         0,
         0,
         0,
+        4,
         0,
         0,
         0,
@@ -35211,6 +35366,7 @@
         0,
         0,
         0,
+        36,
         0,
         0,
         0,
@@ -35235,10 +35391,256 @@
         0,
         0,
         0,
-        203,
         0,
-        38,
-        60,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "charly-rizomas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        24,
+        22,
+        39,
+        31,
+        55,
+        36,
+        29,
+        12,
+        8,
+        5,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -35647,6 +36049,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-smithy": [
@@ -35837,6 +36240,7 @@
         0,
         165,
         61,
+        0,
         0,
         0,
         0,
@@ -36155,7 +36559,8 @@
         0,
         0,
         101,
-        25
+        25,
+        0
       ],
       "sk-poco": [
         0,
@@ -36254,6 +36659,7 @@
         0,
         0,
         55,
+        0,
         0,
         0,
         0,
@@ -36663,6 +37069,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-paseos": [
@@ -36917,40 +37324,308 @@
         0,
         0,
         0,
+        0,
+        0
+      ],
+      "charly-bichos": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        26,
+        0,
+        18,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
         0
       ]
     }
   },
   "project_monthly": {
-    "charly/amp-auto": {
+    "charly-fabbro": {
       "2026-01": {
-        "interactions": 929,
+        "interactions": 744,
         "cost_effective": 0.0
       },
       "2026-02": {
-        "interactions": 719,
+        "interactions": 164,
         "cost_effective": 0.0
       },
       "2026-03": {
-        "interactions": 263,
+        "interactions": 223,
         "cost_effective": 0.0
       },
-      "2026-04": {
-        "interactions": 253,
-        "cost_effective": 0.0
-      },
-      "2026-05": {
-        "interactions": 43,
-        "cost_effective": 0.0
-      }
-    },
-    "charly-fabbro": {
       "2026-04": {
         "interactions": 301,
         "cost_effective": 13.765051999999997
       }
     },
+    "charly-nayra": {
+      "2026-01": {
+        "interactions": 141,
+        "cost_effective": 0.0
+      },
+      "2026-02": {
+        "interactions": 110,
+        "cost_effective": 0.0
+      },
+      "2026-03": {
+        "interactions": 40,
+        "cost_effective": 0.0
+      }
+    },
     "charly-incitaciones": {
+      "2026-01": {
+        "interactions": 5,
+        "cost_effective": 0.0
+      },
+      "2026-02": {
+        "interactions": 2,
+        "cost_effective": 0.0
+      },
       "2026-04": {
         "interactions": 392,
         "cost_effective": 10.378035999999998
@@ -36972,13 +37647,121 @@
         "cost_effective": 2.6658359530000015
       }
     },
+    "sk-XAct-jl": {
+      "2026-01": {
+        "interactions": 7,
+        "cost_effective": 0.0
+      },
+      "2026-04": {
+        "interactions": 1631,
+        "cost_effective": 52.15742899999992
+      },
+      "2026-05": {
+        "interactions": 1116,
+        "cost_effective": 51.62314250000007
+      },
+      "2026-07": {
+        "interactions": 594,
+        "cost_effective": 3.9936678019999996
+      },
+      "2026-08": {
+        "interactions": 222,
+        "cost_effective": 1.009178184
+      },
+      "2026-09": {
+        "interactions": 43,
+        "cost_effective": 0.026104410000000005
+      }
+    },
+    "charly-microdancing": {
+      "2026-01": {
+        "interactions": 7,
+        "cost_effective": 0.0
+      },
+      "2026-02": {
+        "interactions": 5,
+        "cost_effective": 0.0
+      },
+      "2026-06": {
+        "interactions": 174,
+        "cost_effective": 0.6501750265999998
+      },
+      "2026-09": {
+        "interactions": 311,
+        "cost_effective": 0.49886184482400003
+      }
+    },
+    "charly-wai": {
+      "2026-01": {
+        "interactions": 25,
+        "cost_effective": 0.0
+      },
+      "2026-02": {
+        "interactions": 173,
+        "cost_effective": 0.0
+      },
+      "2026-04": {
+        "interactions": 918,
+        "cost_effective": 78.41272500000011
+      },
+      "2026-05": {
+        "interactions": 1865,
+        "cost_effective": 101.4910689999996
+      },
+      "2026-06": {
+        "interactions": 91,
+        "cost_effective": 3.13909095
+      },
+      "2026-07": {
+        "interactions": 1875,
+        "cost_effective": 11.345735941599973
+      },
+      "2026-08": {
+        "interactions": 864,
+        "cost_effective": 3.592394119999997
+      },
+      "2026-09": {
+        "interactions": 244,
+        "cost_effective": 0.4762552210000002
+      }
+    },
+    "charly-jams": {
+      "2026-02": {
+        "interactions": 4,
+        "cost_effective": 0.0
+      },
+      "2026-04": {
+        "interactions": 12,
+        "cost_effective": 0.0
+      },
+      "2026-08": {
+        "interactions": 624,
+        "cost_effective": 2.018132531999999
+      },
+      "2026-09": {
+        "interactions": 43,
+        "cost_effective": 0.040426019999999986
+      }
+    },
+    "charly-rizomas": {
+      "2026-02": {
+        "interactions": 261,
+        "cost_effective": 0.0
+      }
+    },
+    "charly-bichos": {
+      "2026-04": {
+        "interactions": 44,
+        "cost_effective": 0.0
+      }
+    },
     "charly-paranoid": {
       "2026-04": {
-        "interactions": 589,
+        "interactions": 761,
         "cost_effective": 18.46865700000003
       },
       "2026-05": {
-        "interactions": 501,
+        "interactions": 544,
         "cost_effective": 18.879166500000025
       },
       "2026-06": {
@@ -37002,28 +37785,6 @@
         "cost_effective": 1.8066335
       }
     },
-    "sk-XAct-jl": {
-      "2026-04": {
-        "interactions": 1631,
-        "cost_effective": 52.15742899999992
-      },
-      "2026-05": {
-        "interactions": 1116,
-        "cost_effective": 51.62314250000007
-      },
-      "2026-07": {
-        "interactions": 594,
-        "cost_effective": 3.9936678019999996
-      },
-      "2026-08": {
-        "interactions": 222,
-        "cost_effective": 1.009178184
-      },
-      "2026-09": {
-        "interactions": 43,
-        "cost_effective": 0.026104410000000005
-      }
-    },
     "sk-REPLy-jl": {
       "2026-04": {
         "interactions": 5802,
@@ -37044,32 +37805,6 @@
       "2026-09": {
         "interactions": 382,
         "cost_effective": 0.7048737359999996
-      }
-    },
-    "charly-wai": {
-      "2026-04": {
-        "interactions": 893,
-        "cost_effective": 78.41272500000011
-      },
-      "2026-05": {
-        "interactions": 1865,
-        "cost_effective": 101.4910689999996
-      },
-      "2026-06": {
-        "interactions": 91,
-        "cost_effective": 3.13909095
-      },
-      "2026-07": {
-        "interactions": 1875,
-        "cost_effective": 11.345735941599973
-      },
-      "2026-08": {
-        "interactions": 864,
-        "cost_effective": 3.592394119999997
-      },
-      "2026-09": {
-        "interactions": 244,
-        "cost_effective": 0.4762552210000002
       }
     },
     "charly-dont": {
@@ -37282,16 +38017,6 @@
         "cost_effective": 0.11960103600000002
       }
     },
-    "charly-microdancing": {
-      "2026-06": {
-        "interactions": 174,
-        "cost_effective": 0.6501750265999998
-      },
-      "2026-09": {
-        "interactions": 311,
-        "cost_effective": 0.49886184482400003
-      }
-    },
     "charly-testaruda": {
       "2026-07": {
         "interactions": 10046,
@@ -37370,16 +38095,6 @@
         "cost_effective": 1.58935739
       }
     },
-    "charly-jams": {
-      "2026-08": {
-        "interactions": 624,
-        "cost_effective": 2.018132531999999
-      },
-      "2026-09": {
-        "interactions": 43,
-        "cost_effective": 0.040426019999999986
-      }
-    },
     "charly-paseos": {
       "2026-09": {
         "interactions": 47,
@@ -37418,19 +38133,17 @@
     },
     "charly-coffe": {
       "2026-09": {
-        "interactions": 1027,
-        "cost_effective": 2.1450871680000008
+        "interactions": 1177,
+        "cost_effective": 2.3327279040000013
       }
     }
   },
   "project_models": {
-    "charly/amp-auto": {
-      "amp": {
-        "interactions": 2207,
-        "cost_effective": 0.0
-      }
-    },
     "charly-fabbro": {
+      "amp": {
+        "interactions": 1131,
+        "cost_effective": 0.0
+      },
       "gemini-3-flash-preview": {
         "interactions": 31,
         "cost_effective": 0.0
@@ -37444,7 +38157,17 @@
         "cost_effective": 13.765052
       }
     },
+    "charly-nayra": {
+      "amp": {
+        "interactions": 291,
+        "cost_effective": 0.0
+      }
+    },
     "charly-incitaciones": {
+      "amp": {
+        "interactions": 7,
+        "cost_effective": 0.0
+      },
       "claude-sonnet-4-6": {
         "interactions": 134,
         "cost_effective": 3.955262
@@ -37482,7 +38205,143 @@
         "cost_effective": 2.76676775
       }
     },
+    "sk-XAct-jl": {
+      "amp": {
+        "interactions": 7,
+        "cost_effective": 0.0
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 22,
+        "cost_effective": 1.13553045
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1387,
+        "cost_effective": 50.921843
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 793,
+        "cost_effective": 3.86731554
+      },
+      "deepseek/deepseek-v4-flash:free": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 74,
+        "cost_effective": 0.0
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 33,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 942,
+        "cost_effective": 33.5647485
+      },
+      "gpt-5.5": {
+        "interactions": 311,
+        "cost_effective": 19.29398
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 43,
+        "cost_effective": 0.02610441
+      }
+    },
+    "charly-microdancing": {
+      "amp": {
+        "interactions": 12,
+        "cost_effective": 0.0
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 238,
+        "cost_effective": 0.811804
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 247,
+        "cost_effective": 0.33723287
+      }
+    },
+    "charly-wai": {
+      "<synthetic>": {
+        "interactions": 6,
+        "cost_effective": 0.0
+      },
+      "amp": {
+        "interactions": 223,
+        "cost_effective": 0.0
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 2,
+        "cost_effective": 0.04843485
+      },
+      "claude-opus-4-6": {
+        "interactions": 667,
+        "cost_effective": 108.47184
+      },
+      "claude-opus-4-7": {
+        "interactions": 34,
+        "cost_effective": 1.599298
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1359,
+        "cost_effective": 39.76857395
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2180,
+        "cost_effective": 8.66908705
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 64,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 622,
+        "cost_effective": 28.016151
+      },
+      "gpt-5.5": {
+        "interactions": 97,
+        "cost_effective": 5.187022
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 557,
+        "cost_effective": 6.22060816
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 244,
+        "cost_effective": 0.47625522
+      }
+    },
+    "charly-jams": {
+      "amp": {
+        "interactions": 16,
+        "cost_effective": 0.0
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 624,
+        "cost_effective": 2.01813253
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 43,
+        "cost_effective": 0.04042602
+      }
+    },
+    "charly-rizomas": {
+      "amp": {
+        "interactions": 261,
+        "cost_effective": 0.0
+      }
+    },
+    "charly-bichos": {
+      "amp": {
+        "interactions": 44,
+        "cost_effective": 0.0
+      }
+    },
     "charly-paranoid": {
+      "amp": {
+        "interactions": 215,
+        "cost_effective": 0.0
+      },
       "claude-sonnet-4-6": {
         "interactions": 985,
         "cost_effective": 34.14418485
@@ -37522,44 +38381,6 @@
       "gpt-5.4": {
         "interactions": 55,
         "cost_effective": 1.8066335
-      }
-    },
-    "sk-XAct-jl": {
-      "anthropic/claude-sonnet-4.6": {
-        "interactions": 22,
-        "cost_effective": 1.13553045
-      },
-      "claude-sonnet-4-6": {
-        "interactions": 1387,
-        "cost_effective": 50.921843
-      },
-      "deepseek/deepseek-v4-flash": {
-        "interactions": 793,
-        "cost_effective": 3.86731554
-      },
-      "deepseek/deepseek-v4-flash:free": {
-        "interactions": 1,
-        "cost_effective": 0.0
-      },
-      "gemini-3-flash-preview": {
-        "interactions": 74,
-        "cost_effective": 0.0
-      },
-      "gemini-3-pro-preview": {
-        "interactions": 33,
-        "cost_effective": 0.0
-      },
-      "gpt-5.4": {
-        "interactions": 942,
-        "cost_effective": 33.5647485
-      },
-      "gpt-5.5": {
-        "interactions": 311,
-        "cost_effective": 19.29398
-      },
-      "z-ai/glm-5.3-flash": {
-        "interactions": 43,
-        "cost_effective": 0.02610441
       }
     },
     "sk-REPLy-jl": {
@@ -37602,52 +38423,6 @@
       "z-ai/glm-5.3-flash": {
         "interactions": 382,
         "cost_effective": 0.70487374
-      }
-    },
-    "charly-wai": {
-      "<synthetic>": {
-        "interactions": 6,
-        "cost_effective": 0.0
-      },
-      "anthropic/claude-sonnet-4.6": {
-        "interactions": 2,
-        "cost_effective": 0.04843485
-      },
-      "claude-opus-4-6": {
-        "interactions": 667,
-        "cost_effective": 108.47184
-      },
-      "claude-opus-4-7": {
-        "interactions": 34,
-        "cost_effective": 1.599298
-      },
-      "claude-sonnet-4-6": {
-        "interactions": 1359,
-        "cost_effective": 39.76857395
-      },
-      "deepseek/deepseek-v4-flash": {
-        "interactions": 2180,
-        "cost_effective": 8.66908705
-      },
-      "gemini-3-flash-preview": {
-        "interactions": 64,
-        "cost_effective": 0.0
-      },
-      "gpt-5.4": {
-        "interactions": 622,
-        "cost_effective": 28.016151
-      },
-      "gpt-5.5": {
-        "interactions": 97,
-        "cost_effective": 5.187022
-      },
-      "z-ai/glm-5.2": {
-        "interactions": 557,
-        "cost_effective": 6.22060816
-      },
-      "z-ai/glm-5.3-flash": {
-        "interactions": 244,
-        "cost_effective": 0.47625522
       }
     },
     "charly-dont": {
@@ -38008,16 +38783,6 @@
         "cost_effective": 2.637159
       }
     },
-    "charly-microdancing": {
-      "deepseek/deepseek-v4-flash": {
-        "interactions": 238,
-        "cost_effective": 0.811804
-      },
-      "z-ai/glm-5.3-flash": {
-        "interactions": 247,
-        "cost_effective": 0.33723287
-      }
-    },
     "charly-testaruda": {
       "anthropic/claude-sonnet-4.6": {
         "interactions": 38,
@@ -38100,16 +38865,6 @@
         "cost_effective": 1.58935739
       }
     },
-    "charly-jams": {
-      "deepseek/deepseek-v4-flash": {
-        "interactions": 624,
-        "cost_effective": 2.01813253
-      },
-      "z-ai/glm-5.3-flash": {
-        "interactions": 43,
-        "cost_effective": 0.04042602
-      }
-    },
     "charly-paseos": {
       "z-ai/glm-5.3-flash": {
         "interactions": 47,
@@ -38148,8 +38903,8 @@
     },
     "charly-coffe": {
       "z-ai/glm-5.3-flash": {
-        "interactions": 1027,
-        "cost_effective": 2.14508717
+        "interactions": 1177,
+        "cost_effective": 2.3327279
       }
     }
   },
@@ -38157,7 +38912,7 @@
     "distinct_projects_per_hour": {
       "measure": "parallel-agent",
       "peak": 10,
-      "avg": 2.29
+      "avg": 2.3
     },
     "peak_simultaneous_sessions": {
       "measure": "parallel-agent",
@@ -38166,7 +38921,7 @@
     },
     "project_switches_per_active_hour": {
       "measure": "human-context-switching",
-      "value": 70.1
+      "value": 69.97
     }
   },
   "filtered_out": {
