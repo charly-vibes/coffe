@@ -86,11 +86,11 @@
     "dormant_days": 30
   },
   "ctas": {
-    "primary": {"label": "Leer la serie", "target": "https://github.com/charly-vibes/coffe"},
+    "primary": {"label": "Leer la serie", "target": "https://github.com/charly-vibes/coffee"},
     "secondary": [
       {"label": "Explorar el Gantt", "target": "data/gantt-multitasking.html"},
       {"label": "Descargar los datos", "target": "data/usage_report_v3.json"},
-      {"label": "Correr en tus logs", "target": "https://github.com/charly-vibes/coffe"}
+      {"label": "Correr en tus logs", "target": "https://github.com/charly-vibes/coffee"}
     ],
     "alert_actions": {
       "verify-plan": {"label": "Revisar el plan", "target": "config/fpa.json"},
@@ -99,7 +99,7 @@
       "unit-cost": {"label": "Ver el reporte", "target": "data/usage_report_v3.json"},
       "mix": {"label": "Comparar planes", "target": "config/fpa.json"},
       "concentration": {"label": "Ver proyectos", "target": "#pareto"},
-      "staleness": {"label": "Regenerar datos", "target": "https://github.com/charly-vibes/coffe"}
+      "staleness": {"label": "Regenerar datos", "target": "https://github.com/charly-vibes/coffee"}
     }
   }
 }

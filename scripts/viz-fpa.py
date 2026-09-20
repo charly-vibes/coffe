@@ -1261,7 +1261,7 @@ DEFAULT_ALERT_ACTIONS = {
     "mix": {"label": "Comparar planes", "target": "config/fpa.json"},
     "concentration": {"label": "Ver proyectos", "target": "#pareto"},
     "staleness": {"label": "Regenerar datos",
-                  "target": "https://github.com/charly-vibes/coffe"},
+                  "target": "https://github.com/charly-vibes/coffee"},
 }
 
 

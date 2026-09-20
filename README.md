@@ -1,4 +1,4 @@
-# coffe — Tracking de uso de IA
+# coffee — Tracking de uso de IA
 
 > *Do you feel like a chain store /
 > Practically floored /
@@ -28,9 +28,9 @@ de los últimos meses.
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
 | `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
-| `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffe/data/dashboard.html>. |
-| `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
-| `data/fpa-dashboard.html` | 1.7M | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffe/data/fpa-dashboard.html>. |
+| `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffee/data/dashboard.html>. |
+| `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffee/data/gantt-multitasking.html>). |
+| `data/fpa-dashboard.html` | 1.7M | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffee/data/fpa-dashboard.html>. |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |

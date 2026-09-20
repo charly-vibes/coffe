@@ -1,5 +1,5 @@
 {
-  "ctas_html": "<div class=\"ctas\" id=\"view-ctas\"><a class=\"cta cta-primary\" href=\"https://github.com/charly-vibes/coffe\">Leer la serie</a><a class=\"cta\" href=\"data/gantt-multitasking.html\">Explorar el Gantt</a><a class=\"cta\" href=\"data/usage_report_v3.json\">Descargar los datos</a><a class=\"cta\" href=\"https://github.com/charly-vibes/coffe\">Correr en tus logs</a></div>",
+  "ctas_html": "<div class=\"ctas\" id=\"view-ctas\"><a class=\"cta cta-primary\" href=\"https://github.com/charly-vibes/coffee\">Leer la serie</a><a class=\"cta\" href=\"data/gantt-multitasking.html\">Explorar el Gantt</a><a class=\"cta\" href=\"data/usage_report_v3.json\">Descargar los datos</a><a class=\"cta\" href=\"https://github.com/charly-vibes/coffee\">Correr en tus logs</a></div>",
   "findings": [],
   "windows": [
     {

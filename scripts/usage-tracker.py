@@ -443,7 +443,12 @@ def clean_proj_name(raw):
     p = p.strip("-/")
     p = p.replace(".jl", "-jl")  # repos Julia: REPLy.jl → REPLy-jl
     return {"charly-mibilioteca": "charly-miblioteca",  # typo en sesiones Pi
-            "sk-sxAct": "sk-XAct-jl"}.get(p, p)  # sxAct no existe; repo real XAct.jl
+            "sk-sxAct": "sk-XAct-jl",  # sxAct no existe; repo real XAct.jl
+            # repo renombrado coffe→coffee (2026-09-20): el dir local nuevo
+            # derivaría 'charly-coffee' y partiría la identidad del proyecto
+            # frente al histórico del dataset ('charly-coffe'). Alias hasta
+            # decidir un relabel completo.
+            "charly-coffee": "charly-coffe"}.get(p, p)
 
 
 def extract_claude(skipped=None):

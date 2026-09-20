@@ -114,9 +114,16 @@ class TestPureFunctions(unittest.TestCase):
             ut.clean_proj_name("-var-home-sasha-para-areas-dev-gh-charly-coffe"),
             "charly-coffe")
 
+    def test_clean_proj_name_strips_renamed_dir(self):
+        # repo renombrado coffe→coffee: el dir nuevo mapea al label histórico
+        self.assertEqual(
+            ut.clean_proj_name("-var-home-sasha-para-areas-dev-gh-charly-coffee"),
+            "charly-coffe")
+
     def test_clean_proj_name_aliases(self):
         self.assertEqual(ut.clean_proj_name("charly-mibilioteca"), "charly-miblioteca")
         self.assertEqual(ut.clean_proj_name("sk-sxAct"), "sk-XAct-jl")
+        self.assertEqual(ut.clean_proj_name("charly-coffee"), "charly-coffe")
 
     def test_clean_proj_name_julia_repos(self):
         self.assertEqual(ut.clean_proj_name("-sk-REPLy.jl"), "sk-REPLy-jl")

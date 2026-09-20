@@ -2,12 +2,12 @@
 # Whisper knowledge workspace (managed by turu — regenerate with `turu sync`)
 
 - Workspace root: `/var/home/sasha/.whisper`
-- Repo key: `cv/charly-vibes/coffe` · Branch slug: `main` · Worktree slot: `.git`
+- Repo key: `cv/charly-vibes/coffee` · Branch slug: `main` · Worktree slot: `.git`
 - Deterministic routing (resolve, never guess):
 - global → `/var/home/sasha/.whisper/rules.md`
-- repo → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffe/env.md`
-- branch → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffe/branches/main/notes.md`
-- worktree → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffe/worktrees/.git/env.md`
+- repo → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffee/env.md`
+- branch → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffee/branches/main/notes.md`
+- worktree → `/var/home/sasha/.whisper/repos/cv/charly-vibes/coffee/worktrees/.git/env.md`
 - Commands: `turu resolve <scope>` · `turu append <scope> --text ... [--topic k] [--supersedes id]` · `turu recall <scope> [--topic k] [--budget bytes]` · `turu distill <scope> --begin|--commit` · `turu bundle pack|unpack` · `turu status` · `turu doctor` · `turu feedback <kind>`
 
 <!-- TURU:END -->

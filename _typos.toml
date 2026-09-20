@@ -1,5 +1,6 @@
 # typos (crate-ci) — config
-# `coffe` es el nombre del repo (intencional). El resto son palabras
+# `coffe` sobrevive en IDs históricos de bd (coffe-*) y en el label de
+# proyecto `charly-coffe` del dataset (alias en clean_proj_name). El resto son palabras
 # válidas en español que colisionan con el diccionario inglés de typos;
 # self-mapearlas evita falsos positivos sin excluir archivos.
 
