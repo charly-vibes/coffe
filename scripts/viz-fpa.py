@@ -2873,7 +2873,9 @@ class _FpaRefMover(HTMLParser):
             self.stack.append(idx)
 
     def handle_startendtag(self, tag, attrs):
-        self.out.append(self._serialize(tag, list(attrs), []))
+        # conservar el autocierre: sin "/>" el parser HTML anida elementos
+        # SVG (rects hijos de rect no se pintan → waterfall vacío, F7).
+        self.out.append(self._serialize(tag, list(attrs), [], self_closing=True))
 
     def handle_endtag(self, tag):
         for i in range(len(self.stack) - 1, -1, -1):
@@ -2886,7 +2888,7 @@ class _FpaRefMover(HTMLParser):
         return any(self.out[i]["marg"] for i in self.stack)
 
     @staticmethod
-    def _serialize(tag, attrs, extra_ids):
+    def _serialize(tag, attrs, extra_ids, self_closing=False):
         if extra_ids:
             attrs = list(attrs)
             merged = None
@@ -2903,7 +2905,7 @@ class _FpaRefMover(HTMLParser):
                 parts.append(f" {k}")
             else:
                 parts.append(f' {k}="{html.escape(v, quote=True)}"')
-        parts.append(">")
+        parts.append("/>" if self_closing else ">")
         return "".join(parts)
 
     def handle_data(self, data):
