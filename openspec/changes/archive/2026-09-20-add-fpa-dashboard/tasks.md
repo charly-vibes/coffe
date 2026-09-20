@@ -127,6 +127,6 @@
 
 ## 7. Cierre
 
-- [ ] 7.1 Determinismo del output (FPA-104) verificado con doble corrida
-- [ ] 7.2 `openspec validate add-fpa-dashboard --strict` verde y tareas al día
+- [x] 7.1 Determinismo del output (FPA-104) verificado con doble corrida
+- [x] 7.2 `openspec validate add-fpa-dashboard --strict` verde y tareas al día
 - [ ] 7.3 `openspec archive add-fpa-dashboard` al desplegar
