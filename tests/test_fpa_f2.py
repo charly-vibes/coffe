@@ -459,6 +459,7 @@ class TestGolden(unittest.TestCase):
 
     def test_golden_f2(self):
         model = viz.build_model(f2_fixture(), CONFIG)
+        model.pop("usage", None)  # F5 (coffe-lat.6): golden propio en test_fpa_f5
         if REGEN_GOLDEN:
             GOLDEN.parent.mkdir(parents=True, exist_ok=True)
             GOLDEN.write_text(json.dumps(model, indent=2, ensure_ascii=False,

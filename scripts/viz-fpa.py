@@ -234,6 +234,7 @@ def build_model(report, cfg):
         "budget": build_budget(report, cfg),
         "bridge": build_bridge_section(report),
         "forecast": build_forecast(report, cfg),
+        "usage": build_usage_patterns(report, cfg),
     }
 
 
@@ -1185,6 +1186,443 @@ def build_plan_economy(report, cfg):
         "usage_limits_disclaimer": (
             "La equivalencia por coste efectivo ignora los usage limits del "
             "plan: un plan puede no alcanzar el consumo mostrado (FPA-133)."),
+    }
+
+
+# ======================================================================
+# F5 (coffe-lat.6): patrones de uso, concurrencia y lifecycle
+# (FPA-110…123, 028, 036, 098) — maths puras en Python; JS no recalcila
+# nada de esta fase (design.md). Doble coste jamás se suma (FPA-002);
+# los umbrales derivados del config van con provenance *assumed* (FPA-003)
+# y todo faltante del tracker sale como "n/a" con razón (FPA-008).
+# ======================================================================
+
+_DOW_SHORT = ("lun", "mar", "mié", "jue", "vie", "sáb", "dom")
+
+
+def _na(reason):
+    """FPA-008: valor ausente del tracker → (None, razón), nunca vacío."""
+    return None, reason
+
+
+def _cfg_int(cfg, section, key, default):
+    """Umbral numérico opcional del config con default de la spec."""
+    return int(cfg.get(section, {}).get(key, default))
+
+
+def _share(v):
+    """Share como % con 1 decimal; None → 'n/a'."""
+    return f"{100 * v:.1f}%" if v is not None else "n/a"
+
+
+def build_heatmap(report):
+    """FPA-110/142: matriz 7×24 de interacciones (fila = isoweekday,
+    lunes=0) desde hourly. Timezone del tracker etiquetada; si falta, la
+    vista va marcada unverified (FPA-142)."""
+    grid = [[0] * 24 for _ in range(7)]
+    for ts, h in report.get("hourly", {}).items():
+        dow = date.fromisoformat(ts[:10]).isoweekday() - 1
+        grid[dow][int(ts[11:13])] += h.get("interactions", 0)
+    tz = report["metadata"].get("timezone")
+    return {
+        "timezone": tz,
+        "verified": tz is not None,
+        "unverified_reason": (None if tz else
+                              "el tracker no registró timezone; las vistas "
+                              "hora/día no están verificadas (FPA-142)"),
+        "grid": grid,
+        "total": sum(sum(row) for row in grid),
+    }
+
+
+def _hour_in_working_hours(dow, hour, wh):
+    """¿La hora está dentro del horario laboral? days en isoweekday
+    (1=lun…7=dom), start/end 'HH:MM' con end excluyente."""
+    if dow + 1 not in wh.get("days", []):
+        return False
+    start = int(str(wh.get("start", "09:00"))[:2])
+    end = int(str(wh.get("end", "18:00"))[:2])
+    return start <= hour < end
+
+
+def build_rhythm(report, cfg):
+    """FPA-111: shares after-hours (fuera del horario laboral del config)
+    y weekend, desde hourly. FPA-112: serie semanal ISO con WoW y varianza
+    poblacional sobre semanas completas (los bordes de cobertura van
+    marcados partial y se excluyen)."""
+    wh = cfg.get("working_hours", {})
+    total = after = weekend = 0
+    for ts, h in report.get("hourly", {}).items():
+        dow = date.fromisoformat(ts[:10]).isoweekday() - 1
+        n = h.get("interactions", 0)
+        total += n
+        weekend += n if dow >= 5 else 0
+        if not _hour_in_working_hours(dow, int(ts[11:13]), wh):
+            after += n
+    weeks, _ = _build_weeks(report)
+    full = [w for w in weeks if not w["partial"]]
+    for i, w in enumerate(weeks):
+        if i == 0:
+            continue  # primera semana: no hay prior en la serie
+        prev = weeks[i - 1]
+        if not w["partial"] and not prev["partial"]:
+            if prev["interactions"]:
+                w["wow_interactions"] = (w["interactions"]
+                                         - prev["interactions"]) / \
+                    prev["interactions"]
+            if prev["cost_effective"]:
+                w["wow_cost"] = (w["cost_effective"]
+                                 - prev["cost_effective"]) / \
+                    prev["cost_effective"]
+    var_i = _pop_variance([w["interactions"] for w in full])
+    var_c = _pop_variance([w["cost_effective"] for w in full])
+    reason = None
+    if var_i is None or var_c is None:
+        reason = (f"se requieren 3+ semanas completas de datos; hay "
+                  f"{len(full)} (FPA-008)")
+    return {
+        "after_hours_share": after / total if total else None,
+        "weekend_share": weekend / total if total else None,
+        "weeks": weeks,
+        "variance": {
+            "interactions": var_i,
+            "cost_effective": var_c,
+            "weeks_count": len(full),
+            "reason": reason,
+        },
+    }
+
+
+def _iso_week_start(d):
+    """Lunes (date) de la semana ISO que contiene a d."""
+    return date.fromordinal(d.toordinal() - (d.isoweekday() - 1))
+
+
+def _build_weeks(report):
+    """Serie semanal ISO desde daily: solo semanas con datos (convención
+    FPA-017). partial = la semana queda truncada por el borde de cobertura
+    de datos (primer/último día con datos)."""
+    daily = report.get("daily", {})
+    if not daily:
+        return [], None
+    days = sorted(daily)
+    first, last = date.fromisoformat(days[0]), date.fromisoformat(days[-1])
+    acc = {}
+    for d, dv in daily.items():
+        dd = date.fromisoformat(d)
+        wk = acc.setdefault(_iso_week_start(dd),
+                            {"interactions": 0, "cost_effective": 0.0})
+        wk["interactions"] += dv.get("interactions", 0)
+        wk["cost_effective"] += dv.get("cost_effective", 0.0)
+    weeks = []
+    for start in sorted(acc):
+        end = date.fromordinal(start.toordinal() + 6)
+        weeks.append({
+            "start": start.isoformat(),
+            "interactions": acc[start]["interactions"],
+            "cost_effective": acc[start]["cost_effective"],
+            "partial": start < first or end > last,
+            "wow_interactions": None,
+            "wow_cost": None,
+        })
+    return weeks, (first, last)
+
+
+def _pop_variance(values):
+    """Varianza poblacional; None si hay <3 valores (FPA-008)."""
+    if len(values) < 3:
+        return None
+    mean = sum(values) / len(values)
+    return sum((v - mean) ** 2 for v in values) / len(values)
+
+
+def build_usage_skills(report):
+    """FPA-113/114: top skills por usos, usadas exactamente una vez y
+    zero-uso (solo si el tracker emite la lista de instaladas)."""
+    skills = report.get("skills", {}) or {}
+    top = [{"name": k, "uses": v}
+           for k, v in sorted(skills.items(), key=lambda x: (-x[1], x[0]))]
+    once = sorted(k for k, v in skills.items() if v == 1)
+    installed = report.get("skills_installed")
+    if installed is not None:
+        zero = sorted(set(installed) - set(skills))
+        zero_reason = None
+    else:
+        zero, zero_reason = _na("el tracker no emite la lista de skills "
+                                "instaladas (FPA-114)")
+    trend, trend_reason = _na("el tracker no emite uso de skills por mes "
+                              "(FPA-114)")
+    return {"top": top, "once": once, "zero": zero,
+            "zero_reason": zero_reason, "trend": trend,
+            "trend_reason": trend_reason}
+
+
+def build_usage_commands(report):
+    """FPA-115: slash commands más ejecutados; trend mensual n/a con
+    razón si el tracker no lo emite."""
+    commands = report.get("commands", {}) or {}
+    top = [{"name": k, "uses": v}
+           for k, v in sorted(commands.items(), key=lambda x: (-x[1], x[0]))]
+    trend, trend_reason = _na("el tracker no emite uso de comandos por mes "
+                              "(FPA-115)")
+    return {"top": top, "trend": trend, "trend_reason": trend_reason}
+
+
+_SESSION_BUCKET_LABELS = (("1-10", "1–10"), ("11-50", "11–50"),
+                          ("51-100", "51–100"))
+
+
+def build_usage_sessions(report, cfg):
+    """FPA-116…118: buckets de longitud de sesión (1–10, 11–50, 51–100,
+    100+), sesiones más largas, coste/mediana/p90 (n/a sin coste por
+    sesión) y /clear por 100 sesiones."""
+    sessions = report.get("sessions", {}) or {}
+    raw = sessions.get("length_distribution", {}) or {}
+    counts = {label: raw.get(key, 0) for key, label in _SESSION_BUCKET_LABELS}
+    counts["100+"] = sum(v for k, v in raw.items()
+                         if k not in {key for key, _ in _SESSION_BUCKET_LABELS})
+    buckets = [{"label": label, "count": counts[label]}
+               for label in ("1–10", "11–50", "51–100", "100+")]
+    cost_reason = "el tracker no emite coste por sesión (FPA-116/117)"
+    longest = [{"turns": s.get("turns"), "date": s.get("date"),
+                "project": s.get("project"), "cost": None,
+                "cost_reason": cost_reason}
+               for s in sessions.get("top_longest_by_turns", [])]
+    total_sessions = sessions.get("total_sessions") or 0
+    clears = (report.get("commands", {}) or {}).get("/clear")
+    clear_per_100 = (100.0 * clears / total_sessions
+                     if clears is not None and total_sessions else None)
+    monthly_trend, monthly_reason = _na(
+        "el tracker no emite /clear ni sesiones por mes (FPA-118)")
+    long_turns = _cfg_int(cfg, "sessions", "long_turns", 100)
+    no_clear, no_clear_reason = _na(
+        "el tracker no marca /clear por sesión (FPA-118)")
+    return {
+        "buckets": buckets,
+        "longest": longest,
+        "cost_by_bucket": None, "cost_by_bucket_reason": cost_reason,
+        "median_p90": None, "median_p90_reason": cost_reason,
+        "clear_per_100": clear_per_100,
+        "clear_monthly": monthly_trend,
+        "clear_monthly_reason": monthly_reason,
+        "long_no_clear": no_clear,
+        "long_no_clear_reason": no_clear_reason,
+        "long_turns": long_turns,
+    }
+
+
+def build_timeline(report, cfg):
+    """FPA-119: primera/última actividad por tool y por model, con gaps
+    > gap_days (config, default 7) marcados. Vista de día → hereda el
+    flag unverified de timezone (FPA-142)."""
+    gap_days = _cfg_int(cfg, "timeline", "gap_days", 7)
+    tools, models = {}, {}
+    for ts in sorted(report.get("hourly", {})):
+        d = ts[:10]
+        entry = report["hourly"][ts]
+        for tool in entry.get("tools", {}):
+            tools.setdefault(tool, set()).add(d)
+        for model in entry.get("models", {}):
+            models.setdefault(model, set()).add(d)
+
+    def _series(days):
+        days = sorted(days)
+        gaps = []
+        for prev, cur in zip(days, days[1:]):
+            gap = (date.fromisoformat(cur) - date.fromisoformat(prev)).days
+            if gap > gap_days:
+                gaps.append({"from": prev, "to": cur, "days": gap})
+        return {
+            "first": days[0], "last": days[-1],
+            "gaps": gaps,
+            "max_gap_days": max((g["days"] for g in gaps), default=0),
+            "flagged": bool(gaps),
+        }
+
+    tz = report["metadata"].get("timezone")
+    return {
+        "verified": tz is not None,
+        "unverified_reason": (None if tz else
+                              "sin timezone del tracker, fechas por día no "
+                              "verificadas (FPA-142)"),
+        "gap_days": gap_days,
+        "tools": [_series(v) | {"name": k}
+                  for k, v in sorted(tools.items())],
+        "models": [_series(v) | {"name": k}
+                   for k, v in sorted(models.items())],
+    }
+
+
+def build_usage_concurrency(report):
+    """FPA-120: (a) proyectos distintos/hora y (b) pico de sesiones o
+    agentes simultáneos etiquetados parallel-agent; (c) switches de
+    proyecto/hora activa etiquetado human-context-switching."""
+    emitted = report.get("concurrency")
+    if emitted:  # el tracker emite las medidas etiquetadas
+        return {
+            "projects_per_hour": emitted.get("distinct_projects_per_hour",
+                                             {"measure": "parallel-agent"}),
+            "peak_simultaneous_sessions": emitted.get(
+                "peak_simultaneous_sessions",
+                {"measure": "parallel-agent"}),
+            "switches_per_hour": emitted.get(
+                "project_switches_per_active_hour",
+                {"measure": "human-context-switching"}),
+        }
+    active = [h.get("projects_active", 0)
+              for h in report.get("hourly", {}).values()
+              if h.get("interactions", 0)]
+    if active:
+        pph = {"measure": "parallel-agent",
+               "peak": max(active),
+               "avg": sum(active) / len(active)}
+    else:
+        pph = {"measure": "parallel-agent", "peak": None,
+               "avg": None, "reason": "sin horas activas en hourly"}
+    peak, peak_reason = _na("el tracker no emite sesiones/agentes "
+                            "simultáneos (FPA-120b)")
+    mt = report.get("multitasking", {}) or {}
+    switches_total = (mt.get("context_switches", {}) or {}).get("total")
+    active_hours = (mt.get("hourly", {}) or {}).get("total_active_hours")
+    if switches_total is not None and active_hours:
+        switches = {"measure": "human-context-switching",
+                    "value": switches_total / active_hours}
+    else:
+        switches = {"measure": "human-context-switching", "value": None,
+                    "reason": "el tracker no emite switches de proyecto "
+                              "(FPA-120c)"}
+    return {
+        "projects_per_hour": pph,
+        "peak_simultaneous_sessions": {
+            "measure": "parallel-agent", "peak": peak,
+            "reason": peak_reason},
+        "switches_per_hour": switches,
+    }
+
+
+def build_agent_share(report):
+    """FPA-121: share de sesiones con Agent, total y trend mensual si el
+    tracker emite sesiones por mes."""
+    sessions = report.get("sessions", {}) or {}
+    total = sessions.get("total_sessions") or 0
+    with_agent = sessions.get("with_agent") or 0
+    share = with_agent / total if total else None
+    monthly_raw = report.get("sessions_monthly")
+    if monthly_raw:
+        monthly = [{"ym": ym,
+                    "share": (v.get("with_agent", 0) / v["total"]
+                              if v.get("total") else None)}
+                   for ym, v in sorted(monthly_raw.items())]
+        monthly_reason = None
+    else:
+        monthly, monthly_reason = _na(
+            "el tracker no emite sesiones por mes (FPA-121)")
+    return {"share": share, "monthly": monthly,
+            "monthly_reason": monthly_reason}
+
+
+def build_lifecycle(report, cfg):
+    """FPA-122/123: clasificación de proyectos new/active/dormant contra
+    la fecha fin del periodo (determinista), coste efectivo de dormantes
+    (total y por proyecto) y activos por mes (si el tracker emite
+    project_monthly)."""
+    lifecycle = cfg.get("lifecycle", {})
+    new_days = int(lifecycle.get("new_days", 30))
+    dormant_days = int(lifecycle.get("dormant_days", 30))
+    end = date.fromisoformat(report["metadata"]["date_range"]["end"])
+    projects = []
+    dormant_cost = 0.0
+    for name, p in sorted((report.get("projects", {}) or {}).items()):
+        first = p.get("first_seen")
+        last = p.get("last_seen")
+        if not first or not last:
+            continue
+        d_first = (end - date.fromisoformat(first)).days
+        d_last = (end - date.fromisoformat(last)).days
+        if d_first <= new_days:
+            status = "new"
+        elif d_last > dormant_days:
+            status = "dormant"
+        else:
+            status = "active"
+        if status == "dormant":
+            dormant_cost += p.get("cost_effective", 0.0)
+        projects.append({"name": name, "status": status,
+                         "first_seen": first, "last_seen": last})
+    n_dormant = sum(1 for p in projects if p["status"] == "dormant")
+    project_monthly = report.get("project_monthly")
+    if project_monthly:
+        months_acc = {}
+        for pms in project_monthly.values():  # {proyecto: {ym: metrics}}
+            for ym, v in pms.items():
+                if v.get("interactions", 0) > 0:
+                    months_acc[ym] = months_acc.get(ym, 0) + 1
+        by_month = [{"ym": ym, "count": months_acc[ym]}
+                    for ym in sorted(months_acc)]
+        month_reason = None
+    else:
+        by_month, month_reason = _na(
+            "el tracker no emite actividad de proyectos por mes "
+            "(FPA-123)")
+    return {
+        "reference": end.isoformat(), "new_days": new_days,
+        "dormant_days": dormant_days,
+        "projects": projects,
+        "dormant": {"count": n_dormant, "cost_total": dormant_cost,
+                    "cost_per_project": (dormant_cost / n_dormant
+                                         if n_dormant else None)},
+        "active_by_month": by_month,
+        "active_by_month_reason": month_reason,
+    }
+
+
+_PARETO_TOP = 10
+
+
+def build_pareto(report):
+    """FPA-028/036: proyectos por coste efectivo con share y share
+    acumulado; la cola (fuera del top N) se agrupa en una fila. Top-3
+    como concentración del coste efectivo (FPA-036)."""
+    costs = {name: p.get("cost_effective", 0.0)
+             for name, p in (report.get("projects", {}) or {}).items()
+             if p.get("cost_effective", 0.0) > 0}
+    total = sum(costs.values())
+    ordered = sorted(costs.items(), key=lambda x: (-x[1], x[0]))
+    rows, cum = [], 0.0
+    for name, cost in ordered[:_PARETO_TOP]:
+        cum += cost / total if total else 0.0
+        rows.append({"name": name, "cost": cost,
+                     "share": cost / total if total else None,
+                     "cumulative_share": cum})
+    tail_items = ordered[_PARETO_TOP:]
+    if tail_items:
+        tail_cost = sum(c for _, c in tail_items)
+        tail = {"count": len(tail_items), "cost": tail_cost,
+                "share": tail_cost / total if total else None,
+                "cumulative_share": 1.0}
+    else:
+        tail = None
+    top3 = sum(c for _, c in ordered[:3])
+    return {"rows": rows, "tail": tail, "total": total,
+            "top3_share": top3 / total if total else None}
+
+
+def build_usage_patterns(report, cfg):
+    """Modelo F5 completo (va embebido en el JSON del dashboard)."""
+    return {
+        "heatmap": build_heatmap(report),
+        "rhythm": build_rhythm(report, cfg),
+        "skills": build_usage_skills(report),
+        "commands": build_usage_commands(report),
+        "sessions": build_usage_sessions(report, cfg),
+        "timeline": build_timeline(report, cfg),
+        "concurrency": build_usage_concurrency(report),
+        "agent_share": build_agent_share(report),
+        "lifecycle": build_lifecycle(report, cfg),
+        "pareto": build_pareto(report),
+        "repo_overlay": {"available": False,
+                         "reason": "el tracker no emite fechas de creación "
+                                   "de repos (FPA-098, condicional)"},
     }
 
 
@@ -2377,6 +2815,284 @@ def plan_economy_html(econ):
 </details>'''
 
 
+# ======================================================================
+# F5: HTML de patrones de uso, concurrencia y lifecycle
+# ======================================================================
+
+def _na_cell(reason):
+    """Celda n/a con razón (FPA-008), nunca vacía."""
+    return f'<span class="na">n/a</span> — {esc_html(reason)}'
+
+
+def _provenance_note(usage):
+    hm = usage["heatmap"]
+    if not hm["verified"]:
+        return f'<p class="small">Vistas hora/día unverified: {esc_html(hm["unverified_reason"])}</p>'
+    return f'<p class="small">Timezone de bucketing: <strong>{esc_html(hm["timezone"])}</strong></p>'
+
+
+def heatmap_html(usage):
+    """FPA-110/142: matriz día×hora como tabla con intensidad; timezone
+    etiquetada o marca unverified."""
+    hm = usage["heatmap"]
+    peak = max((max(row) for row in hm["grid"]), default=0) or 1
+    head = "".join(f"<th>{h}</th>" for h in range(24))
+    rows = []
+    for dow, vals in enumerate(hm["grid"]):
+        cells = []
+        for n in vals:
+            if n:
+                alpha = 0.15 + 0.75 * n / peak
+                cells.append(f'<td style="background:rgba(138,43,30,{alpha:.2f})" '
+                             f'title="{n} interacciones">{n}</td>')
+            else:
+                cells.append("<td></td>")
+        rows.append(f'<tr><th scope="row">{_DOW_SHORT[dow]}</th>{"".join(cells)}</tr>')
+    return f'''<details class="tree" data-tree="heatmap" open id="heatmap">
+<summary><h2>Heatmap día×hora</h2></summary>
+{_provenance_note(usage)}
+<table class="small heatmap"><caption>Interacciones por día de semana y hora
+(día = isoweekday, lunes arriba)</caption>
+<thead><tr><th></th>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table>
+<p>After-hours (fuera del horario laboral del config, assumed):
+{fig(_share(usage["rhythm"]["after_hours_share"]), "reported")} ·
+weekend: {fig(_share(usage["rhythm"]["weekend_share"]), "reported")}</p>
+</details>'''
+
+
+def weekly_html(usage):
+    """FPA-112: tabla semanal con WoW y varianza de semanas completas."""
+    rhythm = usage["rhythm"]
+    rows = []
+    for w in rhythm["weeks"]:
+        tag = " (parcial)" if w["partial"] else ""
+        wow_i = _fmt_pct_signed(w["wow_interactions"])
+        wow_c = _fmt_pct_signed(w["wow_cost"])
+        rows.append(f'<tr><td>{w["start"]}{tag}</td>'
+                    f'<td>{fmt_int(w["interactions"])}</td>'
+                    f'<td>{fmt_usd(w["cost_effective"])}</td>'
+                    f'<td>{wow_i}</td><td>{wow_c}</td></tr>')
+    var = rhythm["variance"]
+    if var["interactions"] is None:
+        var_txt = _na_cell(var["reason"])
+    else:
+        var_txt = (f'int {var["interactions"]:.1f} · coste '
+                   f'{fmt_usd(var["cost_effective"])} '
+                   f'({var["weeks_count"]} semanas completas)')
+    return f'''<details class="tree" data-tree="weekly" id="weekly">
+<summary><h2>Semanal: WoW y varianza</h2></summary>
+<table class="small"><caption>Serie semanal ISO (solo semanas con datos)</caption>
+<thead><tr><th>Semana (inicio)</th><th>Interacciones</th><th>Coste efectivo</th>
+<th>WoW int</th><th>WoW coste</th></tr></thead>
+<tbody>{"".join(rows)}</tbody></table>
+<p>Varianza de valores semanales (reported): {var_txt}</p>
+</details>'''
+
+
+def skills_html(usage):
+    """FPA-113/114: top skills, once-uso, zero-uso y trend."""
+    s = usage["skills"]
+    top_rows = "".join(f'<tr><td>{esc_html(x["name"])}</td>'
+                       f'<td>{fmt_int(x["uses"])}</td></tr>' for x in s["top"])
+    once = ", ".join(s["once"]) if s["once"] else 'n/a — sin skills de un solo uso'
+    zero = (", ".join(s["zero"]) if s["zero"] else _na_cell(s["zero_reason"]))
+    trend = s["trend"] if s["trend"] else _na_cell(s["trend_reason"])
+    return f'''<details class="tree" data-tree="skills" id="skills">
+<summary><h2>Skills</h2></summary>
+<table class="small"><caption>Skills más usadas (FPA-113)</caption>
+<thead><tr><th>Skill</th><th>Usos</th></tr></thead>
+<tbody>{top_rows}</tbody></table>
+<p>Usadas exactamente una vez (FPA-114): {esc_html(once)} ·
+sin uso: {zero} · trend mensual: {trend}</p>
+</details>'''
+
+
+def commands_html(usage):
+    """FPA-115: slash commands más ejecutados."""
+    c = usage["commands"]
+    top_rows = "".join(f'<tr><td>{esc_html(x["name"])}</td>'
+                       f'<td>{fmt_int(x["uses"])}</td></tr>' for x in c["top"])
+    trend = c["trend"] if c["trend"] else _na_cell(c["trend_reason"])
+    return f'''<details class="tree" data-tree="commands" id="commands">
+<summary><h2>Slash commands</h2></summary>
+<table class="small"><caption>Comandos más ejecutados (FPA-115)</caption>
+<thead><tr><th>Comando</th><th>Ejecuciones</th></tr></thead>
+<tbody>{top_rows}</tbody></table>
+<p>Trend mensual: {trend}</p>
+</details>'''
+
+
+def sessions_html(usage):
+    """FPA-116…118: buckets, sesiones largas, coste/mediana/p90 y /clear."""
+    s = usage["sessions"]
+    bucket_rows = "".join(f'<tr><td>{b["label"]}</td>'
+                          f'<td>{fmt_int(b["count"])}</td></tr>'
+                          for b in s["buckets"])
+    cost_bucket = (s["cost_by_bucket"] if s["cost_by_bucket"]
+                   else _na_cell(s["cost_by_bucket_reason"]))
+    median_p90 = (s["median_p90"] if s["median_p90"]
+                  else _na_cell(s["median_p90_reason"]))
+    long_rows = "".join(
+        f'<tr><td>{fmt_int(x["turns"])}</td><td>{esc_html(x["date"] or "")}</td>'
+        f'<td>{esc_html(x["project"] or "")}</td>'
+        f'<td>{fmt_usd(x["cost"]) if x["cost"] is not None else _na_cell(x["cost_reason"])}</td></tr>'
+        for x in s["longest"])
+    clear = (f"{s['clear_per_100']:.1f}" if s["clear_per_100"] is not None
+             else "n/a")
+    clear_monthly = (s["clear_monthly"] if s["clear_monthly"]
+                     else _na_cell(s["clear_monthly_reason"]))
+    no_clear = (s["long_no_clear"] if s["long_no_clear"]
+                else _na_cell(s["long_no_clear_reason"]))
+    return f'''<details class="tree" data-tree="sessions" id="sessions">
+<summary><h2>Sesiones</h2></summary>
+<table class="small"><caption>Distribución de longitud de sesión (FPA-116)</caption>
+<thead><tr><th>Bucket (turns)</th><th>Sesiones</th></tr></thead>
+<tbody>{bucket_rows}</tbody></table>
+<table class="small"><caption>Sesiones más largas (FPA-116)</caption>
+<thead><tr><th>Turns</th><th>Fecha</th><th>Proyecto</th><th>Coste</th></tr></thead>
+<tbody>{long_rows}</tbody></table>
+<p>Coste por bucket: {cost_bucket} · mediana/p90 por sesión: {median_p90}</p>
+<p>/clear por 100 sesiones (FPA-118):
+{fig(clear, "reported")} · por mes: {clear_monthly} ·
+sesiones > {s["long_turns"]} turns sin /clear: {no_clear}</p>
+</details>'''
+
+
+def timeline_html(usage):
+    """FPA-119: primera/última actividad por tool y model con gaps."""
+    tl = usage["timeline"]
+    note = (_na_cell(tl["unverified_reason"]) if not tl["verified"]
+            else 'fechas verificadas con la timezone del tracker')
+
+    def _table(items, caption):
+        rows = "".join(
+            f'<tr><td>{esc_html(x["name"])}</td><td>{x["first"]}</td>'
+            f'<td>{x["last"]}</td>'
+            f'<td>{x["max_gap_days"]}</td>'
+            f'<td>{"⚠ gap > " + str(usage["timeline"]["gap_days"]) + " días" if x["flagged"] else "—"}</td></tr>'
+            for x in items)
+        return (f'<table class="small"><caption>{caption}</caption>'
+                '<thead><tr><th>Nombre</th><th>Primera</th><th>Última</th>'
+                '<th>Gap máx (días)</th><th>Flag</th></tr></thead>'
+                f'<tbody>{rows}</tbody></table>')
+
+    return f'''<details class="tree" data-tree="timeline" id="timeline">
+<summary><h2>Timeline de tools y models</h2></summary>
+{_table(tl["tools"], "Por tool (FPA-119)")}
+{_table(tl["models"], "Por model (FPA-119)")}
+<p class="small">Umbral de gap: {tl["gap_days"]} días (config, assumed) —
+{note}</p>
+</details>'''
+
+
+def concurrency_html(usage):
+    """FPA-120/121: concurrencia etiquetada + share de sesiones con Agent."""
+    c = usage["concurrency"]
+    pph = c["projects_per_hour"]
+    peak_s = c["peak_simultaneous_sessions"]
+    sw = c["switches_per_hour"]
+    pph_txt = (f'pico {fmt_int(pph["peak"])}, media {pph["avg"]:.2f}/h'
+               if pph.get("peak") is not None else _na_cell(pph.get("reason", "sin datos")))
+    peak_txt = (fmt_int(peak_s["peak"]) if peak_s.get("peak") is not None
+                else _na_cell(peak_s.get("reason")))
+    sw_txt = (f'{sw["value"]:.2f}/h' if sw.get("value") is not None
+              else _na_cell(sw.get("reason")))
+    a = usage["agent_share"]
+    share = _share(a["share"])
+    if a["monthly"]:
+        m_rows = "".join(f'<tr><td>{m["ym"]}</td><td>{_share(m["share"])}</td></tr>'
+                         for m in a["monthly"])
+        monthly = (f'<table class="small"><caption>Sesiones con Agent por mes '
+                   f'(FPA-121)</caption><thead><tr><th>Mes</th><th>Share</th></tr>'
+                   f'</thead><tbody>{m_rows}</tbody></table>')
+    else:
+        monthly = f'<p>Trend mensual: {_na_cell(a["monthly_reason"])}</p>'
+    return f'''<details class="tree" data-tree="concurrency" id="concurrency">
+<summary><h2>Concurrencia y autonomía</h2></summary>
+<ul class="small">
+<li>Proyectos distintos por hora ({esc_html(pph["measure"])}): {pph_txt}</li>
+<li>Pico de sesiones/agentes simultáneos ({esc_html(peak_s["measure"])}): {peak_txt}</li>
+<li>Switches de proyecto por hora activa ({esc_html(sw["measure"])}): {sw_txt}</li>
+</ul>
+<p>Share de sesiones con Agent (FPA-121): {fig(share, "reported")}</p>
+{monthly}
+</details>'''
+
+
+def lifecycle_html(usage):
+    """FPA-122/123: new/active/dormant + coste dormante + activos por mes."""
+    lc = usage["lifecycle"]
+    rows = "".join(
+        f'<tr><td>{esc_html(p["name"])}</td><td>{p["status"]}</td>'
+        f'<td>{p["first_seen"]}</td><td>{p["last_seen"]}</td></tr>'
+        for p in lc["projects"])
+    if lc["active_by_month"]:
+        m_rows = "".join(f'<tr><td>{m["ym"]}</td><td>{fmt_int(m["count"])}</td></tr>'
+                         for m in lc["active_by_month"])
+        monthly = (f'<table class="small"><caption>Proyectos activos por mes '
+                   f'(FPA-123)</caption><thead><tr><th>Mes</th><th>Activos</th>'
+                   f'</tr></thead><tbody>{m_rows}</tbody></table>')
+    else:
+        monthly = f'<p>Activos por mes: {_na_cell(lc["active_by_month_reason"])}</p>'
+    dormant = lc["dormant"]
+    per_project = (fmt_usd(dormant["cost_per_project"])
+                   if dormant["cost_per_project"] is not None else "n/a")
+    ov = usage["repo_overlay"]
+    overlay = ("" if ov["available"]
+               else f'<p class="small">Overlay de creación de repos (FPA-098): '
+                    f'{_na_cell(ov["reason"])}</p>')
+    return f'''<details class="tree" data-tree="lifecycle" id="lifecycle">
+<summary><h2>Ciclo de vida de proyectos</h2></summary>
+<p class="small">Referencia: {lc["reference"]} · new ≤ {lc["new_days"]} días ·
+dormant > {lc["dormant_days"]} días sin actividad (config, assumed)</p>
+<table class="small"><caption>Clasificación de proyectos (FPA-122)</caption>
+<thead><tr><th>Proyecto</th><th>Estado</th><th>Primera</th><th>Última</th></tr></thead>
+<tbody>{rows}</tbody></table>
+<p>Coste efectivo dormante (FPA-123): total
+{fig(fmt_usd(dormant["cost_total"]), "reported")} ·
+por proyecto {fig(per_project, "reported")} ({dormant["count"]} proyectos)</p>
+{monthly}
+{overlay}
+</details>'''
+
+
+def pareto_html(usage):
+    """FPA-028/036: Pareto con cola agrupada y concentración top-3."""
+    p = usage["pareto"]
+    rows = "".join(
+        f'<tr><td>{esc_html(r["name"])}</td><td>{fmt_usd(r["cost"])}</td>'
+        f'<td>{_share(r["share"])}</td><td>{_share(r["cumulative_share"])}</td></tr>'
+        for r in p["rows"])
+    tail = (f'<tr class="tail"><td>Cola agrupada ({p["tail"]["count"]} proyectos)</td>'
+            f'<td>{fmt_usd(p["tail"]["cost"])}</td>'
+            f'<td>{_share(p["tail"]["share"])}</td>'
+            f'<td>{_share(p["tail"]["cumulative_share"])}</td></tr>'
+            if p["tail"] else
+            '<tr class="tail"><td>Cola agrupada (0 proyectos)</td><td>$0.00</td>'
+            '<td>0.0%</td><td>100.0%</td></tr>')
+    return f'''<details class="tree" data-tree="pareto" id="pareto">
+<summary><h2>Pareto de proyectos</h2></summary>
+<table class="small"><caption>Pareto por coste efectivo (FPA-028; fuera del
+top {_PARETO_TOP} la cola se agrupa)</caption>
+<thead><tr><th>Proyecto</th><th>Coste</th><th>Share</th><th>Share acum.</th></tr></thead>
+<tbody>{rows}{tail}</tbody></table>
+<p>Concentración top-3 (FPA-036): {fig(_share(p["top3_share"]), "reported")}
+del coste efectivo · total {fig(fmt_usd(p["total"]), "reported")}</p>
+</details>'''
+
+
+def usage_html(usage):
+    """Sección F5 completa: patrones de uso, concurrencia y lifecycle."""
+    return (f'<section id="usage-patterns" '
+            f'aria-label="Patrones de uso, concurrencia y ciclo de vida">'
+            f'<h2>Patrones de uso, concurrencia y ciclo de vida</h2>'
+            + heatmap_html(usage) + weekly_html(usage) + skills_html(usage)
+            + commands_html(usage) + sessions_html(usage)
+            + timeline_html(usage) + concurrency_html(usage)
+            + lifecycle_html(usage) + pareto_html(usage)
+            + '</section>')
+
+
 def render_html(report, cfg, generated=None, today=None):
     """Generar el HTML completo (determinista salvo `generated`, FPA-104)."""
     generated = generated or datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -2431,6 +3147,8 @@ def render_html(report, cfg, generated=None, today=None):
     # F4: alertas y economía de suscripción (pre-calculadas)
     f4_html = (alerts_html(model["alerts"])
                + plan_economy_html(model["plan_economy"]))
+    # F5: patrones de uso, concurrencia y lifecycle (pre-calculados)
+    f5_html = usage_html(model["usage"])
 
     model_json = json.dumps(model, ensure_ascii=False, sort_keys=True)
     return f"""<!DOCTYPE html>
@@ -2473,6 +3191,7 @@ def render_html(report, cfg, generated=None, today=None):
   {notes_html}
   {f3_html}
   {f4_html}
+  {f5_html}
 </main>
 <footer class="site">
   <p class="retro small">Dashboard FP&A · generado por viz-fpa.py (stdlib-only,

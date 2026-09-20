@@ -1,0 +1,511 @@
+{
+  "usage": {
+    "agent_share": {
+      "monthly": [
+        {
+          "share": 0.2,
+          "ym": "2026-05"
+        },
+        {
+          "share": 0.3,
+          "ym": "2026-06"
+        }
+      ],
+      "monthly_reason": null,
+      "share": 0.25
+    },
+    "commands": {
+      "top": [
+        {
+          "name": "/clear",
+          "uses": 5
+        },
+        {
+          "name": "/model",
+          "uses": 2
+        }
+      ],
+      "trend": null,
+      "trend_reason": "el tracker no emite uso de comandos por mes (FPA-115)"
+    },
+    "concurrency": {
+      "peak_simultaneous_sessions": {
+        "measure": "parallel-agent",
+        "peak": null,
+        "reason": "el tracker no emite sesiones/agentes simultáneos (FPA-120b)"
+      },
+      "projects_per_hour": {
+        "avg": 1.25,
+        "measure": "parallel-agent",
+        "peak": 2
+      },
+      "switches_per_hour": {
+        "measure": "human-context-switching",
+        "value": 5.0
+      }
+    },
+    "heatmap": {
+      "grid": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          40,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          70,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          60,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "timezone": "America/Argentina/Buenos_Aires",
+      "total": 180,
+      "unverified_reason": null,
+      "verified": true
+    },
+    "lifecycle": {
+      "active_by_month": [
+        {
+          "count": 3,
+          "ym": "2026-05"
+        },
+        {
+          "count": 2,
+          "ym": "2026-06"
+        },
+        {
+          "count": 2,
+          "ym": "2026-07"
+        }
+      ],
+      "active_by_month_reason": null,
+      "dormant": {
+        "cost_per_project": 60.0,
+        "cost_total": 60.0,
+        "count": 1
+      },
+      "dormant_days": 30,
+      "new_days": 30,
+      "projects": [
+        {
+          "first_seen": "2026-05-01",
+          "last_seen": "2026-06-01",
+          "name": "charly-atril",
+          "status": "dormant"
+        },
+        {
+          "first_seen": "2026-07-01",
+          "last_seen": "2026-07-10",
+          "name": "charly-coffe",
+          "status": "new"
+        },
+        {
+          "first_seen": "2026-06-01",
+          "last_seen": "2026-07-08",
+          "name": "charly-dont",
+          "status": "active"
+        },
+        {
+          "first_seen": "2026-05-05",
+          "last_seen": "2026-07-05",
+          "name": "proyecto-externo",
+          "status": "active"
+        }
+      ],
+      "reference": "2026-07-10"
+    },
+    "pareto": {
+      "rows": [
+        {
+          "cost": 90.0,
+          "cumulative_share": 0.45,
+          "name": "charly-coffe",
+          "share": 0.45
+        },
+        {
+          "cost": 60.0,
+          "cumulative_share": 0.75,
+          "name": "charly-atril",
+          "share": 0.3
+        },
+        {
+          "cost": 45.0,
+          "cumulative_share": 0.975,
+          "name": "charly-dont",
+          "share": 0.225
+        },
+        {
+          "cost": 5.0,
+          "cumulative_share": 1.0,
+          "name": "proyecto-externo",
+          "share": 0.025
+        }
+      ],
+      "tail": null,
+      "top3_share": 0.975,
+      "total": 200.0
+    },
+    "repo_overlay": {
+      "available": false,
+      "reason": "el tracker no emite fechas de creación de repos (FPA-098, condicional)"
+    },
+    "rhythm": {
+      "after_hours_share": 0.3888888888888889,
+      "variance": {
+        "cost_effective": 688.888888888889,
+        "interactions": 422.2222222222222,
+        "reason": null,
+        "weeks_count": 3
+      },
+      "weekend_share": 0.3333333333333333,
+      "weeks": [
+        {
+          "cost_effective": 40.0,
+          "interactions": 60,
+          "partial": true,
+          "start": "2026-05-04",
+          "wow_cost": null,
+          "wow_interactions": null
+        },
+        {
+          "cost_effective": 10.0,
+          "interactions": 50,
+          "partial": false,
+          "start": "2026-05-11",
+          "wow_cost": null,
+          "wow_interactions": null
+        },
+        {
+          "cost_effective": 60.0,
+          "interactions": 100,
+          "partial": false,
+          "start": "2026-06-01",
+          "wow_cost": 5.0,
+          "wow_interactions": 1.0
+        },
+        {
+          "cost_effective": 0.0,
+          "interactions": 70,
+          "partial": false,
+          "start": "2026-06-29",
+          "wow_cost": -1.0,
+          "wow_interactions": -0.3
+        },
+        {
+          "cost_effective": 30.0,
+          "interactions": 80,
+          "partial": true,
+          "start": "2026-07-06",
+          "wow_cost": null,
+          "wow_interactions": null
+        }
+      ]
+    },
+    "sessions": {
+      "buckets": [
+        {
+          "count": 8,
+          "label": "1–10"
+        },
+        {
+          "count": 7,
+          "label": "11–50"
+        },
+        {
+          "count": 3,
+          "label": "51–100"
+        },
+        {
+          "count": 2,
+          "label": "100+"
+        }
+      ],
+      "clear_monthly": null,
+      "clear_monthly_reason": "el tracker no emite /clear ni sesiones por mes (FPA-118)",
+      "clear_per_100": 25.0,
+      "cost_by_bucket": null,
+      "cost_by_bucket_reason": "el tracker no emite coste por sesión (FPA-116/117)",
+      "long_no_clear": null,
+      "long_no_clear_reason": "el tracker no marca /clear por sesión (FPA-118)",
+      "long_turns": 100,
+      "longest": [
+        {
+          "cost": null,
+          "cost_reason": "el tracker no emite coste por sesión (FPA-116/117)",
+          "date": "2026-05-12",
+          "project": "charly-coffe",
+          "turns": 260
+        },
+        {
+          "cost": null,
+          "cost_reason": "el tracker no emite coste por sesión (FPA-116/117)",
+          "date": "2026-06-03",
+          "project": "charly-atril",
+          "turns": 120
+        }
+      ],
+      "median_p90": null,
+      "median_p90_reason": "el tracker no emite coste por sesión (FPA-116/117)"
+    },
+    "skills": {
+      "once": [
+        "ro5",
+        "wrap-up"
+      ],
+      "top": [
+        {
+          "name": "commit",
+          "uses": 75
+        },
+        {
+          "name": "tdd",
+          "uses": 4
+        },
+        {
+          "name": "ro5",
+          "uses": 1
+        },
+        {
+          "name": "wrap-up",
+          "uses": 1
+        }
+      ],
+      "trend": null,
+      "trend_reason": "el tracker no emite uso de skills por mes (FPA-114)",
+      "zero": null,
+      "zero_reason": "el tracker no emite la lista de skills instaladas (FPA-114)"
+    },
+    "timeline": {
+      "gap_days": 7,
+      "models": [
+        {
+          "first": "2026-05-10",
+          "flagged": false,
+          "gaps": [],
+          "last": "2026-05-10",
+          "max_gap_days": 0,
+          "name": "claude-opus-4.7"
+        },
+        {
+          "first": "2026-05-10",
+          "flagged": false,
+          "gaps": [],
+          "last": "2026-05-11",
+          "max_gap_days": 0,
+          "name": "claude-sonnet-4-6"
+        },
+        {
+          "first": "2026-05-11",
+          "flagged": true,
+          "gaps": [
+            {
+              "days": 52,
+              "from": "2026-05-11",
+              "to": "2026-07-02"
+            }
+          ],
+          "last": "2026-07-02",
+          "max_gap_days": 52,
+          "name": "gpt-5.4"
+        }
+      ],
+      "tools": [
+        {
+          "first": "2026-05-10",
+          "flagged": false,
+          "gaps": [],
+          "last": "2026-05-11",
+          "max_gap_days": 0,
+          "name": "claude-cli"
+        },
+        {
+          "first": "2026-05-11",
+          "flagged": true,
+          "gaps": [
+            {
+              "days": 52,
+              "from": "2026-05-11",
+              "to": "2026-07-02"
+            }
+          ],
+          "last": "2026-07-02",
+          "max_gap_days": 52,
+          "name": "codex"
+        }
+      ],
+      "unverified_reason": null,
+      "verified": true
+    }
+  }
+}

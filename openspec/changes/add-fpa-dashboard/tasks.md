@@ -84,17 +84,17 @@
 
 ## 5. Patrones de uso, concurrencia y ciclo de vida (FPA-110…123)
 
-- [ ] 5.1 Heatmap día×hora con timezone (FPA-110), after-hours/weekend share
+- [x] 5.1 Heatmap día×hora con timezone (FPA-110), after-hours/weekend share
       (FPA-111), weekly WoW y varianza (FPA-112)
-- [ ] 5.2 Skills: top por usos (FPA-113), zero/once-uso + trend mensual si el
+- [x] 5.2 Skills: top por usos (FPA-113), zero/once-uso + trend mensual si el
       tracker emite instaladas (FPA-114), slash commands con trend (FPA-115)
-- [ ] 5.3 Sesiones: buckets de longitud (FPA-116), coste por bucket + mediana/p90
+- [x] 5.3 Sesiones: buckets de longitud (FPA-116), coste por bucket + mediana/p90
       (FPA-117), `/clear` por 100 sesiones (FPA-118)
-- [ ] 5.4 Timeline por tool/model con gaps flag (FPA-119); concurrencia etiquetada
+- [x] 5.4 Timeline por tool/model con gaps flag (FPA-119); concurrencia etiquetada
       paralelo vs contexto (FPA-120), share de sesiones con Agent (FPA-121)
-- [ ] 5.5 Lifecycle: new/active/dormant (FPA-122), activos por mes y coste de
+- [x] 5.5 Lifecycle: new/active/dormant (FPA-122), activos por mes y coste de
       dormantes (FPA-123); overlay de creación de repos (FPA-098)
-- [ ] 5.6 Pareto de proyectos con cola agrupada (FPA-028), concentración top-3
+- [x] 5.6 Pareto de proyectos con cola agrupada (FPA-028), concentración top-3
       (FPA-036), drill Project→Model (FPA-021)
 
 ## 6. UX, CTA y export (FPA-090…098, 150–179)

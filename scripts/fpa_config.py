@@ -115,6 +115,14 @@ def validate_config(cfg):
         if key in wh and not _HHMM_RE.match(str(wh[key])):
             errors.append(f"working_hours.{key} inválido: {wh[key]}")
 
+    # Umbrales opcionales de F5 (FPA-118/119): se validan solo si la clave
+    # existe (las fases tempranas del change no la tenían).
+    for section, key in (("timeline", "gap_days"), ("sessions", "long_turns")):
+        if section in cfg:
+            val = cfg[section].get(key) if isinstance(cfg[section], dict) else None
+            if not isinstance(val, int) or isinstance(val, bool) or val <= 0:
+                errors.append(f"{section}.{key} inválido: {val}")
+
     # FPA-088: umbrales de alertas presentes y numéricos
     for key, val in cfg.get("alert_thresholds", {}).items():
         if not isinstance(val, (int, float)) or isinstance(val, bool) or val < 0:
