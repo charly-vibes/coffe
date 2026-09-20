@@ -115,6 +115,11 @@ def validate_config(cfg):
         if key in wh and not _HHMM_RE.match(str(wh[key])):
             errors.append(f"working_hours.{key} inválido: {wh[key]}")
 
+    # FPA-088: umbrales de alertas presentes y numéricos
+    for key, val in cfg.get("alert_thresholds", {}).items():
+        if not isinstance(val, (int, float)) or isinstance(val, bool) or val < 0:
+            errors.append(f"alert_thresholds.{key} inválido: {val}")
+
     if "ctas" in cfg:
         ctas = cfg["ctas"]
         if not isinstance(ctas, dict):

@@ -1,0 +1,124 @@
+{
+  "alerts": [
+    {
+      "evidence": {
+        "cur_per_1k": 650.0,
+        "month": "2026-06",
+        "prev_per_1k": 500.0,
+        "rise_pct": 0.3,
+        "threshold_pct": 15.0
+      },
+      "message": "jun 26: coste por 1k interacciones $650.00 vs $500.00 (+30.0%, umbral +15%)",
+      "rule": "unit-cost",
+      "severity": "medium"
+    },
+    {
+      "evidence": {
+        "projects": [
+          "charly-coffe",
+          "charly-atril",
+          "proyecto-externo"
+        ],
+        "threshold_pct": 50.0,
+        "top3_share": 1.0
+      },
+      "message": "Top-3 proyectos concentran 100.0% del efectivo (umbral 50%): charly-coffe ($85.00), charly-atril ($55.00), proyecto-externo ($5.00)",
+      "rule": "concentration",
+      "severity": "medium"
+    },
+    {
+      "evidence": {
+        "age_days": 72,
+        "end": "2026-07-10",
+        "threshold_days": 14.0
+      },
+      "message": "El reporte tiene 72 días de antigüedad (cierre 2026-07-10; umbral 14 días) — regenerar con scripts/usage-tracker.py",
+      "rule": "staleness",
+      "severity": "low"
+    }
+  ],
+  "plan_economy": {
+    "four_cases": {
+      "actual": 45.0,
+      "todo_max": 315.0,
+      "todo_pay_per_token": 145.0,
+      "todo_pro": 75.0
+    },
+    "four_cases_note": null,
+    "four_cases_provenance": "assumed",
+    "plans": [
+      {
+        "break_even": 20,
+        "eff_cost": null,
+        "end": "2026-04-19",
+        "headroom": null,
+        "label": "Pro $20/mes",
+        "monthly_fee": 20,
+        "price": 20.39,
+        "provenance": "assumed",
+        "start": "2026-03-19",
+        "tool": "claude-cli",
+        "utilization": null,
+        "utilization_reason": "sin datos horarios de coste para el periodo"
+      },
+      {
+        "break_even": 100,
+        "eff_cost": 40.0,
+        "end": "2026-06-19",
+        "headroom": 60.0,
+        "label": "Max $100/mes",
+        "monthly_fee": 100,
+        "price": 200.0,
+        "provenance": "assumed",
+        "start": "2026-04-19",
+        "tool": "claude-cli",
+        "utilization": 0.2,
+        "utilization_reason": null
+      },
+      {
+        "break_even": 20,
+        "eff_cost": null,
+        "end": null,
+        "headroom": null,
+        "label": "Pro $20/mes",
+        "monthly_fee": 20,
+        "price": 13.81,
+        "provenance": "assumed",
+        "start": "2026-06-19",
+        "tool": "claude-cli",
+        "utilization": null,
+        "utilization_reason": "sin datos horarios de coste para el periodo"
+      },
+      {
+        "break_even": 10,
+        "eff_cost": 10.0,
+        "end": "2026-05-15",
+        "headroom": 0.0,
+        "label": "Subscripción",
+        "monthly_fee": 10,
+        "price": 14.52,
+        "provenance": "assumed",
+        "start": "2026-04-01",
+        "tool": "codex",
+        "utilization": 0.6887,
+        "utilization_reason": null
+      },
+      {
+        "break_even": 0,
+        "eff_cost": null,
+        "end": null,
+        "headroom": null,
+        "label": "Pay-per-token",
+        "monthly_fee": 0,
+        "price": 0.0,
+        "provenance": "assumed",
+        "start": "2026-05-15",
+        "tool": "codex",
+        "utilization": null,
+        "utilization_reason": "sin datos horarios de coste para el periodo"
+      }
+    ],
+    "provenance": "assumed",
+    "usage_limits_disclaimer": "La equivalencia por coste efectivo ignora los usage limits del plan: un plan puede no alcanzar el consumo mostrado (FPA-133)."
+  }
+}

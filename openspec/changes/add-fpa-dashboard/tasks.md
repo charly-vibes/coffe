@@ -74,13 +74,13 @@
 
 ## 4. Alertas y economía de suscripción (FPA-080…088, 130–133)
 
-- [ ] 4.1 Motor de alertas con severity + rule name + evidencia (FPA-080); reglas:
+- [x] 4.1 Motor de alertas con severity + rule name + evidencia (FPA-080); reglas:
       verify-plan (FPA-081), reconciliación $65.58 vs ~$220 (FPA-082), budget
       (FPA-083), unit-cost (FPA-084), mix (FPA-085), concentración (FPA-086),
       staleness (FPA-087); umbrales configurables (FPA-088)
-- [ ] 4.2 Utilización por plan (FPA-130), break-even y headroom (FPA-131),
+- [x] 4.2 Utilización por plan (FPA-130), break-even y headroom (FPA-131),
       comparación 4 casos (FPA-132), disclaimer de usage limits (FPA-133)
-- [ ] 4.3 Tests dorados de utilización/break-even/comparación (FPA-105)
+- [x] 4.3 Tests dorados de utilización/break-even/comparación (FPA-105)
 
 ## 5. Patrones de uso, concurrencia y ciclo de vida (FPA-110…123)
 

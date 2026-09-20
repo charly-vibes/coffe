@@ -219,7 +219,10 @@ def build_model(report, cfg):
     F2 añade vistas pre-calculadas por periodo, árboles con roll-up
     verificado y la sección Data (FPA-140/141/142/120).
     F3 añade budget (pro-rating/varianza/YTD), bridge PVM y forecast
-    (FPA-050…077); las fórmulas viven en Python, JS solo re-escala."""
+    (FPA-050…077); las fórmulas viven en Python, JS solo re-escala.
+    F4 (alertas FPA-080…088 y economía FPA-130…133) se calcula aparte
+    en render_html: dependen de la fecha de hoy (staleness) y no
+    deben contaminar los goldens del modelo base (FPA-104)."""
     months = build_months(report)
     return {
         "period": report["metadata"]["date_range"],
@@ -778,6 +781,410 @@ def build_outlook(report, cfg, fc):
         "marker_cash": _marker(var_cash), "marker_eff": _marker(var_eff),
         "ym_to": fc["future_months"][-1] if fc["future_months"] else None,
         "provenance": "assumed",
+    }
+
+
+# ======================================================================
+# F4 (coffe-lat.5): alertas y economía de suscripción
+# (FPA-080…088, 130–133) — maths puras en Python; el HTML las muestra
+# pre-calculadas. Umbrales del config (FPA-088), toda cifra derivada es
+# assumed (FPA-003), efectivo y cash jamás se suman (FPA-002).
+# ======================================================================
+
+def _th(cfg, key, default):
+    """FPA-088: umbral configurable con default de la spec."""
+    return float(cfg.get("alert_thresholds", {}).get(key, default))
+
+
+def _tool_eff_month(report, ym, tool):
+    """Coste efectivo de `tool` en el mes: shape nuevo (dict con
+    cost_effective) o fallback a hourly per-tool cost_eff."""
+    st = report.get("monthly", {}).get(ym, {}).get("tools", {}).get(tool)
+    if isinstance(st, dict) and st.get("cost_effective") is not None:
+        return st["cost_effective"] or 0.0
+    total = 0.0
+    for key, h in (report.get("hourly") or {}).items():
+        if key[:7] == ym:
+            total += (h.get("tools", {}).get(tool) or {}).get("cost_eff", 0.0) or 0.0
+    return total
+
+
+def _plan_fee_for_month(cfg, ym, tool="claude-cli"):
+    """Cuota mensual del plan de `tool` activo durante el mes (la mayor si
+    hubo varios); 0.0 si ninguno cubre el mes."""
+    fees = [e["monthly_fee"] for e in cfg.get("subscriptions", {}).get(tool, [])
+            if e.get("monthly_fee", 0) > 0
+            and e["start"][:7] <= ym
+            and (e.get("end") is None or ym < e["end"][:7])]
+    return max(fees) if fees else 0.0
+
+
+def _check_verify_plan(report, cfg, months, alerts):
+    """FPA-081: efectivo de Claude ÷ precio del plan > 25× → alerta.
+    "Revisar fechas del plan u otras cuentas pagas"."""
+    th = _th(cfg, "plan_usage_multiple", 25.0)
+    for m in months:
+        eff = _tool_eff_month(report, m["ym"], "claude-cli")
+        if not eff:
+            continue
+        fee = _plan_fee_for_month(cfg, m["ym"])
+        if not fee:
+            continue
+        multiple = eff / fee
+        if multiple > th:
+            alerts.append({
+                "severity": "high", "rule": "verify-plan",
+                "message": (f"{month_label(m['ym'])}: efectivo Claude "
+                            f"{fmt_usd(eff)} = {multiple:.1f}× el precio del "
+                            f"plan (${fee:,.0f}/mes) — revisar fechas del plan "
+                            f"u otras cuentas pagas"),
+                "evidence": {"month": m["ym"], "claude_eff": round(eff, 2),
+                             "plan_fee": fee,
+                             "multiple": round(multiple, 2),
+                             "threshold": th},
+            })
+
+
+def _check_reconciliation(report, cfg, alerts):
+    """FPA-082: coste cash reportado vs cargas implícitas del calendario.
+
+    Implícito = fees del calendario + cargas p2p del mes
+    (max(cost_real − fee, 0)). Con el tracker actual los fees ya van
+    plegados en cost_real y no hay discrepancia; el caso motivador
+    (README $65.58 vs ~$220) es un reporte donde el cash registrado no
+    incluye las cuotas del calendario."""
+    fees_by_month = report.get("subscription_fees_by_month") or {}
+    reported = implied = 0.0
+    for ym, mo in report["monthly"].items():
+        cash = mo.get("cost_real", 0.0) or 0.0
+        fee = fees_by_month.get(ym, 0.0) or 0.0
+        reported += cash
+        implied += fee + max(cash - fee, 0.0)
+    tol = _th(cfg, "reconcile_tolerance_pct", 10.0) / 100.0
+    if implied <= 0:
+        return
+    diff_pct = abs(reported - implied) / implied
+    if diff_pct > tol:
+        alerts.append({
+            "severity": "high", "rule": "reconciliation",
+            "message": (f"Reconciliación: cash reportado {fmt_usd(reported)} "
+                        f"vs cargas implícitas del calendario "
+                        f"{fmt_usd(implied)} ({diff_pct * 100:.1f}% off, "
+                        f"tolerancia {tol * 100:.0f}%) — revisar suscripciones "
+                        f"o cargas no registradas"),
+            "evidence": {"reported": round(reported, 2),
+                         "implied": round(implied, 2),
+                         "diff_pct": round(diff_pct, 4),
+                         "tolerance_pct": tol * 100},
+        })
+
+
+def _check_budget(report, cfg, alerts):
+    """FPA-083: mes sobre presupuesto (cash o efectivo) → alerta con el
+    monto de overage. Reutiliza la tabla de varianza F3 (pro-rating)."""
+    for r in build_budget(report, cfg)["rows"]:
+        if r["variance_cash"] is not None and r["variance_cash"] > 0.005:
+            alerts.append({
+                "severity": "high", "rule": "budget",
+                "message": (f"{r['label']}: cash {r['actual_display_cash']} "
+                            f"sobre el presupuesto "
+                            f"({r['budget_display_cash']}) por "
+                            f"{_fmt_signed(r['variance_cash'])}"),
+                "evidence": {"month": r["ym"], "measure": "cash",
+                             "overage_cash": r["variance_cash"],
+                             "budget_cash": r["budget_cash"]},
+            })
+        if r["variance_eff"] is not None and r["variance_eff"] > 0.005:
+            alerts.append({
+                "severity": "medium", "rule": "budget",
+                "message": (f"{r['label']}: efectivo "
+                            f"{r['actual_display_eff']} sobre el presupuesto "
+                            f"(informativo) "
+                            f"({r['budget_display_eff']}) por "
+                            f"{_fmt_signed(r['variance_eff'])}"),
+                "evidence": {"month": r["ym"], "measure": "effective",
+                             "overage_eff": r["variance_eff"],
+                             "budget_eff": r["budget_eff"]},
+            })
+
+
+def _check_unit_cost(months, cfg, alerts):
+    """FPA-084: coste por 1k interacciones (efectivo) +X% MoM → alerta.
+    Meses sin datos se excluyen de la comparación (FPA-017). El ratio
+    efectivo/interacciones es invariante al escalado FME (numerador y
+    denominador se anualizan por el mismo factor), así que los meses
+    parciales son comparables sin ajuste."""
+    th = _th(cfg, "unit_cost_rise_pct", 15.0) / 100.0
+    prev = None
+    for m in months:
+        if not m["has_data"]:
+            continue
+        cur = (m["cost_effective"] / m["interactions"] * 1000
+               if m["interactions"] else None)
+        if cur is not None and prev is not None and prev > 0:
+            rise = cur / prev - 1
+            if rise > th:
+                alerts.append({
+                    "severity": "medium", "rule": "unit-cost",
+                    "message": (f"{m['label']}: coste por 1k interacciones "
+                                f"{fmt_usd(cur)} vs {fmt_usd(prev)} "
+                                f"(+{rise * 100:.1f}%, umbral "
+                                f"+{th * 100:.0f}%)"),
+                    "evidence": {"month": m["ym"],
+                                 "prev_per_1k": round(prev, 4),
+                                 "cur_per_1k": round(cur, 4),
+                                 "rise_pct": round(rise, 4),
+                                 "threshold_pct": th * 100},
+                })
+        prev = cur
+
+
+def _premium_share(month, premium_models):
+    """Share de coste efectivo de modelos premium en el mes (0–1).
+    Premium = el nombre de modelo matchea alguna entrada de
+    config.premium_models (FPA-037; default Opus)."""
+    models = month.get("models", {})
+    total = sum((ms.get("cost_effective", 0.0) or 0.0)
+                for ms in models.values() if isinstance(ms, dict))
+    if not total:
+        return None
+    premium = sum((ms.get("cost_effective", 0.0) or 0.0)
+                  for name, ms in models.items()
+                  if isinstance(ms, dict)
+                  and any(p.lower() in name.lower()
+                          for p in premium_models))
+    return premium / total
+
+
+def _check_premium_mix(report, cfg, months, alerts):
+    """FPA-085: share premium +X pts vs 3 meses atrás → alerta."""
+    th = _th(cfg, "premium_share_rise_pts", 5.0)
+    premium_models = cfg.get("premium_models", [])
+    shares = [m for m in months if m["has_data"]]
+    for i in range(3, len(shares)):
+        cur, old = _premium_share(report["monthly"][shares[i]["ym"]],
+                                  premium_models), \
+            _premium_share(report["monthly"][shares[i - 3]["ym"]],
+                           premium_models)
+        if cur is None or old is None:
+            continue
+        rise_pts = (cur - old) * 100
+        if rise_pts > th:
+            alerts.append({
+                "severity": "medium", "rule": "mix",
+                "message": (f"{shares[i]['label']}: share premium "
+                            f"{cur * 100:.1f}% vs "
+                            f"{shares[i - 3]['label']} "
+                            f"({old * 100:.1f}%) = +{rise_pts:.1f} pts "
+                            f"(umbral +{th:.0f} pts)"),
+                "evidence": {"month": shares[i]["ym"],
+                             "share": round(cur, 4),
+                             "base_month": shares[i - 3]["ym"],
+                             "base_share": round(old, 4),
+                             "rise_pts": round(rise_pts, 2),
+                             "threshold_pts": th},
+            })
+
+
+def _check_concentration(report, cfg, alerts):
+    """FPA-086: top-3 proyectos concentran >X% del efectivo → alerta."""
+    th = _th(cfg, "concentration_top3_pct", 50.0) / 100.0
+    totals = []
+    grand = 0.0
+    for proj, months_map in (report.get("project_monthly") or {}).items():
+        cost = sum(v.get("cost_effective", 0.0) or 0.0
+                   for v in months_map.values())
+        if cost > 0:
+            totals.append((proj, cost))
+            grand += cost
+    if grand <= 0:
+        return
+    totals.sort(key=lambda t: -t[1])
+    top3 = totals[:3]
+    share = sum(c for _, c in top3) / grand
+    if share > th:
+        alerts.append({
+            "severity": "medium", "rule": "concentration",
+            "message": (f"Top-3 proyectos concentran {share * 100:.1f}% del "
+                        f"efectivo (umbral {th * 100:.0f}%): "
+                        + ", ".join(f"{p} ({fmt_usd(c)})" for p, c in top3)),
+            "evidence": {"top3_share": round(share, 4),
+                         "threshold_pct": th * 100,
+                         "projects": [p for p, _ in top3]},
+        })
+
+
+def _check_staleness(report, cfg, today, alerts):
+    """FPA-087: reporte con más de X días de antigüedad → alerta.
+    `today` inyectable para tests/golden deterministas (FPA-104)."""
+    end = report["metadata"]["date_range"].get("end")
+    if not end or not today:
+        return
+    today_d = today if isinstance(today, date) else date.fromisoformat(today)
+    age = (today_d - date.fromisoformat(end)).days
+    th = _th(cfg, "staleness_days", 14.0)
+    if age > th:
+        alerts.append({
+            "severity": "low", "rule": "staleness",
+            "message": (f"El reporte tiene {age} días de antigüedad "
+                        f"(cierre {end}; umbral {th:.0f} días) — regenerar "
+                        f"con scripts/usage-tracker.py"),
+            "evidence": {"end": end, "age_days": age, "threshold_days": th},
+        })
+
+
+def build_alerts(report, cfg, today=None):
+    """FPA-080: motor de alertas — cada alerta con severity, rule name y
+    valores de evidencia. Reglas: verify-plan (081), reconciliación (082),
+    budget (083), unit-cost (084), mix premium (085), concentración (086),
+    staleness (087). Todos los umbrales salen del config (FPA-088).
+    `today` inyectable para tests/golden; default fecha de hoy."""
+    if today is None:
+        today = date.today()
+    alerts = []
+    months = [m for m in build_months(report)]
+    _check_verify_plan(report, cfg, months, alerts)
+    _check_reconciliation(report, cfg, alerts)
+    _check_budget(report, cfg, alerts)
+    _check_unit_cost(months, cfg, alerts)
+    _check_premium_mix(report, cfg, months, alerts)
+    _check_concentration(report, cfg, alerts)
+    _check_staleness(report, cfg, today, alerts)
+    return alerts
+
+
+# ----------------------------------------------------------------------
+# Economía de suscripción (FPA-130…133)
+# ----------------------------------------------------------------------
+
+def _plan_price_prorated(entry, period_start, period_end):
+    """Precio del plan para el periodo: cuota mensual pro-rateada por
+    calendario (Σ días del mes dentro del periodo / días del mes).
+    Determinista, sin constantes mágicas (30.44 etc.)."""
+    fee = entry["monthly_fee"]
+    if fee <= 0:
+        return 0.0
+    total = 0.0
+    d = period_start
+    while d < period_end:
+        ym = f"{d.year:04d}-{d.month:02d}"
+        dim = month_total_days(ym)
+        month_start = date(d.year, d.month, 1)
+        next_month = (date(d.year + (d.month == 12), (d.month % 12) + 1, 1))
+        seg_end = min(period_end, next_month)
+        seg_start = max(period_start, month_start)
+        days = (seg_end - seg_start).days
+        total += fee * days / dim
+        d = next_month
+    return total
+
+
+def _eff_cost_in_period(report, tool, start, end):
+    """Coste efectivo de `tool` dentro del periodo [start, end) desde hourly
+    per-tool. None si no hay hourly con coste en el periodo (n/a con razón,
+    FPA-008) — 0.0 real es distinto de "no hay datos"."""
+    total = 0.0
+    seen = False
+    for key, h in (report.get("hourly") or {}).items():
+        try:
+            day = date.fromisoformat(key[:10])
+        except ValueError:
+            continue
+        if start <= day < end:
+            st = h.get("tools", {}).get(tool) or {}
+            ce = st.get("cost_eff", 0.0) or 0.0
+            total += ce
+            seen = seen or ce != 0.0
+    return total if seen else None
+
+
+def build_plan_economy(report, cfg):
+    """FPA-130…133: economía de suscripción pre-calculada.
+
+    - plans: un panel por periodo del calendario (FPA-015) con utilización
+      (FPA-130: efectivo del periodo ÷ precio pro-rateado del plan),
+      break-even (FPA-131: el precio mensual del plan) y headroom
+      (fee − efectivo consumido).
+    - four_cases (FPA-132): cash del periodo bajo 4 escenarios — actual,
+      todo pay-per-token (pricing del config), todo Pro, todo Max — usando
+      cash no-Claude por tool. Efectivo y cash jamás se suman (FPA-002).
+    - usage_limits_disclaimer (FPA-133): la equivalencia por coste
+      efectivo ignora los usage limits del plan.
+
+    Todo derivado del config → provenance assumed (FPA-003)."""
+    end_s = report["metadata"]["date_range"].get("end")
+    end_d = date.fromisoformat(end_s) if end_s else None
+    plans = []
+    for tool, entries in cfg.get("subscriptions", {}).items():
+        for e in entries:
+            start = date.fromisoformat(e["start"])
+            e_end = (date.fromisoformat(e["end"]) if e.get("end")
+                     else end_d)
+            if e_end is None or start >= e_end:
+                continue
+            price = round(_plan_price_prorated(e, start, e_end), 2)
+            eff = _eff_cost_in_period(report, tool, start, e_end)
+            fee = e["monthly_fee"]
+            if eff is None:
+                util, util_reason = None, ("sin datos horarios de coste para "
+                                           "el periodo")
+                headroom = None
+            elif price <= 0:
+                util, util_reason = None, ("precio del plan es 0 "
+                                           "(pay-per-token)")
+                headroom = round(fee - eff, 2)
+            else:
+                util, util_reason = round(eff / price, 4), None
+                headroom = round(fee - eff, 2)
+            plans.append({
+                "tool": tool, "label": e.get("label", tool),
+                "start": e["start"], "end": e.get("end"),
+                "monthly_fee": fee, "price": price,
+                "eff_cost": round(eff, 2) if eff is not None else None,
+                "utilization": util, "utilization_reason": util_reason,
+                "break_even": fee, "headroom": headroom,
+                "provenance": "assumed",  # FPA-003
+            })
+    plans.sort(key=lambda p: (p["tool"], p["start"]))
+
+    # FPA-132: 4 casos sobre el cash del periodo
+    claude_fees = [e["monthly_fee"] for e in
+                   cfg.get("subscriptions", {}).get("claude-cli", [])
+                   if e.get("monthly_fee", 0) > 0]
+    pro_fee = min(claude_fees) if claude_fees else 0.0
+    max_fee = max(claude_fees) if claude_fees else 0.0
+    actual = all_p2p = all_pro = all_max = 0.0
+    for ym, mo in sorted(report["monthly"].items()):
+        if not mo["interactions"]:  # FPA-017
+            continue
+        actual += mo.get("cost_real", 0.0) or 0.0
+        all_p2p += mo.get("cost_effective", 0.0) or 0.0
+        tools = mo.get("tools", {})
+        claude_active = bool(tools.get("claude-cli"))
+        non_claude_cash = sum(
+            (t.get("cost_real", 0.0) or 0.0) for t in tools.values()
+            if isinstance(t, dict)) \
+            - ((tools.get("claude-cli", {}).get("cost_real", 0.0)
+                or 0.0) if isinstance(tools.get("claude-cli"), dict) else 0.0)
+        all_pro += (pro_fee if claude_active else 0.0) + non_claude_cash
+        all_max += (max_fee if claude_active else 0.0) + non_claude_cash
+    note = ("el cash no-Claude de reportes con tools en shape contador "
+            "(sin coste por tool) no se incluye en todo-Pro/todo-Max") \
+        if any(not isinstance(t, dict)
+               for mo in report["monthly"].values()
+               for t in mo.get("tools", {}).values()) else None
+    return {
+        "provenance": "assumed",
+        "plans": plans,
+        "four_cases": {"actual": round(actual, 2),
+                       "todo_pay_per_token": round(all_p2p, 2),
+                       "todo_pro": round(all_pro, 2),
+                       "todo_max": round(all_max, 2)},
+        "four_cases_provenance": "assumed",
+        "four_cases_note": note,
+        "usage_limits_disclaimer": (
+            "La equivalencia por coste efectivo ignora los usage limits del "
+            "plan: un plan puede no alcanzar el consumo mostrado (FPA-133)."),
     }
 
 
@@ -1893,10 +2300,92 @@ def share_fig(v):
         '<span class="na">n/a</span>'
 
 
-def render_html(report, cfg, generated=None):
+def alerts_html(alerts):
+    """FPA-080: lista de alertas con severity, regla y evidencia.
+    Sin alertas → estado visible "sin alertas", nunca sección vacía."""
+    if not alerts:
+        return ('<details class="tree" id="alerts"><summary><h2>Alertas</h2>'
+                '</summary><p class="small" id="alerts-none">Sin alertas — '
+                'ninguna regla se disparó con los umbrales del config '
+                '(FPA-088).</p></details>')
+    sev_cls = {"high": "sev-high", "medium": "sev-medium", "low": "sev-low"}
+    items = []
+    for a in alerts:
+        ev = ", ".join(f"{k}: {v}" for k, v in sorted(a["evidence"].items()))
+        items.append(
+            f'<li class="alert {sev_cls.get(a["severity"], "")}" '
+            f'data-rule="{esc_html(a["rule"])}">'
+            f'<span class="sev">{esc_html(a["severity"])}</span> '
+            f'<strong>{esc_html(a["rule"])}</strong> — '
+            f'{esc_html(a["message"])}'
+            f'<span class="small">Evidencia: {esc_html(ev)}</span></li>')
+    return (f'<details class="tree" id="alerts" open><summary>'
+            f'<h2>Alertas <span class="small">({len(alerts)})</span></h2>'
+            f'</summary><ul class="alert-list">{"".join(items)}</ul>'
+            f'</details>')
+
+
+def plan_economy_html(econ):
+    """FPA-130…133: paneles por plan (utilización, break-even, headroom) +
+    comparación de 4 casos + disclaimer de usage limits."""
+    rows = []
+    for p in econ["plans"]:
+        if p["utilization"] is not None:  # FPA-008: n/a con razón
+            util = f'{p["utilization"] * 100:.1f}%'
+        else:
+            util = (f'<span class="na" '
+                    f'title="{esc_html(p["utilization_reason"] or "")}">n/a'
+                    f'</span> — {esc_html(p["utilization_reason"] or "")}')
+        head = (fmt_usd(p["headroom"]) if p["headroom"] is not None
+                else '<span class="na">n/a</span>')
+        eff = (fmt_usd(p["eff_cost"]) if p["eff_cost"] is not None
+               else '<span class="na">n/a</span>')
+        rows.append(
+            f'<tr><td>{esc_html(p["tool"])}</td>'
+            f'<td>{esc_html(p["label"])}</td>'
+            f'<td>{esc_html(p["start"])} → {esc_html(p["end"] or "vigente")}</td>'
+            f'<td>{fmt_usd(p["monthly_fee"])}</td>'
+            f'<td>{fmt_usd(p["price"])}</td>'
+            f'<td>{eff}</td><td>{util}</td>'
+            f'<td>{fmt_usd(p["break_even"])}</td><td>{head}</td>'
+            f'<td>{prov_tag("assumed")}</td></tr>')
+    fc = econ["four_cases"]
+    note = (f'<p class="small">Nota: {esc_html(econ["four_cases_note"])}.</p>'
+            if econ.get("four_cases_note") else "")
+    cases = (("actual (calendario vigente)", fc["actual"]),
+             ("todo pay-per-token", fc["todo_pay_per_token"]),
+             ("todo Pro", fc["todo_pro"]),
+             ("todo Max", fc["todo_max"]))
+    case_rows = "".join(
+        f'<tr><td>{esc_html(label)}</td><td>{fmt_usd(val)}</td>'
+        f'<td>{prov_tag("assumed")}</td></tr>' for label, val in cases)
+    return f'''<details class="tree" id="plan-economy" open>
+<summary><h2>Economía de suscripción</h2></summary>
+<p class="small">{esc_html(econ["usage_limits_disclaimer"])}</p>
+<table class="btable">
+<thead><tr><th>Tool</th><th>Plan</th><th>Periodo</th><th>Cuota/mes</th>
+<th>Precio periodo</th><th>Efectivo</th><th>Utilización</th>
+<th>Break-even</th><th>Headroom</th><th>Provenance</th></tr></thead>
+<tbody>{"".join(rows)}</tbody>
+</table>
+<h3 class="small">Cash del periodo bajo 4 casos (FPA-132)</h3>
+<table class="btable" id="four-cases">
+<thead><tr><th>Caso</th><th>Cash</th><th>Provenance</th></tr></thead>
+<tbody>{case_rows}</tbody>
+</table>
+{note}
+</details>'''
+
+
+def render_html(report, cfg, generated=None, today=None):
     """Generar el HTML completo (determinista salvo `generated`, FPA-104)."""
     generated = generated or datetime.now().strftime("%Y-%m-%d %H:%M")
     model = build_model(report, cfg)
+    # F4: alertas y economía se calculan fuera del modelo base porque la
+    # regla de staleness depende de la fecha de hoy (today inyectable para
+    # tests/golden deterministas, FPA-104/105).
+    model["alerts"] = build_alerts(report, cfg, today=today)
+    model["plan_economy"] = build_plan_economy(report, cfg)
     lang = cfg.get("language", "es")
     retro = cfg.get("retro", {}).get("enabled", False)
 
@@ -1939,6 +2428,9 @@ def render_html(report, cfg, generated=None):
     # F3: presupuesto, bridge y forecast (valores pre-calculados en el modelo)
     f3_html = (budget_html(model["budget"]) + bridge_html(model["bridge"])
                + forecast_html(model["forecast"]))
+    # F4: alertas y economía de suscripción (pre-calculadas)
+    f4_html = (alerts_html(model["alerts"])
+               + plan_economy_html(model["plan_economy"]))
 
     model_json = json.dumps(model, ensure_ascii=False, sort_keys=True)
     return f"""<!DOCTYPE html>
@@ -1980,6 +2472,7 @@ def render_html(report, cfg, generated=None):
   </section>
   {notes_html}
   {f3_html}
+  {f4_html}
 </main>
 <footer class="site">
   <p class="retro small">Dashboard FP&A · generado por viz-fpa.py (stdlib-only,

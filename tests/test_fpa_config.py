@@ -296,5 +296,25 @@ class TestConsistenciaConTracker(unittest.TestCase):
         self.assertEqual(tracker.DEFAULT_RATES, cfg["model_pricing"]["default_rates"])
 
 
+class TestAlertThresholdsValidation(unittest.TestCase):
+    """FPA-088: umbrales de alerta presentes y numéricos."""
+
+    def test_umbrales_numericos_validos(self):
+        cfg = fpa_config.load_fpa_config()
+        self.assertEqual([], fpa_config.validate_config(cfg))
+
+    def test_umbral_no_numerico(self):
+        cfg = fpa_config.load_fpa_config()
+        cfg["alert_thresholds"]["staleness_days"] = "catorce"
+        self.assertIn("alert_thresholds.staleness_days inválido: catorce",
+                      fpa_config.validate_config(cfg))
+
+    def test_umbral_negativo(self):
+        cfg = fpa_config.load_fpa_config()
+        cfg["alert_thresholds"]["unit_cost_rise_pct"] = -5
+        self.assertTrue(any("unit_cost_rise_pct" in e
+                            for e in fpa_config.validate_config(cfg)))
+
+
 if __name__ == "__main__":
     unittest.main()
