@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+"""Tests de viz-index.py (generador del index.html de Pages).
+
+Cubre:
+- build_stats: cifras derivadas del reporte/charges (función pura)
+- render: enlaces a los 3 dashboards + JSON, título coffee, sin entradas
+  retiradas (v2 sin filtrar, tool_timeline), determinismo byte-a-byte
+"""
+
+import importlib.util
+import json
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+_spec = importlib.util.spec_from_file_location(
+    "viz_index", ROOT / "scripts" / "viz-index.py")
+viz_index = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(viz_index)
+
+FIXTURE_REPORT = {
+    "metadata": {
+        "date_range": {"start": "2026-01-11", "end": "2026-09-20"},
+        "total_interactions": 141851,
+        "total_projects": 42,
+    }
+}
+FIXTURE_CHARGES = {"description": "ledger", "providers": {"claude-cli": [], "codex": []}}
+
+
+class TestBuildStats(unittest.TestCase):
+    def test_derives_all_figures_from_report(self):
+        s = viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES)
+        self.assertEqual(s["interacciones"], 141851)
+        self.assertEqual(s["proyectos"], 42)
+        self.assertEqual(s["actualizado"], "2026-09-20")
+        self.assertEqual(s["edicion"], "Septiembre 2026")
+        self.assertEqual(s["proveedores"], 2)
+
+    def test_without_charges_zero_providers(self):
+        s = viz_index.build_stats(FIXTURE_REPORT, None)
+        self.assertEqual(s["proveedores"], 0)
+
+
+class TestRender(unittest.TestCase):
+    def setUp(self):
+        self.html = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES))
+
+    def test_links_dashboards_and_json(self):
+        for href in ("data/fpa-dashboard.html", "data/dashboard.html",
+                     "data/gantt-multitasking.html", "data/usage_report_v3.json"):
+            self.assertIn(f'href="{href}"', self.html)
+
+    def test_no_retired_entries(self):
+        self.assertNotIn("usage_report_v2.json", self.html)
+        self.assertNotIn("tool_timeline.json", self.html)
+        self.assertNotIn("¡NUEVO!", self.html)
+
+    def test_title_is_coffee(self):
+        self.assertIn("<title>coffee — tracking de uso de IA</title>", self.html)
+        self.assertNotIn("coffe ", self.html.replace("coffee ", ""))
+
+    def test_marquee_carries_dataset_figures(self):
+        self.assertIn("datos actualizados al 2026-09-20", self.html)
+        self.assertIn("141,851 interacciones", self.html)
+
+    def test_deterministic(self):
+        again = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES))
+        self.assertEqual(self.html, again)
+
+
+class TestGoldenRealData(unittest.TestCase):
+    """El index generado desde el dataset real es estable byte-a-byte."""
+
+    def test_real_dataset_renders(self):
+        report = json.loads((ROOT / "data" / "usage_report_v3.json").read_text())
+        html = viz_index.render(viz_index.build_stats(report, None))
+        self.assertIn("datos actualizados al 2026-09-20", html)
+        self.assertNotIn("{", html.split("<marquee")[1].split("</marquee>")[0])
+
+
+if __name__ == "__main__":
+    unittest.main()

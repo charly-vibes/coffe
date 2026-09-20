@@ -1,4 +1,54 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Genera index.html: entrada del sitio publicado en GitHub Pages.
+
+A diferencia del index.html artesanal anterior (cuyas cifras del marquee
+quedaban viejas en cada refresh), este generador deriva TODO de
+data/usage_report_v3.json + data/charges.json — mismos insumos que los
+dashboards — así el índice nunca queda desactualizado (bd coffe-85z).
+
+Estética 90s-corporate deliberada (ver snap 2026-09-19); el contenido es
+una lista corta: los 3 dashboards + el reporte JSON crudo. Los JSON
+históricos/auxiliares (v2 sin filtrar, tool_timeline) NO se enlazan.
+
+Sin dependencias. Determinista: ninguna fecha viene del reloj; la fecha
+de actualización sale de metadata.date_range.end del reporte.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+REPORT = ROOT / "data" / "usage_report_v3.json"
+CHARGES = ROOT / "data" / "charges.json"
+OUT = ROOT / "index.html"
+
+MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+         "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+
+
+def load_json(path):
+    if not path.exists():
+        return None
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def build_stats(report, charges):
+    """Deriva las cifras del índice desde el reporte (función pura)."""
+    meta = report["metadata"]
+    end = meta["date_range"]["end"]
+    y, m, _ = end.split("-")
+    n_proveedores = len(charges["providers"]) if charges else 0
+    return {
+        "interacciones": meta["total_interactions"],
+        "proyectos": meta["total_projects"],
+        "actualizado": end,
+        "edicion": f"{MESES[int(m) - 1].capitalize()} {y}",
+        "proveedores": n_proveedores,
+    }
+
+
+TEMPLATE = """<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -33,7 +83,7 @@
   <h1>☕ coffee — tracking de uso de IA</h1>
   <div class="tag">Charly Vibes Analytics S.A. · división de métricas y Productivity Enhancement</div>
 </div>
-<marquee scrollamount="4">★★★ BIENVENIDO A NUESTRO SITIO ★★★ datos actualizados al 2026-09-20 ★★★ 141,851 interacciones · 42 proyectos · 5 proveedores ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★ firma nuestro guestbook ★★★</marquee>
+<marquee scrollamount="4">★★★ BIENVENIDO A NUESTRO SITIO ★★★ datos actualizados al @@ACTUALIZADO@@ ★★★ @@INTERACCIONES@@ interacciones · @@PROYECTOS@@ proyectos · @@PROVEEDORES@@ proveedores ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★ firma nuestro guestbook ★★★</marquee>
 
 <div class="frame">
   <blockquote class="epigraph">
@@ -45,7 +95,7 @@
   </blockquote>
 
   <table class="dir">
-    <tr><th colspan="2">ÍNDICE DE REPORTES — EDICIÓN Septiembre 2026</th></tr>
+    <tr><th colspan="2">ÍNDICE DE REPORTES — EDICIÓN @@EDICION@@</th></tr>
     <tr>
       <td><a href="data/fpa-dashboard.html">Dashboard FP&amp;A</a><br>
           <span class="desc">Presupuestos, bridge precio-volumen-mix, forecast, alertas, cash real del ledger y economía de suscripción</span></td>
@@ -72,3 +122,31 @@
 </footer>
 </body>
 </html>
+"""
+
+
+def render(stats):
+    html = (TEMPLATE
+            .replace("@@ACTUALIZADO@@", stats["actualizado"])
+            .replace("@@INTERACCIONES@@", f"{stats['interacciones']:,}")
+            .replace("@@PROYECTOS@@", str(stats["proyectos"]))
+            .replace("@@PROVEEDORES@@", str(stats["proveedores"]))
+            .replace("@@EDICION@@", stats["edicion"]))
+    return html
+
+
+def main():
+    report = load_json(REPORT)
+    if report is None:
+        sys.exit(f"ERROR: falta {REPORT}; corré antes scripts/usage-tracker.py")
+    charges = load_json(CHARGES)
+    if charges is None:
+        print(f"WARNING: falta {CHARGES}; el índice sale sin proveedores", file=sys.stderr)
+    stats = build_stats(report, charges)
+    OUT.write_text(render(stats), encoding="utf-8")
+    print(f"OK → {OUT.relative_to(ROOT)} "
+          f"({stats['interacciones']:,} interacciones, actualizado al {stats['actualizado']})")
+
+
+if __name__ == "__main__":
+    main()

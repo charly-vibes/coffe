@@ -38,6 +38,7 @@ jobs:
           python3 scripts/viz-gantt.py
           python3 scripts/viz-dashboard.py
           python3 scripts/viz-fpa.py
+          python3 scripts/viz-index.py
 
       - name: Doc-consistency check (FPA-143/107)
         run: python3 scripts/viz-fpa.py --check-docs
@@ -47,8 +48,11 @@ jobs:
           mkdir -p _pages
           cp index.html _pages/
           cp -r data _pages/data
-          # La entrada del índice es estática; los JSON ya están versionados.
-          rm -f _pages/data/daily_summary.json _pages/data/usage_hourly.json
+          # Los JSON auxiliares no se publican: usage_report_v2.json es SIN
+          # filtrar (incluye proyectos no-charly, riesgo de privacidad) y
+          # tool_timeline.json es una edición histórica congelada.
+          rm -f _pages/data/daily_summary.json _pages/data/usage_hourly.json \
+                _pages/data/usage_report_v2.json _pages/data/tool_timeline.json
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
