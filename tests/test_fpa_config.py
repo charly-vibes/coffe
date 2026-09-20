@@ -50,6 +50,17 @@ class TestConfigRealValido(unittest.TestCase):
         cfg = fpa_config.load_fpa_config()
         self.assertEqual("es", cfg["language"])
 
+    def test_site_name_presente_y_llano(self):
+        """site_name del config: nombre llano consumido por los generadores
+        (coffe-gen.2; el test de nomenclatura vive en test_fpa_theme.py)."""
+        cfg = fpa_config.load_fpa_config()
+        self.assertIsInstance(cfg.get("site_name"), str)
+        self.assertTrue(cfg["site_name"].strip())
+        errors = fpa_config.validate_config(_cfg(site_name="  "))
+        self.assertTrue(any("site_name" in e for e in errors))
+        errors = fpa_config.validate_config(_cfg(site_name=None))
+        self.assertTrue(any("site_name" in e for e in errors))
+
     def test_retro_default_on(self):
         cfg = fpa_config.load_fpa_config()
         self.assertTrue(cfg["retro"]["enabled"])

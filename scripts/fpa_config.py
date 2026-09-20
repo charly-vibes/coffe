@@ -54,6 +54,11 @@ def validate_config(cfg):
     """
     errors = []
 
+    site_name = cfg.get("site_name")
+    if not isinstance(site_name, str) or not site_name.strip():
+        errors.append("site_name ausente o vacío (nombre llano del "
+                      "dashboard, change update-fpa-site-integration)")
+
     for section in REQUIRED_SECTIONS:
         if section not in cfg:
             errors.append(f"sección requerida ausente: {section}")

@@ -21,7 +21,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPORT = ROOT / "data" / "usage_report_v3.json"
 CHARGES = ROOT / "data" / "charges.json"
+CONFIG = ROOT / "config" / "fpa.json"
 OUT = ROOT / "index.html"
+
+sys.path.insert(0, str(ROOT / "scripts"))
+import site_theme  # noqa: E402
 
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
          "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
@@ -55,27 +59,28 @@ TEMPLATE = """<!DOCTYPE html>
 <meta name="robots" content="noindex, nofollow">
 <title>coffee — tracking de uso de IA</title>
 <style>
-  body { margin: 0; padding: 18px; background: #c0c0c0;
-         font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif; color: #000; }
-  .banner { background: #000080; color: #fff; padding: 10px 14px;
+@@THEME_BASE@@
+  body { margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
+         font-size: 13px; line-height: 1.45; font-family: var(--font-stack); }
+  .banner { background: var(--navy); color: #fff; padding: 10px 14px;
             border: 2px outset #fff; margin-bottom: 10px; }
   .banner h1 { font-size: 22px; margin: 0; letter-spacing: 1px; }
-  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
-  marquee { background: #ffff00; color: #000; border: 2px inset #fff;
+  .banner .tag { color: var(--bg); font-size: 11px; font-style: italic; }
+  marquee { background: var(--yellow); color: #000; border: 2px inset #fff;
             font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 16px; }
-  .frame { background: #fff; border: 2px outset #fff; padding: 18px; max-width: 680px; margin: 0 auto; }
-  blockquote.epigraph { margin: 0 0 18px; padding: 10px 14px; border-left: 4px double #000080;
-    color: #404040; font-style: italic; font-size: 12px; }
+  .frame { background: var(--panel); border: 2px outset #fff; padding: 18px; max-width: 680px; margin: 0 auto; }
+  blockquote.epigraph { margin: 0 0 18px; padding: 10px 14px; border-left: 4px double var(--navy);
+    color: var(--muted); font-style: italic; font-size: 12px; }
   blockquote.epigraph .who { display: block; margin-top: 6px; font-style: normal; }
   table.dir { width: 100%; border-collapse: collapse; }
-  table.dir th { background: #000080; color: #fff; text-align: left; padding: 5px 10px; border: 1px solid #404040; }
-  table.dir td { padding: 6px 10px; border: 1px solid #c0c0c0; }
-  table.dir tr:hover td { background: #ffff00; }
-  a { color: #000080; font-weight: bold; }
+  table.dir th { background: var(--navy); color: #fff; text-align: left; padding: 5px 10px; border: 1px solid #404040; }
+  table.dir td { padding: 6px 10px; border: 1px solid var(--grid); }
+  table.dir tr:hover td { background: var(--yellow); }
+  a { color: var(--navy); font-weight: bold; }
   a:visited { color: #800080; }
-  a:hover { color: #800000; }
-  .desc { color: #404040; font-size: 11px; font-weight: normal; }
-  footer { max-width: 680px; margin: 18px auto 0; font-size: 11px; color: #404040; text-align: center; }
+  a:hover { color: var(--accent); }
+  .desc { color: var(--muted); font-size: 11px; font-weight: normal; }
+  footer { max-width: 680px; margin: 18px auto 0; font-size: 11px; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
@@ -125,8 +130,10 @@ TEMPLATE = """<!DOCTYPE html>
 """
 
 
-def render(stats):
+def render(stats, site_name):
     html = (TEMPLATE
+            .replace("@@THEME_BASE@@", site_theme.base_css())
+            .replace("@@SITE_NAME@@", site_name)
             .replace("@@ACTUALIZADO@@", stats["actualizado"])
             .replace("@@INTERACCIONES@@", f"{stats['interacciones']:,}")
             .replace("@@PROYECTOS@@", str(stats["proyectos"]))
@@ -143,7 +150,9 @@ def main():
     if charges is None:
         print(f"WARNING: falta {CHARGES}; el índice sale sin proveedores", file=sys.stderr)
     stats = build_stats(report, charges)
-    OUT.write_text(render(stats), encoding="utf-8")
+    cfg = load_json(CONFIG) or {}
+    site_name = cfg.get("site_name", "Uso y costos de IA")
+    OUT.write_text(render(stats, site_name), encoding="utf-8")
     print(f"OK → {OUT.relative_to(ROOT)} "
           f"({stats['interacciones']:,} interacciones, actualizado al {stats['actualizado']})")
 

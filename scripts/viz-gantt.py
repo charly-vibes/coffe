@@ -12,7 +12,11 @@ autocontenido (sin dependencias externas) en data/gantt-multitasking.html:
 """
 
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import site_theme  # noqa: E402
 
 REPORT = Path("data/usage_report_v3.json")
 OUT = Path("data/gantt-multitasking.html")
@@ -23,15 +27,12 @@ TEMPLATE = """<!DOCTYPE html>
 <meta charset="utf-8">
 <title>Multitasking — actividad por proyecto/día</title>
 <style>
-  /* ======== Corporate Infographics™ 1996 ======== */
-  :root {
-    --bg: #c0c0c0; --fg: #000000; --muted: #404040;
-    --accent: #000080; --grid: #c0c0c0; --navy: #000080; --yellow: #ffff00;
-  }
-  * { box-sizing: border-box; }
+  /* Tema compartido del sitio: scripts/site_theme.py (coffe-gen.2).
+     Este generador no define paleta propia; solo su layout específico. */
+@@THEME_BASE@@
   body {
     margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
-    font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif;
+    font-size: 13px; line-height: 1.45;
   }
   .banner {
     background: var(--navy); color: #fff; padding: 10px 14px;
@@ -238,7 +239,10 @@ def main():
            f"{meta['total_projects']} proyectos · {meta['date_range']['start']} → {meta['date_range']['end']} · "
            f"{mt['hourly']['pct_hours_multitasking']}% de horas con ≥2 proyectos en paralelo")
 
-    html = TEMPLATE.replace("__DATA__", json.dumps(pd, ensure_ascii=False)).replace("__SUB__", sub)
+    html = (TEMPLATE
+            .replace("@@THEME_BASE@@", site_theme.base_css())
+            .replace("__DATA__", json.dumps(pd, ensure_ascii=False))
+            .replace("__SUB__", sub))
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(html)
     print(f"OK → {out_path} ({out_path.stat().st_size // 1024} KB, {len(pd['days'])} días × {len(pd['matrix'])} proyectos)")

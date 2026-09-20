@@ -14,7 +14,9 @@ accesibilidad móvil (FPA-175…179, 094), numeración de figuras (FPA-144) y
 
 Lee data/usage_report_v3.json + config/fpa.json y produce
 data/fpa-dashboard.html: un único HTML autocontenido (FPA-001) con SVG inline,
-tema claro/oscuro según sistema (FPA-093), formatos USD con separadores y
+tema compartido del sitio vía scripts/site_theme.py (coffe-gen.2; el modo
+claro/oscuro propio se eliminó, FPA-093 modificada en el change
+update-fpa-site-integration), formatos USD con separadores y
 cifras tabulares (FPA-095), header con fecha de generación y versión del
 tracker (FPA-005), marca de mes parcial con días transcurridos/total
 (FPA-004), provenance tag reported/assumed en toda cifra (FPA-003),
@@ -42,6 +44,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fpa_config  # noqa: E402
+import site_theme  # noqa: E402
 
 REPORT = Path("data/usage_report_v3.json")
 CONFIG = Path("config/fpa.json")
@@ -2826,16 +2829,9 @@ def claim_html(c):
             + prov_tag(c["threshold_provenance"]) + '</p>')
 
 
-CSS = """
-:root { --bg:#f4f2ec; --fg:#23211c; --muted:#6b675e; --card:#fffdf7;
-        --line:#d8d3c8; --acc:#8a2b1e; --ok:#1e6b3a; --bad:#8a2b1e; }
-@media (prefers-color-scheme: dark) {
-  :root { --bg:#1c1b18; --fg:#e8e4da; --muted:#9a958a; --card:#26241f;
-          --line:#3a372f; --acc:#e0a08e; --ok:#7ec99a; --bad:#e0a08e; }
-}
+CSS = site_theme.base_css() + """
 * { box-sizing: border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); line-height:1.5;
-       font-family: system-ui, sans-serif; }
+body { margin:0; background:var(--bg); color:var(--fg); line-height:1.5; }
 main { max-width: 960px; margin: 0 auto; padding: 0 1rem 2rem; }
 header.site, footer.site { border-bottom: 1px solid var(--line);
   max-width: 960px; margin: 0 auto; padding: .8rem 1rem; }
@@ -2845,13 +2841,13 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 .skip { position:absolute; left:-9999px; }
 .skip:focus { left:.5rem; top:.5rem; background:var(--card); padding:.4rem;
   border:1px solid var(--line); }
-.banner-partial { background: var(--card); border: 1px solid var(--line);
-  padding: .5rem .8rem; border-radius: 6px; font-size: .85rem; }
+.banner-partial { background: var(--card); border: 2px outset #fff;
+  padding: .5rem .8rem; font-size: .85rem; }
 #summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
   gap: .7rem; margin: 1rem 0; }
 #summary h2 { grid-column: 1 / -1; margin: 0 0 .2rem; }
-.headline { background: var(--card); border: 1px solid var(--line);
-  border-radius: 8px; padding: .7rem .8rem; }
+.headline { background: var(--card); border: 2px outset #fff;
+  box-shadow: 3px 3px 0 #404040; padding: .7rem .8rem; }
 .headline h3 { margin: 0 0 .3rem; font-size: .8rem; font-weight: 600;
   color: var(--muted); }
 .fig { font-variant-numeric: tabular-nums; font-size: 1.25rem;
@@ -2912,24 +2908,24 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 .topbar .tabs { display: flex; flex-wrap: wrap; gap: .25rem; }
 .topbar .tab { display: inline-flex; align-items: center; padding: .4rem .7rem;
   min-height:44px; color: var(--fg); text-decoration: none;
-  border-radius: 6px; border: 1px solid transparent; font-size: .9rem; }
+  border: 1px solid transparent; font-size: .9rem; }
 .topbar .tab[aria-current] { border-color: var(--acc); color: var(--acc);
   font-weight: 600; }
 #period-select { font: inherit; min-height:44px; margin-left: auto; }
 #share-view { font: inherit; min-height:44px; background: var(--card);
-  border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+  border: 2px outset #fff; cursor: pointer; }
 button, .cta, .ptoggle, .show-all, .export-csv, .dl-svg {
   min-height:44px; font: inherit; cursor: pointer; }
 .cta { display: inline-flex; align-items: center; padding: .4rem .8rem;
-  border: 1px solid var(--line); border-radius: 6px; text-decoration: none;
+  border: 2px outset #fff; text-decoration: none;
   color: var(--fg); background: var(--card); }
 .cta-primary { border-color: var(--acc); color: var(--acc); font-weight: 600; }
 .ctas { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
 .show-all, .export-csv, .dl-svg { font-size: .8rem; background: var(--card);
-  border: 1px solid var(--line); border-radius: 6px; padding: .2rem .6rem;
+  border: 2px outset #fff; padding: .2rem .6rem;
   margin: .3rem 0; }
-.ptoggle { background: var(--card); border: 1px solid var(--line);
-  border-radius: 6px 6px 0 0; padding: .2rem .8rem; }
+.ptoggle { background: var(--card); border: 2px outset #fff;
+  padding: .2rem .8rem; }
 .ptoggle.active { border-color: var(--acc); color: var(--acc); font-weight: 600; }
 .finding { margin: .4rem 0 0; font-size: 1.05rem; }
 .finding-meta, .sub { color: var(--muted); font-weight: 400;
@@ -3670,6 +3666,7 @@ def render_html(report, cfg, generated=None, today=None):
     model["alerts"] = build_alerts(report, cfg, today=today)
     model["plan_economy"] = build_plan_economy(report, cfg)
     lang = cfg.get("language", "es")
+    site_name = cfg.get("site_name", "Uso y costos de IA")
     retro = cfg.get("retro", {}).get("enabled", False)
 
     months_meta = model["months"]
@@ -3799,16 +3796,16 @@ def render_html(report, cfg, generated=None, today=None):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard FP&A — uso de IA</title>
+<title>{site_name}</title>
 <style>{CSS}{CSS_LEGACY if retro else ""}</style>
 </head>
 <body data-view="summary">
 <a class="skip" href="#summary">Saltar al contenido</a>
 <header class="site">
-  <h1>Dashboard FP&A — uso de IA</h1>
+  <h1>{site_name}</h1>
   <p class="meta">Generado: {generated} · {tracker_cell} · periodo
   {period_cell}</p>
-  {'<p class="retro">FP&A desk · edición quarterly</p>' if retro else ""}
+  {'<p class="retro">desk de métricas · edición quarterly</p>' if retro else ""}
 </header>
 <nav class="topbar" aria-label="Vistas y periodo">
   <div class="tabs" role="tablist">{tab_html}</div>
@@ -3820,7 +3817,7 @@ def render_html(report, cfg, generated=None, today=None):
 </nav>
 {body_inner}
 <footer class="site">
-  <p class="retro small">Dashboard FP&A · generado por viz-fpa.py (stdlib-only,
+  <p class="retro small">{site_name} · generado por viz-fpa.py (stdlib-only,
   SVG inline) · cifras con tag reported/assumed</p>
 </footer>
 <script type="application/json" id="fpa-model">{model_json}</script>
@@ -4227,7 +4224,7 @@ def check_placeholders(html):
 # ======================================================================
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Dashboard FP&A (viz-fpa.py)")
+    ap = argparse.ArgumentParser(description="Dashboard de uso y costos de IA (viz-fpa.py)")
     ap.add_argument("--report", default=str(REPORT))
     ap.add_argument("--config", default=str(CONFIG))
     ap.add_argument("--out", default=str(OUT))

@@ -27,6 +27,9 @@ FIXTURE_REPORT = {
 }
 FIXTURE_CHARGES = {"description": "ledger", "providers": {"claude-cli": [], "codex": []}}
 
+# Nombre llano del dashboard (coffe-gen.2): valor del config real.
+SITE_NAME = "Uso y costos de IA"
+
 
 class TestBuildStats(unittest.TestCase):
     def test_derives_all_figures_from_report(self):
@@ -44,7 +47,7 @@ class TestBuildStats(unittest.TestCase):
 
 class TestRender(unittest.TestCase):
     def setUp(self):
-        self.html = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES))
+        self.html = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES), SITE_NAME)
 
     def test_links_dashboards_and_json(self):
         for href in ("data/fpa-dashboard.html", "data/dashboard.html",
@@ -65,7 +68,7 @@ class TestRender(unittest.TestCase):
         self.assertIn("141,851 interacciones", self.html)
 
     def test_deterministic(self):
-        again = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES))
+        again = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES), SITE_NAME)
         self.assertEqual(self.html, again)
 
 
@@ -74,7 +77,7 @@ class TestGoldenRealData(unittest.TestCase):
 
     def test_real_dataset_renders(self):
         report = json.loads((ROOT / "data" / "usage_report_v3.json").read_text())
-        html = viz_index.render(viz_index.build_stats(report, None))
+        html = viz_index.render(viz_index.build_stats(report, None), SITE_NAME)
         self.assertIn("datos actualizados al 2026-09-20", html)
         self.assertNotIn("{", html.split("<marquee")[1].split("</marquee>")[0])
 

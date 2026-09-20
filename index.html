@@ -5,27 +5,30 @@
 <meta name="robots" content="noindex, nofollow">
 <title>coffee — tracking de uso de IA</title>
 <style>
-  body { margin: 0; padding: 18px; background: #c0c0c0;
-         font: 13px/1.45 Arial, Helvetica, "MS Sans Serif", sans-serif; color: #000; }
-  .banner { background: #000080; color: #fff; padding: 10px 14px;
+:root {--bg:#c0c0c0;--panel:#ffffff;--fg:#000000;--muted:#404040;--accent:#800000;--accent2:#000080;--good:#008080;--grid:#c0c0c0;--navy:#000080;--yellow:#ffff00;--card:#ffffff;--line:#c0c0c0;--acc:#800000;--ok:#008080;--bad:#800000;--font-stack:Arial, Helvetica, 'MS Sans Serif', sans-serif;}
+* { box-sizing: border-box; }
+body { font-family: var(--font-stack); }
+  body { margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
+         font-size: 13px; line-height: 1.45; font-family: var(--font-stack); }
+  .banner { background: var(--navy); color: #fff; padding: 10px 14px;
             border: 2px outset #fff; margin-bottom: 10px; }
   .banner h1 { font-size: 22px; margin: 0; letter-spacing: 1px; }
-  .banner .tag { color: #c0c0c0; font-size: 11px; font-style: italic; }
-  marquee { background: #ffff00; color: #000; border: 2px inset #fff;
+  .banner .tag { color: var(--bg); font-size: 11px; font-style: italic; }
+  marquee { background: var(--yellow); color: #000; border: 2px inset #fff;
             font-weight: bold; font-size: 12px; padding: 3px 0; margin-bottom: 16px; }
-  .frame { background: #fff; border: 2px outset #fff; padding: 18px; max-width: 680px; margin: 0 auto; }
-  blockquote.epigraph { margin: 0 0 18px; padding: 10px 14px; border-left: 4px double #000080;
-    color: #404040; font-style: italic; font-size: 12px; }
+  .frame { background: var(--panel); border: 2px outset #fff; padding: 18px; max-width: 680px; margin: 0 auto; }
+  blockquote.epigraph { margin: 0 0 18px; padding: 10px 14px; border-left: 4px double var(--navy);
+    color: var(--muted); font-style: italic; font-size: 12px; }
   blockquote.epigraph .who { display: block; margin-top: 6px; font-style: normal; }
   table.dir { width: 100%; border-collapse: collapse; }
-  table.dir th { background: #000080; color: #fff; text-align: left; padding: 5px 10px; border: 1px solid #404040; }
-  table.dir td { padding: 6px 10px; border: 1px solid #c0c0c0; }
-  table.dir tr:hover td { background: #ffff00; }
-  a { color: #000080; font-weight: bold; }
+  table.dir th { background: var(--navy); color: #fff; text-align: left; padding: 5px 10px; border: 1px solid #404040; }
+  table.dir td { padding: 6px 10px; border: 1px solid var(--grid); }
+  table.dir tr:hover td { background: var(--yellow); }
+  a { color: var(--navy); font-weight: bold; }
   a:visited { color: #800080; }
-  a:hover { color: #800000; }
-  .desc { color: #404040; font-size: 11px; font-weight: normal; }
-  footer { max-width: 680px; margin: 18px auto 0; font-size: 11px; color: #404040; text-align: center; }
+  a:hover { color: var(--accent); }
+  .desc { color: var(--muted); font-size: 11px; font-weight: normal; }
+  footer { max-width: 680px; margin: 18px auto 0; font-size: 11px; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
