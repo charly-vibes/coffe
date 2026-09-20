@@ -20,6 +20,26 @@
         },
         "filter": {"enum": ["charly-only", "all"]},
         "config_source": {"type": "string", "description": "coffe-mbz: fuente del config de suscripciones/pricing (ruta de config/fpa.json o 'builtin-fallback')"},
+        "charges_total_real": {
+          "description": "coffe-a31.2: suma IA total del ledger data/charges.json (USD, provenance reported)",
+          "type": "number"
+        },
+        "charges_source": {
+          "description": "coffe-a31.2: ruta del ledger consumido",
+          "type": "string"
+        },
+        "charges_provenance": {
+          "description": "coffe-a31.2: provenance del ledger (reported; unavailable si no se pudo leer — ver charges_reason)",
+          "enum": ["reported", "unavailable"]
+        },
+        "charges_reason": {
+          "description": "coffe-a31.2 (FPA-008): razón si el ledger no está disponible; null si reported",
+          "type": ["string", "null"]
+        },
+        "cost_real_total_tracker": {
+          "description": "coffe-a31.2: parte tracker del cost_total_real (p2p real estimado por el tracker, sin fees implícitos del calendario)",
+          "type": "number"
+        },
         "total_interactions": {"type": "integer", "minimum": 0},
         "total_input_tokens": {"type": "integer", "minimum": 0},
         "total_output_tokens": {"type": "integer", "minimum": 0},
@@ -263,6 +283,37 @@
       "type": "object",
       "patternProperties": {"^[0-9]{4}-[0-9]{2}$": {"type": "number"}}
     },
+    "charges_real_by_month": {
+      "description": "coffe-a31.2 (CRG-F1): cash cost real del ledger data/charges.json por proveedor y mes (YYYY-MM → USD), solo kinds IA (subscription|credits|refund|api_cycle aporta $0), provenance reported (facturas, FPA-003). Medida separada del coste efectivo: jamás sumarlas (FPA-002)",
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9-]+$": {
+          "type": "object",
+          "patternProperties": {"^[0-9]{4}-[0-9]{2}$": {"type": "number"}}
+        }
+      }
+    },
+    "charges_reconciliation_by_month": {
+      "description": "coffe-a31.2: insumo de reconciliación FPA-082 — por mes y tool: charges_real (ledger, reported), subscription_fee_implicit (calendario, assumed; NO es cash), cost_effective (tracker, assumed), fee_month_total",
+      "type": "object",
+      "patternProperties": {
+        "^[0-9]{4}-[0-9]{2}$": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["charges_real", "charges_provenance",
+                         "subscription_fee_implicit", "cost_effective"],
+            "properties": {
+              "charges_real": {"type": "number"},
+              "charges_provenance": {"enum": ["reported"]},
+              "subscription_fee_implicit": {"type": "number"},
+              "cost_effective": {"type": "number"},
+              "fee_month_total": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
     "model_pricing_config": {
       "type": "object",
       "description": "coffe-mbz: config de pricing cargado (default_rates, cache_write_factor, versions) — lo usado para calcular costes, no constantes hardcodeadas"
@@ -304,8 +355,16 @@
           }
         },
         "pay_per_token_charges": {
-          "description": "FPA-013: cargas pay-per-token reales, separadas de la suscripción; el tracker no las registra => null o cero, provenance assumed",
+          "description": "FPA-013 (coffe-a31.2): cargas pay-per-token del mes — *reported* cuando el ledger data/charges.json tiene cargas p2p reales (créditos/reembolsos), *assumed* (estimado tokens × pricing) si no",
           "type": ["number", "null"]
+        },
+        "pay_per_token_provenance": {
+          "description": "coffe-a31.2: provenance del pay_per_token_charges del mes (reported con ledger, assumed si no)",
+          "enum": ["reported", "assumed"]
+        },
+        "cost_real_tracker": {
+          "description": "coffe-a31.2: parte tracker del cost_real mensual (p2p real estimado por el tracker), sin fees implícitos del calendario",
+          "type": "number"
         },
         "interaction_kinds": {
           "description": "FPA-140: interacciones por kind en el mes",

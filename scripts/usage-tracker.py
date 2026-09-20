@@ -101,6 +101,121 @@ _FALLBACK_MODEL_PRICING = {
 
 _FALLBACK_DEFAULT_RATES = {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
 
+# Ledger de cargos reales (coffe-a31.2, CRG-F1): facturas transcriptas,
+# provenance *reported* (FPA-003). cash cost = estos cargos; los fees
+# implícitos del calendario NO son cash (solo reconciliación FPA-082 y
+# plan economy). Efectivo (tracker) y cash (ledger) jamás se suman (FPA-002).
+CHARGES_PATH = _REPO_ROOT / "data" / "charges.json"
+CHARGES_SOURCE = "data/charges.json"
+CHARGES_KINDS_IA = {"subscription", "credits", "refund", "api_cycle"}
+# Kinds del ledger que son cargas pay-per-token (FPA-013): créditos y
+# reembolsos, NO las cuotas de suscripción (esas son del calendario).
+CHARGES_KINDS_P2P = {"credits", "refund"}
+
+
+def _ledger_date_ok(d):
+    """Fecha ISO del ledger (YYYY-MM-DD) — chequeo estructural rápido."""
+    return (isinstance(d, str) and len(d) == 10
+            and d[4] == "-" and d[7] == "-"
+            and d[:4].isdigit() and d[5:7].isdigit() and d[8:].isdigit())
+
+
+def cargar_charges(path=None):
+    """coffe-a31.2: cargar data/charges.json y agregar por mes (YYYY-MM).
+
+    Devuelve (charges_real_by_month, total, p2p_by_month): {provider:
+    {YYYY-MM: amount}} con TODOS los kinds del vocabulario IA (api_cycle
+    aporta $0 y así queda en la serie), la suma total IA y la serie p2p
+    (credits/refund — FPA-013). Falla loud ante ledger roto (kind fuera
+    del vocabulario, fecha inválida, amount no numérico): el ledger es
+    transcripción manual — un error debe cortar, no colarse al dashboard.
+    """
+    path = Path(path) if path else CHARGES_PATH
+    ledger = json.loads(path.read_text())
+    by_month = {}
+    p2p = {}  # solo kinds pay-per-token (credits/refund) — FPA-013
+    total = 0.0
+    for provider, entries in (ledger.get("providers") or {}).items():
+        if not isinstance(entries, list):
+            raise ValueError(f"ledger: providers.{provider} no es una lista")
+        for i, e in enumerate(entries):
+            kind = e.get("kind")
+            if kind not in CHARGES_KINDS_IA:
+                raise ValueError(
+                    f"ledger: {provider}[{i}] kind fuera del vocabulario IA: {kind!r}")
+            amount = e.get("amount")
+            if not isinstance(amount, (int, float)) or isinstance(amount, bool):
+                raise ValueError(f"ledger: {provider}[{i}] amount no numérico")
+            if not _ledger_date_ok(e.get("date")):
+                raise ValueError(f"ledger: {provider}[{i}] date inválida: {e.get('date')!r}")
+            mes = e["date"][:7]
+            by_month.setdefault(provider, {}).setdefault(mes, 0.0)
+            # redondeo a centavos: transcripción manual, dinero real
+            by_month[provider][mes] = round(by_month[provider][mes] + amount, 2)
+            if kind in CHARGES_KINDS_P2P:
+                p2p.setdefault(provider, {}).setdefault(mes, 0.0)
+                p2p[provider][mes] = round(p2p[provider][mes] + amount, 2)
+            total = round(total + amount, 2)
+    return by_month, total, p2p
+
+
+def reconciliation_charges(charges_by_month, monthly_dicts):
+    """coffe-a31.2: insumo de reconciliación FPA-082, por tool y mes.
+
+    Tres medidas separadas (jamás sumadas entre sí, FPA-002):
+    - charges_real: cash pagado según el ledger (*reported*);
+    - subscription_fee_implicit: cuota que el calendario de suscripciones
+      atribuye al tool-mes (*assumed*) — no es cash, solo reconciliación y
+      plan economy;
+    - cost_effective: estimado API-equivalente del tracker (*assumed*).
+
+    Proveedores sin cargos en un mes SIEMPRE aparecen (charges_real 0.0,
+    nunca vacío — FPA-008): la ausencia de factura es un dato, no un hueco.
+    """
+    tools = set(SUBSCRIPTIONS) | set(charges_by_month)
+    # tools con interacciones del tracker también entran (su efectivo importa)
+    for mo in monthly_dicts.values():
+        tools.update((mo.get("tools") or {}))
+    rec = defaultdict(dict)
+    fees = calc_subscription_fees(monthly_dicts)  # {mes: total} por calendario
+    # meses = los del tracker ∪ los del ledger: un mes con facturas pero sin
+    # interacciones (p.ej. recargas openrouter de jul-2026) también reconcilia
+    meses = sorted(set(monthly_dicts) | {
+        m for meses_prov in charges_by_month.values() for m in meses_prov})
+    for mes in meses:
+        mo = monthly_dicts.get(mes, {})
+        tools_del_mes = set(mo.get("tools") or {})
+        # fee total del mes por calendario, incluso sin interacciones
+        fee_cal = round(sum(
+            _implicit_fee_tool_mes(t, mes) for t in SUBSCRIPTIONS), 8)
+        for tool in sorted(tools | tools_del_mes):
+            real = round(float(charges_by_month.get(tool, {}).get(mes, 0.0)), 8)
+            implicito = _implicit_fee_tool_mes(tool, mes)
+            rec[mes][tool] = {
+                "charges_real": real,
+                "charges_provenance": "reported",
+                "subscription_fee_implicit": implicito,
+                "cost_effective": round(float(
+                    (mo.get("tools") or {}).get(tool, {}).get("cost_effective", 0.0)), 8),
+                "fee_month_total": fee_cal,
+            }
+    return dict(rec)
+
+
+def _implicit_fee_tool_mes(tool, mes):
+    """Cuota implícita del calendario para (tool, mes): suma de los fees de
+    los periodos cuyo rango [start, end) solapa el mes. Complemento por
+    tool de calc_subscription_fees (que solo emite el total del mes)."""
+    total = 0.0
+    for period in SUBSCRIPTIONS.get(tool, []):
+        fee = period.get("monthly_fee", 0)
+        if fee > 0:
+            p_start = period["start"]
+            p_end = period["end"] or "9999-12"
+            if mes >= p_start[:7] and mes < p_end[:7]:
+                total += fee
+    return total
+
 
 def _import_fpa_config():
     """Importar scripts/fpa_config.py funcionando tanto como script (sys.path
@@ -1125,6 +1240,25 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             if d_key[:7] == m_key:
                 d_data.cost_real += fee / 30.0  # prorated roughly
 
+    # --- coffe-a31.2: contabilidad separada tracker vs fee implícito ---
+    # La suma mensual de cost_real mezcla la parte tracker (p2p real) con los
+    # fees implícitos del calendario; metadata (sumatoria horaria) solo tenía
+    # la parte tracker → divergencia 611.62 vs 381.62. Se emiten ambas partes
+    # por mes; cost_total_real pasa a ser la suma mensual (una sola cuenta).
+    for m_key, mo in monthly_dicts.items():
+        fee_mes = mo.get("subscription_fees", 0.0)
+        mo["cost_real_tracker"] = round(mo["cost_real"] - fee_mes, 2)
+        mo["pay_per_token_provenance"] = "assumed"  # puede pasar a reported abajo
+    tracker_total = round(sum(b.cost_real for b in hourly.values()), 2)
+
+    # --- coffe-a31.2 (CRG-F1): ledger de cargos reales (FPA-013 reported) ---
+    try:
+        charges_by_month, charges_total, charges_p2p = cargar_charges()
+        charges_ok, charges_reason = True, None
+    except (OSError, ValueError, json.JSONDecodeError) as e:
+        charges_by_month, charges_total, charges_p2p = {}, 0.0, {}
+        charges_ok, charges_reason = False, f"unavailable: ledger ilegible ({e})"
+
     # --- Emisiones F2 (coffe-lat.3) en monthly_dicts ---
     for m_key, mo in monthly_dicts.items():
         # FPA-011: breakdown por tool con coste (interacciones + coste efectivo)
@@ -1146,10 +1280,23 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "in": st["in"], "out": st["out"],
             "cache_read": st["cache_read"], "cache_write": st["cache_write"],
         } for m, st in sorted(month_models.get(m_key, {}).items())}
-        # FPA-013: cargas pay-per-token separadas de suscripción (assumed:
-        # estimadas por tokens × pricing; no hay cargas reales registradas)
-        mo["pay_per_token_charges"] = round(
-            mo["cost_real"] - mo.get("subscription_fees", 0.0), 8)
+        # FPA-013 (coffe-a31.2): cargas pay-per-token del mes. Con cargas
+        # reales del ledger (créditos/reembolsos — FPA-013 deja de ser
+        # assumed) la cifra es *reported*; si no, el estimado tracker
+        # (assumed). Los fees implícitos del calendario NO se mezclan acá.
+        # p2p real del mes según el ledger: por PRESENCIA de cargas, no por
+        # monto ≠ 0 (un crédito + un refund que netean $0 siguen siendo
+        # facturas reales → reported)
+        tiene_p2p = charges_ok and any(
+            m_key in meses for meses in charges_p2p.values())
+        if tiene_p2p:
+            mo["pay_per_token_charges"] = round(sum(
+                meses.get(m_key, 0.0)
+                for meses in charges_p2p.values()), 8)
+            mo["pay_per_token_provenance"] = "reported"
+        else:
+            mo["pay_per_token_charges"] = round(
+                mo["cost_real_tracker"], 8)
         # FPA-140: kinds del mes = filas + inyectados (user prompts)
         mo["interaction_kinds"] = dict(Counter(
             {**row_kinds.get(m_key, {}),
@@ -1245,12 +1392,24 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "total_cache_read_tokens": sum(b.cache_read_tokens for b in hourly.values()),
             "total_cache_write_tokens": sum(b.cache_write_tokens for b in hourly.values()),
             "cost_total_effective": round(sum(b.cost_effective for b in hourly.values()), 2),
-            "cost_total_real": round(sum(b.cost_real for b in hourly.values()), 2),
+            # coffe-a31.2: unificada con la suma mensual (antes: sumatoria
+            # horaria sin fees implícitos → divergencia 381.62 vs 611.62).
+            # Los fees implícitos del calendario quedan identificados aparte
+            # (subscription_fees_by_month) y NO son cash (FPA-082).
+            "cost_total_real": round(sum(mo["cost_real"] for mo in monthly_dicts.values()), 2),
+            "cost_real_total_tracker": tracker_total,
             "subscription_fees": round(sum(sub_fees.values()), 2),
+            # coffe-a31.2: cash cost real del ledger (provenance reported).
+            # Medida separada del efectivo: jamás sumarlas (FPA-002).
+            "charges_total_real": round(charges_total, 2),
+            "charges_source": CHARGES_SOURCE,
+            "charges_provenance": "reported" if charges_ok else "unavailable",
+            "charges_reason": charges_reason,  # FPA-008: n/a con razón
             "timezone": str(LOCAL_TZ),  # FPA-142: TZ usada en buckets hourly/daily
             "pay_per_token_note": (
-                "pay_per_token_charges es *assumed*: estimado con tokens × pricing; "
-                "el tracker no registra cargas reales (FPA-013)"),
+                "pay_per_token_charges es *reported* cuando el ledger tiene "
+                "cargas pay-per-token reales del mes (créditos/reembolsos, "
+                "FPA-013); *assumed* (estimado tokens × pricing) si no"),
             "outcomes": outcomes_reason or "unavailable: no emisionado en esta corrida",  # FPA-014
             "token_accounting": (
                 "cache_read/cache_write se reportan aparte de input/output. "
@@ -1288,6 +1447,12 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
         "sessions_monthly": dict(sorted(sessions_monthly.items())),
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
+        # coffe-a31.2: cash real del ledger por proveedor y mes (provenance
+        # reported), y el insumo de reconciliación FPA-082 (real vs fee
+        # implícito del calendario vs efectivo estimado)
+        "charges_real_by_month": charges_by_month,
+        "charges_reconciliation_by_month": reconciliation_charges(
+            charges_by_month, monthly_dicts) if charges_ok else {},
         # coffe-mbz: config de pricing cargado (no constantes muertas)
         "model_pricing_config": {
             "default_rates": DEFAULT_RATES,
@@ -1421,6 +1586,8 @@ def main():
     print(f"Cost real: ${m['cost_total_real']:,.2f}")
     print(f"  Subscription fees: ${m['subscription_fees']:,.2f}")
     print(f"  Pay-per-token: ${m['cost_total_real'] - m['subscription_fees']:,.2f}")
+    print(f"Cash real (ledger, reported): ${m.get('charges_total_real', 0):,.2f}"
+          f" ({m.get('charges_source', 'n/a')})")
     print(f"Hours: {m['total_hours']}, Days: {m['total_days']}, Projects: {m['total_projects']}")
 
     print(f"\n--- Monthly ---")

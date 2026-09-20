@@ -144,7 +144,9 @@ class TestProjectMonthly(unittest.TestCase):
 
 
 class TestPayPerToken(unittest.TestCase):
-    """FPA-013: cargas pay-per-token separadas de suscripción (assumed)."""
+    """FPA-013: cargas pay-per-token separadas de suscripción. Desde
+    coffe-a31.2: *reported* cuando el ledger tiene cargas p2p reales del
+    mes (créditos/reembolsos de data/charges.json); *assumed* si no."""
 
     def test_month_field_con_valor_assumed(self):
         rows = [row(ts="2026-05-10T14:23:00+00:00"),  # suscripción Max → real 0
@@ -152,9 +154,13 @@ class TestPayPerToken(unittest.TestCase):
         rows.append(row(ts="2026-03-10T14:23:00+00:00"))  # pre-Pro → pay-per-token
         rep = ut.aggregate(rows, [])
         ppt = {m: mo.get("pay_per_token_charges") for m, mo in rep["monthly"].items()}
+        prov = {m: mo.get("pay_per_token_provenance") for m, mo in rep["monthly"].items()}
         self.assertIsNotNone(ppt["2026-05"])
         self.assertAlmostEqual(0.01, ppt["2026-03"])
-        self.assertAlmostEqual(0.0, ppt["2026-05"])
+        self.assertEqual("assumed", prov["2026-03"])  # mar: solo cuota Max en el ledger
+        # coffe-a31.2: may tiene cargas p2p reales (amp $10) → reported
+        self.assertAlmostEqual(10.0, ppt["2026-05"])
+        self.assertEqual("reported", prov["2026-05"])
         # nota de provenance en metadata
         self.assertIn("pay_per_token", json.dumps(rep["metadata"]))
 

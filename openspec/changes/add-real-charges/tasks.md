@@ -29,12 +29,26 @@
 
 ## 3. Dashboard consume el ledger (cash cost *reported*)
 
-- [ ] `viz-fpa.py`: cargar `data/charges.json`; cash mensual/por proveedor
-      del ledger (kinds subscription|credits|refund), tag *reported* en
-      toda cifra del ledger
+- [x] `usage-tracker.py` (coffe-a31.2, CRG-F1): cargar `data/charges.json`
+      (guardas loud); emitir `charges_real_by_month` por provider (solo kinds
+      IA), `charges_reconciliation_by_month` (real vs fee implícito vs
+      efectivo — insumo FPA-082) y metadata
+      `charges_source`/`charges_total_real`/`charges_provenance`/`charges_reason`
+- [x] FPA-013 deja de ser assumed: `pay_per_token_charges` mensual es
+      *reported* cuando hay cargas p2p del ledger (créditos/reembolsos);
+      *assumed* solo si no; fees implícitos nunca mezclados
+- [x] Divergencia 611.62 vs 381.62 explicada y unificada:
+      `metadata.cost_total_real` = suma mensual; parte tracker separada
+      (`cost_real_total_tracker`, `cost_real_tracker` mensual) de los fees
+      implícitos (`subscription_fees_by_month`) — sin doble conteo
+- [x] Schema aditivo (`specs/usage-report-v3.schema.json`) + golden
+      regenerado (solo emisiones nuevas y las 4 líneas del p2p/cost_total_real)
+- [ ] `viz-fpa.py`: cash mensual/por proveedor del ledger, tag *reported* en
+      toda cifra del ledger (ticket posterior, CRG-F2)
 - [ ] Proveedor sin facturas en el periodo → "n/a" con razón (FPA-008)
-- [ ] Reconciliación FPA-082: comparar cash real (ledger) vs cargas
-      implícitas del calendario; evidencia con ambos montos
+      en el dashboard (la serie ya emite 0.0 + razón en charges_reason)
+- [ ] Reconciliación FPA-082 en el dashboard: comparar cash real (ledger)
+      vs cargas implícitas del calendario; evidencia con ambos montos
 - [ ] Actualizar `data/fpa-dashboard.html` regenerado con el calendario
       corregido y el cash del ledger
 - [ ] README/docs: cifras de cash citadas pasan a venir del ledger
