@@ -22,7 +22,9 @@ tracker (FPA-005), marca de mes parcial con días transcurridos/total
 (FPA-004), provenance tag reported/assumed en toda cifra (FPA-003),
 separación estricta efectivo/cash jamás sumados (FPA-002), resumen ejecutivo
 de 3–5 headlines con interpretación de una línea y fallback "n/a" con razón
-(FPA-007/008), claims narrativos solo con métrica + threshold visibles
+(FPA-007/008; coffe-esc F3: la banda KPI ES el resumen ejecutivo, la
+interpretación pasa al contexto del KPI card y las headline cards
+desaparecen), claims narrativos solo con métrica + threshold visibles
 (FPA-009) y validación de schema con exit non-zero listando los campos
 fallidos (FPA-006).
 
@@ -189,6 +191,10 @@ def build_months(report):
 
 def build_headlines(report):
     """FPA-007: 3–5 cifras headline con interpretación de una línea.
+
+    coffe-esc F3: las headline cards desaparecieron; esto ya no renderiza
+    cards, solo provee la interpretación de una línea que pasa al contexto
+    del KPI card (el KPI strip ES el resumen ejecutivo).
 
     FPA-002: efectivo y cash son medidas separadas y nunca se suman.
     FPA-008: valor no computable → value=None + reason; display "n/a".
@@ -2808,18 +2814,6 @@ def fig(value_html, provenance, extra_cls=""):
     return f'<span{cls} data-provenance="{provenance}">{value_html}</span>'
 
 
-def headline_card(h):
-    """Card de headline con valor, tag de provenance e interpretación o n/a."""
-    if h["value"] is None:  # FPA-008: n/a con razón, nunca vacío
-        value = fig('<span class="na">n/a</span>', h["provenance"])
-        sub = f'<p class="reason">{h["reason"]}</p>'
-    else:
-        value = fig(f'<span class="val">{h["display"]}</span>', h["provenance"])
-        sub = f'<p class="interp">{h["interp"]}</p>'
-    return (f'<div class="headline" data-key="{h["key"]}">'
-            f'<h3>{h["label"]}</h3>{value}{sub}</div>')
-
-
 def claim_html(c):
     """FPA-009: claim con métrica y threshold visibles (con provenance)."""
     return (f'<p class="claim">{c["verdict"]} <strong>{c["text"]}</strong> '
@@ -3090,11 +3084,15 @@ def kpi_card(k):
     else:
         value = fig(f'<span class="val">{k["display"]}</span>', k["provenance"])
         d = k.get("delta_display")
+        # coffe-esc F3: la interpretación de una línea de la headline (si el
+        # KPI tiene una) pasa al contexto del card, junto al delta.
+        ctx = k.get("headline_interp") or ""
         sub = (f'<p class="interp">Δ vs prior: {d or "n/a"}'
                + (f' <span class="small">(tasa diaria)</span>'
                   if k.get("delta_kind") == "daily-rate" and d else "")
                + (f' · excluido por tokens: {k["excluded_display"]} (FPA-045)'
                   if k.get("excluded_share") else "")
+               + (f' — {ctx}' if ctx else "")
                + "</p>")
     return (f'<div class="headline kpi" data-key="{k["key"]}">'
             f'<h3>{k["label"]}</h3>{value}{sub}'
@@ -3693,7 +3691,6 @@ def render_html(report, cfg, generated=None, today=None):
                              (period["start"], period["end"]))
 
     claims = model["claims"]
-    cards = "".join(headline_card(h) for h in model["headlines"])
 
     claims_html = "".join(claim_html(c) for c in claims)
     if claims_html:
@@ -3702,6 +3699,19 @@ def render_html(report, cfg, generated=None, today=None):
     # F2: vistas pre-calculadas, KPI strip, árboles y sección Data
     views = model["views"]
     all_view = views["all"]
+    # coffe-esc F3: la banda KPI ES el resumen ejecutivo — la interpretación
+    # de una línea de cada headline pasa al contexto del KPI card de la vista
+    # "all" (por key; los claims conservan sus cifras, fuera de este check).
+    HEADLINE_TO_KPI = {"cost_effective": "cost_effective",
+                       "cost_cash": "cost_cash",
+                       "leverage": "leverage",
+                       "cost_per_1k": "cost_per_1k_eff",
+                       "outcome": "cost_per_commit"}
+    interp_by_key = {HEADLINE_TO_KPI[h["key"]]: h["interp"]
+                     for h in model["headlines"] if h["interp"]}
+    for k in all_view["kpis"]:
+        if k["key"] in interp_by_key:
+            k["headline_interp"] = interp_by_key[k["key"]]
     kpis_html = "".join(kpi_card(k) for k in all_view["kpis"])
     trees_html = (
         tree_section("time", "Árbol Time (Año → Trimestre → Mes)",
@@ -3766,7 +3776,6 @@ def render_html(report, cfg, generated=None, today=None):
   <section id="summary" class="fpa-view" aria-label="Resumen ejecutivo">
     <h2>¿Cuál es el estado de las cosas?</h2>
     {marginalia["summary"]}
-    <div class="cards-grid">{cards}</div>
     {claims_html}
     <h2 class="sub">KPIs del periodo</h2>
     <div class="cards-grid" id="kpi-cards">{kpis_html}</div>
@@ -3870,6 +3879,7 @@ def render_html(report, cfg, generated=None, today=None):
         + '<p class="interp">Δ vs prior: ' + esc(k.delta_display || "n/a")
         + (k.delta_kind === "daily-rate" && k.delta_display ? ' <span class="small">(tasa diaria)</span>' : '')
         + (k.excluded_share ? ' · excluido por tokens: ' + esc(k.excluded_display) + ' (FPA-045)' : '')
+        + (k.headline_interp ? ' — ' + esc(k.headline_interp) : '')
         + '</p>';
     var spark = (k.spark && k.spark.length > 1)
       ? '<svg class="spark" width="120" height="28" viewBox="0 0 120 28" role="img" aria-label="sparkline">'

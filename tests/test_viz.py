@@ -217,6 +217,40 @@ class TestVizPages(unittest.TestCase):
                 f"fpa: Summary sin strip de marginalia: {counts}")
             browser.close()
 
+    def test_fpa_kpi_single_band(self):
+        """coffe-esc F3: cada cifra KPI aparece en exactamente UN card del
+        primer viewport de Summary. Los headline cards desaparecieron: la
+        banda KPI ES el resumen ejecutivo. Los claims quedan fuera del
+        check (sus cifras pueden coincidir legitimamente con un KPI)."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{page_path}")
+            pg.wait_for_timeout(300)
+            # Todo card de Summary vive en la banda KPI (sin headline cards)
+            cards = pg.eval_on_selector_all(
+                "#summary .headline", "els => els.map(e => e.textContent)")
+            kpi_cards = pg.eval_on_selector_all(
+                "#kpi-cards .headline", "els => els.map(e => e.textContent)")
+            self.assertEqual(cards, kpi_cards,
+                "fpa: Summary tiene cards fuera de la banda KPI "
+                "(headline cards residuales)")
+            vals = pg.eval_on_selector_all(
+                "#kpi-cards .val",
+                "els => els.map(e => e.textContent.trim()).filter(t => t)")
+            self.assertGreaterEqual(len(vals), 3,
+                f"fpa: banda KPI con {len(vals)} cifras, se esperaban >= 3")
+            for v in set(vals):
+                hits = sum(1 for c in kpi_cards if v in c)
+                self.assertEqual(hits, 1,
+                    f"fpa: cifra {v!r} aparece en {hits} cards, se esperaba 1")
+            browser.close()
+
     def test_page_renders_without_errors(self):
         """Cada página: 0 pageerror, y produce su contenido esperado."""
         with sync_playwright() as p:
