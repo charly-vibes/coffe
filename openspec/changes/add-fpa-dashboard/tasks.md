@@ -56,18 +56,18 @@
 
 ## 3. Presupuesto, bridge y forecast (FPA-050…077)
 
-- [ ] 3.1 Presupuestos: pro-rating de mes parcial (FPA-052), varianza con signo y
+- [x] 3.1 Presupuestos: pro-rating de mes parcial (FPA-052), varianza con signo y
       marcador favorable/desfavorable no-solo-color (FPA-053/054), tabla mensual
       con YTD (FPA-055), recompute sin reload (FPA-056)
-- [ ] 3.2 Bridge precio-volumen-mix: fórmulas Volume/Mix/Rate (FPA-061…064),
+- [x] 3.2 Bridge precio-volumen-mix: fórmulas Volume/Mix/Rate (FPA-061…064),
       identidad ≤ $0.01 (FPA-065), FME en meses parciales (FPA-066), eje truncado
       etiquetado (FPA-067), 100% stacked mix por mes (FPA-068)
-- [ ] 3.3 Forecast: run-rate base = media FME últimos 3 meses, "n/a" con razón si
+- [x] 3.3 Forecast: run-rate base = media FME últimos 3 meses, "n/a" con razón si
       hay <3 meses de datos (FPA-070/008), inputs de escenario (FPA-071), fórmulas
       efectivo/cash (FPA-072/073), YTD+outlook vs presupuesto (FPA-074), resto del
       mes parcial como fila separada (FPA-075), distinción actual/forecast
       no-solo-color (FPA-076), update sin reload (FPA-077)
-- [ ] 3.4 Tests dorados: bridge identity, pro-rating, FME, forecast (FPA-101/102);
+- [x] 3.4 Tests dorados: bridge identity, pro-rating, FME, forecast (FPA-101/102);
       FPA-105 (economía de planes) se cubre en 4.3; test de paridad JS/Python:
       los valores recalculados en el cliente (varianza, forecast) igualan los
       golden precalculados sobre el fixture
