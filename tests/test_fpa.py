@@ -149,9 +149,16 @@ class TestHeadlines(unittest.TestCase):
         heads = {h["key"]: h for h in viz.build_headlines(REPORT)}
         eff = sum(m["cost_effective"] for m in REPORT["monthly"].values()
                   if m["interactions"] > 0)
-        cash = sum(m["cost_real"] for m in REPORT["monthly"].values()
-                   if m["interactions"] > 0)
         self.assertAlmostEqual(eff, heads["cost_effective"]["value"], places=2)
+        # coffe-a31.3 (CRG-F2): cost_cash del headline = cash del ledger
+        # (charges_real_by_month, *reported*), NO la suma mensual del tracker
+        # (fees implícitos + p2p, *assumed*) — FPA-002 las mantiene separadas.
+        meses_con_datos = {ym for ym, mo in REPORT["monthly"].items()
+                           if mo["interactions"] > 0}
+        cash = sum(v
+                   for prov in REPORT.get("charges_real_by_month",
+                                          {}).values()
+                   for ym, v in prov.items() if ym in meses_con_datos)
         self.assertAlmostEqual(cash, heads["cost_cash"]["value"], places=2)
         self.assertAlmostEqual(eff / cash, heads["leverage"]["value"], places=2)
 

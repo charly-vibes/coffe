@@ -93,20 +93,21 @@ Cifras actuales del reporte, verificadas por
 `python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
 (FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
 
-- Interacciones: 140,714
+- Interacciones: 141,549
 - Proyectos: 42
-- Costo efectivo: $3,812.88
-- Costo real: $611.62
-- Cash real (ledger): n/a
+- Costo efectivo: $3,814.20
+- Costo real: $564.86
+- Cash real (ledger): $1,086.73
 - Sesiones: 1,884
 - Periodo: 2026-01-11 → 2026-09-20
 <!-- CHECK-DOCS:END -->
 
 Nota: `Costo real` es la suma mensual del tracker (fees implícitos del
-calendario + p2p tracker, *assumed*); `Cash real (ledger)` es la cifra
-nueva de coffe-a31.3 y queda `n/a` porque el reporte commiteado todavía
-no incluye el ledger `data/charges.json` (se refresca en CRG-F3 /
-coffe-a31.4; el dashboard ya lo consume con provenance *reported*).
+calendario + p2p tracker, *assumed*); `Cash real (ledger)` es el cash
+real pagado según el ledger `data/charges.json` (*reported*, FPA-003;
+coffe-a31.2/3). Ambos números no se suman entre sí (FPA-002): efectivo
+es la estimación del tracker, cash es la factura real de los proveedores
+y difieren porque las cuotas implícitas son un calendario, no un gasto.
 
 ### ✅ Extraído y documentado
 

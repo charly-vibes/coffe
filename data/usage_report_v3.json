@@ -5,19 +5,24 @@
       "end": "2026-09-20"
     },
     "filter": "charly-only",
-    "total_interactions": 140714,
-    "total_input_tokens": 1254573447,
-    "total_output_tokens": 48147355,
-    "total_cache_read_tokens": 9534805452,
+    "total_interactions": 141549,
+    "total_input_tokens": 1258312795,
+    "total_output_tokens": 48647331,
+    "total_cache_read_tokens": 9580946373,
     "total_cache_write_tokens": 72256689,
-    "cost_total_effective": 3812.88,
-    "cost_total_real": 381.62,
-    "subscription_fees": 230.0,
+    "cost_total_effective": 3814.19,
+    "cost_total_real": 564.86,
+    "cost_real_total_tracker": 364.88,
+    "subscription_fees": 199.98,
+    "charges_total_real": 1356.72,
+    "charges_source": "data/charges.json",
+    "charges_provenance": "reported",
+    "charges_reason": null,
     "timezone": "-03",
-    "pay_per_token_note": "pay_per_token_charges es *assumed*: estimado con tokens \u00d7 pricing; el tracker no registra cargas reales (FPA-013)",
+    "pay_per_token_note": "pay_per_token_charges es *reported* cuando el ledger tiene cargas pay-per-token reales del mes (cr\u00e9ditos/reembolsos, FPA-013); *assumed* (estimado tokens \u00d7 pricing) si no",
     "outcomes": "unavailable: mapeo proyecto\u2192repo GitHub pendiente (ver README)",
     "token_accounting": "cache_read/cache_write se reportan aparte de input/output. cache_read no se factura a input rate (10x mas barato); total tokens = input + output + cache_read + cache_write",
-    "total_hours": 828,
+    "total_hours": 831,
     "total_days": 154,
     "total_months": 9,
     "total_projects": 42,
@@ -11654,7 +11659,7 @@
       "cache_read_tokens": 1774259,
       "cache_write_tokens": 42630,
       "cost_effective": 4.27,
-      "cost_real": 0.95,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 128,
@@ -11672,7 +11677,7 @@
           "cache_read": 584192,
           "cache_write": 0,
           "cost_eff": 0.9470585,
-          "cost_real": 0.9470585
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -11689,7 +11694,7 @@
       "cache_read_tokens": 2797207,
       "cache_write_tokens": 62518,
       "cost_effective": 4.57,
-      "cost_real": 2.01,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 46,
@@ -11698,7 +11703,7 @@
           "cache_read": 1768960,
           "cache_write": 0,
           "cost_eff": 2.00707,
-          "cost_real": 2.00707
+          "cost_real": 0.0
         },
         "claude-cli": {
           "req": 94,
@@ -11723,7 +11728,7 @@
       "cache_read_tokens": 4600291,
       "cache_write_tokens": 24881,
       "cost_effective": 4.85,
-      "cost_real": 3.81,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 72,
@@ -11732,7 +11737,7 @@
           "cache_read": 4350464,
           "cache_write": 0,
           "cost_eff": 3.813712,
-          "cost_real": 3.813712
+          "cost_real": 0.0
         },
         "claude-cli": {
           "req": 35,
@@ -11757,7 +11762,7 @@
       "cache_read_tokens": 4606261,
       "cache_write_tokens": 101125,
       "cost_effective": 5.58,
-      "cost_real": 1.95,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 124,
@@ -11775,7 +11780,7 @@
           "cache_read": 2621952,
           "cache_write": 0,
           "cost_eff": 1.9451145,
-          "cost_real": 1.9451145
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -11793,7 +11798,7 @@
       "cache_read_tokens": 11359232,
       "cache_write_tokens": 0,
       "cost_effective": 5.69,
-      "cost_real": 5.69,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 154,
@@ -11802,7 +11807,7 @@
           "cache_read": 11359232,
           "cache_write": 0,
           "cost_eff": 5.6891425,
-          "cost_real": 5.6891425
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -11818,7 +11823,7 @@
       "cache_read_tokens": 8359032,
       "cache_write_tokens": 353270,
       "cost_effective": 12.86,
-      "cost_real": 0.16,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 300,
@@ -11836,7 +11841,7 @@
           "cache_read": 36352,
           "cache_write": 0,
           "cost_eff": 0.164098,
-          "cost_real": 0.164098
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -11853,7 +11858,7 @@
       "cache_read_tokens": 68559395,
       "cache_write_tokens": 1189312,
       "cost_effective": 52.36,
-      "cost_real": 0.79,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 1023,
@@ -11871,7 +11876,7 @@
           "cache_read": 1593856,
           "cache_write": 0,
           "cost_eff": 0.791859,
-          "cost_real": 0.791859
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12153,7 +12158,7 @@
       "cache_read_tokens": 7440647,
       "cache_write_tokens": 430227,
       "cost_effective": 18.14,
-      "cost_real": 0.04,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 685,
@@ -12171,7 +12176,7 @@
           "cache_read": 15872,
           "cache_write": 0,
           "cost_eff": 0.0369955,
-          "cost_real": 0.0369955
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12187,7 +12192,7 @@
       "cache_read_tokens": 35143227,
       "cache_write_tokens": 173502,
       "cost_effective": 13.73,
-      "cost_real": 11.42,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 77,
@@ -12205,7 +12210,7 @@
           "cache_read": 25327104,
           "cache_write": 0,
           "cost_eff": 11.4215885,
-          "cost_real": 11.4215885
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12222,7 +12227,7 @@
       "cache_read_tokens": 2435584,
       "cache_write_tokens": 0,
       "cost_effective": 1.24,
-      "cost_real": 1.24,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 14,
@@ -12231,7 +12236,7 @@
           "cache_read": 2435584,
           "cache_write": 0,
           "cost_eff": 1.2380785,
-          "cost_real": 1.2380785
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12352,7 +12357,7 @@
       "cache_read_tokens": 7643163,
       "cache_write_tokens": 48915,
       "cost_effective": 4.22,
-      "cost_real": 4.1,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": {
           "req": 13,
@@ -12370,7 +12375,7 @@
           "cache_read": 6813184,
           "cache_write": 0,
           "cost_eff": 4.098356,
-          "cost_real": 4.098356
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12387,7 +12392,7 @@
       "cache_read_tokens": 4268544,
       "cache_write_tokens": 0,
       "cost_effective": 2.35,
-      "cost_real": 2.35,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 87,
@@ -12396,7 +12401,7 @@
           "cache_read": 4268544,
           "cache_write": 0,
           "cost_eff": 2.347076,
-          "cost_real": 2.347076
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12411,7 +12416,7 @@
       "cache_read_tokens": 207360,
       "cache_write_tokens": 0,
       "cost_effective": 0.13,
-      "cost_real": 0.13,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 6,
@@ -12420,7 +12425,7 @@
           "cache_read": 207360,
           "cache_write": 0,
           "cost_eff": 0.127805,
-          "cost_real": 0.127805
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12435,7 +12440,7 @@
       "cache_read_tokens": 7005184,
       "cache_write_tokens": 0,
       "cost_effective": 3.56,
-      "cost_real": 3.56,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 77,
@@ -12444,7 +12449,7 @@
           "cache_read": 7005184,
           "cache_write": 0,
           "cost_eff": 3.563711,
-          "cost_real": 3.563711
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12459,7 +12464,7 @@
       "cache_read_tokens": 667136,
       "cache_write_tokens": 0,
       "cost_effective": 0.9,
-      "cost_real": 0.9,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 20,
@@ -12468,7 +12473,7 @@
           "cache_read": 667136,
           "cache_write": 0,
           "cost_eff": 0.8987965,
-          "cost_real": 0.8987965
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12483,7 +12488,7 @@
       "cache_read_tokens": 12337152,
       "cache_write_tokens": 0,
       "cost_effective": 6.27,
-      "cost_real": 6.27,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 166,
@@ -12492,7 +12497,7 @@
           "cache_read": 12337152,
           "cache_write": 0,
           "cost_eff": 6.271063,
-          "cost_real": 6.271063
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12507,7 +12512,7 @@
       "cache_read_tokens": 1506816,
       "cache_write_tokens": 0,
       "cost_effective": 0.82,
-      "cost_real": 0.82,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 21,
@@ -12516,7 +12521,7 @@
           "cache_read": 1506816,
           "cache_write": 0,
           "cost_eff": 0.817729,
-          "cost_real": 0.817729
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12531,7 +12536,7 @@
       "cache_read_tokens": 4079616,
       "cache_write_tokens": 0,
       "cost_effective": 4.88,
-      "cost_real": 4.88,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 67,
@@ -12540,7 +12545,7 @@
           "cache_read": 4079616,
           "cache_write": 0,
           "cost_eff": 4.882683,
-          "cost_real": 4.882683
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12555,7 +12560,7 @@
       "cache_read_tokens": 33280,
       "cache_write_tokens": 0,
       "cost_effective": 0.09,
-      "cost_real": 0.09,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 5,
@@ -12564,7 +12569,7 @@
           "cache_read": 33280,
           "cache_write": 0,
           "cost_eff": 0.08731,
-          "cost_real": 0.08731
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12579,7 +12584,7 @@
       "cache_read_tokens": 2646528,
       "cache_write_tokens": 0,
       "cost_effective": 3.08,
-      "cost_real": 3.08,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 59,
@@ -12588,7 +12593,7 @@
           "cache_read": 2646528,
           "cache_write": 0,
           "cost_eff": 3.077094,
-          "cost_real": 3.077094
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12603,7 +12608,7 @@
       "cache_read_tokens": 250368,
       "cache_write_tokens": 0,
       "cost_effective": 0.59,
-      "cost_real": 0.59,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 4,
@@ -12612,7 +12617,7 @@
           "cache_read": 250368,
           "cache_write": 0,
           "cost_eff": 0.593054,
-          "cost_real": 0.593054
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12627,7 +12632,7 @@
       "cache_read_tokens": 2842112,
       "cache_write_tokens": 0,
       "cost_effective": 2.38,
-      "cost_real": 2.38,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 79,
@@ -12636,7 +12641,7 @@
           "cache_read": 2842112,
           "cache_write": 0,
           "cost_eff": 2.3784145,
-          "cost_real": 2.3784145
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12652,7 +12657,7 @@
       "cache_read_tokens": 5148160,
       "cache_write_tokens": 0,
       "cost_effective": 2.22,
-      "cost_real": 2.22,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 53,
@@ -12661,7 +12666,7 @@
           "cache_read": 5148160,
           "cache_write": 0,
           "cost_eff": 2.2163825,
-          "cost_real": 2.2163825
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12676,7 +12681,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.02,
-      "cost_real": 0.02,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 1,
@@ -12685,7 +12690,7 @@
           "cache_read": 0,
           "cache_write": 0,
           "cost_eff": 0.0224525,
-          "cost_real": 0.0224525
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12772,7 +12777,7 @@
       "cache_read_tokens": 1307136,
       "cache_write_tokens": 0,
       "cost_effective": 1.49,
-      "cost_real": 1.49,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 60,
@@ -12781,7 +12786,7 @@
           "cache_read": 1307136,
           "cache_write": 0,
           "cost_eff": 1.487939,
-          "cost_real": 1.487939
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -12796,7 +12801,7 @@
       "cache_read_tokens": 1527808,
       "cache_write_tokens": 0,
       "cost_effective": 0.83,
-      "cost_real": 0.83,
+      "cost_real": 0.0,
       "tools": {
         "codex": {
           "req": 24,
@@ -12805,7 +12810,7 @@
           "cache_read": 1527808,
           "cache_write": 0,
           "cost_eff": 0.830537,
-          "cost_real": 0.830537
+          "cost_real": 0.0
         }
       },
       "models": {
@@ -14002,7 +14007,7 @@
       "cache_read_tokens": 1430749,
       "cache_write_tokens": 197181,
       "cost_effective": 1.43,
-      "cost_real": 0.0,
+      "cost_real": 1.43,
       "tools": {
         "claude-cli": {
           "req": 50,
@@ -14011,7 +14016,7 @@
           "cache_read": 1430749,
           "cache_write": 197181,
           "cost_eff": 1.42895445,
-          "cost_real": 0.0
+          "cost_real": 1.42895445
         }
       },
       "models": {
@@ -14026,7 +14031,7 @@
       "cache_read_tokens": 59029197,
       "cache_write_tokens": 671008,
       "cost_effective": 25.69,
-      "cost_real": 0.0,
+      "cost_real": 25.69,
       "tools": {
         "claude-cli": {
           "req": 626,
@@ -14035,7 +14040,7 @@
           "cache_read": 59029197,
           "cache_write": 671008,
           "cost_eff": 25.6916871,
-          "cost_real": 0.0
+          "cost_real": 25.6916871
         }
       },
       "models": {
@@ -14050,7 +14055,7 @@
       "cache_read_tokens": 15602757,
       "cache_write_tokens": 434404,
       "cost_effective": 9.58,
-      "cost_real": 0.0,
+      "cost_real": 9.58,
       "tools": {
         "claude-cli": {
           "req": 207,
@@ -14059,7 +14064,7 @@
           "cache_read": 15602757,
           "cache_write": 434404,
           "cost_eff": 9.5848941,
-          "cost_real": 0.0
+          "cost_real": 9.5848941
         }
       },
       "models": {
@@ -14074,7 +14079,7 @@
       "cache_read_tokens": 12240312,
       "cache_write_tokens": 419897,
       "cost_effective": 7.0,
-      "cost_real": 0.0,
+      "cost_real": 7.0,
       "tools": {
         "claude-cli": {
           "req": 242,
@@ -14083,7 +14088,7 @@
           "cache_read": 12240312,
           "cache_write": 419897,
           "cost_eff": 6.99517035,
-          "cost_real": 0.0
+          "cost_real": 6.99517035
         }
       },
       "models": {
@@ -21664,28 +21669,100 @@
       "projects_active": 1
     },
     "2026-09-20 10:00": {
-      "interactions": 3,
-      "input_tokens": 79788,
-      "output_tokens": 664,
-      "cache_read_tokens": 158208,
+      "interactions": 74,
+      "input_tokens": 426825,
+      "output_tokens": 32063,
+      "cache_read_tokens": 4549760,
       "cache_write_tokens": 0,
-      "cost_effective": 0.01,
-      "cost_real": 0.01,
+      "cost_effective": 0.13,
+      "cost_real": 0.13,
       "tools": {
         "openrouter": {
-          "req": 3,
-          "in": 79788,
-          "out": 664,
-          "cache_read": 158208,
+          "req": 74,
+          "in": 426825,
+          "out": 32063,
+          "cache_read": 4549760,
           "cache_write": 0,
-          "cost_eff": 0.01022786,
-          "cost_real": 0.01022786
+          "cost_eff": 0.12992883,
+          "cost_real": 0.12992883
         }
       },
       "models": {
-        "z-ai/glm-5.3-flash": 3
+        "z-ai/glm-5.3-flash": 74
       },
-      "projects_active": 1
+      "projects_active": 2
+    },
+    "2026-09-20 11:00": {
+      "interactions": 324,
+      "input_tokens": 1424963,
+      "output_tokens": 199539,
+      "cache_read_tokens": 14714271,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.45,
+      "cost_real": 0.45,
+      "tools": {
+        "openrouter": {
+          "req": 324,
+          "in": 1424963,
+          "out": 199539,
+          "cache_read": 14714271,
+          "cache_write": 0,
+          "cost_eff": 0.45296525,
+          "cost_real": 0.45296525
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 324
+      },
+      "projects_active": 4
+    },
+    "2026-09-20 12:00": {
+      "interactions": 236,
+      "input_tokens": 1233407,
+      "output_tokens": 177852,
+      "cache_read_tokens": 11923418,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.38,
+      "cost_real": 0.38,
+      "tools": {
+        "openrouter": {
+          "req": 236,
+          "in": 1233407,
+          "out": 177852,
+          "cache_read": 11923418,
+          "cache_write": 0,
+          "cost_eff": 0.37898375,
+          "cost_real": 0.37898375
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 236
+      },
+      "projects_active": 4
+    },
+    "2026-09-20 13:00": {
+      "interactions": 204,
+      "input_tokens": 733941,
+      "output_tokens": 91186,
+      "cache_read_tokens": 15111680,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.37,
+      "cost_real": 0.37,
+      "tools": {
+        "openrouter": {
+          "req": 204,
+          "in": 733941,
+          "out": 91186,
+          "cache_read": 15111680,
+          "cache_write": 0,
+          "cost_eff": 0.36542073,
+          "cost_real": 0.36542073
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 204
+      },
+      "projects_active": 2
     }
   },
   "daily": {
@@ -22446,7 +22523,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "amp": 12
       },
@@ -22461,7 +22538,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "amp": 25
       },
@@ -22476,7 +22553,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "amp": 26
       },
@@ -22491,7 +22568,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "amp": 18
       },
@@ -22506,7 +22583,7 @@
       "cache_read_tokens": 22744805,
       "cache_write_tokens": 0,
       "cost_effective": 12.24,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 264,
         "gemini-cli": 51,
@@ -22525,7 +22602,7 @@
       "cache_read_tokens": 19200640,
       "cache_write_tokens": 0,
       "cost_effective": 10.94,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 329,
         "gemini-cli": 1,
@@ -22544,7 +22621,7 @@
       "cache_read_tokens": 37025920,
       "cache_write_tokens": 0,
       "cost_effective": 18.14,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 706
       },
@@ -22559,7 +22636,7 @@
       "cache_read_tokens": 26307617,
       "cache_write_tokens": 0,
       "cost_effective": 11.09,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 363,
         "gemini-cli": 67,
@@ -22578,7 +22655,7 @@
       "cache_read_tokens": 20423722,
       "cache_write_tokens": 0,
       "cost_effective": 14.35,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 261,
         "claude-cli": 176,
@@ -22599,7 +22676,7 @@
       "cache_read_tokens": 44569990,
       "cache_write_tokens": 787382,
       "cost_effective": 138.06,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 845,
         "codex": 400,
@@ -22620,7 +22697,7 @@
       "cache_read_tokens": 55738556,
       "cache_write_tokens": 1061165,
       "cost_effective": 167.02,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 1176,
         "codex": 641,
@@ -22643,7 +22720,7 @@
       "cache_read_tokens": 111757724,
       "cache_write_tokens": 2308536,
       "cost_effective": 269.29,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 3432,
         "codex": 630,
@@ -22666,7 +22743,7 @@
       "cache_read_tokens": 68386022,
       "cache_write_tokens": 1759700,
       "cost_effective": 170.17,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 2014,
         "codex": 422,
@@ -22688,7 +22765,7 @@
       "cache_read_tokens": 31162093,
       "cache_write_tokens": 29954,
       "cost_effective": 13.85,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 336,
         "gemini-cli": 93,
@@ -22707,7 +22784,7 @@
       "cache_read_tokens": 16831391,
       "cache_write_tokens": 0,
       "cost_effective": 44.84,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "codex": 206,
         "claude-cli": 185,
@@ -22728,7 +22805,7 @@
       "cache_read_tokens": 83406465,
       "cache_write_tokens": 1716089,
       "cost_effective": 86.59,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 2275,
         "codex": 739,
@@ -22749,7 +22826,7 @@
       "cache_read_tokens": 13567928,
       "cache_write_tokens": 477270,
       "cost_effective": 15.66,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 458,
         "codex": 39,
@@ -22770,7 +22847,7 @@
       "cache_read_tokens": 86429633,
       "cache_write_tokens": 3774905,
       "cost_effective": 137.77,
-      "cost_real": 3.67,
+      "cost_real": 4.67,
       "tools": {
         "claude-cli": 3282,
         "codex": 402,
@@ -22791,7 +22868,7 @@
       "cache_read_tokens": 27061431,
       "cache_write_tokens": 910263,
       "cost_effective": 35.31,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 654,
         "codex": 144,
@@ -22812,7 +22889,7 @@
       "cache_read_tokens": 0,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "gemini-cli": 1
       },
@@ -22827,7 +22904,7 @@
       "cache_read_tokens": 46061855,
       "cache_write_tokens": 802931,
       "cost_effective": 51.03,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 859,
         "codex": 463,
@@ -22847,7 +22924,7 @@
       "cache_read_tokens": 110310400,
       "cache_write_tokens": 2583274,
       "cost_effective": 154.54,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 2841,
         "codex": 695,
@@ -22866,7 +22943,7 @@
       "cache_read_tokens": 198137146,
       "cache_write_tokens": 5774789,
       "cost_effective": 248.75,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 5585,
         "codex": 884
@@ -22885,7 +22962,7 @@
       "cache_read_tokens": 140391927,
       "cache_write_tokens": 5327168,
       "cost_effective": 200.26,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 4569,
         "codex": 702,
@@ -22905,7 +22982,7 @@
       "cache_read_tokens": 131575470,
       "cache_write_tokens": 7341228,
       "cost_effective": 275.91,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 6286,
         "codex": 56,
@@ -22926,7 +23003,7 @@
       "cache_read_tokens": 27311608,
       "cache_write_tokens": 1352085,
       "cost_effective": 55.51,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1438
       },
@@ -22943,7 +23020,7 @@
       "cache_read_tokens": 8502814,
       "cache_write_tokens": 681321,
       "cost_effective": 18.63,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 522
       },
@@ -22958,7 +23035,7 @@
       "cache_read_tokens": 77449320,
       "cache_write_tokens": 2496259,
       "cost_effective": 108.89,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 2439
       },
@@ -22974,7 +23051,7 @@
       "cache_read_tokens": 183131797,
       "cache_write_tokens": 2693500,
       "cost_effective": 367.93,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 4002,
         "codex": 593
@@ -22995,7 +23072,7 @@
       "cache_read_tokens": 89462173,
       "cache_write_tokens": 2175723,
       "cost_effective": 210.84,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1416,
         "codex": 662
@@ -23015,7 +23092,7 @@
       "cache_read_tokens": 49492408,
       "cache_write_tokens": 1268644,
       "cost_effective": 56.81,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1330,
         "codex": 192
@@ -23035,7 +23112,7 @@
       "cache_read_tokens": 103458215,
       "cache_write_tokens": 1930400,
       "cost_effective": 93.26,
-      "cost_real": 18.69,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1773,
         "codex": 392
@@ -23055,7 +23132,7 @@
       "cache_read_tokens": 23540374,
       "cache_write_tokens": 1417691,
       "cost_effective": 57.46,
-      "cost_real": 3.33,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1451
       },
@@ -23071,7 +23148,7 @@
       "cache_read_tokens": 62848792,
       "cache_write_tokens": 1279043,
       "cost_effective": 70.68,
-      "cost_real": 16.03,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 1994,
         "codex": 404
@@ -23089,7 +23166,7 @@
       "cache_read_tokens": 22944044,
       "cache_write_tokens": 142144,
       "cost_effective": 16.14,
-      "cost_real": 13.47,
+      "cost_real": 2.0,
       "tools": {
         "codex": 328,
         "claude-cli": 243
@@ -23107,7 +23184,7 @@
       "cache_read_tokens": 18624000,
       "cache_write_tokens": 0,
       "cost_effective": 12.96,
-      "cost_real": 16.29,
+      "cost_real": 2.0,
       "tools": {
         "codex": 279
       },
@@ -23123,7 +23200,7 @@
       "cache_read_tokens": 10887168,
       "cache_write_tokens": 0,
       "cost_effective": 8.26,
-      "cost_real": 11.6,
+      "cost_real": 2.0,
       "tools": {
         "codex": 195
       },
@@ -23139,7 +23216,7 @@
       "cache_read_tokens": 1064565,
       "cache_write_tokens": 541224,
       "cost_effective": 1.74,
-      "cost_real": 3.36,
+      "cost_real": 2.0,
       "tools": {
         "claude-cli": 47,
         "codex": 1
@@ -23156,7 +23233,7 @@
       "cache_read_tokens": 2834944,
       "cache_write_tokens": 0,
       "cost_effective": 2.32,
-      "cost_real": 5.65,
+      "cost_real": 2.0,
       "tools": {
         "codex": 84
       },
@@ -23171,7 +23248,7 @@
       "cache_read_tokens": 6982656,
       "cache_write_tokens": 0,
       "cost_effective": 3.17,
-      "cost_real": 3.83,
+      "cost_real": 3.17,
       "tools": {
         "codex": 89
       },
@@ -23186,7 +23263,7 @@
       "cache_read_tokens": 35548922,
       "cache_write_tokens": 838592,
       "cost_effective": 13.39,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 456,
         "codex": 5
@@ -23204,7 +23281,7 @@
       "cache_read_tokens": 716150,
       "cache_write_tokens": 155481,
       "cost_effective": 0.67,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 22
       },
@@ -23219,7 +23296,7 @@
       "cache_read_tokens": 43106049,
       "cache_write_tokens": 1184519,
       "cost_effective": 14.43,
-      "cost_real": 1.06,
+      "cost_real": 0.39,
       "tools": {
         "claude-cli": 521,
         "openrouter": 128,
@@ -23240,7 +23317,7 @@
       "cache_read_tokens": 5280264,
       "cache_write_tokens": 170049,
       "cost_effective": 3.14,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 91
       },
@@ -23255,7 +23332,7 @@
       "cache_read_tokens": 5348162,
       "cache_write_tokens": 359607,
       "cost_effective": 3.99,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 139
       },
@@ -23270,7 +23347,7 @@
       "cache_read_tokens": 72634136,
       "cache_write_tokens": 2032997,
       "cost_effective": 35.86,
-      "cost_real": 1.31,
+      "cost_real": 0.64,
       "tools": {
         "claude-cli": 735,
         "openrouter": 172
@@ -23287,7 +23364,7 @@
       "cache_read_tokens": 8295465,
       "cache_write_tokens": 603242,
       "cost_effective": 5.91,
-      "cost_real": 0.67,
+      "cost_real": 0.01,
       "tools": {
         "claude-cli": 164,
         "openrouter": 2
@@ -23304,7 +23381,7 @@
       "cache_read_tokens": 2399278,
       "cache_write_tokens": 128641,
       "cost_effective": 2.02,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 54
       },
@@ -23319,7 +23396,7 @@
       "cache_read_tokens": 7705358,
       "cache_write_tokens": 825632,
       "cost_effective": 6.47,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 164
       },
@@ -23334,7 +23411,7 @@
       "cache_read_tokens": 82288954,
       "cache_write_tokens": 2952436,
       "cost_effective": 46.41,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 976
       },
@@ -23350,7 +23427,7 @@
       "cache_read_tokens": 210063762,
       "cache_write_tokens": 5197635,
       "cost_effective": 105.13,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 2233
       },
@@ -23366,7 +23443,7 @@
       "cache_read_tokens": 95247276,
       "cache_write_tokens": 3699408,
       "cost_effective": 55.66,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 1169
       },
@@ -23382,7 +23459,7 @@
       "cache_read_tokens": 88303015,
       "cache_write_tokens": 1722490,
       "cost_effective": 43.7,
-      "cost_real": 0.67,
+      "cost_real": 43.7,
       "tools": {
         "claude-cli": 1125
       },
@@ -23398,7 +23475,7 @@
       "cache_read_tokens": 16384,
       "cache_write_tokens": 0,
       "cost_effective": 0.0,
-      "cost_real": 0.67,
+      "cost_real": 0.0,
       "tools": {
         "openrouter": 5
       },
@@ -23413,7 +23490,7 @@
       "cache_read_tokens": 162579,
       "cache_write_tokens": 0,
       "cost_effective": 0.03,
-      "cost_real": 0.69,
+      "cost_real": 0.03,
       "tools": {
         "openrouter": 25
       },
@@ -24152,18 +24229,18 @@
       }
     },
     "2026-09-20": {
-      "interactions": 76,
-      "input_tokens": 564694,
-      "output_tokens": 24260,
-      "cache_read_tokens": 2933696,
+      "interactions": 911,
+      "input_tokens": 4304042,
+      "output_tokens": 524236,
+      "cache_read_tokens": 49074617,
       "cache_write_tokens": 0,
-      "cost_effective": 0.11,
-      "cost_real": 0.11,
+      "cost_effective": 1.43,
+      "cost_real": 1.43,
       "tools": {
-        "openrouter": 76
+        "openrouter": 911
       },
       "models": {
-        "z-ai/glm-5.3-flash": 76
+        "z-ai/glm-5.3-flash": 911
       }
     }
   },
@@ -24196,6 +24273,8 @@
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 0.0,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "amp": {
           "in": 0,
@@ -24204,7 +24283,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 0.0,
+      "pay_per_token_charges": 100.0,
       "interaction_kinds": {
         "assistant_turn": 929
       },
@@ -24238,6 +24317,8 @@
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 0.0,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "amp": {
           "in": 0,
@@ -24246,7 +24327,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 0.0,
+      "pay_per_token_charges": 111.78,
       "interaction_kinds": {
         "assistant_turn": 719
       },
@@ -24280,6 +24361,8 @@
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 0.0,
+      "pay_per_token_provenance": "assumed",
       "tokens_by_model": {
         "amp": {
           "in": 0,
@@ -24301,7 +24384,7 @@
       "cache_read_tokens": 637552506,
       "cache_write_tokens": 11915001,
       "cost_effective": 1110.03,
-      "cost_real": 110.0,
+      "cost_real": 139.99,
       "tools": {
         "amp": {
           "interactions": 253,
@@ -24429,7 +24512,9 @@
           "cost_effective": 176.0252125
         }
       },
-      "subscription_fees": 110.0,
+      "subscription_fees": 139.99,
+      "cost_real_tracker": 0.0,
+      "pay_per_token_provenance": "assumed",
       "tokens_by_model": {
         "<synthetic>": {
           "in": 0,
@@ -24507,7 +24592,7 @@
       "cache_read_tokens": 1335090451,
       "cache_write_tokens": 38717687,
       "cost_effective": 2047.25,
-      "cost_real": 161.76,
+      "cost_real": 59.99,
       "tools": {
         "amp": {
           "interactions": 43,
@@ -24550,7 +24635,7 @@
         "codex": {
           "interactions": 6074,
           "cost_effective": 269.951593,
-          "cost_real": 61.75512,
+          "cost_real": 0.0,
           "models": {
             "gpt-5.4": {
               "interactions": 3240,
@@ -24620,7 +24705,9 @@
           "cost_effective": 163.32296
         }
       },
-      "subscription_fees": 100.0,
+      "subscription_fees": 59.989999999999995,
+      "cost_real_tracker": 0.0,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "<synthetic>": {
           "in": 0,
@@ -24683,7 +24770,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 61.76,
+      "pay_per_token_charges": 10.0,
       "interaction_kinds": {
         "assistant_turn": 1640,
         "tool_call": 5569,
@@ -24698,12 +24785,12 @@
       "cache_read_tokens": 664098410,
       "cache_write_tokens": 19870729,
       "cost_effective": 339.98,
-      "cost_real": 24.24,
+      "cost_real": 47.94,
       "tools": {
         "claude-cli": {
           "interactions": 7849,
           "cost_effective": 335.74101855,
-          "cost_real": 0.0,
+          "cost_real": 43.700706,
           "models": {
             "<synthetic>": {
               "interactions": 13,
@@ -24772,7 +24859,9 @@
           "cost_effective": 0.01672496
         }
       },
-      "subscription_fees": 20.0,
+      "subscription_fees": 0.0,
+      "cost_real_tracker": 47.94,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "<synthetic>": {
           "in": 0,
@@ -24811,7 +24900,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 4.24,
+      "pay_per_token_charges": 20.0,
       "interaction_kinds": {
         "tool_call": 5462,
         "assistant_turn": 2827,
@@ -24887,6 +24976,8 @@
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 276.77,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "anthropic/claude-sonnet-4.6": {
           "in": 1375503,
@@ -24925,7 +25016,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 276.77,
+      "pay_per_token_charges": 435.0,
       "interaction_kinds": {
         "tool_call": 50251,
         "assistant_turn": 2664,
@@ -24977,6 +25068,8 @@
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 23.0,
+      "pay_per_token_provenance": "assumed",
       "tokens_by_model": {
         "deepseek/deepseek-v4-flash": {
           "in": 34918181,
@@ -25006,26 +25099,26 @@
       "outcomes_by_project": {}
     },
     "2026-09": {
-      "interactions": 7292,
-      "input_tokens": 46441324,
-      "output_tokens": 3721940,
-      "cache_read_tokens": 490603136,
+      "interactions": 8127,
+      "input_tokens": 50180672,
+      "output_tokens": 4221916,
+      "cache_read_tokens": 536744057,
       "cache_write_tokens": 0,
-      "cost_effective": 15.85,
-      "cost_real": 15.85,
+      "cost_effective": 17.17,
+      "cost_real": 17.17,
       "tools": {
         "openrouter": {
-          "interactions": 7292,
-          "cost_effective": 15.85488592,
-          "cost_real": 15.85488592,
+          "interactions": 8127,
+          "cost_effective": 17.17195662,
+          "cost_real": 17.17195662,
           "models": {
             "deepseek/deepseek-v4-flash": {
               "interactions": 64,
               "cost_effective": 0.16162898
             },
             "z-ai/glm-5.3-flash": {
-              "interactions": 7228,
-              "cost_effective": 15.69325695
+              "interactions": 8063,
+              "cost_effective": 17.01032764
             }
           }
         }
@@ -25036,11 +25129,13 @@
           "cost_effective": 0.16162898
         },
         "z-ai/glm-5.3-flash": {
-          "interactions": 7228,
-          "cost_effective": 15.69325695
+          "interactions": 8063,
+          "cost_effective": 17.01032764
         }
       },
       "subscription_fees": 0.0,
+      "cost_real_tracker": 17.17,
+      "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "deepseek/deepseek-v4-flash": {
           "in": 702975,
@@ -25049,17 +25144,17 @@
           "cache_write": 0
         },
         "z-ai/glm-5.3-flash": {
-          "in": 45738349,
-          "out": 3675461,
-          "cache_read": 484595840,
+          "in": 49477697,
+          "out": 4175437,
+          "cache_read": 530736761,
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 15.85,
+      "pay_per_token_charges": 50.0,
       "interaction_kinds": {
-        "tool_call": 6813,
-        "assistant_turn": 479,
-        "user_prompt": 491
+        "tool_call": 7614,
+        "assistant_turn": 513,
+        "user_prompt": 530
       },
       "outcomes_by_project": {}
     }
@@ -25072,7 +25167,7 @@
       "cache_read_tokens": 518957146,
       "cache_write_tokens": 16895938,
       "cost_effective": 946.29,
-      "cost_real": 11.27,
+      "cost_real": 0.21,
       "tools": {
         "claude-cli": 14764,
         "codex": 1201,
@@ -25111,7 +25206,7 @@
       "cache_read_tokens": 914578663,
       "cache_write_tokens": 14687065,
       "cost_effective": 612.17,
-      "cost_real": 29.42,
+      "cost_real": 24.08,
       "tools": {
         "claude-cli": 11887,
         "openrouter": 2998,
@@ -25260,16 +25355,16 @@
       }
     },
     "charly-pretender": {
-      "interactions": 7245,
-      "input_tokens": 65783339,
-      "output_tokens": 2841539,
-      "cache_read_tokens": 530368783,
+      "interactions": 7347,
+      "input_tokens": 66358320,
+      "output_tokens": 2869173,
+      "cache_read_tokens": 533699600,
       "cache_write_tokens": 6410571,
-      "cost_effective": 195.38,
-      "cost_real": 28.94,
+      "cost_effective": 195.5,
+      "cost_real": 32.55,
       "tools": {
         "claude-cli": 3633,
-        "openrouter": 2865,
+        "openrouter": 2967,
         "codex": 747
       },
       "models": {
@@ -25279,11 +25374,12 @@
         "gpt-5.4": 491,
         "gpt-5.5": 256,
         "z-ai/glm-5.2": 202,
+        "z-ai/glm-5.3-flash": 102,
         "claude-opus-4-6": 73,
         "<synthetic>": 6
       },
       "first_seen": "2026-05-06",
-      "last_seen": "2026-08-05",
+      "last_seen": "2026-09-20",
       "skills": {
         "rule-of-5-universal": 4,
         "issue-review": 2,
@@ -25300,7 +25396,7 @@
       "cache_read_tokens": 447645876,
       "cache_write_tokens": 7469003,
       "cost_effective": 170.56,
-      "cost_real": 24.51,
+      "cost_real": 20.65,
       "tools": {
         "claude-cli": 3423,
         "openrouter": 2242,
@@ -25372,7 +25468,7 @@
       "cache_read_tokens": 262600546,
       "cache_write_tokens": 3159949,
       "cost_effective": 101.17,
-      "cost_real": 28.93,
+      "cost_real": 32.87,
       "tools": {
         "openrouter": 2226,
         "claude-cli": 1402,
@@ -25577,24 +25673,24 @@
       }
     },
     "charly-testaruda": {
-      "interactions": 10736,
-      "input_tokens": 228690936,
-      "output_tokens": 4021737,
-      "cache_read_tokens": 1203733849,
+      "interactions": 10842,
+      "input_tokens": 228962689,
+      "output_tokens": 4058580,
+      "cache_read_tokens": 1208717977,
       "cache_write_tokens": 134365,
-      "cost_effective": 47.65,
-      "cost_real": 47.65,
+      "cost_effective": 47.77,
+      "cost_real": 47.77,
       "tools": {
-        "openrouter": 10736
+        "openrouter": 10842
       },
       "models": {
         "deepseek/deepseek-v4-flash": 10232,
-        "z-ai/glm-5.3-flash": 342,
+        "z-ai/glm-5.3-flash": 448,
         "z-ai/glm-5.2": 124,
         "anthropic/claude-sonnet-4.6": 38
       },
       "first_seen": "2026-07-07",
-      "last_seen": "2026-08-28",
+      "last_seen": "2026-09-20",
       "skills": {}
     },
     "charly-paranoid": {
@@ -25604,7 +25700,7 @@
       "cache_read_tokens": 24211065,
       "cache_write_tokens": 1661022,
       "cost_effective": 41.67,
-      "cost_real": 0.02,
+      "cost_real": 0.0,
       "tools": {
         "claude-cli": 985,
         "amp": 215,
@@ -25632,7 +25728,7 @@
       "cache_read_tokens": 177921298,
       "cache_write_tokens": 173256,
       "cost_effective": 27.72,
-      "cost_real": 13.39,
+      "cost_real": 8.19,
       "tools": {
         "openrouter": 1862,
         "codex": 407,
@@ -25848,18 +25944,18 @@
       "skills": {}
     },
     "charly-coffe": {
-      "interactions": 1177,
-      "input_tokens": 8664650,
-      "output_tokens": 658309,
-      "cache_read_tokens": 75300928,
+      "interactions": 1585,
+      "input_tokens": 10327676,
+      "output_tokens": 1017521,
+      "cache_read_tokens": 101794944,
       "cache_write_tokens": 0,
-      "cost_effective": 2.33,
-      "cost_real": 2.33,
+      "cost_effective": 3.07,
+      "cost_real": 3.07,
       "tools": {
-        "openrouter": 1177
+        "openrouter": 1585
       },
       "models": {
-        "z-ai/glm-5.3-flash": 1177
+        "z-ai/glm-5.3-flash": 1585
       },
       "first_seen": "2026-09-19",
       "last_seen": "2026-09-20",
@@ -25961,6 +26057,24 @@
       "last_seen": "2026-09-17",
       "skills": {}
     },
+    "charly-tv": {
+      "interactions": 345,
+      "input_tokens": 2873396,
+      "output_tokens": 140334,
+      "cache_read_tokens": 29927864,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.84,
+      "cost_real": 0.84,
+      "tools": {
+        "openrouter": 345
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 345
+      },
+      "first_seen": "2026-09-18",
+      "last_seen": "2026-09-20",
+      "skills": {}
+    },
     "sk-smithy": {
       "interactions": 226,
       "input_tokens": 4884825,
@@ -25995,24 +26109,6 @@
       },
       "first_seen": "2026-09-09",
       "last_seen": "2026-09-10",
-      "skills": {}
-    },
-    "charly-tv": {
-      "interactions": 126,
-      "input_tokens": 1643808,
-      "output_tokens": 64047,
-      "cache_read_tokens": 18595904,
-      "cache_write_tokens": 0,
-      "cost_effective": 0.5,
-      "cost_real": 0.5,
-      "tools": {
-        "openrouter": 126
-      },
-      "models": {
-        "z-ai/glm-5.3-flash": 126
-      },
-      "first_seen": "2026-09-18",
-      "last_seen": "2026-09-19",
       "skills": {}
     },
     "sk": {
@@ -26249,14 +26345,14 @@
   "multitasking": {
     "description": "Proyectos distintos con actividad en la misma ventana. 'context_switches' cuenta cambios de proyecto entre requests consecutivos (puede inflarse por agentes paralelos en el mismo minuto).",
     "hourly": {
-      "total_active_hours": 828,
-      "hours_with_multiple_projects": 455,
-      "pct_hours_multitasking": 55.0,
-      "avg_projects_per_active_hour": 2.3,
+      "total_active_hours": 831,
+      "hours_with_multiple_projects": 459,
+      "pct_hours_multitasking": 55.2,
+      "avg_projects_per_active_hour": 2.31,
       "distribution": {
-        "1": 373,
-        "4+": 165,
-        "2": 153,
+        "1": 372,
+        "4+": 167,
+        "2": 155,
         "3": 137
       },
       "max_projects_in_one_hour": {
@@ -26421,9 +26517,9 @@
     },
     "daily": {
       "total_active_days": 154,
-      "days_with_multiple_projects": 89,
-      "pct_days_multitasking": 57.8,
-      "avg_projects_per_active_day": 3.16,
+      "days_with_multiple_projects": 90,
+      "pct_days_multitasking": 58.4,
+      "avg_projects_per_active_day": 3.18,
       "top_10_days": [
         {
           "date": "2026-07-27",
@@ -26598,8 +26694,8 @@
       ]
     },
     "context_switches": {
-      "total": 57937,
-      "avg_per_active_day": 376.2,
+      "total": 58203,
+      "avg_per_active_day": 377.9,
       "max_in_one_day": 10748,
       "top_10_days": {
         "2026-07-28": 10748,
@@ -27635,7 +27731,7 @@
         0,
         0,
         0,
-        0
+        106
       ],
       "sk-REPLy-jl": [
         0,
@@ -28400,7 +28496,7 @@
         0,
         0,
         0,
-        0
+        102
       ],
       "charly-vampiro": [
         0,
@@ -32737,6 +32833,261 @@
         0,
         0
       ],
+      "charly-coffe": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1101,
+        484
+      ],
       "charly-fabbro": [
         60,
         111,
@@ -33501,261 +33852,6 @@
         0,
         0,
         0
-      ],
-      "charly-coffe": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        1101,
-        76
       ],
       "charly-whisper": [
         0,
@@ -35287,6 +35383,261 @@
         0,
         0
       ],
+      "charly-tv": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        101,
+        25,
+        219
+      ],
       "charly-nayra": [
         0,
         0,
@@ -36305,261 +36656,6 @@
         0,
         0,
         0,
-        0
-      ],
-      "charly-tv": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        101,
-        25,
         0
       ],
       "sk-poco": [
@@ -37955,6 +38051,10 @@
       "2026-08": {
         "interactions": 393,
         "cost_effective": 1.398889968
+      },
+      "2026-09": {
+        "interactions": 102,
+        "cost_effective": 0.11999319599999997
       }
     },
     "sk-clojure-tutor": {
@@ -38025,6 +38125,10 @@
       "2026-08": {
         "interactions": 690,
         "cost_effective": 1.7026897599999988
+      },
+      "2026-09": {
+        "interactions": 106,
+        "cost_effective": 0.12522497399999996
       }
     },
     "sk-cositos": {
@@ -38127,14 +38231,14 @@
     },
     "charly-tv": {
       "2026-09": {
-        "interactions": 126,
-        "cost_effective": 0.5018830919999999
+        "interactions": 345,
+        "cost_effective": 0.8394073919999994
       }
     },
     "charly-coffe": {
       "2026-09": {
-        "interactions": 1177,
-        "cost_effective": 2.3327279040000013
+        "interactions": 1585,
+        "cost_effective": 3.0670561320000007
       }
     }
   },
@@ -38701,6 +38805,10 @@
       "z-ai/glm-5.2": {
         "interactions": 202,
         "cost_effective": 2.29969842
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 102,
+        "cost_effective": 0.1199932
       }
     },
     "sk-clojure-tutor": {
@@ -38797,8 +38905,8 @@
         "cost_effective": 1.01735629
       },
       "z-ai/glm-5.3-flash": {
-        "interactions": 342,
-        "cost_effective": 0.53601936
+        "interactions": 448,
+        "cost_effective": 0.66124433
       }
     },
     "sk-cositos": {
@@ -38897,14 +39005,14 @@
     },
     "charly-tv": {
       "z-ai/glm-5.3-flash": {
-        "interactions": 126,
-        "cost_effective": 0.50188309
+        "interactions": 345,
+        "cost_effective": 0.83940739
       }
     },
     "charly-coffe": {
       "z-ai/glm-5.3-flash": {
-        "interactions": 1177,
-        "cost_effective": 2.3327279
+        "interactions": 1585,
+        "cost_effective": 3.06705613
       }
     }
   },
@@ -38912,7 +39020,7 @@
     "distinct_projects_per_hour": {
       "measure": "parallel-agent",
       "peak": 10,
-      "avg": 2.3
+      "avg": 2.31
     },
     "peak_simultaneous_sessions": {
       "measure": "parallel-agent",
@@ -38921,11 +39029,11 @@
     },
     "project_switches_per_active_hour": {
       "measure": "human-context-switching",
-      "value": 69.97
+      "value": 70.04
     }
   },
   "filtered_out": {
-    "interactions": 170,
+    "interactions": 171,
     "cost_effective": 0.0,
     "by_tool": {
       "claude-cli": 0,
@@ -38948,41 +39056,569 @@
       {
         "start": "2026-03-19",
         "end": "2026-04-19",
-        "label": "Pro $20/mes",
-        "monthly_fee": 20
-      },
-      {
-        "start": "2026-04-19",
-        "end": "2026-06-19",
         "label": "Max $100/mes",
         "monthly_fee": 100
       },
       {
-        "start": "2026-06-19",
-        "end": null,
+        "start": "2026-04-19",
+        "end": "2026-05-19",
+        "label": "Max $100/mes",
+        "monthly_fee": 100
+      },
+      {
+        "start": "2026-05-19",
+        "end": "2026-06-19",
         "label": "Pro $20/mes",
         "monthly_fee": 20
       }
     ],
     "codex": [
       {
-        "start": "2026-04-01",
-        "end": "2026-05-15",
-        "label": "Subscripci\u00f3n",
-        "monthly_fee": 10
+        "start": "2026-04-02",
+        "end": "2026-05-02",
+        "label": "ChatGPT Plus $20/mes",
+        "monthly_fee": 20
       },
       {
-        "start": "2026-05-15",
-        "end": null,
-        "label": "Pay-per-token",
-        "monthly_fee": 0
+        "start": "2026-05-02",
+        "end": "2026-06-02",
+        "label": "ChatGPT Plus $20/mes",
+        "monthly_fee": 20
+      }
+    ],
+    "gemini-cli": [
+      {
+        "start": "2025-12-03",
+        "end": "2026-06-03",
+        "label": "Google AI Pro $19.99/mes",
+        "monthly_fee": 19.99
       }
     ]
   },
   "subscription_fees_by_month": {
-    "2026-04": 110.0,
-    "2026-05": 100.0,
-    "2026-06": 20.0
+    "2026-04": 139.99,
+    "2026-05": 59.989999999999995
+  },
+  "charges_real_by_month": {
+    "claude-cli": {
+      "2025-10": 200.0,
+      "2026-01": 20.0,
+      "2026-02": 11.78,
+      "2026-03": 100.0,
+      "2026-04": 100.0,
+      "2026-05": 20.0
+    },
+    "codex": {
+      "2026-04": 20.0,
+      "2026-05": 20.0
+    },
+    "amp": {
+      "2025-12": 50.0,
+      "2026-01": 80.0,
+      "2026-02": 80.0,
+      "2026-05": 10.0,
+      "2026-07": 55.0
+    },
+    "gemini-cli": {
+      "2025-12": 19.99,
+      "2026-01": 19.99,
+      "2026-02": 19.99,
+      "2026-03": 19.99,
+      "2026-04": 19.99,
+      "2026-05": 19.99
+    },
+    "openrouter": {
+      "2026-02": 20.0,
+      "2026-06": 20.0,
+      "2026-07": 380.0,
+      "2026-09": 50.0
+    }
+  },
+  "charges_reconciliation_by_month": {
+    "2025-10": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "claude-cli": {
+        "charges_real": 200.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "gemini-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      }
+    },
+    "2025-12": {
+      "amp": {
+        "charges_real": 50.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "claude-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      }
+    },
+    "2026-01": {
+      "amp": {
+        "charges_real": 80.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "claude-cli": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      }
+    },
+    "2026-02": {
+      "amp": {
+        "charges_real": 80.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "claude-cli": {
+        "charges_real": 11.78,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      },
+      "openrouter": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 19.99
+      }
+    },
+    "2026-03": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      },
+      "claude-cli": {
+        "charges_real": 100.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 100.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 119.99
+      }
+    },
+    "2026-04": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 139.99
+      },
+      "claude-cli": {
+        "charges_real": 100.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 100.0,
+        "cost_effective": 931.582943,
+        "fee_month_total": 139.99
+      },
+      "codex": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 20.0,
+        "cost_effective": 178.44427565,
+        "fee_month_total": 139.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 139.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 139.99
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 139.99
+      }
+    },
+    "2026-05": {
+      "amp": {
+        "charges_real": 10.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 59.99
+      },
+      "claude-cli": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 20.0,
+        "cost_effective": 1777.296989,
+        "fee_month_total": 59.99
+      },
+      "codex": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 20.0,
+        "cost_effective": 269.951593,
+        "fee_month_total": 59.99
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 59.99
+      },
+      "gemini-cli": {
+        "charges_real": 19.99,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 19.99,
+        "cost_effective": 0.0,
+        "fee_month_total": 59.99
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 59.99
+      }
+    },
+    "2026-06": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "claude-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 335.74101855,
+        "fee_month_total": 0.0
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 3.167829,
+        "fee_month_total": 0.0
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "gemini-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "openrouter": {
+        "charges_real": 20.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 1.07246239,
+        "fee_month_total": 0.0
+      }
+    },
+    "2026-07": {
+      "amp": {
+        "charges_real": 55.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "claude-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "gemini-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "openrouter": {
+        "charges_real": 380.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 276.76601861,
+        "fee_month_total": 0.0
+      }
+    },
+    "2026-08": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "claude-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "gemini-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "openrouter": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 22.99959941,
+        "fee_month_total": 0.0
+      }
+    },
+    "2026-09": {
+      "amp": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "claude-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "codex": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "copilot": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "gemini-cli": {
+        "charges_real": 0.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 0.0,
+        "fee_month_total": 0.0
+      },
+      "openrouter": {
+        "charges_real": 50.0,
+        "charges_provenance": "reported",
+        "subscription_fee_implicit": 0.0,
+        "cost_effective": 17.17195662,
+        "fee_month_total": 0.0
+      }
+    }
   },
   "model_pricing_config": {
     "default_rates": {
