@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "usage-report-v3.schema.json",
   "title": "usage_report_v3.json — contrato tracker → visualizaciones",
-  "description": "Esquema del reporte que produce scripts/usage-tracker.py y consumen viz-gantt.py y viz-dashboard.py. Cambiar aquí implica regenerar golden (REGEN_GOLDEN=1) y bump de versión.",
+  "description": "Esquema del reporte que produce scripts/usage-tracker.py y consume viz-gantt.py y viz-fpa.py (el dashboard de insights fue eliminado en coffe-gen.5). Cambiar aquí implica regenerar golden (REGEN_GOLDEN=1) y bump de versión.",
   "type": "object",
   "required": ["metadata", "hourly", "daily", "monthly", "projects", "skills", "commands", "sessions", "multitasking", "project_daily", "subscription_config", "subscription_fees_by_month"],
   "properties": {

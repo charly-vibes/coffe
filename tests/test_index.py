@@ -50,9 +50,22 @@ class TestRender(unittest.TestCase):
         self.html = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES), SITE_NAME)
 
     def test_links_dashboards_and_json(self):
-        for href in ("data/fpa-dashboard.html", "data/dashboard.html",
-                     "data/gantt-multitasking.html", "data/usage_report_v3.json"):
+        for href in ("data/fpa-dashboard.html", "data/fpa-guide.html",
+                     "data/gantt-multitasking.html",
+                     "data/usage_report_v3.json"):
             self.assertIn(f'href="{href}"', self.html)
+
+    def test_insights_eliminado_del_indice(self):
+        """coffe-gen.5: el dashboard de insights se elimina — ni entrada
+        en el índice ni HTML publicado."""
+        self.assertNotIn("data/dashboard.html", self.html)
+        self.assertNotIn("insights", self.html)
+        self.assertFalse(
+            (ROOT / "data" / "dashboard.html").exists(),
+            "data/dashboard.html debe estar eliminado del repo/deploy")
+        self.assertFalse(
+            (ROOT / "scripts" / "viz-dashboard.py").exists(),
+            "scripts/viz-dashboard.py debe estar eliminado del repo")
 
     def test_no_retired_entries(self):
         self.assertNotIn("usage_report_v2.json", self.html)

@@ -57,9 +57,11 @@ def _root_vars(html):
 
 
 def _visible_text(html):
-    """Texto visible crudo (sin atributos, sin <style>/<script>)."""
+    """Texto visible crudo (sin atributos, sin <style>/<script>), con
+    entidades HTML decodificadas — sin esto, 'FP&A' pasa el check."""
+    import html as html_mod
     body = re.sub(r"<(style|script)[^>]*>.*?</\1>", "", html, flags=re.S)
-    return re.sub(r"<[^>]+>", " ", body)
+    return html_mod.unescape(re.sub(r"<[^>]+>", " ", body))
 
 
 def _luminance(hex_color):

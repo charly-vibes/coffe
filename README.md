@@ -20,8 +20,9 @@ de los últimos meses.
 |---------|-----------|
 | `scripts/usage-tracker.py` | Extractor de uso de IA v4.3. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force`, `--filter {charly,all}` (default charly), `--since/--until YYYY-MM-DD` (ventana inclusive, coffe-snj), `--config RUTA` (ver "Uso"). SUBSCRIPTIONS/MODEL_PRICING se cargan de `config/fpa.json` (coffe-mbz). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
-| `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
-| `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard FP&A (presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON, FPA-143). |
+| `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard principal "Uso y costos de IA" (nombre llano del `site_name` del config; presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Tema compartido del sitio en `scripts/site_theme.py` (coffe-gen.2). Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON FPA-143 + grounding de la guía, coffe-gen.3). |
+| `scripts/viz_fpa_guide.py` | Parser de `docs/fpa-analyses-guide.md` (guía de análisis a 4 niveles, en español) → `data/fpa-guide.html` + marginalia con chips expandibles en el dashboard y el Gantt (coffe-gen.3/4). `--check` valida el grounding (mapeo + umbrales vs config). |
+| `scripts/site_theme.py` | Tokens del tema compartido del sitio ("Corporate Infographics™ 1996"): única fuente de la paleta/tipografía para viz-fpa, viz-index y viz-gantt. |
 | `scripts/viz-index.py` | Genera `index.html`: entrada del sitio en Pages (estética 90s-corporate). Deriva las cifras del marquee y la fecha de actualización del reporte, así el índice nunca queda stale. Se regenera en el deploy de CI. |
 
 ### Datos generados
@@ -29,9 +30,19 @@ de los últimos meses.
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
 | `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
-| `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffee/data/dashboard.html>. |
+Jerarquía del sitio (coffe-gen.5): el dashboard principal es **Uso y
+costos de IA** (`data/fpa-dashboard.html`); el dashboard de insights
+(`data/dashboard.html`, antes generado por `scripts/viz-dashboard.py`)
+fue **eliminado** del repo y del deploy — todo su contenido está cubierto
+por el dashboard principal (sin visitas registradas; histórico en git).
+El Gantt se conserva como visualización única de su tipo.
+
+| Archivo | Tamaño | Contenido |
+|---------|--------|-----------|
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
+| `data/fpa-dashboard.html` | 1.7M | **Dashboard principal — Uso y costos de IA.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL; marginalia con guía a 4 niveles. En <https://charly-vibes.github.io/coffee/data/fpa-dashboard.html>. |
+| `data/fpa-guide.html` | — | **Guía de análisis.** Los 19 análisis del dashboard explicados a 4 niveles (ELI5 → experto), en español, con grounding verificado por `--check-docs`. En <https://charly-vibes.github.io/coffee/data/fpa-guide.html>. |
 | `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffee/data/gantt-multitasking.html>). |
-| `data/fpa-dashboard.html` | 1.7M | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffee/data/fpa-dashboard.html>. |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -70,10 +81,10 @@ python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requier
 python3 scripts/usage-tracker.py --since 2026-01-01 --until 2026-06-30 --output data/usage_report_v2.json
                                    # subconjunto reproducible: ventana temporal (extremos inclusive, fechas UTC; coffe-snj)
 python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON
-python3 scripts/viz-dashboard.py   # regenera data/dashboard.html desde el JSON
 python3 scripts/viz-fpa.py         # regenera data/fpa-dashboard.html desde el JSON
+python3 scripts/viz_fpa_guide.py   # regenera data/fpa-guide.html desde la guía en docs/
 python3 scripts/viz-fpa.py --check-docs  # verificar cifras del README (FPA-143)
-python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas (viz-dashboard.py igual)
+python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas
 ```
 
 Notas de reproducibilidad entre máquinas:

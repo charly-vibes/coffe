@@ -105,12 +105,8 @@ TEMPLATE = """<!DOCTYPE html>
   <table class="dir">
     <tr><th colspan="2">ÍNDICE DE REPORTES — EDICIÓN @@EDICION@@</th></tr>
     <tr>
-      <td><a href="data/fpa-dashboard.html">Dashboard FP&amp;A</a><br>
-          <span class="desc">Presupuestos, bridge precio-volumen-mix, forecast, alertas, cash real del ledger y economía de suscripción</span></td>
-    </tr>
-    <tr>
-      <td><a href="data/dashboard.html">Dashboard de insights</a><br>
-          <span class="desc">Tendencias mensuales, top proyectos, skills, comandos, heatmap, sesiones</span></td>
+      <td><a href="data/fpa-dashboard.html">@@SITE_NAME@@</a><br>
+          <span class="desc">Dashboard principal: presupuestos, bridge precio-volumen-mix, forecast, alertas, cash real del ledger y economía de suscripción</span></td>
     </tr>
     <tr>
       <td><a href="data/fpa-guide.html">Guía de análisis</a><br>

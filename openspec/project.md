@@ -26,7 +26,7 @@ Extracted from the `microdancing` blog's `data/datos-uso-ia` branch (original ti
 - `scripts/usage-tracker.py` reads raw tool traces from `~/.claude`, `~/.pi/agent`, `~/.amp` (Gemini arrives via Pi) → writes `data/usage_report_v3.json` (schema: `specs/usage-report-v3.schema.json`)
 - Inside the tracker: extractors (`extract_*`) → `collect_skills_and_commands()` → pure `aggregate()` built on `Bucket`/`HourlyBucket` classes with injected skills/commands
 - `scripts/viz-gantt.py` reads the JSON report → writes `data/gantt-multitasking.html` (project × day Gantt with concurrency row)
-- `scripts/viz-dashboard.py` reads the JSON report → writes `data/dashboard.html` (insights dashboard)
+- `scripts/viz-fpa.py` reads the JSON report → writes `data/fpa-dashboard.html` (the main dashboard; the old insights dashboard was removed in coffe-gen.5, see git history for `viz-dashboard.py`)
 - Both viz scripts accept `--validate` (validates against the JSON Schema; needs `jsonschema`)
 - Generated artifacts are committed under `data/` alongside the code that produced them
 

@@ -20,7 +20,6 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 PAGES = [
-    REPO / "data" / "dashboard.html",
     REPO / "data" / "gantt-multitasking.html",
     REPO / "data" / "fpa-dashboard.html",
 ]
@@ -67,11 +66,7 @@ class TestVizPages(unittest.TestCase):
                 pg.wait_for_timeout(500)
                 self.assertEqual(errors, [],
                                  f"{page_path.name}: errores de JS en runtime: {errors}")
-                if page_path.name == "dashboard.html":
-                    n = pg.eval_on_selector_all("svg", "els => els.length")
-                    self.assertGreaterEqual(n, 7,
-                        f"dashboard: {n} SVGs renderizados, se esperaban ≥ 7")
-                elif page_path.name == "fpa-dashboard.html":
+                if page_path.name == "fpa-dashboard.html":
                     # FPA-108: resumen ejecutivo no vacío y sin placeholders sin valor
                     vals = pg.eval_on_selector_all(
                         ".headline .val",
