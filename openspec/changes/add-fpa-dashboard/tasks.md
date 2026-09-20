@@ -34,24 +34,24 @@
 
 ## 2. Datos, jerarquías y KPIs (FPA-010…045, 140–142)
 
-- [ ] 2.1 Emisiones tracker: breakdown por tool/model (FPA-011), project totals via
+- [x] 2.1 Emisiones tracker: breakdown por tool/model (FPA-011), project totals via
       `project_daily` (FPA-012), pay-per-token separado de suscripción con
       provenance assumed (no hay cargas reales, FPA-013), commits/releases con
       token GitHub (FPA-014), tokens in/out/cache por mes y modelo (FPA-019)
-- [ ] 2.2 Emisiones tracker: interacciones por kind con share de tool-calls
+- [x] 2.2 Emisiones tracker: interacciones por kind con share de tool-calls
       (FPA-140), proyectos filtrados por charly-filter con share (FPA-141),
       timezone registrada (FPA-142), concurrencia/paralelismo (FPA-120)
-- [ ] 2.3 Árboles expandibles Time/Tool/Portfolio con columnas completas y
+- [x] 2.3 Árboles expandibles Time/Tool/Portfolio con columnas completas y
       recompute al cambiar el periodo (FPA-020…026); roll-up ≤ $0.01 y 1
       interacción (FPA-025); Portfolio limitado al periodo completo con la
       limitación visible mientras no haya project-by-month (FPA-027)
-- [ ] 2.4 KPI strip: KPIs FPA-030…045 del periodo con sparkline y delta vs prior;
+- [x] 2.4 KPI strip: KPIs FPA-030…045 del periodo con sparkline y delta vs prior;
       outcome KPIs si hay datos (FPA-040); daily rates en meses parciales (FPA-041);
       "n/a" con denominador cero (FPA-042)
-- [ ] 2.5 Token KPIs: cache-hit rate (FPA-043), ratio out/in (FPA-044), n/a por
+- [x] 2.5 Token KPIs: cache-hit rate (FPA-043), ratio out/in (FPA-044), n/a por
       tool con share excluido (FPA-045)
-- [ ] 2.6 Periodo sin datos → exclusión de trends y marker n/a (FPA-017)
-- [ ] 2.7 Tests dorados de KPIs + roll-up (FPA-101) con fixture de meses parciales
+- [x] 2.6 Periodo sin datos → exclusión de trends y marker n/a (FPA-017)
+- [x] 2.7 Tests dorados de KPIs + roll-up (FPA-101) con fixture de meses parciales
       (FPA-102)
 
 ## 3. Presupuesto, bridge y forecast (FPA-050…077)

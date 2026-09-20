@@ -147,15 +147,47 @@ def extract_claude(skipped=None):
     `skipped`: dict opcional; se incrementa con las líneas/archivos descartados
     por error de parseo (visible en metadata.skipped_lines del reporte).
     """
+def _kind_of_claude(entry, msg):
+    """FPA-140: kind del evento Claude. user_prompt se cuenta aparte (no
+genera fila de coste); tool_call si el bloque assistant trae tool_use."""
+    if entry.get("type") == "user":
+        return "user_prompt"
+    content = msg.get("content")
+    if isinstance(content, list) and any(
+            isinstance(b, dict) and b.get("type") == "tool_use" for b in content):
+        return "tool_call"
+    return "assistant_turn"
+
+
+def extract_claude(skipped=None, kinds=None, excluded=None):
+    """
+    Read Claude JSONL files + dashboard cache.
+    Uses cache cost where available (more accurate), falls back to token-based estimate.
+    Returns deduplicated rows (no double counting between JSONL and cache).
+
+    `skipped`: dict opcional; se incrementa con las líneas/archivos descartados
+    por error de parseo (visible en metadata.skipped_lines del reporte).
+    `kinds`: dict opcional {mes: Counter} de eventos por kind (FPA-140),
+    incluidos user prompts (no generan fila de coste).
+    Devuelve (rows, excluded_rows): las excluidas son de proyectos fuera del
+    filtro charly (FPA-141) y NO entran al reporte; timestamps crudos.
+    """
+    excluded_rows = []
     # Step 1: Read JSONL files
     jsonl_rows = []
     projects_dir = CLAUDE_DIR / "projects"
     if not projects_dir.exists():
-        return []  # máquina sin logs de Claude (el guard de main() se encarga del resto)
+        return [], []  # máquina sin logs de Claude (el guard de main() se encarga del resto)
     for pd in projects_dir.iterdir():
         if not pd.is_dir(): continue
         proj = pd.name
-        if not is_charly(proj): continue
+        if not is_charly(proj):
+            # FPA-141: registrar lo excluido, no descartarlo en silencio
+            n_files = len(list(pd.glob("*.jsonl")))
+            excluded_rows.append({"project": proj, "tool": "claude-cli",
+                                  "interactions": n_files, "cost_effective": None,
+                                  "timestamp": None})
+            continue
         for f in pd.glob("*.jsonl"):
             try:
                 with open(f) as fh:
@@ -163,9 +195,16 @@ def extract_claude(skipped=None):
                         entry = json.loads(line)
                         ts = parse_ts(entry.get("timestamp"))
                         if not ts: continue
+                        if entry.get("type") == "user":
+                            if kinds is not None:
+                                kinds.setdefault(ts.strftime("%Y-%m"), Counter())["user_prompt"] += 1
+                            continue
                         if entry.get("type") == "assistant":
                             msg = entry.get("message", {})
                             if isinstance(msg, str): msg = json.loads(msg)
+                            if kinds is not None:
+                                kinds.setdefault(ts.strftime("%Y-%m"), Counter())[
+                                    _kind_of_claude(entry, msg)] += 1
                             usage = msg.get("usage", {}) or {}
                             model = msg.get("model", "unknown")
                             fam, ver = model_details(model)
@@ -188,6 +227,7 @@ def extract_claude(skipped=None):
                                 "cache_read_tokens": cache_r,
                                 "cache_write_tokens": cache_c,
                                 "cost_effective": cost,
+                                "kind": _kind_of_claude(entry, msg),
                             })
             except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
                 if skipped is not None:
@@ -244,19 +284,27 @@ def extract_claude(skipped=None):
                 "cache_read_tokens": 0,
                 "cache_write_tokens": 0,
                 "cost_effective": cost,
+                "kind": "assistant_turn",
             })
 
-    return merged
+    return merged, excluded_rows
 
 
-def extract_pi(skipped=None):
+def extract_pi(skipped=None, kinds=None, excluded=None):
+    """Extrae sesiones Pi. kinds/excluded como en extract_claude
+    (FPA-140/141). Devuelve (rows, excluded_rows)."""
     rows = []
+    excluded_rows = []
     sessions_dir = PI_DIR / "sessions"
-    if not sessions_dir.exists(): return rows
+    if not sessions_dir.exists(): return rows, excluded_rows
     for sd in sessions_dir.iterdir():
         if not sd.is_dir(): continue
         proj = sd.name
-        if not is_charly(proj): continue
+        if not is_charly(proj):
+            excluded_rows.append({"project": proj, "tool": "pi",
+                                  "interactions": len(list(sd.glob("*.jsonl"))),
+                                  "cost_effective": None, "timestamp": None})
+            continue
         for f in sd.glob("*.jsonl"):
             try:
                 with open(f) as fh:
@@ -264,7 +312,14 @@ def extract_pi(skipped=None):
                         entry = json.loads(line)
                         if entry.get("type") != "message": continue
                         msg = entry.get("message", {}) or {}
-                        if msg.get("role") != "assistant": continue
+                        role = msg.get("role")
+                        if role == "user":
+                            # FPA-140: user prompts se cuentan, no generan fila de coste
+                            ts_u = parse_ts(entry.get("timestamp"))
+                            if kinds is not None and ts_u is not None:
+                                kinds.setdefault(ts_u.strftime("%Y-%m"), Counter())["user_prompt"] += 1
+                            continue
+                        if role != "assistant": continue
                         usage = msg.get("usage", {}) or {}
                         # Cost can be a dict {input, output, cacheRead, cacheWrite, total} or a number
                         cost_info = usage.get("cost", {})
@@ -276,6 +331,10 @@ def extract_pi(skipped=None):
                         provider = entry.get("provider", msg.get("provider", ""))
                         ts = parse_ts(entry.get("timestamp"))
                         if not ts: continue
+                        if kinds is not None:
+                            # FPA-140: Pi registra tool calls como partes del mensaje
+                            kind = "tool_call" if _pi_has_tool_call(msg) else "assistant_turn"
+                            kinds.setdefault(ts.strftime("%Y-%m"), Counter())[kind] += 1
                         fam, ver = model_details(model)
                         tool_map = {"openai-codex": "codex", "claude-cli": "claude-cli",
                                     "google-gemini-cli": "gemini-cli", "gemini-cli": "gemini-cli",
@@ -300,6 +359,7 @@ def extract_pi(skipped=None):
                             "cache_read_tokens": cache_r or 0,
                             "cache_write_tokens": cache_w or 0,
                             "cost_effective": cost,
+                            "kind": "tool_call" if _pi_has_tool_call(msg) else "assistant_turn",
                         })
             except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
                 if skipped is not None:
@@ -307,7 +367,24 @@ def extract_pi(skipped=None):
                     skipped[k] = skipped.get(k, 0) + 1
                 elif os.environ.get("TRACKER_DEBUG"):
                     print(f"  [skipped] {f.name}: {e}", file=sys.stderr)
-    return rows
+    return rows, excluded_rows
+
+
+def _pi_has_tool_call(msg):
+    """FPA-140: detección best-effort de tool calls en mensajes Pi
+    (formato AI SDK: parts/content con type tool-*/toolUse)."""
+    for container in (msg.get("parts"), msg.get("content"), msg.get("toolCalls")):
+        if isinstance(container, list):
+            for part in container:
+                if isinstance(part, dict):
+                    ptype = str(part.get("type", ""))
+                    if ptype.startswith("tool") or "toolCall" in ptype:
+                        return True
+                elif isinstance(part, str) and part in ("tool-call", "tool_use"):
+                    return True
+        elif isinstance(container, list) and container:
+            return False
+    return False
 
 
 def extract_amp():
@@ -369,6 +446,8 @@ def extract_session_stats():
         sessions.append({
             "project": proj,
             "first_ts": (fs or " ")[:10],
+            "first_ts_full": fs,
+            "last_ts_full": ls,
             "duration_msgs": msgs,
             "n_turns": n_turns,
             "n_tools": len(tools),
@@ -378,6 +457,46 @@ def extract_session_stats():
             "n_compactions": n_compactions,
         })
     return sessions
+
+
+def collect_outcomes():
+    """FPA-014: commits/releases por proyecto por mes vía token de GitHub.
+
+    Sin GITHUB_TOKEN (o sin mapeo proyecto→repo) se emite la estructura vacía
+    con la razón en metadata.outcomes — n/a explícito, nunca inventado.
+    """
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if not token:
+        return {}, "unavailable: no hay GITHUB_TOKEN — commits/releases no emisionados"
+    # Con token haría falta el mapeo proyecto local → repo remoto (no existe aún);
+    # F6 lo conecta. Estructura ya declarada en el schema (monthly.outcomes_by_project).
+    return {}, "unavailable: mapeo proyecto→repo GitHub pendiente (ver README)"
+
+
+def _peak_simultaneous_sessions(sessions):
+    """FPA-120(b): máximo solapamiento de sesiones con sweep line.
+    None si falta algún timestamp (no se puede computar con honestidad)."""
+    intervals = []
+    for s in sessions:
+        f = s.get("first_ts_full") or s.get("first_ts")
+        l = s.get("last_ts_full") or s.get("last_ts")
+        if not f or not l:
+            return None
+        fi, li = parse_ts(f), parse_ts(l)
+        if not fi or not li or len(str(f)) < 16:  # solo fecha = sin hora, no computable
+            return None
+        intervals.append((fi, li))
+    events = []
+    for fi, li in intervals:
+        events.append((fi, 1))
+        events.append((li, -1))
+    # cierres antes de aperturas en el mismo instante → no cuenta doble
+    events.sort(key=lambda e: (e[0], e[1]))
+    peak = cur = 0
+    for _, delta in events:
+        cur += delta
+        peak = max(peak, cur)
+    return peak
 
 
 def get_sub_cost(tool, ts_str, eff_cost):
@@ -690,7 +809,8 @@ def collect_skills_and_commands():
 
 
 def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
-              commands=None):
+              commands=None, excluded=None, interaction_kinds=None,
+              outcomes=None, outcomes_reason=None):
     """Agrega rows → reporte completo. Pura: los datos de skills/comandos
     se inyectan (ver collect_skills_and_commands())."""
     hourly = {}
@@ -700,6 +820,19 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
     hour_projects = defaultdict(set)  # hora -> proyectos distintos activos
     day_projects = defaultdict(set)   # día -> proyectos distintos activos
     proj_day = defaultdict(Counter)   # proyecto -> {día: interacciones}
+    row_kinds = defaultdict(Counter)  # FPA-140: kinds desde filas (assistant/tool)
+    # FPA-011/019: breakdown mensual por tool y modelo
+    month_tools = defaultdict(lambda: defaultdict(lambda: {
+        "interactions": 0, "cost_effective": 0.0, "cost_real": 0.0,
+        "models": defaultdict(lambda: {"interactions": 0, "cost_effective": 0.0})}))
+    month_models = defaultdict(lambda: defaultdict(lambda: {
+        "interactions": 0, "cost_effective": 0.0,
+        "in": 0, "out": 0, "cache_read": 0, "cache_write": 0}))
+    # FPA-012/021: proyecto × mes y proyecto × modelo
+    project_monthly = defaultdict(lambda: defaultdict(lambda: {
+        "interactions": 0, "cost_effective": 0.0}))
+    project_models = defaultdict(lambda: defaultdict(lambda: {
+        "interactions": 0, "cost_effective": 0.0}))
 
     for r in interactions:
         h = r["hour"]
@@ -720,6 +853,33 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
         proj_day[proj][d] += 1
         if proj not in by_project: by_project[proj] = Bucket()
         by_project[proj].add(r, real)
+        # FPA-011: tool/model del mes
+        mt = month_tools[m][r["tool"]]
+        mt["interactions"] += 1
+        mt["cost_effective"] += r.get("cost_effective", 0) or 0
+        mt["cost_real"] += real
+        mtm = mt["models"][r["model_raw"]]
+        mtm["interactions"] += 1
+        mtm["cost_effective"] += r.get("cost_effective", 0) or 0
+        mm = month_models[m][r["model_raw"]]
+        mm["interactions"] += 1
+        mm["cost_effective"] += r.get("cost_effective", 0) or 0
+        mm["in"] += r.get("input_tokens", 0) or 0
+        mm["out"] += r.get("output_tokens", 0) or 0
+        mm["cache_read"] += r.get("cache_read_tokens", 0) or 0
+        mm["cache_write"] += r.get("cache_write_tokens", 0) or 0
+        # FPA-012/021
+        pmm = project_monthly[proj][m]
+        pmm["interactions"] += 1
+        pmm["cost_effective"] += r.get("cost_effective", 0) or 0
+        pmo = project_models[proj][r["model_raw"]]
+        pmo["interactions"] += 1
+        pmo["cost_effective"] += r.get("cost_effective", 0) or 0
+        # FPA-140: interacciones por kind — filas (assistant/tool) + inyectados
+        # (user prompts de extractores)
+        kind_key = (r.get("timestamp") or "")[:7]
+        if kind_key:
+            row_kinds.setdefault(kind_key, Counter())[r.get("kind", "assistant_turn")] += 1
         # first/last seen
         ts = r["timestamp"]
         pp = by_project[proj]
@@ -751,6 +911,38 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             if d_key[:7] == m_key:
                 d_data.cost_real += fee / 30.0  # prorated roughly
 
+    # --- Emisiones F2 (coffe-lat.3) en monthly_dicts ---
+    for m_key, mo in monthly_dicts.items():
+        # FPA-011: breakdown por tool con coste (interacciones + coste efectivo)
+        mo["tools"] = {t: {
+            "interactions": st["interactions"],
+            "cost_effective": round(st["cost_effective"], 8),
+            "cost_real": round(st["cost_real"], 8),
+            "models": {mm: {"interactions": ms["interactions"],
+                            "cost_effective": round(ms["cost_effective"], 8)}
+                       for mm, ms in sorted(st["models"].items())},
+        } for t, st in sorted(month_tools.get(m_key, {}).items())}
+        # FPA-011: breakdown por modelo con coste
+        mo["models"] = {m: {
+            "interactions": st["interactions"],
+            "cost_effective": round(st["cost_effective"], 8),
+        } for m, st in sorted(month_models.get(m_key, {}).items())}
+        # FPA-019: tokens por mes y modelo (in/out/cache_read/cache_write)
+        mo["tokens_by_model"] = {m: {
+            "in": st["in"], "out": st["out"],
+            "cache_read": st["cache_read"], "cache_write": st["cache_write"],
+        } for m, st in sorted(month_models.get(m_key, {}).items())}
+        # FPA-013: cargas pay-per-token separadas de suscripción (assumed:
+        # estimadas por tokens × pricing; no hay cargas reales registradas)
+        mo["pay_per_token_charges"] = round(
+            mo["cost_real"] - mo.get("subscription_fees", 0.0), 8)
+        # FPA-140: kinds del mes = filas + inyectados (user prompts)
+        mo["interaction_kinds"] = dict(Counter(
+            {**row_kinds.get(m_key, {}),
+             **(interaction_kinds or {}).get(m_key, {})}))
+        # FPA-014: outcomes donde haya GitHub token (vacío si no, con razón)
+        mo["outcomes_by_project"] = (outcomes or {}).get(m_key, {})
+
     # --- Skills (inyectados; default: colección en vivo) ---
     if skills_total is None or skills_by_project is None or commands is None:
         skills_total, skills_by_project, commands = collect_skills_and_commands()
@@ -765,6 +957,59 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
 
     # --- project_daily ---
     project_daily = _project_daily(by_project, day_projects, proj_day)
+
+    # --- FPA-120: concurrencia etiquetada ---
+    active_hours = len(hour_projects)
+    total_switches = sum(switches_by_day.values())
+    peak_projects = max((len(ps) for ps in hour_projects.values()), default=0)
+    peak_sessions = _peak_simultaneous_sessions(sessions)
+    concurrency = {
+        "distinct_projects_per_hour": {
+            "measure": "parallel-agent",  # proyectos/hora puede inflarse por agentes
+            "peak": peak_projects,
+            "avg": round(sum(len(ps) for ps in hour_projects.values()) / active_hours, 2)
+            if active_hours else 0,
+        },
+        "peak_simultaneous_sessions": {
+            "measure": "parallel-agent",
+            "peak": peak_sessions,  # None → n/a en el dashboard (FPA-008)
+            "reason": None if peak_sessions is not None
+            else "sesiones sin timestamps completos (first_ts/last_ts)",
+        },
+        "project_switches_per_active_hour": {
+            "measure": "human-context-switching",
+            "value": round(total_switches / active_hours, 2) if active_hours else 0,
+        },
+    }
+
+    # --- FPA-141: excluidos por el filtro charly ---
+    excluded = excluded or []
+
+    def _excl_n(e):
+        # fila completa (1 interacción) o resumen por proyecto (contador)
+        return e["interactions"] if e.get("interactions") is not None else 1
+
+    filtered_interactions = sum(_excl_n(e) for e in excluded)
+    filtered_cost = sum(
+        (e.get("cost_effective") or 0) * _excl_n(e) for e in excluded
+        if e.get("cost_effective") is not None)
+    total_all = sum(b.interactions for b in hourly.values()) + filtered_interactions
+    filtered_out = {
+        "interactions": filtered_interactions,
+        "cost_effective": round(filtered_cost, 2) if filtered_cost else 0.0,
+        "by_tool": dict(Counter({e.get("tool", "?"): _excl_n(e)
+                                 for e in excluded})),
+        "share": round(filtered_interactions / total_all, 4) if total_all else 0.0,
+    }
+
+    # --- Sesiones por mes (KPIs: coste por sesión, autonomous share) ---
+    sessions_monthly = defaultdict(lambda: {"total": 0, "with_agent": 0})
+    for s in sessions:
+        ym = (s.get("first_ts") or "")[:7]
+        if len(ym) == 7:
+            sessions_monthly[ym]["total"] += 1
+            if s.get("has_agent"):
+                sessions_monthly[ym]["with_agent"] += 1
 
     def clean(o):
         if isinstance(o, defaultdict):
@@ -788,6 +1033,11 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "cost_total_effective": round(sum(b.cost_effective for b in hourly.values()), 2),
             "cost_total_real": round(sum(b.cost_real for b in hourly.values()), 2),
             "subscription_fees": round(sum(sub_fees.values()), 2),
+            "timezone": str(LOCAL_TZ),  # FPA-142: TZ usada en buckets hourly/daily
+            "pay_per_token_note": (
+                "pay_per_token_charges es *assumed*: estimado con tokens × pricing; "
+                "el tracker no registra cargas reales (FPA-013)"),
+            "outcomes": outcomes_reason or "unavailable: no emisionado en esta corrida",  # FPA-014
             "token_accounting": (
                 "cache_read/cache_write se reportan aparte de input/output. "
                 "cache_read no se factura a input rate (10x mas barato); "
@@ -812,6 +1062,14 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
         "sessions": session_stats,
         "multitasking": multitasking,
         "project_daily": project_daily,
+        "project_monthly": {p: dict(ms) for p, ms in project_monthly.items()},
+        "project_models": {p: {m: {"interactions": v["interactions"],
+                                   "cost_effective": round(v["cost_effective"], 8)}
+                              for m, v in sorted(models.items())}
+                           for p, models in project_models.items()},
+        "concurrency": concurrency,
+        "filtered_out": filtered_out,
+        "sessions_monthly": dict(sorted(sessions_monthly.items())),
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
     })
@@ -829,12 +1087,18 @@ def main():
 
     interactions = []
     skipped = {}
+    kinds = {}       # FPA-140: eventos por kind/mes (incluye user prompts)
+    excluded = []    # FPA-141: filas fuera del filtro charly
 
+    claude_rows, claude_excluded = extract_claude(skipped, kinds, excluded)
+    pi_rows, pi_excluded = extract_pi(skipped, kinds, excluded)
     all_sources = [
-        ("Claude", extract_claude(skipped)),
-        ("Pi", extract_pi(skipped)),
+        ("Claude", claude_rows),
+        ("Pi", pi_rows),
         ("Amp", extract_amp()),
     ]
+    excluded.extend(claude_excluded)
+    excluded.extend(pi_excluded)
 
     for name, rows in all_sources:
         print(f"  {name}: {len(rows)} rows", flush=True)
@@ -865,7 +1129,10 @@ def main():
     print(f"  {len(sessions)} charly sessions", flush=True)
 
     print("Aggregating...", flush=True)
-    report = aggregate(unique, sessions, *collect_skills_and_commands())
+    outcomes, outcomes_reason = collect_outcomes()
+    report = aggregate(unique, sessions, *collect_skills_and_commands(),
+                       excluded=excluded, interaction_kinds=kinds,
+                       outcomes=outcomes, outcomes_reason=outcomes_reason)
     if skipped:
         report["metadata"]["skipped"] = dict(skipped)
         report["metadata"]["skipped_lines"] = sum(skipped.values())

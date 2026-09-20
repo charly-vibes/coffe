@@ -255,7 +255,7 @@ class TestSchemaExtendido(unittest.TestCase):
         mes["interaction_kinds"] = {"user_prompt": 1, "tool_call": 2}
         mes["outcomes_by_project"] = {"charly-wai": {"commits": 3, "releases": 1}}
         report["concurrency"] = {
-            "peak_simultaneous_sessions": 2,
+            "peak_simultaneous_sessions": {"peak": 2, "measure": "parallel-agent"},
             "switches_per_active_hour": 1.5,
         }
         self._validate(report)
