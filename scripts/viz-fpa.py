@@ -38,10 +38,12 @@ Uso: python3 scripts/viz-fpa.py [--report PATH] [--config PATH] [--out PATH]
 
 import argparse
 import calendar
+import html
 import json
 import re
 import sys
 from datetime import date, datetime
+from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -2807,6 +2809,122 @@ Python; los cambios se recalculan sin recargar (FPA-077). Cifras forecast:
 </details>'''
 
 
+# ======================================================================
+# coffe-6lz F4: jerarquía tipográfica — FPA-ids fuera del cuerpo visible
+# ======================================================================
+
+# Referencia a spec: FPA-120b, FPA-116/117, FPA-061…063, FPA-028/036
+FPA_REF_RE = re.compile(r"FPA-\d{3}[a-z]?(?:\s*[/…]\s*\d{3}[a-z]?)*")
+
+VOID_ELEMENTS = {"area", "base", "br", "col", "embed", "hr", "img",
+                 "input", "link", "meta", "param", "source", "track",
+                 "wbr"}
+
+
+class _FpaRefMover(HTMLParser):
+    """Mueve refs "FPA-xxx" del texto visible al atributo title del
+    elemento contenedor (machine-readable, invisible). Los chips de
+    marginalia quedan intactos (anti-goal del ticket: sí llevan ids)."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.out = []
+        self.stack = []  # índices de tokens de start tag abiertos
+
+    def _marginalia(self, attrs):
+        return "marginalia" in dict(attrs).get("class", "").split()
+
+    def handle_starttag(self, tag, attrs):
+        idx = len(self.out)
+        self.out.append({"tag": tag, "attrs": list(attrs),
+                         "marg": self._marginalia(attrs)})
+        if tag not in VOID_ELEMENTS:
+            self.stack.append(idx)
+
+    def handle_startendtag(self, tag, attrs):
+        self.out.append(self._serialize(tag, list(attrs), []))
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.out[self.stack[i]]["tag"] == tag:
+                del self.stack[i:]
+                break
+        self.out.append(f"</{tag}>")
+
+    def _in_marginalia(self):
+        return any(self.out[i]["marg"] for i in self.stack)
+
+    @staticmethod
+    def _serialize(tag, attrs, extra_ids):
+        if extra_ids:
+            attrs = list(attrs)
+            merged = None
+            for i, (k, v) in enumerate(attrs):
+                if k == "title":
+                    merged = (v + " · " if v else "") + " ".join(extra_ids)
+                    attrs[i] = (k, merged)
+                    break
+            if merged is None:
+                attrs.append(("title", " ".join(extra_ids)))
+        parts = [f"<{tag}"]
+        for k, v in attrs:
+            if v is None:
+                parts.append(f" {k}")
+            else:
+                parts.append(f' {k}="{html.escape(v, quote=True)}"')
+        parts.append(">")
+        return "".join(parts)
+
+    def handle_data(self, data):
+        if not FPA_REF_RE.search(data) or self._in_marginalia():
+            self.out.append(data)
+            return
+        ids = [m.group(0).replace(" ", "") for m in FPA_REF_RE.finditer(data)]
+        t = re.sub(r"config\s+(?=FPA-\d{3})", "", data)
+        t = FPA_REF_RE.sub("", t)
+        t = re.sub(r"\(\s*\)", "", t)          # paréntesis vacío
+        t = re.sub(r"\(\s*[,;:]\s*", "(", t)   # puntuación huérfana inicial
+        t = re.sub(r"\s*[,;:]\s*\)", ")", t)   # puntuación huérfana final
+        t = re.sub(r"\s+\)", ")", t)
+        t = re.sub(r"\(\s+", "(", t)
+        t = re.sub(r"[ \t]{2,}", " ", t)        # colapso de espacios
+        t = re.sub(r" +([.,;:!?])", r"\1", t)   # espacio antes de puntuación
+        self.out.append(t)
+        if self.stack:
+            self.out[self.stack[-1]].setdefault("refs", []).extend(ids)
+
+    def handle_entityref(self, name):
+        self.out.append(f"&{name};")
+
+    def handle_charref(self, name):
+        self.out.append(f"&#{name};")
+
+    def handle_comment(self, data):
+        self.out.append(f"<!--{data}-->")
+
+    def handle_decl(self, decl):
+        self.out.append(f"<!{data}>")
+
+    def result(self):
+        chunks = []
+        for tok in self.out:
+            if isinstance(tok, str):
+                chunks.append(tok)
+            else:
+                chunks.append(self._serialize(tok["tag"], tok["attrs"],
+                                              tok.get("refs", [])))
+        return "".join(chunks)
+
+
+def move_fpa_ids_to_titles(html_text):
+    """coffe-6lz F4: saca "FPA-xxx" del texto visible y lo pasa al title
+    del elemento contenedor. Determinista; marginalia sin tocar."""
+    mover = _FpaRefMover()
+    mover.feed(html_text)
+    mover.close()
+    return mover.result()
+
+
 def fig(value_html, provenance, extra_cls=""):
 
     """Envoltorio de cifra con provenance tag (FPA-003)."""
@@ -3087,10 +3205,12 @@ def kpi_card(k):
         # coffe-esc F3: la interpretación de una línea de la headline (si el
         # KPI tiene una) pasa al contexto del card, junto al delta.
         ctx = k.get("headline_interp") or ""
-        sub = (f'<p class="interp">Δ vs prior: {d or "n/a"}'
+        sub = (f'<p class="interp"'
+               + (' title="FPA-045"' if k.get("excluded_share") else "")
+               + f'>Δ vs prior: {d or "n/a"}'
                + (f' <span class="small">(tasa diaria)</span>'
                   if k.get("delta_kind") == "daily-rate" and d else "")
-               + (f' · excluido por tokens: {k["excluded_display"]} (FPA-045)'
+               + (f' · excluido por tokens: {k["excluded_display"]}'
                   if k.get("excluded_share") else "")
                + (f' — {ctx}' if ctx else "")
                + "</p>")
@@ -3828,6 +3948,10 @@ def render_html(report, cfg, generated=None, today=None):
     # export (sobre el contenido del main, nunca sobre el JS embebido)
     body_inner = number_figures(body_inner)
     body_inner = add_export_buttons(body_inner)
+    # coffe-6lz F4: jerarquía tipográfica — los ids FPA-xxx salen del
+    # cuerpo visible (compiten con las cifras primarias) y viajan al
+    # title del elemento contenedor; marginalia queda intacta.
+    body_inner = move_fpa_ids_to_titles(body_inner)
 
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
@@ -3876,9 +4000,10 @@ def render_html(report, cfg, generated=None, today=None):
     var value = k.value === null
       ? '<span class="fig" data-provenance="' + k.provenance + '"><span class="na">n/a</span></span><p class="reason">' + esc(k.reason || "") + '</p>'
       : '<span class="fig" data-provenance="' + k.provenance + '"><span class="val">' + esc(k.display) + '</span></span>'
-        + '<p class="interp">Δ vs prior: ' + esc(k.delta_display || "n/a")
+        + '<p class="interp"' + (k.excluded_share ? ' title="FPA-045"' : '') + '>'
+        + 'Δ vs prior: ' + esc(k.delta_display || "n/a")
         + (k.delta_kind === "daily-rate" && k.delta_display ? ' <span class="small">(tasa diaria)</span>' : '')
-        + (k.excluded_share ? ' · excluido por tokens: ' + esc(k.excluded_display) + ' (FPA-045)' : '')
+        + (k.excluded_share ? ' · excluido por tokens: ' + esc(k.excluded_display) : '')
         + (k.headline_interp ? ' — ' + esc(k.headline_interp) : '')
         + '</p>';
     var spark = (k.spark && k.spark.length > 1)

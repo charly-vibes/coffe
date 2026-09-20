@@ -14,8 +14,11 @@ Uso: python3 tests/test_viz.py
 Salta con SKIPPED si playwright no está instalado.
 """
 
+import html as html_mod
+import re
 import sys
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -302,6 +305,69 @@ class TestVizPages(unittest.TestCase):
                             f"gantt: sticky label se despega a scrollLeft={sl} (offset {off})")
                 pg.close()
             browser.close()
+
+
+class _VisibleText(HTMLParser):
+    """Recolecta el texto visible: ignora atributos (los ids viajan a
+    title), <title>, <script>/<style> (CDATA) y los chips de marginalia
+    (que sí llevan ids por diseño — coffe-6lz anti-goal)."""
+
+    SKIP_TAGS = {"title", "script", "style"}
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+        self.stack = []  # (tag, skip_subtree: bool)
+
+    def handle_starttag(self, tag, attrs):
+        marg = "marginalia" in dict(attrs).get("class", "").split()
+        skip = tag in self.SKIP_TAGS or marg or any(s for _, s in self.stack)
+        self.stack.append((tag, skip))
+
+    def handle_startendtag(self, tag, attrs):
+        pass
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                del self.stack[i:]
+                return
+
+    def handle_data(self, data):
+        if any(s for _, s in self.stack):
+            return
+        self.parts.append(data)
+
+
+class TestFpaIdHierarchy(unittest.TestCase):
+    """coffe-6lz F4: jerarquía tipográfica — los ids FPA-xxx dejan de
+    competir con las cifras primarias: cero matches en el texto visible;
+    siguen machine-readable en atributos title."""
+
+    PAGE = REPO / "data" / "fpa-dashboard.html"
+
+    def setUp(self):
+        if not self.PAGE.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        self.html = self.PAGE.read_text()
+
+    def test_fpa_ids_out_of_visible_body(self):
+        p = _VisibleText()
+        p.feed(self.html)
+        visible = " ".join(p.parts)
+        refs = re.findall(r"FPA-\d{3}", visible)
+        self.assertEqual(
+            refs, [],
+            f"FPA-ids en texto visible del cuerpo ({len(refs)}): "
+            + ", ".join(sorted(set(refs))[:8]))
+
+    def test_fpa_ids_still_machine_readable(self):
+        """Anti-goal: no borrar ids — deben quedar en title/footnotes."""
+        titles = " ".join(re.findall(r'title="([^"]*)"', self.html))
+        ids = re.findall(r"FPA-\d{3}", html_mod.unescape(titles))
+        self.assertGreaterEqual(
+            len(ids), 10,
+            f"solo {len(ids)} ids FPA en titles; el movimiento los perdió")
 
 
 if __name__ == "__main__":
