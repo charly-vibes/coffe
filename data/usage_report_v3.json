@@ -2,22 +2,26 @@
   "metadata": {
     "date_range": {
       "start": "2026-01-11",
-      "end": "2026-09-19"
+      "end": "2026-09-20"
     },
     "filter": "charly-only",
-    "total_interactions": 139735,
-    "total_input_tokens": 1247495359,
-    "total_output_tokens": 47585386,
-    "total_cache_read_tokens": 9472155788,
+    "total_interactions": 140564,
+    "total_input_tokens": 1253837595,
+    "total_output_tokens": 48097661,
+    "total_cache_read_tokens": 9528888460,
     "total_cache_write_tokens": 72256689,
-    "cost_total_effective": 3810.94,
-    "cost_total_real": 379.68,
+    "cost_total_effective": 3812.69,
+    "cost_total_real": 381.43,
     "subscription_fees": 230.0,
+    "timezone": "-03",
+    "pay_per_token_note": "pay_per_token_charges es *assumed*: estimado con tokens \u00d7 pricing; el tracker no registra cargas reales (FPA-013)",
+    "outcomes": "unavailable: mapeo proyecto\u2192repo GitHub pendiente (ver README)",
     "token_accounting": "cache_read/cache_write se reportan aparte de input/output. cache_read no se factura a input rate (10x mas barato); total tokens = input + output + cache_read + cache_write",
-    "total_hours": 820,
+    "total_hours": 826,
     "total_days": 153,
     "total_months": 9,
-    "total_projects": 40
+    "total_projects": 40,
+    "config_source": "config/fpa.json"
   },
   "hourly": {
     "2026-01-11 16:00": {
@@ -21468,26 +21472,170 @@
       "projects_active": 2
     },
     "2026-09-19 11:00": {
-      "interactions": 41,
-      "input_tokens": 152195,
-      "output_tokens": 19270,
-      "cache_read_tokens": 4872960,
+      "interactions": 57,
+      "input_tokens": 342392,
+      "output_tokens": 23848,
+      "cache_read_tokens": 6863616,
       "cache_write_tokens": 0,
-      "cost_effective": 0.11,
-      "cost_real": 0.11,
+      "cost_effective": 0.16,
+      "cost_real": 0.16,
       "tools": {
         "openrouter": {
-          "req": 41,
-          "in": 152195,
-          "out": 19270,
-          "cache_read": 4872960,
+          "req": 57,
+          "in": 342392,
+          "out": 23848,
+          "cache_read": 6863616,
           "cache_write": 0,
-          "cost_eff": 0.10719183,
-          "cost_real": 0.10719183
+          "cost_eff": 0.16151477,
+          "cost_real": 0.16151477
         }
       },
       "models": {
-        "z-ai/glm-5.3-flash": 41
+        "z-ai/glm-5.3-flash": 57
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 12:00": {
+      "interactions": 21,
+      "input_tokens": 2567126,
+      "output_tokens": 14212,
+      "cache_read_tokens": 1036544,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.25,
+      "cost_real": 0.25,
+      "tools": {
+        "openrouter": {
+          "req": 21,
+          "in": 2567126,
+          "out": 14212,
+          "cache_read": 1036544,
+          "cache_write": 0,
+          "cost_eff": 0.25396273,
+          "cost_real": 0.25396273
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 21
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 19:00": {
+      "interactions": 72,
+      "input_tokens": 583856,
+      "output_tokens": 44679,
+      "cache_read_tokens": 3590080,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.13,
+      "cost_real": 0.13,
+      "tools": {
+        "openrouter": {
+          "req": 72,
+          "in": 583856,
+          "out": 44679,
+          "cache_read": 3590080,
+          "cache_write": 0,
+          "cost_eff": 0.13057218,
+          "cost_real": 0.13057218
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 72
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 20:00": {
+      "interactions": 88,
+      "input_tokens": 208302,
+      "output_tokens": 35791,
+      "cache_read_tokens": 3553984,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.09,
+      "cost_real": 0.09,
+      "tools": {
+        "openrouter": {
+          "req": 88,
+          "in": 208302,
+          "out": 35791,
+          "cache_read": 3553984,
+          "cache_write": 0,
+          "cost_eff": 0.09345619,
+          "cost_real": 0.09345619
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 88
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 21:00": {
+      "interactions": 29,
+      "input_tokens": 224095,
+      "output_tokens": 63726,
+      "cache_read_tokens": 976000,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.06,
+      "cost_real": 0.06,
+      "tools": {
+        "openrouter": {
+          "req": 29,
+          "in": 224095,
+          "out": 63726,
+          "cache_read": 976000,
+          "cache_write": 0,
+          "cost_eff": 0.05685435,
+          "cost_real": 0.05685435
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 29
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 22:00": {
+      "interactions": 240,
+      "input_tokens": 787307,
+      "output_tokens": 172967,
+      "cache_read_tokens": 18401344,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.45,
+      "cost_real": 0.45,
+      "tools": {
+        "openrouter": {
+          "req": 240,
+          "in": 787307,
+          "out": 172967,
+          "cache_read": 18401344,
+          "cache_write": 0,
+          "cost_eff": 0.45397192,
+          "cost_real": 0.45397192
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 240
+      },
+      "projects_active": 1
+    },
+    "2026-09-19 23:00": {
+      "interactions": 363,
+      "input_tokens": 1781353,
+      "output_tokens": 176322,
+      "cache_read_tokens": 27184064,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.7,
+      "cost_real": 0.7,
+      "tools": {
+        "openrouter": {
+          "req": 363,
+          "in": 1781353,
+          "out": 176322,
+          "cache_read": 27184064,
+          "cache_write": 0,
+          "cost_eff": 0.70253152,
+          "cost_real": 0.70253152
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 363
       },
       "projects_active": 1
     }
@@ -23941,18 +24089,18 @@
       }
     },
     "2026-09-19": {
-      "interactions": 223,
-      "input_tokens": 2609220,
-      "output_tokens": 104126,
-      "cache_read_tokens": 17508096,
+      "interactions": 1052,
+      "input_tokens": 8951456,
+      "output_tokens": 616401,
+      "cache_read_tokens": 74240768,
       "cache_write_tokens": 0,
-      "cost_effective": 0.58,
-      "cost_real": 0.58,
+      "cost_effective": 2.33,
+      "cost_real": 2.33,
       "tools": {
-        "openrouter": 223
+        "openrouter": 1052
       },
       "models": {
-        "z-ai/glm-5.3-flash": 223
+        "z-ai/glm-5.3-flash": 1052
       }
     }
   },
@@ -23966,12 +24114,38 @@
       "cost_effective": 0.0,
       "cost_real": 0.0,
       "tools": {
-        "amp": 929
+        "amp": {
+          "interactions": 929,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "amp": {
+              "interactions": 929,
+              "cost_effective": 0.0
+            }
+          }
+        }
       },
       "models": {
-        "amp": 929
+        "amp": {
+          "interactions": 929,
+          "cost_effective": 0.0
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "amp": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 0.0,
+      "interaction_kinds": {
+        "assistant_turn": 929
+      },
+      "outcomes_by_project": {}
     },
     "2026-02": {
       "interactions": 719,
@@ -23982,12 +24156,38 @@
       "cost_effective": 0.0,
       "cost_real": 0.0,
       "tools": {
-        "amp": 719
+        "amp": {
+          "interactions": 719,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "amp": {
+              "interactions": 719,
+              "cost_effective": 0.0
+            }
+          }
+        }
       },
       "models": {
-        "amp": 719
+        "amp": {
+          "interactions": 719,
+          "cost_effective": 0.0
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "amp": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 0.0,
+      "interaction_kinds": {
+        "assistant_turn": 719
+      },
+      "outcomes_by_project": {}
     },
     "2026-03": {
       "interactions": 263,
@@ -23998,12 +24198,38 @@
       "cost_effective": 0.0,
       "cost_real": 0.0,
       "tools": {
-        "amp": 263
+        "amp": {
+          "interactions": 263,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "amp": {
+              "interactions": 263,
+              "cost_effective": 0.0
+            }
+          }
+        }
       },
       "models": {
-        "amp": 263
+        "amp": {
+          "interactions": 263,
+          "cost_effective": 0.0
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "amp": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 0.0,
+      "interaction_kinds": {
+        "assistant_turn": 263
+      },
+      "outcomes_by_project": {}
     },
     "2026-04": {
       "interactions": 20675,
@@ -24014,25 +24240,202 @@
       "cost_effective": 1110.03,
       "cost_real": 110.0,
       "tools": {
-        "claude-cli": 13859,
-        "codex": 5738,
-        "gemini-cli": 823,
-        "amp": 253,
-        "copilot": 2
+        "amp": {
+          "interactions": 253,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "amp": {
+              "interactions": 253,
+              "cost_effective": 0.0
+            }
+          }
+        },
+        "claude-cli": {
+          "interactions": 13859,
+          "cost_effective": 931.582943,
+          "cost_real": 0.0,
+          "models": {
+            "<synthetic>": {
+              "interactions": 2,
+              "cost_effective": 0.0
+            },
+            "claude-opus-4-6": {
+              "interactions": 3120,
+              "cost_effective": 569.817536
+            },
+            "claude-sonnet-4-6": {
+              "interactions": 10737,
+              "cost_effective": 361.765407
+            }
+          }
+        },
+        "codex": {
+          "interactions": 5738,
+          "cost_effective": 178.44427565,
+          "cost_real": 0.0,
+          "models": {
+            "gpt-5.3-codex": {
+              "interactions": 144,
+              "cost_effective": 2.41906315
+            },
+            "gpt-5.4": {
+              "interactions": 5594,
+              "cost_effective": 176.0252125
+            }
+          }
+        },
+        "copilot": {
+          "interactions": 2,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "gemini-3-flash-preview": {
+              "interactions": 1,
+              "cost_effective": 0.0
+            },
+            "gpt-5.3-codex": {
+              "interactions": 1,
+              "cost_effective": 0.0
+            }
+          }
+        },
+        "gemini-cli": {
+          "interactions": 823,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "gemini-2.5-pro": {
+              "interactions": 39,
+              "cost_effective": 0.0
+            },
+            "gemini-3-flash-preview": {
+              "interactions": 258,
+              "cost_effective": 0.0
+            },
+            "gemini-3-pro-preview": {
+              "interactions": 514,
+              "cost_effective": 0.0
+            },
+            "gemini-3.1-pro-preview": {
+              "interactions": 12,
+              "cost_effective": 0.0
+            }
+          }
+        }
       },
       "models": {
-        "claude-sonnet-4-6": 10737,
-        "gpt-5.4": 5594,
-        "claude-opus-4-6": 3120,
-        "gemini-3-pro-preview": 514,
-        "gemini-3-flash-preview": 259,
-        "amp": 253,
-        "gpt-5.3-codex": 145,
-        "gemini-2.5-pro": 39,
-        "gemini-3.1-pro-preview": 12,
-        "<synthetic>": 2
+        "<synthetic>": {
+          "interactions": 2,
+          "cost_effective": 0.0
+        },
+        "amp": {
+          "interactions": 253,
+          "cost_effective": 0.0
+        },
+        "claude-opus-4-6": {
+          "interactions": 3120,
+          "cost_effective": 569.817536
+        },
+        "claude-sonnet-4-6": {
+          "interactions": 10737,
+          "cost_effective": 361.765407
+        },
+        "gemini-2.5-pro": {
+          "interactions": 39,
+          "cost_effective": 0.0
+        },
+        "gemini-3-flash-preview": {
+          "interactions": 259,
+          "cost_effective": 0.0
+        },
+        "gemini-3-pro-preview": {
+          "interactions": 514,
+          "cost_effective": 0.0
+        },
+        "gemini-3.1-pro-preview": {
+          "interactions": 12,
+          "cost_effective": 0.0
+        },
+        "gpt-5.3-codex": {
+          "interactions": 145,
+          "cost_effective": 2.41906315
+        },
+        "gpt-5.4": {
+          "interactions": 5594,
+          "cost_effective": 176.0252125
+        }
       },
-      "subscription_fees": 110.0
+      "subscription_fees": 110.0,
+      "tokens_by_model": {
+        "<synthetic>": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "amp": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "claude-opus-4-6": {
+          "in": 658,
+          "out": 248256,
+          "cache_read": 27741625,
+          "cache_write": 1299159
+        },
+        "claude-sonnet-4-6": {
+          "in": 14409,
+          "out": 2181349,
+          "cache_read": 216329316,
+          "cache_write": 10615842
+        },
+        "gemini-2.5-pro": {
+          "in": 1309010,
+          "out": 13051,
+          "cache_read": 3450357,
+          "cache_write": 0
+        },
+        "gemini-3-flash-preview": {
+          "in": 2858092,
+          "out": 49152,
+          "cache_read": 12200765,
+          "cache_write": 0
+        },
+        "gemini-3-pro-preview": {
+          "in": 6931906,
+          "out": 206402,
+          "cache_read": 24061464,
+          "cache_write": 0
+        },
+        "gemini-3.1-pro-preview": {
+          "in": 23186,
+          "out": 6621,
+          "cache_read": 45971,
+          "cache_write": 0
+        },
+        "gpt-5.3-codex": {
+          "in": 405181,
+          "out": 58957,
+          "cache_read": 5054848,
+          "cache_write": 0
+        },
+        "gpt-5.4": {
+          "in": 23405821,
+          "out": 2022908,
+          "cache_read": 348668160,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 0.0,
+      "interaction_kinds": {
+        "assistant_turn": 1505,
+        "tool_call": 5471,
+        "user_prompt": 1436
+      },
+      "outcomes_by_project": {}
     },
     "2026-05": {
       "interactions": 43602,
@@ -24043,24 +24446,187 @@
       "cost_effective": 2047.25,
       "cost_real": 161.76,
       "tools": {
-        "claude-cli": 37449,
-        "codex": 6074,
-        "amp": 43,
-        "gemini-cli": 36
+        "amp": {
+          "interactions": 43,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "amp": {
+              "interactions": 43,
+              "cost_effective": 0.0
+            }
+          }
+        },
+        "claude-cli": {
+          "interactions": 37449,
+          "cost_effective": 1777.296989,
+          "cost_real": 0.0,
+          "models": {
+            "<synthetic>": {
+              "interactions": 40,
+              "cost_effective": 0.0
+            },
+            "claude-3-sonnet-20240229": {
+              "interactions": 1,
+              "cost_effective": 0.0
+            },
+            "claude-opus-4-6": {
+              "interactions": 2179,
+              "cost_effective": 453.040127
+            },
+            "claude-opus-4-7": {
+              "interactions": 2215,
+              "cost_effective": 110.209835
+            },
+            "claude-sonnet-4-6": {
+              "interactions": 33014,
+              "cost_effective": 1214.047027
+            }
+          }
+        },
+        "codex": {
+          "interactions": 6074,
+          "cost_effective": 269.951593,
+          "cost_real": 61.75512,
+          "models": {
+            "gpt-5.4": {
+              "interactions": 3240,
+              "cost_effective": 106.628633
+            },
+            "gpt-5.5": {
+              "interactions": 2834,
+              "cost_effective": 163.32296
+            }
+          }
+        },
+        "gemini-cli": {
+          "interactions": 36,
+          "cost_effective": 0.0,
+          "cost_real": 0.0,
+          "models": {
+            "gemini-2.5-pro": {
+              "interactions": 17,
+              "cost_effective": 0.0
+            },
+            "gemini-3-pro-preview": {
+              "interactions": 19,
+              "cost_effective": 0.0
+            }
+          }
+        }
       },
       "models": {
-        "claude-sonnet-4-6": 33014,
-        "gpt-5.4": 3240,
-        "gpt-5.5": 2834,
-        "claude-opus-4-7": 2215,
-        "claude-opus-4-6": 2179,
-        "amp": 43,
-        "<synthetic>": 40,
-        "gemini-3-pro-preview": 19,
-        "gemini-2.5-pro": 17,
-        "claude-3-sonnet-20240229": 1
+        "<synthetic>": {
+          "interactions": 40,
+          "cost_effective": 0.0
+        },
+        "amp": {
+          "interactions": 43,
+          "cost_effective": 0.0
+        },
+        "claude-3-sonnet-20240229": {
+          "interactions": 1,
+          "cost_effective": 0.0
+        },
+        "claude-opus-4-6": {
+          "interactions": 2179,
+          "cost_effective": 453.040127
+        },
+        "claude-opus-4-7": {
+          "interactions": 2215,
+          "cost_effective": 110.209835
+        },
+        "claude-sonnet-4-6": {
+          "interactions": 33014,
+          "cost_effective": 1214.047027
+        },
+        "gemini-2.5-pro": {
+          "interactions": 17,
+          "cost_effective": 0.0
+        },
+        "gemini-3-pro-preview": {
+          "interactions": 19,
+          "cost_effective": 0.0
+        },
+        "gpt-5.4": {
+          "interactions": 3240,
+          "cost_effective": 106.628633
+        },
+        "gpt-5.5": {
+          "interactions": 2834,
+          "cost_effective": 163.32296
+        }
       },
-      "subscription_fees": 100.0
+      "subscription_fees": 100.0,
+      "tokens_by_model": {
+        "<synthetic>": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "amp": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "claude-3-sonnet-20240229": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "claude-opus-4-6": {
+          "in": 7234,
+          "out": 499980,
+          "cache_read": 46349312,
+          "cache_write": 2235694
+        },
+        "claude-opus-4-7": {
+          "in": 1543,
+          "out": 672408,
+          "cache_read": 100800970,
+          "cache_write": 3363952
+        },
+        "claude-sonnet-4-6": {
+          "in": 72187,
+          "out": 7879892,
+          "cache_read": 810429300,
+          "cache_write": 33118041
+        },
+        "gemini-2.5-pro": {
+          "in": 6046226,
+          "out": 29271,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "gemini-3-pro-preview": {
+          "in": 1062707,
+          "out": 4400,
+          "cache_read": 2009557,
+          "cache_write": 0
+        },
+        "gpt-5.4": {
+          "in": 15808996,
+          "out": 1098929,
+          "cache_read": 202488832,
+          "cache_write": 0
+        },
+        "gpt-5.5": {
+          "in": 10591106,
+          "out": 795373,
+          "cache_read": 173012480,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 61.76,
+      "interaction_kinds": {
+        "assistant_turn": 1640,
+        "tool_call": 5569,
+        "user_prompt": 1625
+      },
+      "outcomes_by_project": {}
     },
     "2026-06": {
       "interactions": 8276,
@@ -24071,19 +24637,124 @@
       "cost_effective": 339.98,
       "cost_real": 24.24,
       "tools": {
-        "claude-cli": 7849,
-        "openrouter": 332,
-        "codex": 95
+        "claude-cli": {
+          "interactions": 7849,
+          "cost_effective": 335.74101855,
+          "cost_real": 0.0,
+          "models": {
+            "<synthetic>": {
+              "interactions": 13,
+              "cost_effective": 0.0
+            },
+            "claude-sonnet-4-6": {
+              "interactions": 7836,
+              "cost_effective": 335.74101855
+            }
+          }
+        },
+        "codex": {
+          "interactions": 95,
+          "cost_effective": 3.167829,
+          "cost_real": 3.167829,
+          "models": {
+            "gpt-5.3-codex": {
+              "interactions": 1,
+              "cost_effective": 0.0
+            },
+            "gpt-5.4": {
+              "interactions": 94,
+              "cost_effective": 3.167829
+            }
+          }
+        },
+        "openrouter": {
+          "interactions": 332,
+          "cost_effective": 1.07246239,
+          "cost_real": 1.07246239,
+          "models": {
+            "deepseek/deepseek-v4-flash": {
+              "interactions": 330,
+              "cost_effective": 1.05573743
+            },
+            "moonshotai/kimi-k2": {
+              "interactions": 2,
+              "cost_effective": 0.01672496
+            }
+          }
+        }
       },
       "models": {
-        "claude-sonnet-4-6": 7836,
-        "deepseek/deepseek-v4-flash": 330,
-        "gpt-5.4": 94,
-        "<synthetic>": 13,
-        "moonshotai/kimi-k2": 2,
-        "gpt-5.3-codex": 1
+        "<synthetic>": {
+          "interactions": 13,
+          "cost_effective": 0.0
+        },
+        "claude-sonnet-4-6": {
+          "interactions": 7836,
+          "cost_effective": 335.74101855
+        },
+        "deepseek/deepseek-v4-flash": {
+          "interactions": 330,
+          "cost_effective": 1.05573743
+        },
+        "gpt-5.3-codex": {
+          "interactions": 1,
+          "cost_effective": 0.0
+        },
+        "gpt-5.4": {
+          "interactions": 94,
+          "cost_effective": 3.167829
+        },
+        "moonshotai/kimi-k2": {
+          "interactions": 2,
+          "cost_effective": 0.01672496
+        }
       },
-      "subscription_fees": 20.0
+      "subscription_fees": 20.0,
+      "tokens_by_model": {
+        "<synthetic>": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "claude-sonnet-4-6": {
+          "in": 51899,
+          "out": 5230248,
+          "cache_read": 639722839,
+          "cache_write": 19870729
+        },
+        "deepseek/deepseek-v4-flash": {
+          "in": 6933863,
+          "out": 160215,
+          "cache_read": 17392915,
+          "cache_write": 0
+        },
+        "gpt-5.3-codex": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "gpt-5.4": {
+          "in": 350748,
+          "out": 36353,
+          "cache_read": 6982656,
+          "cache_write": 0
+        },
+        "moonshotai/kimi-k2": {
+          "in": 29338,
+          "out": 1,
+          "cache_read": 0,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 4.24,
+      "interaction_kinds": {
+        "tool_call": 5462,
+        "assistant_turn": 2827,
+        "user_prompt": 5606
+      },
+      "outcomes_by_project": {}
     },
     "2026-07": {
       "interactions": 52915,
@@ -24094,17 +24765,110 @@
       "cost_effective": 276.77,
       "cost_real": 276.77,
       "tools": {
-        "openrouter": 52915
+        "openrouter": {
+          "interactions": 52915,
+          "cost_effective": 276.76601861,
+          "cost_real": 276.76601861,
+          "models": {
+            "anthropic/claude-sonnet-4.6": {
+              "interactions": 353,
+              "cost_effective": 20.3758776
+            },
+            "deepseek/deepseek-v4-flash": {
+              "interactions": 48516,
+              "cost_effective": 200.72665054
+            },
+            "deepseek/deepseek-v4-flash:free": {
+              "interactions": 1,
+              "cost_effective": 0.0
+            },
+            "google/gemini-2.5-flash": {
+              "interactions": 103,
+              "cost_effective": 1.28343331
+            },
+            "google/gemini-2.5-pro": {
+              "interactions": 2,
+              "cost_effective": 0.2356625
+            },
+            "z-ai/glm-5.2": {
+              "interactions": 3940,
+              "cost_effective": 54.14439466
+            }
+          }
+        }
       },
       "models": {
-        "deepseek/deepseek-v4-flash": 48516,
-        "z-ai/glm-5.2": 3940,
-        "anthropic/claude-sonnet-4.6": 353,
-        "google/gemini-2.5-flash": 103,
-        "google/gemini-2.5-pro": 2,
-        "deepseek/deepseek-v4-flash:free": 1
+        "anthropic/claude-sonnet-4.6": {
+          "interactions": 353,
+          "cost_effective": 20.3758776
+        },
+        "deepseek/deepseek-v4-flash": {
+          "interactions": 48516,
+          "cost_effective": 200.72665054
+        },
+        "deepseek/deepseek-v4-flash:free": {
+          "interactions": 1,
+          "cost_effective": 0.0
+        },
+        "google/gemini-2.5-flash": {
+          "interactions": 103,
+          "cost_effective": 1.28343331
+        },
+        "google/gemini-2.5-pro": {
+          "interactions": 2,
+          "cost_effective": 0.2356625
+        },
+        "z-ai/glm-5.2": {
+          "interactions": 3940,
+          "cost_effective": 54.14439466
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "anthropic/claude-sonnet-4.6": {
+          "in": 1375503,
+          "out": 254196,
+          "cache_read": 19538862,
+          "cache_write": 1753272
+        },
+        "deepseek/deepseek-v4-flash": {
+          "in": 1053359438,
+          "out": 18906516,
+          "cache_read": 5358367522,
+          "cache_write": 0
+        },
+        "deepseek/deepseek-v4-flash:free": {
+          "in": 0,
+          "out": 0,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "google/gemini-2.5-flash": {
+          "in": 2878300,
+          "out": 84289,
+          "cache_read": 6974027,
+          "cache_write": 0
+        },
+        "google/gemini-2.5-pro": {
+          "in": 170930,
+          "out": 2200,
+          "cache_read": 0,
+          "cache_write": 0
+        },
+        "z-ai/glm-5.2": {
+          "in": 37405636,
+          "out": 1719812,
+          "cache_read": 317500715,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 276.77,
+      "interaction_kinds": {
+        "tool_call": 50251,
+        "assistant_turn": 2664,
+        "user_prompt": 2722
+      },
+      "outcomes_by_project": {}
     },
     "2026-08": {
       "interactions": 6043,
@@ -24115,31 +24879,126 @@
       "cost_effective": 23.0,
       "cost_real": 23.0,
       "tools": {
-        "openrouter": 6043
+        "openrouter": {
+          "interactions": 6043,
+          "cost_effective": 22.99959941,
+          "cost_real": 22.99959941,
+          "models": {
+            "deepseek/deepseek-v4-flash": {
+              "interactions": 5434,
+              "cost_effective": 21.33215055
+            },
+            "z-ai/glm-5.2": {
+              "interactions": 89,
+              "cost_effective": 0.92931701
+            },
+            "z-ai/glm-5.3-flash": {
+              "interactions": 520,
+              "cost_effective": 0.73813185
+            }
+          }
+        }
       },
       "models": {
-        "deepseek/deepseek-v4-flash": 5434,
-        "z-ai/glm-5.3-flash": 520,
-        "z-ai/glm-5.2": 89
+        "deepseek/deepseek-v4-flash": {
+          "interactions": 5434,
+          "cost_effective": 21.33215055
+        },
+        "z-ai/glm-5.2": {
+          "interactions": 89,
+          "cost_effective": 0.92931701
+        },
+        "z-ai/glm-5.3-flash": {
+          "interactions": 520,
+          "cost_effective": 0.73813185
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "deepseek/deepseek-v4-flash": {
+          "in": 34918181,
+          "out": 2004286,
+          "cache_read": 661565333,
+          "cache_write": 0
+        },
+        "z-ai/glm-5.2": {
+          "in": 394946,
+          "out": 35681,
+          "cache_read": 6675578,
+          "cache_write": 0
+        },
+        "z-ai/glm-5.3-flash": {
+          "in": 1725079,
+          "out": 224669,
+          "cache_read": 36838912,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 23.0,
+      "interaction_kinds": {
+        "tool_call": 5751,
+        "assistant_turn": 292,
+        "user_prompt": 280
+      },
+      "outcomes_by_project": {}
     },
     "2026-09": {
-      "interactions": 6313,
-      "input_tokens": 39363236,
-      "output_tokens": 3159971,
-      "cache_read_tokens": 427953472,
+      "interactions": 7142,
+      "input_tokens": 45705472,
+      "output_tokens": 3672246,
+      "cache_read_tokens": 484686144,
       "cache_write_tokens": 0,
-      "cost_effective": 13.92,
-      "cost_real": 13.92,
+      "cost_effective": 15.67,
+      "cost_real": 15.67,
       "tools": {
-        "openrouter": 6313
+        "openrouter": {
+          "interactions": 7142,
+          "cost_effective": 15.66724519,
+          "cost_real": 15.66724519,
+          "models": {
+            "deepseek/deepseek-v4-flash": {
+              "interactions": 64,
+              "cost_effective": 0.16162898
+            },
+            "z-ai/glm-5.3-flash": {
+              "interactions": 7078,
+              "cost_effective": 15.50561621
+            }
+          }
+        }
       },
       "models": {
-        "z-ai/glm-5.3-flash": 6249,
-        "deepseek/deepseek-v4-flash": 64
+        "deepseek/deepseek-v4-flash": {
+          "interactions": 64,
+          "cost_effective": 0.16162898
+        },
+        "z-ai/glm-5.3-flash": {
+          "interactions": 7078,
+          "cost_effective": 15.50561621
+        }
       },
-      "subscription_fees": 0.0
+      "subscription_fees": 0.0,
+      "tokens_by_model": {
+        "deepseek/deepseek-v4-flash": {
+          "in": 702975,
+          "out": 46479,
+          "cache_read": 6007296,
+          "cache_write": 0
+        },
+        "z-ai/glm-5.3-flash": {
+          "in": 45002497,
+          "out": 3625767,
+          "cache_read": 478678848,
+          "cache_write": 0
+        }
+      },
+      "pay_per_token_charges": 15.67,
+      "interaction_kinds": {
+        "tool_call": 6667,
+        "assistant_turn": 475,
+        "user_prompt": 488
+      },
+      "outcomes_by_project": {}
     }
   },
   "projects": {
@@ -24915,6 +25774,24 @@
       "last_seen": "2026-08-02",
       "skills": {}
     },
+    "charly-coffe": {
+      "interactions": 1027,
+      "input_tokens": 7928798,
+      "output_tokens": 608615,
+      "cache_read_tokens": 69383936,
+      "cache_write_tokens": 0,
+      "cost_effective": 2.15,
+      "cost_real": 2.15,
+      "tools": {
+        "openrouter": 1027
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 1027
+      },
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-09-20",
+      "skills": {}
+    },
     "charly-jams": {
       "interactions": 667,
       "input_tokens": 4694228,
@@ -25058,24 +25935,6 @@
         "z-ai/glm-5.3-flash": 126
       },
       "first_seen": "2026-09-18",
-      "last_seen": "2026-09-19",
-      "skills": {}
-    },
-    "charly-coffe": {
-      "interactions": 198,
-      "input_tokens": 1586562,
-      "output_tokens": 96340,
-      "cache_read_tokens": 12651264,
-      "cache_write_tokens": 0,
-      "cost_effective": 0.4,
-      "cost_real": 0.4,
-      "tools": {
-        "openrouter": 198
-      },
-      "models": {
-        "z-ai/glm-5.3-flash": 198
-      },
-      "first_seen": "2026-09-19",
       "last_seen": "2026-09-19",
       "skills": {}
     },
@@ -25277,12 +26136,12 @@
   "multitasking": {
     "description": "Proyectos distintos con actividad en la misma ventana. 'context_switches' cuenta cambios de proyecto entre requests consecutivos (puede inflarse por agentes paralelos en el mismo minuto).",
     "hourly": {
-      "total_active_hours": 820,
+      "total_active_hours": 826,
       "hours_with_multiple_projects": 446,
-      "pct_hours_multitasking": 54.4,
-      "avg_projects_per_active_hour": 2.3,
+      "pct_hours_multitasking": 54.0,
+      "avg_projects_per_active_hour": 2.29,
       "distribution": {
-        "1": 374,
+        "1": 380,
         "4+": 166,
         "2": 146,
         "3": 134
@@ -32504,6 +33363,260 @@
         0,
         0
       ],
+      "charly-coffe": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1027
+      ],
       "charly-whisper": [
         0,
         0,
@@ -34790,260 +35903,6 @@
         0,
         0
       ],
-      "charly-coffe": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        198
-      ],
       "charly-tv": [
         0,
         0,
@@ -36062,6 +36921,1273 @@
       ]
     }
   },
+  "project_monthly": {
+    "charly/amp-auto": {
+      "2026-01": {
+        "interactions": 929,
+        "cost_effective": 0.0
+      },
+      "2026-02": {
+        "interactions": 719,
+        "cost_effective": 0.0
+      },
+      "2026-03": {
+        "interactions": 263,
+        "cost_effective": 0.0
+      },
+      "2026-04": {
+        "interactions": 253,
+        "cost_effective": 0.0
+      },
+      "2026-05": {
+        "interactions": 43,
+        "cost_effective": 0.0
+      }
+    },
+    "charly-fabbro": {
+      "2026-04": {
+        "interactions": 301,
+        "cost_effective": 13.765051999999997
+      }
+    },
+    "charly-incitaciones": {
+      "2026-04": {
+        "interactions": 392,
+        "cost_effective": 10.378035999999998
+      },
+      "2026-05": {
+        "interactions": 226,
+        "cost_effective": 9.150510999999995
+      },
+      "2026-07": {
+        "interactions": 645,
+        "cost_effective": 5.423624010000001
+      },
+      "2026-08": {
+        "interactions": 56,
+        "cost_effective": 0.10093180000000002
+      },
+      "2026-09": {
+        "interactions": 1161,
+        "cost_effective": 2.6658359530000015
+      }
+    },
+    "charly-paranoid": {
+      "2026-04": {
+        "interactions": 589,
+        "cost_effective": 18.46865700000003
+      },
+      "2026-05": {
+        "interactions": 501,
+        "cost_effective": 18.879166500000025
+      },
+      "2026-06": {
+        "interactions": 88,
+        "cost_effective": 4.325951850000002
+      }
+    },
+    "charly-atril": {
+      "2026-04": {
+        "interactions": 4552,
+        "cost_effective": 429.0945915000003
+      },
+      "2026-05": {
+        "interactions": 1890,
+        "cost_effective": 71.75729000000005
+      }
+    },
+    "sk-poco": {
+      "2026-04": {
+        "interactions": 55,
+        "cost_effective": 1.8066335
+      }
+    },
+    "sk-XAct-jl": {
+      "2026-04": {
+        "interactions": 1631,
+        "cost_effective": 52.15742899999992
+      },
+      "2026-05": {
+        "interactions": 1116,
+        "cost_effective": 51.62314250000007
+      },
+      "2026-07": {
+        "interactions": 594,
+        "cost_effective": 3.9936678019999996
+      },
+      "2026-08": {
+        "interactions": 222,
+        "cost_effective": 1.009178184
+      },
+      "2026-09": {
+        "interactions": 43,
+        "cost_effective": 0.026104410000000005
+      }
+    },
+    "sk-REPLy-jl": {
+      "2026-04": {
+        "interactions": 5802,
+        "cost_effective": 215.98098849999977
+      },
+      "2026-05": {
+        "interactions": 469,
+        "cost_effective": 19.915265000000023
+      },
+      "2026-07": {
+        "interactions": 2375,
+        "cost_effective": 16.043172974399962
+      },
+      "2026-08": {
+        "interactions": 109,
+        "cost_effective": 0.293645016
+      },
+      "2026-09": {
+        "interactions": 382,
+        "cost_effective": 0.7048737359999996
+      }
+    },
+    "charly-wai": {
+      "2026-04": {
+        "interactions": 893,
+        "cost_effective": 78.41272500000011
+      },
+      "2026-05": {
+        "interactions": 1865,
+        "cost_effective": 101.4910689999996
+      },
+      "2026-06": {
+        "interactions": 91,
+        "cost_effective": 3.13909095
+      },
+      "2026-07": {
+        "interactions": 1875,
+        "cost_effective": 11.345735941599973
+      },
+      "2026-08": {
+        "interactions": 864,
+        "cost_effective": 3.592394119999997
+      },
+      "2026-09": {
+        "interactions": 244,
+        "cost_effective": 0.4762552210000002
+      }
+    },
+    "charly-dont": {
+      "2026-04": {
+        "interactions": 1469,
+        "cost_effective": 112.96425394999962
+      },
+      "2026-05": {
+        "interactions": 10367,
+        "cost_effective": 375.9575179999996
+      },
+      "2026-06": {
+        "interactions": 2596,
+        "cost_effective": 108.34889857439993
+      },
+      "2026-07": {
+        "interactions": 2587,
+        "cost_effective": 14.007758785000007
+      },
+      "2026-09": {
+        "interactions": 336,
+        "cost_effective": 0.89353972
+      }
+    },
+    "charly-ruta": {
+      "2026-04": {
+        "interactions": 1672,
+        "cost_effective": 55.25336670000004
+      }
+    },
+    "sk-titi": {
+      "2026-04": {
+        "interactions": 33,
+        "cost_effective": 0.986879
+      },
+      "2026-07": {
+        "interactions": 4215,
+        "cost_effective": 22.372502902299985
+      },
+      "2026-08": {
+        "interactions": 342,
+        "cost_effective": 1.1901177459999994
+      }
+    },
+    "sk-chacana": {
+      "2026-04": {
+        "interactions": 224,
+        "cost_effective": 18.956634499999996
+      },
+      "2026-07": {
+        "interactions": 357,
+        "cost_effective": 2.2547052000000005
+      }
+    },
+    "sk-elegua": {
+      "2026-04": {
+        "interactions": 101,
+        "cost_effective": 1.751629500000001
+      },
+      "2026-05": {
+        "interactions": 677,
+        "cost_effective": 28.99623200000003
+      },
+      "2026-06": {
+        "interactions": 320,
+        "cost_effective": 14.751778499999993
+      },
+      "2026-07": {
+        "interactions": 748,
+        "cost_effective": 4.792621086200006
+      }
+    },
+    "charly": {
+      "2026-04": {
+        "interactions": 30,
+        "cost_effective": 0.608672
+      },
+      "2026-05": {
+        "interactions": 850,
+        "cost_effective": 40.92953150000001
+      },
+      "2026-06": {
+        "interactions": 671,
+        "cost_effective": 34.62479579999998
+      },
+      "2026-07": {
+        "interactions": 1771,
+        "cost_effective": 24.025668781000004
+      },
+      "2026-08": {
+        "interactions": 263,
+        "cost_effective": 0.7283265479999997
+      },
+      "2026-09": {
+        "interactions": 192,
+        "cost_effective": 0.25643481599999995
+      }
+    },
+    "charly-tRAGar": {
+      "2026-04": {
+        "interactions": 1246,
+        "cost_effective": 50.89943900000003
+      },
+      "2026-05": {
+        "interactions": 489,
+        "cost_effective": 16.22214600000001
+      }
+    },
+    "sk-clojnder": {
+      "2026-04": {
+        "interactions": 1432,
+        "cost_effective": 48.54223150000008
+      },
+      "2026-05": {
+        "interactions": 647,
+        "cost_effective": 30.72474
+      }
+    },
+    "charly-superficies": {
+      "2026-05": {
+        "interactions": 2405,
+        "cost_effective": 88.75506650000014
+      }
+    },
+    "charly-miblioteca": {
+      "2026-05": {
+        "interactions": 15800,
+        "cost_effective": 940.7041115000007
+      },
+      "2026-06": {
+        "interactions": 227,
+        "cost_effective": 5.5859028964
+      }
+    },
+    "charly-pretender": {
+      "2026-05": {
+        "interactions": 2615,
+        "cost_effective": 104.19348950000001
+      },
+      "2026-06": {
+        "interactions": 1765,
+        "cost_effective": 76.99887239999987
+      },
+      "2026-07": {
+        "interactions": 2472,
+        "cost_effective": 12.792349164700003
+      },
+      "2026-08": {
+        "interactions": 393,
+        "cost_effective": 1.398889968
+      }
+    },
+    "sk-clojure-tutor": {
+      "2026-05": {
+        "interactions": 1650,
+        "cost_effective": 65.72417499999999
+      }
+    },
+    "sk-Testimonial-jl": {
+      "2026-05": {
+        "interactions": 217,
+        "cost_effective": 10.587519999999987
+      },
+      "2026-07": {
+        "interactions": 7749,
+        "cost_effective": 35.34228250220009
+      },
+      "2026-08": {
+        "interactions": 414,
+        "cost_effective": 3.2949570703999993
+      },
+      "2026-09": {
+        "interactions": 65,
+        "cost_effective": 0.099411245
+      }
+    },
+    "charly-espectacular": {
+      "2026-05": {
+        "interactions": 1722,
+        "cost_effective": 70.65973100000024
+      },
+      "2026-06": {
+        "interactions": 2219,
+        "cost_effective": 88.39162920000025
+      },
+      "2026-07": {
+        "interactions": 1647,
+        "cost_effective": 8.890789204700006
+      },
+      "2026-08": {
+        "interactions": 547,
+        "cost_effective": 2.4557280439999998
+      },
+      "2026-09": {
+        "interactions": 48,
+        "cost_effective": 0.16185367
+      }
+    },
+    "charly-canticos": {
+      "2026-05": {
+        "interactions": 53,
+        "cost_effective": 0.9778769999999999
+      },
+      "2026-06": {
+        "interactions": 125,
+        "cost_effective": 3.1642147399999985
+      },
+      "2026-08": {
+        "interactions": 79,
+        "cost_effective": 0.11960103600000002
+      }
+    },
+    "charly-microdancing": {
+      "2026-06": {
+        "interactions": 174,
+        "cost_effective": 0.6501750265999998
+      },
+      "2026-09": {
+        "interactions": 311,
+        "cost_effective": 0.49886184482400003
+      }
+    },
+    "charly-testaruda": {
+      "2026-07": {
+        "interactions": 10046,
+        "cost_effective": 45.94245648090004
+      },
+      "2026-08": {
+        "interactions": 690,
+        "cost_effective": 1.7026897599999988
+      }
+    },
+    "sk-cositos": {
+      "2026-07": {
+        "interactions": 1919,
+        "cost_effective": 9.220109713000003
+      },
+      "2026-08": {
+        "interactions": 313,
+        "cost_effective": 1.3535603092399993
+      },
+      "2026-09": {
+        "interactions": 149,
+        "cost_effective": 0.27231935000000007
+      }
+    },
+    "sk-smithy": {
+      "2026-07": {
+        "interactions": 226,
+        "cost_effective": 0.7381972843000002
+      }
+    },
+    "sk-Tray-jl": {
+      "2026-07": {
+        "interactions": 4895,
+        "cost_effective": 24.737650832599975
+      },
+      "2026-08": {
+        "interactions": 152,
+        "cost_effective": 0.3233010959999999
+      }
+    },
+    "charly-vampiro": {
+      "2026-07": {
+        "interactions": 6393,
+        "cost_effective": 26.18436901959994
+      },
+      "2026-08": {
+        "interactions": 336,
+        "cost_effective": 1.1164870459999996
+      }
+    },
+    "charly-genesis": {
+      "2026-07": {
+        "interactions": 2036,
+        "cost_effective": 7.556843358799996
+      },
+      "2026-08": {
+        "interactions": 169,
+        "cost_effective": 0.5494440279999999
+      },
+      "2026-09": {
+        "interactions": 830,
+        "cost_effective": 1.7391983819999972
+      }
+    },
+    "charly-dulce-de-leche": {
+      "2026-07": {
+        "interactions": 365,
+        "cost_effective": 1.1015135639999998
+      },
+      "2026-08": {
+        "interactions": 470,
+        "cost_effective": 1.7522151080000006
+      },
+      "2026-09": {
+        "interactions": 591,
+        "cost_effective": 1.58935739
+      }
+    },
+    "charly-jams": {
+      "2026-08": {
+        "interactions": 624,
+        "cost_effective": 2.018132531999999
+      },
+      "2026-09": {
+        "interactions": 43,
+        "cost_effective": 0.040426019999999986
+      }
+    },
+    "charly-paseos": {
+      "2026-09": {
+        "interactions": 47,
+        "cost_effective": 0.029651179999999996
+      }
+    },
+    "charly-michael": {
+      "2026-09": {
+        "interactions": 435,
+        "cost_effective": 1.2094013150000005
+      }
+    },
+    "charly-whisper": {
+      "2026-09": {
+        "interactions": 707,
+        "cost_effective": 1.6917083200000014
+      }
+    },
+    "charly-fck": {
+      "2026-09": {
+        "interactions": 355,
+        "cost_effective": 0.5568346949999998
+      }
+    },
+    "sk": {
+      "2026-09": {
+        "interactions": 50,
+        "cost_effective": 0.10820765999999998
+      }
+    },
+    "charly-tv": {
+      "2026-09": {
+        "interactions": 126,
+        "cost_effective": 0.5018830919999999
+      }
+    },
+    "charly-coffe": {
+      "2026-09": {
+        "interactions": 1027,
+        "cost_effective": 2.1450871680000008
+      }
+    }
+  },
+  "project_models": {
+    "charly/amp-auto": {
+      "amp": {
+        "interactions": 2207,
+        "cost_effective": 0.0
+      }
+    },
+    "charly-fabbro": {
+      "gemini-3-flash-preview": {
+        "interactions": 31,
+        "cost_effective": 0.0
+      },
+      "gpt-5.3-codex": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 269,
+        "cost_effective": 13.765052
+      }
+    },
+    "charly-incitaciones": {
+      "claude-sonnet-4-6": {
+        "interactions": 134,
+        "cost_effective": 3.955262
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 434,
+        "cost_effective": 1.2928673
+      },
+      "gemini-2.5-pro": {
+        "interactions": 45,
+        "cost_effective": 0.0
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 20,
+        "cost_effective": 0.0
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 12,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 321,
+        "cost_effective": 10.378036
+      },
+      "gpt-5.5": {
+        "interactions": 86,
+        "cost_effective": 5.195249
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 211,
+        "cost_effective": 4.13075671
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 1217,
+        "cost_effective": 2.76676775
+      }
+    },
+    "charly-paranoid": {
+      "claude-sonnet-4-6": {
+        "interactions": 985,
+        "cost_effective": 34.14418485
+      },
+      "gpt-5.4": {
+        "interactions": 154,
+        "cost_effective": 4.8149095
+      },
+      "gpt-5.5": {
+        "interactions": 39,
+        "cost_effective": 2.714681
+      }
+    },
+    "charly-atril": {
+      "claude-opus-4-6": {
+        "interactions": 2172,
+        "cost_effective": 379.679687
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 3211,
+        "cost_effective": 91.548313
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 39,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 898,
+        "cost_effective": 21.9214585
+      },
+      "gpt-5.5": {
+        "interactions": 122,
+        "cost_effective": 7.702423
+      }
+    },
+    "sk-poco": {
+      "gpt-5.4": {
+        "interactions": 55,
+        "cost_effective": 1.8066335
+      }
+    },
+    "sk-XAct-jl": {
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 22,
+        "cost_effective": 1.13553045
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1387,
+        "cost_effective": 50.921843
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 793,
+        "cost_effective": 3.86731554
+      },
+      "deepseek/deepseek-v4-flash:free": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 74,
+        "cost_effective": 0.0
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 33,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 942,
+        "cost_effective": 33.5647485
+      },
+      "gpt-5.5": {
+        "interactions": 311,
+        "cost_effective": 19.29398
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 43,
+        "cost_effective": 0.02610441
+      }
+    },
+    "sk-REPLy-jl": {
+      "<synthetic>": {
+        "interactions": 2,
+        "cost_effective": 0.0
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 68,
+        "cost_effective": 4.1219778
+      },
+      "claude-opus-4-6": {
+        "interactions": 176,
+        "cost_effective": 35.619469
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 4717,
+        "cost_effective": 165.766362
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2414,
+        "cost_effective": 11.97917769
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 36,
+        "cost_effective": 0.0
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 108,
+        "cost_effective": 0.0
+      },
+      "google/gemini-2.5-pro": {
+        "interactions": 2,
+        "cost_effective": 0.2356625
+      },
+      "gpt-5.4": {
+        "interactions": 1232,
+        "cost_effective": 34.5104225
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 382,
+        "cost_effective": 0.70487374
+      }
+    },
+    "charly-wai": {
+      "<synthetic>": {
+        "interactions": 6,
+        "cost_effective": 0.0
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 2,
+        "cost_effective": 0.04843485
+      },
+      "claude-opus-4-6": {
+        "interactions": 667,
+        "cost_effective": 108.47184
+      },
+      "claude-opus-4-7": {
+        "interactions": 34,
+        "cost_effective": 1.599298
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1359,
+        "cost_effective": 39.76857395
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2180,
+        "cost_effective": 8.66908705
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 64,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 622,
+        "cost_effective": 28.016151
+      },
+      "gpt-5.5": {
+        "interactions": 97,
+        "cost_effective": 5.187022
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 557,
+        "cost_effective": 6.22060816
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 244,
+        "cost_effective": 0.47625522
+      }
+    },
+    "charly-dont": {
+      "<synthetic>": {
+        "interactions": 17,
+        "cost_effective": 0.0
+      },
+      "claude-opus-4-6": {
+        "interactions": 465,
+        "cost_effective": 96.288159
+      },
+      "claude-opus-4-7": {
+        "interactions": 417,
+        "cost_effective": 19.337336
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 10988,
+        "cost_effective": 395.32314505
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2307,
+        "cost_effective": 9.06481138
+      },
+      "gemini-3-flash-preview": {
+        "interactions": 34,
+        "cost_effective": 0.0
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 295,
+        "cost_effective": 0.0
+      },
+      "gemini-3.1-pro-preview": {
+        "interactions": 12,
+        "cost_effective": 0.0
+      },
+      "gpt-5.3-codex": {
+        "interactions": 47,
+        "cost_effective": 0.94679795
+      },
+      "gpt-5.4": {
+        "interactions": 1479,
+        "cost_effective": 46.95693
+      },
+      "gpt-5.5": {
+        "interactions": 603,
+        "cost_effective": 38.231906
+      },
+      "moonshotai/kimi-k2": {
+        "interactions": 2,
+        "cost_effective": 0.01672496
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 353,
+        "cost_effective": 5.11261897
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 336,
+        "cost_effective": 0.89353972
+      }
+    },
+    "charly-ruta": {
+      "claude-opus-4-6": {
+        "interactions": 26,
+        "cost_effective": 3.744699
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 962,
+        "cost_effective": 30.771298
+      },
+      "gpt-5.3-codex": {
+        "interactions": 97,
+        "cost_effective": 1.4722652
+      },
+      "gpt-5.4": {
+        "interactions": 587,
+        "cost_effective": 19.2651045
+      }
+    },
+    "sk-titi": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 3732,
+        "cost_effective": 12.29215206
+      },
+      "gpt-5.4": {
+        "interactions": 33,
+        "cost_effective": 0.986879
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 742,
+        "cost_effective": 11.1909457
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 83,
+        "cost_effective": 0.07952289
+      }
+    },
+    "sk-chacana": {
+      "claude-opus-4-6": {
+        "interactions": 128,
+        "cost_effective": 15.370342
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 357,
+        "cost_effective": 2.2547052
+      },
+      "gpt-5.4": {
+        "interactions": 96,
+        "cost_effective": 3.5862925
+      }
+    },
+    "sk-elegua": {
+      "claude-sonnet-4-6": {
+        "interactions": 925,
+        "cost_effective": 38.3452325
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 748,
+        "cost_effective": 4.79262109
+      },
+      "gemini-3-pro-preview": {
+        "interactions": 46,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 26,
+        "cost_effective": 0.9951715
+      },
+      "gpt-5.5": {
+        "interactions": 101,
+        "cost_effective": 6.159236
+      }
+    },
+    "charly": {
+      "<synthetic>": {
+        "interactions": 2,
+        "cost_effective": 0.0
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 223,
+        "cost_effective": 13.16229675
+      },
+      "claude-opus-4-6": {
+        "interactions": 105,
+        "cost_effective": 18.477756
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1295,
+        "cost_effective": 52.6144478
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 1514,
+        "cost_effective": 6.47983607
+      },
+      "gpt-5.4": {
+        "interactions": 149,
+        "cost_effective": 5.0707955
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 297,
+        "cost_effective": 5.11186251
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 192,
+        "cost_effective": 0.25643482
+      }
+    },
+    "charly-tRAGar": {
+      "<synthetic>": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 1694,
+        "cost_effective": 66.105504
+      },
+      "gpt-5.4": {
+        "interactions": 40,
+        "cost_effective": 1.016081
+      }
+    },
+    "sk-clojnder": {
+      "claude-sonnet-4-6": {
+        "interactions": 1687,
+        "cost_effective": 67.114162
+      },
+      "gpt-5.4": {
+        "interactions": 392,
+        "cost_effective": 12.1528095
+      }
+    },
+    "charly-superficies": {
+      "claude-sonnet-4-6": {
+        "interactions": 1952,
+        "cost_effective": 70.511283
+      },
+      "gemini-2.5-pro": {
+        "interactions": 2,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 169,
+        "cost_effective": 3.7271575
+      },
+      "gpt-5.5": {
+        "interactions": 282,
+        "cost_effective": 14.516626
+      }
+    },
+    "charly-miblioteca": {
+      "<synthetic>": {
+        "interactions": 17,
+        "cost_effective": 0.0
+      },
+      "claude-3-sonnet-20240229": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "claude-opus-4-6": {
+        "interactions": 1487,
+        "cost_effective": 348.439106
+      },
+      "claude-opus-4-7": {
+        "interactions": 855,
+        "cost_effective": 44.780229
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 12404,
+        "cost_effective": 498.38186875
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 53,
+        "cost_effective": 0.20766415
+      },
+      "gemini-2.5-pro": {
+        "interactions": 9,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 535,
+        "cost_effective": 16.3410555
+      },
+      "gpt-5.5": {
+        "interactions": 666,
+        "cost_effective": 38.140091
+      }
+    },
+    "charly-pretender": {
+      "<synthetic>": {
+        "interactions": 6,
+        "cost_effective": 0.0
+      },
+      "claude-opus-4-6": {
+        "interactions": 73,
+        "cost_effective": 16.766605
+      },
+      "claude-opus-4-7": {
+        "interactions": 533,
+        "cost_effective": 21.942827
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 3021,
+        "cost_effective": 115.9101154
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2663,
+        "cost_effective": 11.89154071
+      },
+      "gpt-5.4": {
+        "interactions": 491,
+        "cost_effective": 13.9772585
+      },
+      "gpt-5.5": {
+        "interactions": 256,
+        "cost_effective": 12.595556
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 202,
+        "cost_effective": 2.29969842
+      }
+    },
+    "sk-clojure-tutor": {
+      "claude-sonnet-4-6": {
+        "interactions": 1531,
+        "cost_effective": 60.816471
+      },
+      "gpt-5.5": {
+        "interactions": 119,
+        "cost_effective": 4.907704
+      }
+    },
+    "sk-Testimonial-jl": {
+      "claude-sonnet-4-6": {
+        "interactions": 217,
+        "cost_effective": 10.58752
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 7633,
+        "cost_effective": 33.08267683
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 530,
+        "cost_effective": 5.55456274
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 65,
+        "cost_effective": 0.09941124
+      }
+    },
+    "charly-espectacular": {
+      "<synthetic>": {
+        "interactions": 4,
+        "cost_effective": 0.0
+      },
+      "claude-opus-4-7": {
+        "interactions": 376,
+        "cost_effective": 22.550145
+      },
+      "claude-sonnet-4-6": {
+        "interactions": 3043,
+        "cost_effective": 117.4911602
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2055,
+        "cost_effective": 9.83092066
+      },
+      "gpt-5.4": {
+        "interactions": 366,
+        "cost_effective": 10.331569
+      },
+      "gpt-5.5": {
+        "interactions": 152,
+        "cost_effective": 8.678486
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 139,
+        "cost_effective": 1.51559659
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 48,
+        "cost_effective": 0.16185367
+      }
+    },
+    "charly-canticos": {
+      "claude-sonnet-4-6": {
+        "interactions": 75,
+        "cost_effective": 1.47670605
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 109,
+        "cost_effective": 0.14782773
+      },
+      "gpt-5.3-codex": {
+        "interactions": 1,
+        "cost_effective": 0.0
+      },
+      "gpt-5.4": {
+        "interactions": 72,
+        "cost_effective": 2.637159
+      }
+    },
+    "charly-microdancing": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 238,
+        "cost_effective": 0.811804
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 247,
+        "cost_effective": 0.33723287
+      }
+    },
+    "charly-testaruda": {
+      "anthropic/claude-sonnet-4.6": {
+        "interactions": 38,
+        "cost_effective": 1.90763775
+      },
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 10232,
+        "cost_effective": 44.18413284
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 124,
+        "cost_effective": 1.01735629
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 342,
+        "cost_effective": 0.53601936
+      }
+    },
+    "sk-cositos": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2090,
+        "cost_effective": 9.26857891
+      },
+      "google/gemini-2.5-flash": {
+        "interactions": 103,
+        "cost_effective": 1.28343331
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 188,
+        "cost_effective": 0.29397715
+      }
+    },
+    "sk-smithy": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 226,
+        "cost_effective": 0.73819728
+      }
+    },
+    "sk-Tray-jl": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 4915,
+        "cost_effective": 20.91593119
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 132,
+        "cost_effective": 4.14502073
+      }
+    },
+    "charly-vampiro": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 6036,
+        "cost_effective": 18.87090889
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 693,
+        "cost_effective": 8.42994718
+      }
+    },
+    "charly-genesis": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 2156,
+        "cost_effective": 7.76154973
+      },
+      "z-ai/glm-5.2": {
+        "interactions": 49,
+        "cost_effective": 0.34473766
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 830,
+        "cost_effective": 1.73919838
+      }
+    },
+    "charly-dulce-de-leche": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 835,
+        "cost_effective": 2.85372867
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 591,
+        "cost_effective": 1.58935739
+      }
+    },
+    "charly-jams": {
+      "deepseek/deepseek-v4-flash": {
+        "interactions": 624,
+        "cost_effective": 2.01813253
+      },
+      "z-ai/glm-5.3-flash": {
+        "interactions": 43,
+        "cost_effective": 0.04042602
+      }
+    },
+    "charly-paseos": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 47,
+        "cost_effective": 0.02965118
+      }
+    },
+    "charly-michael": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 435,
+        "cost_effective": 1.20940132
+      }
+    },
+    "charly-whisper": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 707,
+        "cost_effective": 1.69170832
+      }
+    },
+    "charly-fck": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 355,
+        "cost_effective": 0.55683469
+      }
+    },
+    "sk": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 50,
+        "cost_effective": 0.10820766
+      }
+    },
+    "charly-tv": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 126,
+        "cost_effective": 0.50188309
+      }
+    },
+    "charly-coffe": {
+      "z-ai/glm-5.3-flash": {
+        "interactions": 1027,
+        "cost_effective": 2.14508717
+      }
+    }
+  },
+  "concurrency": {
+    "distinct_projects_per_hour": {
+      "measure": "parallel-agent",
+      "peak": 10,
+      "avg": 2.29
+    },
+    "peak_simultaneous_sessions": {
+      "measure": "parallel-agent",
+      "peak": 6,
+      "reason": null
+    },
+    "project_switches_per_active_hour": {
+      "measure": "human-context-switching",
+      "value": 70.1
+    }
+  },
+  "filtered_out": {
+    "interactions": 170,
+    "cost_effective": 0.0,
+    "by_tool": {
+      "claude-cli": 0,
+      "pi": 12
+    },
+    "share": 0.0012
+  },
+  "sessions_monthly": {
+    "2026-04": {
+      "total": 492,
+      "with_agent": 84
+    },
+    "2026-05": {
+      "total": 1392,
+      "with_agent": 262
+    }
+  },
   "subscription_config": {
     "claude-cli": [
       {
@@ -36102,5 +38228,100 @@
     "2026-04": 110.0,
     "2026-05": 100.0,
     "2026-06": 20.0
+  },
+  "model_pricing_config": {
+    "default_rates": {
+      "input": 3e-06,
+      "output": 1.5e-05,
+      "cache_read": 3e-07
+    },
+    "cache_write_factor": 1.25,
+    "versions": [
+      {
+        "effective": "2026-01-01",
+        "rates": {
+          "claude": {
+            "opus-4.7": {
+              "input": 1.5e-05,
+              "output": 7.5e-05,
+              "cache_read": 1.5e-06
+            },
+            "opus-4.6": {
+              "input": 1.5e-05,
+              "output": 7.5e-05,
+              "cache_read": 1.5e-06
+            },
+            "opus-4.5": {
+              "input": 1.5e-05,
+              "output": 7.5e-05,
+              "cache_read": 1.5e-06
+            },
+            "sonnet-4.6": {
+              "input": 3e-06,
+              "output": 1.5e-05,
+              "cache_read": 3e-07
+            },
+            "haiku": {
+              "input": 2.5e-07,
+              "output": 1.25e-06,
+              "cache_read": 2.5e-08
+            },
+            "synthetic": {
+              "input": 3e-06,
+              "output": 1.5e-05,
+              "cache_read": 3e-07
+            }
+          },
+          "codex": {
+            "gpt-5.5": {
+              "input": 1e-05,
+              "output": 4e-05,
+              "cache_read": 1e-06
+            },
+            "gpt-5.4": {
+              "input": 1e-05,
+              "output": 4e-05,
+              "cache_read": 1e-06
+            },
+            "gpt-5.3": {
+              "input": 1e-05,
+              "output": 4e-05,
+              "cache_read": 1e-06
+            }
+          },
+          "gemini": {
+            "gemini-3.1": {
+              "input": 1.25e-06,
+              "output": 5e-06,
+              "cache_read": 6.25e-08
+            },
+            "gemini-3-pro": {
+              "input": 1.25e-06,
+              "output": 5e-06,
+              "cache_read": 6.25e-08
+            },
+            "gemini-2.5": {
+              "input": 6.25e-07,
+              "output": 2.5e-06,
+              "cache_read": 3.125e-08
+            }
+          },
+          "deepseek": {
+            "v4-flash": {
+              "input": 3e-07,
+              "output": 1.2e-06,
+              "cache_read": 3e-08
+            }
+          },
+          "kimi": {
+            "k2": {
+              "input": 2e-06,
+              "output": 8e-06,
+              "cache_read": 2e-07
+            }
+          }
+        }
+      }
+    ]
   }
 }

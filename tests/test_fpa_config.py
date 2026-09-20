@@ -247,9 +247,9 @@ class TestSchemaExtendido(unittest.TestCase):
         report["metadata"]["filtered"] = {"interactions": 5, "cost_effective": 0.5}
         mes = report["monthly"]["2026-06"]
         mes["tokens_by_model"] = {
-            "claude-cli": {"opus-4.5": {
+            "opus-4.5": {
                 "in": 1, "out": 2, "cache_read": 3, "cache_write": 4,
-            }}
+            }
         }
         mes["pay_per_token_charges"] = 0.0
         mes["interaction_kinds"] = {"user_prompt": 1, "tool_call": 2}

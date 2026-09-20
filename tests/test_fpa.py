@@ -93,11 +93,15 @@ class TestPureFuncs(unittest.TestCase):
 class TestMonthsMeta(unittest.TestCase):
     """FPA-004: mes parcial con días transcurridos/total."""
 
-    def test_septiembre_parcial_19_de_30(self):
+    def test_septiembre_parcial_coherente(self):
+        """FPA-004: mes parcial → elapsed = último día del rango (coffe-6i8:
+        antes clavado a 19; ahora derivado del reporte para sobrevivir
+        regeneraciones del dataset)."""
+        end = REPORT["metadata"]["date_range"]["end"]
         meta = viz.build_months(REPORT)
-        sep = [m for m in meta if m["ym"] == "2026-09"][0]
+        sep = [m for m in meta if m["ym"] == end[:7]][0]
         self.assertTrue(sep["partial"])
-        self.assertEqual(19, sep["elapsed"])
+        self.assertEqual(int(end[8:10]), sep["elapsed"])
         self.assertEqual(30, sep["total_days"])
 
     def test_meses_completos_no_parciales(self):
@@ -308,9 +312,13 @@ class TestRender(unittest.TestCase):
             .replace('<span class="fig" data-provenance="assumed">', ""))
 
     def test_mes_parcial_marcado_en_html(self):
-        """FPA-004: junio 10 días → '10/30'; sep 19/30 en el reporte real."""
+        """FPA-004: marker 'n/total' + 'parcial' en el HTML (coffe-6i8: n se
+        deriva del reporte en vez de clavar 19/30)."""
+        end = REPORT["metadata"]["date_range"]["end"]
+        meta = viz.build_months(REPORT)
+        sep = [m for m in meta if m["ym"] == end[:7]][0]
         html = _rendered()
-        self.assertIn("19/30", html)
+        self.assertIn(f"{sep['elapsed']}/{sep['total_days']}", html)
         self.assertIn("parcial", html.lower())
 
     def test_resumen_no_vacio(self):

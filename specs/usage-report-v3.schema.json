@@ -190,7 +190,7 @@
           "properties": {
             "measure": {"enum": ["parallel-agent", "human-context-switching"]},
             "peak": {"type": ["integer", "null"], "minimum": 0},
-            "reason": {"type": "string"}
+            "reason": {"type": ["string", "null"], "description": "coffe-6i8: null cuando el pico SÍ es computable; string con la razón solo cuando es n/a (FPA-008)"}
           }
         },
         "project_switches_per_active_hour": {
@@ -290,19 +290,16 @@
       "properties": {
         "subscription_fees": {"type": "number"},
         "tokens_by_model": {
-          "description": "FPA-019: tokens input/output/cache-read/cache-write por mes y modelo",
+          "description": "FPA-019: tokens input/output/cache-read/cache-write por mes y modelo (modelo → tokens; coffe-6i8: el tracker emite 2 niveles, no tool → modelo → tokens)",
           "type": "object",
           "additionalProperties": {
             "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "required": ["in", "out", "cache_read", "cache_write"],
-              "properties": {
-                "in": {"type": "integer", "minimum": 0},
-                "out": {"type": "integer", "minimum": 0},
-                "cache_read": {"type": "integer", "minimum": 0},
-                "cache_write": {"type": "integer", "minimum": 0}
-              }
+            "required": ["in", "out", "cache_read", "cache_write"],
+            "properties": {
+              "in": {"type": "integer", "minimum": 0},
+              "out": {"type": "integer", "minimum": 0},
+              "cache_read": {"type": "integer", "minimum": 0},
+              "cache_write": {"type": "integer", "minimum": 0}
             }
           }
         },

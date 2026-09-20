@@ -27,10 +27,10 @@ de los últimos meses.
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 716K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-19 (139,609 interacciones). |
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
 | `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffe/data/dashboard.html>. |
 | `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
-| `data/fpa-dashboard.html` | 751K | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffe/data/fpa-dashboard.html>. |
+| `data/fpa-dashboard.html` | 1.7M | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffe/data/fpa-dashboard.html>. |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -45,7 +45,7 @@ de los últimos meses.
 
 > **Nota:** el boceto de la serie vive en `microdancing/drafts/serie-aprendizaje-6-meses-boceto.md`, no en este repo.
 
-> **Nota de vigencia (2026-09-19):** `usage_report_v3.json` fue regenerado el 2026-09-19 con el periodo extendido hasta septiembre (139,609 interacciones, 40 proyectos). Las cifras de `resumen-datos-v3.md` y de la sección "Estado de los datos" reflejan el snapshot de 2026-06-10 (81,887 interacciones); son históricas, no están actualizadas.
+> **Nota de vigencia (2026-09-20):** `usage_report_v3.json` fue regenerado el 2026-09-20 con el periodo hasta septiembre (140,564 interacciones, 40 proyectos; coffe-6i8 arregló el schema: `tokens_by_model` a 2 niveles y `concurrency.reason` nullable). Las cifras de `resumen-datos-v3.md` y de la sección "Estado de los datos" reflejan el snapshot de 2026-06-10 (81,887 interacciones); son históricas, no están actualizadas.
 
 Los JSON en `data/` son **derivados**: la fuente son los logs locales de cada herramienta (`~/.claude`, `~/.pi/agent`, `~/.amp`), que no están versionados. En una máquina sin esos logs el tracker no produce datos reales (ver guard en `main()`).
 
@@ -90,10 +90,10 @@ Cifras actuales del reporte, verificadas por
 `python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
 (FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
 
-- Interacciones: 139,735
+- Interacciones: 140,564
 - Proyectos: 40
-- Costo efectivo: $3,810.95
-- Costo real: $609.69
+- Costo efectivo: $3,812.70
+- Costo real: $611.44
 - Sesiones: 1,884
 - Periodo: 2026-01-11 → 2026-09-19
 <!-- CHECK-DOCS:END -->
