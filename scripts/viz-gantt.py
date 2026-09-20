@@ -17,6 +17,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import site_theme  # noqa: E402
+import viz_fpa_guide as guide_mod  # noqa: E402
+
+GUIDE_MD = Path("docs/fpa-analyses-guide.md")
+CONFIG = Path("config/fpa.json")
+
+
+def marginalia_gantt():
+    """Strip de marginalia del Gantt (coffe-gen.4): los análisis mapeados
+    a la superficie 'gantt' (8 multitasking, 9 ritmo). Sin guía → ''."""
+    if not GUIDE_MD.exists():
+        return ""
+    text = GUIDE_MD.read_text(encoding="utf-8")
+    cfg = json.loads(CONFIG.read_text()) if CONFIG.exists() else {}
+    return guide_mod.marginalia_html(guide_mod.load_guide(text), cfg, "gantt")
 
 REPORT = Path("data/usage_report_v3.json")
 OUT = Path("data/gantt-multitasking.html")
@@ -87,6 +101,7 @@ TEMPLATE = """<!DOCTYPE html>
 </div>
 <marquee scrollamount="4">★★★ NUEVO: modo activo/inactivo ★★★ hasta 12 proyectos simultáneos registrados en una sola hora ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★</marquee>
 <div class="sub">__SUB__</div>
+@@MARGINALIA@@
 <div class="controls">
   <button id="b-int" class="on">interacciones</button>
   <button id="b-bin">activo/inactivo</button>
@@ -241,6 +256,7 @@ def main():
 
     html = (TEMPLATE
             .replace("@@THEME_BASE@@", site_theme.base_css())
+            .replace("@@MARGINALIA@@", marginalia_gantt())
             .replace("__DATA__", json.dumps(pd, ensure_ascii=False))
             .replace("__SUB__", sub))
     out_path.parent.mkdir(parents=True, exist_ok=True)

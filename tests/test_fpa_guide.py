@@ -98,6 +98,92 @@ class TestMapping(unittest.TestCase):
         self.assertIn("gantt", surfaces["9"])
 
 
+class TestMarginalia(unittest.TestCase):
+    """Marginalia progressive disclosure (coffe-gen.4): chip 44px con
+    tooltip ELI5, expansión in situ (nivel 2 + nivel 3 colapsado + enlace),
+    cobertura total por superficie, FPA + Gantt."""
+
+    def setUp(self):
+        self.guide = guide.load_guide(GUIDE_MD)
+
+    def test_chip_estructura(self):
+        html = guide.marginalia_html(self.guide, CONFIG, "summary")
+        self.assertIn('<details class="mchip"', html)
+        self.assertIn('title="Imaginá un buffet libre', html)
+        self.assertIn('¿Qué es esto?', html)
+
+    def test_expansion_in_situ(self):
+        html = guide.marginalia_html(self.guide, CONFIG, "summary")
+        self.assertIn("Imaginá un buffet libre", html)  # nivel 1 en tooltip
+        self.assertIn("Algunas herramientas cobran", html)  # nivel 2 visible
+        self.assertIn("Efectivo = Σ tokens", html)  # nivel 3 en nested
+        self.assertIn('<details class="mchip-deep"', html)
+        self.assertIn('href="fpa-guide.html#analisis-1"', html)
+
+    def test_cobertura_por_superficie(self):
+        """Todo análisis aparece en ≥1 superficie; las strips cubren todas."""
+        surfaces = {s for _, ss in guide.ANALYSIS_SURFACES for s in ss}
+        for surface in surfaces:
+            html = guide.marginalia_html(self.guide, CONFIG, surface)
+            expected = {num for num, ss in guide.ANALYSIS_SURFACES
+                        if surface in ss}
+            for num in expected:
+                self.assertIn(f"#analisis-{num}", html,
+                              f"análisis {num} ausente en {surface}")
+
+    def test_render_dashboard_incluye_strips(self):
+        html = viz.render_html(REPORT, CONFIG, generated="2026-09-19 12:00")
+        for surface in ("summary", "cost", "breakdown", "habits", "outlook",
+                        "data"):
+            self.assertIn('<div class="marginalia"', html)
+            self.assertTrue(html.count(f'class="marginalia" id="m-{surface}"')
+                            == 1, f"strip de {surface} ausente")
+
+    def test_render_gantt_incluye_strips(self):
+        gantt = _load("viz_gantt", "scripts/viz-gantt.py")
+        html = gantt.marginalia_gantt()
+        self.assertIn('#analisis-8', html)
+        self.assertIn('#analisis-9', html)
+        self.assertIn('marginalia', html)
+
+    def test_smoke_playwright_chip_expansion(self):
+        """Interacción a 390×844: el chip expande in situ sin pageerrors.
+        Skip si playwright/chromium no está (igual que test_viz.py)."""
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            self.skipTest("playwright no disponible")
+        import glob
+        chrome = None
+        for pat in ("~/.cache/ms-playwright/chromium-*/chrome-linux*/chrome",
+                    "~/.cache/ms-playwright/chromium_headless_shell-*/"
+                    "chrome-linux*/headless_shell"):
+            found = sorted(glob.glob(str(Path(pat).expanduser())))
+            if found:
+                chrome = found[-1]
+                break
+        if not chrome:
+            self.skipTest("chromium de playwright no encontrado")
+        html_path = REPO / "data" / "fpa-dashboard.html"
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=chrome,
+                                        args=["--no-sandbox"])
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            errors = []
+            page.on("pageerror", lambda e: errors.append(e))
+            page.goto(html_path.resolve().as_uri())
+            chip = page.locator("#m-summary details.mchip summary").first
+            chip.scroll_into_view_if_needed()
+            self.assertTrue(chip.is_visible())
+            box = chip.bounding_box()
+            self.assertGreaterEqual(box["height"], 40)  # target táctil
+            chip.click()
+            expanded = page.locator("#m-summary details.mchip[open]").first
+            self.assertTrue(expanded.is_visible())
+            self.assertEqual([], errors)
+            browser.close()
+
+
 class TestCheckDocumentation(unittest.TestCase):
     """check_documentation(): mapeo roto o umbral divergente → errores."""
 

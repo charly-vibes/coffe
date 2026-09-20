@@ -3743,10 +3743,24 @@ def render_html(report, cfg, generated=None, today=None):
         f'<optgroup label="Presets">{preset_opts}</optgroup>'
         f'<optgroup label="Rango custom">{range_opts}</optgroup>')
 
+    # Marginalia progressive disclosure (coffe-gen.4): strip por superficie
+    # con chips de los análisis mapeados (scripts/viz_fpa_guide.py).
+    if guide.GUIDE_MD.exists():
+        guide_dict = guide.load_guide(
+            guide.GUIDE_MD.read_text(encoding="utf-8"))
+        marginalia = {
+            s: guide.marginalia_html(guide_dict, cfg, s)
+            for s in ("summary", "cost", "breakdown", "habits", "outlook",
+                      "data")}
+    else:
+        marginalia = {s: "" for s in ("summary", "cost", "breakdown",
+                                      "habits", "outlook", "data")}
+
     body_inner = f"""<main id="main">
   {banner}
   <section id="summary" class="fpa-view" aria-label="Resumen ejecutivo">
     <h2>¿Cuál es el estado de las cosas?</h2>
+    {marginalia["summary"]}
     <div class="cards">{cards}</div>
     {claims_html}
     <h2 class="sub">KPIs del periodo</h2>
@@ -3756,25 +3770,30 @@ def render_html(report, cfg, generated=None, today=None):
   </section>
   <section id="cost" class="fpa-view" aria-label="Costo">
     <h2>¿Qué estoy gastando?</h2>
+    {marginalia["cost"]}
     {budget_bridge_html}
     {f4_html}
     {recon_html}
   </section>
   <section id="breakdown" class="fpa-view" aria-label="Desglose">
     <h2>¿A dónde va el gasto?</h2>
+    {marginalia["breakdown"]}
     <div id="tree-box">{trees_html}</div>
     {pareto_only_html}
   </section>
   <section id="habits" class="fpa-view" aria-label="Hábitos">
     <h2>¿Cómo trabajo?</h2>
+    {marginalia["habits"]}
     {f5_html}
   </section>
   <section id="outlook" class="fpa-view" aria-label="Pronóstico">
     <h2>¿Qué viene después?</h2>
+    {marginalia["outlook"]}
     {forecast_only_html}
   </section>
   <section id="data" class="fpa-view" aria-label="Datos y método">
     <h2>Datos y método</h2>
+    {marginalia["data"]}
     <details id="data-method">
       <summary><h3>Datos y método</h3></summary>
       {notes_inner}

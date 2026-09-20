@@ -38,6 +38,31 @@ TOKENS = {
 
 FONT_STACK = ('Arial, Helvetica, "MS Sans Serif", sans-serif')
 
+# Marginalia progressive disclosure (coffe-gen.4): chips expandibles
+# compartidos por el dashboard y el Gantt. El tooltip nativo (title)
+# lleva el teaser ELI5; la expansión es <details> nativo (funciona por
+# click, tap y teclado sin JS).
+MARGINALIA_CSS = (
+    '.marginalia { display: flex; flex-wrap: wrap; gap: .4rem; '
+    'align-items: flex-start; margin: .3rem 0 .8rem; }\n'
+    '.marginalia > .mlabel { color: var(--muted); font-size: .78rem; '
+    'align-self: center; }\n'
+    '.marginalia details.mchip { min-height: 44px; }\n'
+    '.marginalia details.mchip > summary { display: inline-flex; '
+    'align-items: center; min-height: 44px; cursor: pointer; '
+    'background: var(--card); border: 2px outset #fff; '
+    'padding: .2rem .6rem; font-size: .8rem; }\n'
+    '.marginalia details.mchip > summary:hover { color: var(--accent); }\n'
+    '.marginalia details.mchip[open] > summary { border-style: inset; }\n'
+    '.marginalia .mnote { background: var(--panel); '
+    'border: 1px solid #404040; box-shadow: 3px 3px 0 #404040; '
+    'padding: .6rem .8rem; font-size: .82rem; max-width: 640px; }\n'
+    '.marginalia .mnote .mlevel { margin: .3rem 0; }\n'
+    '.marginalia .mnote details.mchip-deep > summary { cursor: pointer; '
+    'color: var(--navy); font-size: .78rem; }\n'
+    '.marginalia .mnote a { color: var(--navy); }\n'
+) 
+
 
 def css_vars():
     """Bloque :root con exactamente las variables de TOKENS (orden estable)."""
@@ -46,7 +71,7 @@ def css_vars():
 
 
 def base_css():
-    """Reglas base compartidas: box-sizing + tipografía del sitio.
+    """Reglas base compartidas: box-sizing, tipografía y marginalia.
 
     Cada generador añade sus reglas específicas DESPUÉS de esta base;
     ninguna define su propia paleta ni font-family alternativa.
@@ -54,5 +79,6 @@ def base_css():
     return (
         css_vars() + "\n"
         "* { box-sizing: border-box; }\n"
-        "body { font-family: var(--font-stack); }"
+        "body { font-family: var(--font-stack); }\n"
+        + MARGINALIA_CSS
     )

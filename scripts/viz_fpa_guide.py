@@ -149,6 +149,59 @@ def analyses_flat(guide_dict):
     return [a for s in guide_dict["sections"] for a in s["analyses"]]
 
 
+_MARKDOWN_RE = re.compile(r"\*\*?|`")
+
+
+def _plain(text):
+    """Markdown básico → texto plano (para tooltip y notas)."""
+    return html_mod.escape(_MARKDOWN_RE.sub("", text))
+
+
+NIVEL_TEASER = "1 · ELI5"
+NIVEL_COTIDIANO = "2 · Cotidiano"
+NIVEL_PRACTICANTE = "3 · Practicante"
+
+
+def _mchip(a):
+    """Un chip de marginalia: <details> nativo con tooltip ELI5 (title),
+    nivel 2 visible al expandir, nivel 3 colapsado dentro y enlace a la
+    guía completa (FPA coffe-gen.4)."""
+    teaser = _plain(a["levels"][NIVEL_TEASER])
+    daily = _plain(a["levels"][NIVEL_COTIDIANO])
+    prac = _plain(a["levels"][NIVEL_PRACTICANTE])
+    anchor = _anchor(a["num"])
+    return (
+        f'<details class="mchip" title="{teaser}">'
+        f'<summary>¿Qué es esto? · {html_mod.escape(a["num"])}</summary>'
+        f'<div class="mnote">'
+        f'<div class="mlevel">{daily}</div>'
+        f'<details class="mchip-deep">'
+        f'<summary>Cómo se computa</summary>'
+        f'<div class="mlevel">{prac}</div>'
+        f'</details>'
+        f'<div class="mlevel"><a href="fpa-guide.html#{anchor}">'
+        f'Guía completa → análisis {html_mod.escape(a["num"])}</a></div>'
+        f'</div>'
+        f'</details>')
+
+
+def marginalia_html(guide_dict, cfg, surface):
+    """Strip de marginalia para una superficie (5 vistas + data + gantt):
+    chips por análisis mapeado, con tooltip del teaser ELI5."""
+    by_num = {a["num"]: a for a in analyses_flat(guide_dict)}
+    chips = []
+    for num, surfaces in ANALYSIS_SURFACES:
+        if surface in surfaces and num in by_num:
+            chips.append(_mchip(by_num[num]))
+    if not chips:
+        return ""
+    label = ('¿Qué es esto? Los análisis que esta sección mira '
+             '(tooltip = versión simple; al abrir, la explicación):')
+    return (f'<div class="marginalia" id="m-{html_mod.escape(surface)}">'
+            f'<span class="mlabel">{html_mod.escape(label)}</span>'
+            f'{"".join(chips)}</div>')
+
+
 # Mapeo declarado análisis→superficie (coffe-gen.4 lo consume para la
 # marginalia). Claves canónicas del texto; superficies: las 5 vistas del
 # dashboard + 'data' (Datos y método) + 'gantt'.

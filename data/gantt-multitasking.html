@@ -9,6 +9,17 @@
 :root {--bg:#c0c0c0;--panel:#ffffff;--fg:#000000;--muted:#404040;--accent:#800000;--accent2:#000080;--good:#008080;--grid:#c0c0c0;--navy:#000080;--yellow:#ffff00;--card:#ffffff;--line:#c0c0c0;--acc:#800000;--ok:#008080;--bad:#800000;--font-stack:Arial, Helvetica, 'MS Sans Serif', sans-serif;}
 * { box-sizing: border-box; }
 body { font-family: var(--font-stack); }
+.marginalia { display: flex; flex-wrap: wrap; gap: .4rem; align-items: flex-start; margin: .3rem 0 .8rem; }
+.marginalia > .mlabel { color: var(--muted); font-size: .78rem; align-self: center; }
+.marginalia details.mchip { min-height: 44px; }
+.marginalia details.mchip > summary { display: inline-flex; align-items: center; min-height: 44px; cursor: pointer; background: var(--card); border: 2px outset #fff; padding: .2rem .6rem; font-size: .8rem; }
+.marginalia details.mchip > summary:hover { color: var(--accent); }
+.marginalia details.mchip[open] > summary { border-style: inset; }
+.marginalia .mnote { background: var(--panel); border: 1px solid #404040; box-shadow: 3px 3px 0 #404040; padding: .6rem .8rem; font-size: .82rem; max-width: 640px; }
+.marginalia .mnote .mlevel { margin: .3rem 0; }
+.marginalia .mnote details.mchip-deep > summary { cursor: pointer; color: var(--navy); font-size: .78rem; }
+.marginalia .mnote a { color: var(--navy); }
+
   body {
     margin: 0; padding: 18px; background: var(--bg); color: var(--fg);
     font-size: 13px; line-height: 1.45;
@@ -66,6 +77,7 @@ body { font-family: var(--font-stack); }
 </div>
 <marquee scrollamount="4">★★★ NUEVO: modo activo/inactivo ★★★ hasta 12 proyectos simultáneos registrados en una sola hora ★★★ esta página se ve mejor en Netscape Navigator 4.0 a 800×600 ★★★</marquee>
 <div class="sub">141,851 interacciones · 42 proyectos · 2026-01-11 → 2026-09-20 · 55.2% de horas con ≥2 proyectos en paralelo</div>
+<div class="marginalia" id="m-gantt"><span class="mlabel">¿Qué es esto? Los análisis que esta sección mira (tooltip = versión simple; al abrir, la explicación):</span><details class="mchip" title="Hacer malabares con varias pelotas a la vez."><summary>¿Qué es esto? · 8</summary><div class="mnote"><div class="mlevel">El share de horas activas donde tocaste dos o más proyectos. Hoy: 55.2% de 834 horas activas, con un promedio de 2.31 proyectos por hora y un pico de 10 proyectos en una misma hora.</div><details class="mchip-deep"><summary>Cómo se computa</summary><div class="mlevel">El dashboard lo parte en tres medidas separadas: el promedio de proyectos por hora y el pico de sesiones simultáneas miden agentes paralelos (medida parallel-agent); solo los cambios de proyecto por hora activa (medida human-context-switching, hoy 69.93/h) miden tu propio cambio de contexto, que tiene un costo cognitivo real. Cuidado: el contador de cambios puede inflarse con agentes paralelos corriendo en el mismo minuto — el propio dataset lo advierte.</div></details><div class="mlevel"><a href="fpa-guide.html#analisis-8">Guía completa → análisis 8</a></div></div></details><details class="mchip" title="Un calendario que muestra cuándo jugás."><summary>¿Qué es esto? · 9</summary><div class="mnote"><div class="mlevel">Una grilla día × hora de actividad, más el share de trabajo fuera de horario o en fines de semana, y cuánto difiere cada semana de la anterior.</div><details class="mchip-deep"><summary>Cómo se computa</summary><div class="mlevel">El heatmap usa la timezone del reporte (metadata.timezone, hoy -03); el horario laboral está en el config (lunes a viernes, 09:00–18:00). Las semanas son ISO, con week-over-week y varianza poblacional excluyendo las semanas de borde parciales (no distorsionar la varianza con semanas incompletas). Hay una alerta de staleness (14 días) que avisa si los datos envejecieron. La actividad nocturna puede ser runs agendados de agentes, no vos.</div></details><div class="mlevel"><a href="fpa-guide.html#analisis-9">Guía completa → análisis 9</a></div></div></details></div>
 <div class="controls">
   <button id="b-int" class="on">interacciones</button>
   <button id="b-bin">activo/inactivo</button>
