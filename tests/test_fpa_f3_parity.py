@@ -125,6 +125,9 @@ class TestF3Parity(unittest.TestCase):
 
     def test_edicion_presupuesto_sin_reload(self):
         """FPA-056: al editar, la varianza cambia y el marker se actualiza."""
+        # coffe-070: F1 deja una vista a la vez; #budget vive en #cost
+        # (oculto bajo data-view=summary) y fill exige visibilidad.
+        self.page.click(".tab[data-view='cost']")
         marker = self.page.eval_on_selector(
             "#budget tr[data-ym='2026-06'] td:nth-child(5)", "el => el.textContent")
         self.assertIn("bajo", marker)
@@ -143,6 +146,9 @@ class TestF3Parity(unittest.TestCase):
         # aislamiento: partir del estado default (tests previos mutan la página)
         self.page.reload()
         self.page.wait_for_timeout(200)
+        # coffe-070: el reload vuelve a data-view=summary; #forecast vive
+        # en #outlook (oculto) y fill exige visibilidad.
+        self.page.click(".tab[data-view='outlook']")
         out = viz.apply_scenario(self.model["forecast"], 0.10, 0.05,
                                  self.model["forecast"]["default_plan"])
         self.page.fill("#fc-growth", "10")
@@ -165,6 +171,9 @@ class TestF3Parity(unittest.TestCase):
         fc = self.model["forecast"]
         other = next(p for p in fc["plans"] if p["key"] != fc["default_plan"])
         out = viz.apply_scenario(fc, 0.0, 0.0, other["key"])
+        # coffe-070: #fc-plan vive en #outlook; sin reload previo la vista
+        # puede ser cualquier otra (fill exige visibilidad).
+        self.page.click(".tab[data-view='outlook']")
         self.page.select_option("#fc-plan", other["key"])
         self.page.dispatch_event("#fc-plan", "change")
         self.page.wait_for_timeout(100)
