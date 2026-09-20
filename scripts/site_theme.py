@@ -38,6 +38,29 @@ TOKENS = {
 
 FONT_STACK = ('Arial, Helvetica, "MS Sans Serif", sans-serif')
 
+# Tokens de estructura (coffe-efw/D2): geometría del layout, no identidad —
+# ningún token de color/tipografía nuevo. Los consumen los generadores que
+# interpolan esta constante en su <style> (hoy: viz-fpa.py).
+# - Contenedor: 960px es decisión explícita de D2 (sin widar).
+# - .cards-grid: grilla DEDICADA de cards — es el único contenedor-grid;
+#   marginalia, headings y CTAs nunca son sus hijos (root cause del layout
+#   roto: eran grid items de #summary, que es display:grid).
+# - Anatomía de card: todo hijo directo de .cards-grid es una card
+#   (superficie 90s corporate: panel blanco + borde outset + sombra dura).
+# - Fila de CTAs: compacta, una sola línea a >=600px, alto <=64px.
+STRUCTURE_CSS = (
+    'main { max-width: 960px; margin: 0 auto; padding: 0 1rem 2rem; }\n'
+    '.cards-grid { display: grid; grid-template-columns: '
+    'repeat(auto-fit, minmax(240px, 1fr)); gap: .7rem; margin: .6rem 0 1rem; }\n'
+    '.cards-grid > * { min-width: 0; background: var(--card); '
+    'border: 2px outset #fff; box-shadow: 3px 3px 0 #404040; '
+    'padding: .7rem .8rem; }\n'
+    '.ctas { display: flex; flex-wrap: wrap; gap: .4rem; '
+    'margin: .8rem 0 0; }\n'
+    '.ctas .cta { font-size: .82rem; padding: .35rem .6rem; '
+    'min-height: 44px; max-height: 64px; white-space: nowrap; }\n'
+)
+
 # Marginalia progressive disclosure (coffe-gen.4): chips expandibles
 # compartidos por el dashboard y el Gantt. El tooltip nativo (title)
 # lleva el teaser ELI5; la expansión es <details> nativo (funciona por

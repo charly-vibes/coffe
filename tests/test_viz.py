@@ -123,6 +123,100 @@ class TestVizPages(unittest.TestCase):
                 f"fpa 390x844: tras click en Costo el estado es {state}")
             browser.close()
 
+    def _tops(self, pg, sel):
+        """Filas visuales: número de top-positions distintas de los hijos."""
+        return pg.evaluate(
+            f"[...document.querySelectorAll('{sel} > *')]"
+            ".map(e => Math.round(e.getBoundingClientRect().top))")
+
+    def test_fpa_summary_cards_grid(self):
+        """coffe-efw F2: a 1280px los KPI cards renderizan en >=3 columnas
+        y la grilla de Summary no contiene items no-card (marginalia,
+        headings y CTAs quedan fuera de .cards-grid)."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{page_path}")
+            pg.wait_for_timeout(300)
+            tops = self._tops(pg, "#kpi-cards")
+            self.assertGreaterEqual(len(tops), 3,
+                "fpa: #kpi-cards sin al menos 3 cards")
+            max_row = max(tops.count(t) for t in set(tops))
+            self.assertGreaterEqual(max_row, 3,
+                f"fpa 1280: KPI cards en {max_row} por fila, se esperaban >=3")
+            # La grilla dedicada existe y TODO su contenido es card
+            self.assertIsNotNone(
+                pg.query_selector("#summary .cards-grid"),
+                "fpa: Summary sin .cards-grid dedicada")
+            non_card = pg.evaluate(
+                "[...document.querySelectorAll('#summary .cards-grid > *')]"
+                ".filter(e => !e.classList.contains('headline')).length")
+            self.assertEqual(non_card, 0,
+                "fpa: .cards-grid contiene items no-card")
+            # Marginalia, headings y CTAs fuera de la grilla
+            outside = pg.evaluate(
+                """() => {
+                  const g = document.querySelector('#summary .cards-grid');
+                  const out = (sel) => !g.contains(document.querySelector(sel));
+                  return {m: out('#m-summary'), h: out('#summary h2'),
+                          c: out('#view-ctas')};
+                }""")
+            self.assertEqual(outside, {"m": True, "h": True, "c": True},
+                f"fpa: marginalia/headings/CTAs dentro de la grilla: {outside}")
+            browser.close()
+
+    def test_fpa_ctas_compact_row(self):
+        """coffe-efw F2: los CTAs miden <=64px de alto y quedan en una sola
+        linea a >=600px de viewport."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            for width in (1280, 600):
+                pg = browser.new_page()
+                pg.set_viewport_size({"width": width, "height": 900})
+                pg.goto(f"file://{page_path}")
+                pg.wait_for_timeout(300)
+                h = pg.evaluate(
+                    "Math.round(document.querySelector('#view-ctas')"
+                    ".getBoundingClientRect().height)")
+                self.assertLessEqual(h, 64,
+                    f"fpa {width}px: fila de CTAs mide {h}px (> 64)")
+                tops = self._tops(pg, "#view-ctas")
+                self.assertLessEqual(len(set(tops)), 1,
+                    f"fpa {width}px: CTAs en {len(set(tops))} lineas")
+                pg.close()
+            browser.close()
+
+    def test_fpa_marginalia_single_strip(self):
+        """coffe-efw F2: cada vista tiene un unico strip de marginalia."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{page_path}")
+            pg.wait_for_timeout(300)
+            counts = pg.evaluate(
+                "Object.fromEntries(%s.map(v => [v, document.querySelectorAll('#' + v + ' .marginalia').length]))"
+                % repr(list(self.VIEWS)))
+            for v, n in counts.items():
+                self.assertLessEqual(n, 1,
+                    f"fpa: vista {v} con {n} strips de marginalia")
+            self.assertEqual(counts.get("summary"), 1,
+                f"fpa: Summary sin strip de marginalia: {counts}")
+            browser.close()
+
     def test_page_renders_without_errors(self):
         """Cada página: 0 pageerror, y produce su contenido esperado."""
         with sync_playwright() as p:

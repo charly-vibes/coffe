@@ -2830,10 +2830,9 @@ def claim_html(c):
             + prov_tag(c["threshold_provenance"]) + '</p>')
 
 
-CSS = site_theme.base_css() + """
+CSS = site_theme.base_css() + site_theme.STRUCTURE_CSS + """
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--fg); line-height:1.5; }
-main { max-width: 960px; margin: 0 auto; padding: 0 1rem 2rem; }
 header.site, footer.site { border-bottom: 1px solid var(--line);
   max-width: 960px; margin: 0 auto; padding: .8rem 1rem; }
 footer.site { border:0; border-top: 1px solid var(--line); }
@@ -2844,11 +2843,8 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
   border:1px solid var(--line); }
 .banner-partial { background: var(--card); border: 2px outset #fff;
   padding: .5rem .8rem; font-size: .85rem; }
-#summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
-  gap: .7rem; margin: 1rem 0; }
-#summary h2 { grid-column: 1 / -1; margin: 0 0 .2rem; }
-.headline { background: var(--card); border: 2px outset #fff;
-  box-shadow: 3px 3px 0 #404040; padding: .7rem .8rem; }
+#summary { margin: 1rem 0; }
+#summary h2 { margin: 0 0 .2rem; }
 .headline h3 { margin: 0 0 .3rem; font-size: .8rem; font-weight: 600;
   color: var(--muted); }
 .fig { font-variant-numeric: tabular-nums; font-size: 1.25rem;
@@ -2921,7 +2917,6 @@ button, .cta, .ptoggle, .show-all, .export-csv, .dl-svg {
   border: 2px outset #fff; text-decoration: none;
   color: var(--fg); background: var(--card); }
 .cta-primary { border-color: var(--acc); color: var(--acc); font-weight: 600; }
-.ctas { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
 .show-all, .export-csv, .dl-svg { font-size: .8rem; background: var(--card);
   border: 2px outset #fff; padding: .2rem .6rem;
   margin: .3rem 0; }
@@ -2955,8 +2950,7 @@ body[data-view="data"] #data { display: block; }
   .fpa-view { display: block !important; }
 }
 @media (max-width:599px) {
-  /* FPA-092: una columna */
-  #summary { grid-template-columns: 1fr; }
+  /* FPA-092: una columna (.cards-grid ya colapsa sola con auto-fit) */
   header.site h1 { font-size: 1.1rem; }
   /* FPA-092/177: tablas anchas en contenedor con scroll horizontal y
      primera columna fija */
@@ -3772,10 +3766,10 @@ def render_html(report, cfg, generated=None, today=None):
   <section id="summary" class="fpa-view" aria-label="Resumen ejecutivo">
     <h2>¿Cuál es el estado de las cosas?</h2>
     {marginalia["summary"]}
-    <div class="cards">{cards}</div>
+    <div class="cards-grid">{cards}</div>
     {claims_html}
     <h2 class="sub">KPIs del periodo</h2>
-    <div class="cards" id="kpi-cards">{kpis_html}</div>
+    <div class="cards-grid" id="kpi-cards">{kpis_html}</div>
     <p class="small" id="view-limitation" hidden></p>
     {ctas_block}
   </section>
