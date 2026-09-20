@@ -2702,19 +2702,49 @@ presupuestado (los meses sin datos no fabrican actual=0, FPA-017).</p>
 
 
 def bridge_html(bridge):
-    """FPA-060/067/068: waterfalls por par + mix 100% stacked por mes."""
-    pairs = []
-    for b in bridge["pairs"].values():
-        if b.get("n_a_reason"):  # FPA-008: n/a con razón
-            pairs.append(f'<h3>{esc_html(b["label"])}</h3>'
-                         f'<p class="f3-nv">n/a — {esc_html(b["n_a_reason"])}</p>')
-            continue
-        pairs.append(
-            f'<figure><h3>{esc_html(b["label"])}</h3>{b["svg"]}'
-            f'<figcaption class="small">Δ {fmt_usd(b["delta"])} = Volumen '
-            f'{fmt_usd(b["volume"])} + Mix {fmt_usd(b["mix"])} + Rate '
-            f'{fmt_usd(b["rate"])} (identidad ≤ $0.01, residuo '
-            f'{abs(b["identity_residual"]):.4f})</figcaption></figure>')
+    """FPA-060/067/068 + D6 (coffe-8nw): un único waterfall visible con
+    selector de mes (default: último mes con datos de mix). Python
+    pre-calcula los waterfalls en <template data-bridge-month> y el JS
+    monta el elegido sin recarga. Meses sin datos de mix (par n/a o con
+    coste $0 en ambos meses — marco vacío) quedan fuera del selector;
+    sin ningún mes con mix → n/a con razón, sin selector vacío (FPA-008).
+    """
+    def _has_mix(b):
+        # señal de mix: el par no es n/a y alguno de los dos meses tiene
+        # coste; con $0 en ambos el waterfall es un marco vacío
+        return (not b.get("n_a_reason")
+                and (b["cost0"] > 0 or b["cost1"] > 0))
+
+    def _figure(b):
+        return (f'<figure><h3>{esc_html(b["label"])}</h3>{b["svg"]}'
+                f'<figcaption class="small">Δ {fmt_usd(b["delta"])} = Volumen '
+                f'{fmt_usd(b["volume"])} + Mix {fmt_usd(b["mix"])} + Rate '
+                f'{fmt_usd(b["rate"])} (identidad ≤ $0.01, residuo '
+                f'{abs(b["identity_residual"]):.4f})</figcaption></figure>')
+
+    mix = {ym: b for ym, b in bridge["pairs"].items() if _has_mix(b)}
+    fuera = [b["label"] for ym, b in bridge["pairs"].items()
+             if ym not in mix]
+    if not mix:  # FPA-008: n/a con razón, sin selector vacío
+        razon = "ningún mes con datos de mix (coste efectivo por modelo)"
+        if fuera:
+            razon += " — pares sin señal: " + ", ".join(fuera)
+        head = f'<p class="f3-nv">n/a — {esc_html(razon)}</p>'
+    else:
+        # default: último mes con datos de mix (orden de inserción cronológico)
+        default = list(mix)[-1]
+        opts = "".join(
+            f'<option value="{ym}"'
+            f'{" selected" if ym == default else ""}>'
+            f'{esc_html(b["label"])}</option>' for ym, b in mix.items())
+        head = (f'<label class="small" for="bridge-month">Mes '
+                f'<select id="bridge-month">{opts}</select></label>'
+                f'<div id="bridge-figure"></div>'
+                + "".join(f'<template data-bridge-month="{ym}">'
+                          f'{_figure(b)}</template>' for ym, b in mix.items()))
+        if fuera:
+            head += (f'<p class="small">Fuera del selector (sin datos de '
+                     f'mix): {esc_html(", ".join(fuera))}</p>')
     stack_rows = []
     for s in bridge["mix_stack"].values():
         cells = []
@@ -2732,7 +2762,7 @@ def bridge_html(bridge):
             f'<td><span class="stackrow">{"".join(cells)}</span>{proxy}</td></tr>')
     return f'''<details class="tree" data-tree="bridge" id="bridge">
 <summary><h2>Bridge precio-volumen-mix (efectivo)</h2></summary>
-{"".join(pairs)}
+{head}
 <h3>Mix de modelos por mes (100% stacked)</h3>
 <table class="small" id="mix-stack">
 <tbody>{"".join(stack_rows)}</tbody>
@@ -4268,13 +4298,35 @@ def render_html(report, cfg, generated=None, today=None):
     }}
   }});
   // FPA-175: readout persistente del chart por tap/focus/hover
+  // (re-bindable: el bridge monta waterfalls dinámicamente, D6 coffe-8nw)
   var readout = document.getElementById("wf-readout");
-  document.querySelectorAll(".wf.chart rect[data-label]").forEach(function (r) {{
-    function show() {{ if (readout) readout.textContent = r.getAttribute("aria-label"); }}
-    r.addEventListener("mouseenter", show);
-    r.addEventListener("click", show);
-    r.addEventListener("focus", show);
-  }});
+  function bindReadout() {{
+    document.querySelectorAll(".wf.chart rect[data-label]").forEach(function (r) {{
+      if (r.__wfReadout) return;
+      r.__wfReadout = true;
+      function show() {{ if (readout) readout.textContent = r.getAttribute("aria-label"); }}
+      r.addEventListener("mouseenter", show);
+      r.addEventListener("click", show);
+      r.addEventListener("focus", show);
+    }});
+  }}
+  bindReadout();
+  // D6 (coffe-8nw): bridge con selector de mes — monta el waterfall del
+  // mes elegido desde el template data-bridge-month, sin recarga.
+  var bridgeSel = document.getElementById("bridge-month");
+  function mountBridge() {{
+    var fig = document.getElementById("bridge-figure");
+    if (!bridgeSel || !fig) return;
+    var t = document.querySelector(
+      'template[data-bridge-month="' + bridgeSel.value + '"]');
+    fig.textContent = "";
+    if (t && t.content) fig.appendChild(t.content.cloneNode(true));
+    bindReadout();
+  }}
+  if (bridgeSel) {{
+    bridgeSel.addEventListener("change", mountBridge);
+    mountBridge();
+  }}
   // FPA-170/171: Share view — URL con periodo, vista y expansión de árbol;
   // al cargar se restaura solo con parámetros válidos (los inválidos se
   // ignoran y quedan los defaults).

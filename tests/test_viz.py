@@ -15,6 +15,8 @@ Salta con SKIPPED si playwright no está instalado.
 """
 
 import html as html_mod
+import importlib.util
+import json
 import re
 import sys
 import unittest
@@ -515,6 +517,144 @@ class TestFpaDisclosure(unittest.TestCase):
             n_collapsed, 5,
             f"solo {n_collapsed} summaries colapsados; "
             "los defaults no-primarios debían colapsar")
+
+
+def _money(s):
+    """'+$1,110.03' / '-$455.17' -> float."""
+    return float(s.replace("$", "").replace(",", ""))
+
+
+class TestFpaBridgeSelector(unittest.TestCase):
+    """coffe-8nw F6/D6: bridge con selector de mes — un único waterfall
+    visible, montado desde <template data-bridge-month> sin recarga;
+    identidad Volume+Mix+Rate por mes; sin ningún mes con mix → n/a con
+    razón y sin selector vacío."""
+
+    PAGE = REPO / "data" / "fpa-dashboard.html"
+    CONFIG = json.loads((REPO / "config" / "fpa.json").read_text())
+
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location(
+            "viz_fpa_bridge", REPO / "scripts" / "viz-fpa.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        cls.viz = mod
+
+    def setUp(self):
+        if not self.PAGE.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+
+    def _open_bridge(self, pg):
+        pg.click("a.tab[data-view='cost']")
+        pg.click("#bridge > summary")
+        pg.wait_for_timeout(100)
+
+    def test_fpa_bridge_un_waterfall_visible(self):
+        """Exactamente un waterfall visible a la vez; cambiar de mes
+        re-renderiza sin recarga; los meses sin mix quedan fuera del
+        selector (cada template tiene su opción y viceversa)."""
+        if not HAS_PLAYWRIGHT:
+            self.skipTest("playwright no instalado (opcional)")
+        chrome = find_chromium()
+        if not chrome:
+            self.skipTest("chromium de playwright no encontrado")
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=chrome,
+                                         args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{self.PAGE}")
+            pg.wait_for_timeout(300)
+            self._open_bridge(pg)
+            svgs = "document.querySelectorAll('#bridge svg.wf.chart')"
+            self.assertEqual(1, pg.evaluate(f"{svgs}.length"),
+                "fpa bridge: debe haber exactamente un waterfall en el DOM")
+            visibles = pg.evaluate(
+                f"[...{svgs}].filter(e => e.getClientRects().length > 0).length")
+            self.assertEqual(1, visibles,
+                "fpa bridge: el waterfall montado no es visible")
+            opts = pg.eval_on_selector_all(
+                "#bridge-month option", "els => els.map(e => e.value)")
+            tms = pg.evaluate(
+                "[...document.querySelectorAll(" 
+                "'template[data-bridge-month]')].map(t => "
+                "t.getAttribute('data-bridge-month'))")
+            self.assertGreaterEqual(len(opts), 1,
+                "fpa bridge: selector vacío (debería ser n/a sin selector)")
+            self.assertEqual(sorted(opts), sorted(tms),
+                "fpa bridge: templates y opciones del selector no casan 1:1")
+            # cambiar mes re-renderiza sin recarga (sigue habiendo 1 solo)
+            label0 = pg.get_attribute("#bridge svg.wf.chart", "aria-label")
+            otro = next(o for o in opts if o != pg.input_value("#bridge-month"))
+            pg.select_option("#bridge-month", otro)
+            pg.wait_for_timeout(100)
+            self.assertEqual(1, pg.evaluate(f"{svgs}.length"),
+                "fpa bridge: cambiar de mes dejó más de un waterfall")
+            label1 = pg.get_attribute("#bridge svg.wf.chart", "aria-label")
+            self.assertNotEqual(label0, label1,
+                "fpa bridge: el waterfall no cambió de mes al seleccionar")
+            browser.close()
+
+    def test_fpa_bridge_identidad_por_mes(self):
+        """Identidad Volume+Mix+Rate = Δ (cost₁ − cost₀) dentro de $0.01
+        para cada mes del selector (golden existente, FPA-065)."""
+        if not HAS_PLAYWRIGHT:
+            self.skipTest("playwright no instalado (opcional)")
+        chrome = find_chromium()
+        if not chrome:
+            self.skipTest("chromium de playwright no encontrado")
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(executable_path=chrome,
+                                         args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{self.PAGE}")
+            pg.wait_for_timeout(300)
+            self._open_bridge(pg)
+            opts = pg.eval_on_selector_all(
+                "#bridge-month option", "els => els.map(e => e.value)")
+            self.assertGreaterEqual(len(opts), 1,
+                "fpa bridge: sin selector de mes, no hay identidad que verificar")
+            for opt in opts:
+                pg.select_option("#bridge-month", opt)
+                pg.wait_for_timeout(50)
+                vals = pg.evaluate(
+                    "() => { const out = {}; document.querySelector("
+                    "'#bridge svg.wf.chart').querySelectorAll("
+                    "'rect[data-label]').forEach(r => "
+                    "out[r.getAttribute('data-label')] = "
+                    "r.getAttribute('data-value')); return out; }")
+                total = (_money(vals["cost₀"])
+                         + _money(vals["Volumen"]) + _money(vals["Mix"])
+                         + _money(vals["Rate"]))
+                self.assertLessEqual(abs(total - _money(vals["cost₁"])), 0.01,
+                    f"fpa bridge {opt}: identidad PVM rota ({vals})")
+            browser.close()
+
+    def test_fpa_bridge_na_sin_meses_con_mix(self):
+        """Con ningún mes con datos de mix, la sección muestra n/a con la
+        razón — sin selector vacío ni templates (FPA-008)."""
+        spec = importlib.util.spec_from_file_location(
+            "test_fpa_f2_bridge", REPO / "tests" / "test_fpa_f2.py")
+        f2 = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(f2)
+        fx = f2.f2_fixture()
+        # el caso real del reporte: modelos con coste $0 en todos los meses
+        for mo in fx["monthly"].values():
+            mo["models"] = {"amp": {"interactions": mo["interactions"],
+                                    "cost_effective": 0.0}}
+            mo["cost_effective"] = 0.0
+        html = self.viz.render_html(fx, self.CONFIG, generated="T")
+        i = html.index('data-tree="bridge"')
+        section = html[i:html.index("</details>", i)]
+        self.assertIn("n/a", section,
+            "fpa bridge: sin meses con mix debe mostrar n/a con razón")
+        self.assertIn("ningún mes con datos de mix", section)
+        self.assertNotIn('id="bridge-month"', html,
+            "fpa bridge: selector vacío emitido sin meses con mix")
+        self.assertNotIn("<template data-bridge-month", html,
+            "fpa bridge: templates emitidos sin meses con mix")
 
 
 if __name__ == "__main__":
