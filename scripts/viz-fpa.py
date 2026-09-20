@@ -2939,15 +2939,23 @@ button, .cta, .ptoggle, .show-all, .export-csv, .dl-svg {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+/* coffe-dqz: una vista a la vez a TODO ancho (revierte deliberadamente
+   la parte desktop de FPA-152: "en desktop las vistas van en secuencia");
+   el ancla href de cada tab queda como fallback degradado sin JS. */
+#summary, #cost, #breakdown, #habits, #outlook, #data { display: none; }
+body[data-view="summary"] #summary,
+body[data-view="cost"] #cost,
+body[data-view="breakdown"] #breakdown,
+body[data-view="habits"] #habits,
+body[data-view="outlook"] #outlook,
+body[data-view="data"] #data { display: block; }
+@media print {
+  /* coffe-dqz: la impresión incluye todas las vistas; !important vence
+     al toggle por id de la regla base */
+  .fpa-view { display: block !important; }
+}
 @media (max-width:599px) {
-  /* FPA-152: una vista a la vez; FPA-092: una columna */
-  #summary, #cost, #breakdown, #habits, #outlook, #data { display: none; }
-  body[data-view="summary"] #summary,
-  body[data-view="cost"] #cost,
-  body[data-view="breakdown"] #breakdown,
-  body[data-view="habits"] #habits,
-  body[data-view="outlook"] #outlook,
-  body[data-view="data"] #data { display: block; }
+  /* FPA-092: una columna */
   #summary { grid-template-columns: 1fr; }
   header.site h1 { font-size: 1.1rem; }
   /* FPA-092/177: tablas anchas en contenedor con scroll horizontal y
@@ -3463,7 +3471,10 @@ def _commands_inner(usage):
 
 def skills_commands_html(usage):
     """FPA-156: skills y comandos en una sola vista con toggle."""
-    return f'''<details class="tree" data-tree="skills-commands" id="skills-commands" open>
+    # coffe-dqz: sin open por defecto — la sección primaria de Habits es el
+    # heatmap (D5); skills-commands abierto dejaba la vista > 2 viewports a
+    # 1280x900 tras el toggle a todo ancho (F1).
+    return f'''<details class="tree" data-tree="skills-commands" id="skills-commands">
 <summary><h2>Skills y comandos</h2></summary>
 <div class="panel-toggle">
 <button class="ptoggle active" data-panel="skills-panel" type="button">Skills</button>
@@ -4038,8 +4049,8 @@ def render_html(report, cfg, generated=None, today=None):
   }}
   document.querySelectorAll(".tab").forEach(function (t) {{
     t.addEventListener("click", function (e) {{
-      // FPA-152: en mobile el tab cambia de vista (las demás están ocultas);
-      // en desktop las vistas van en secuencia y el ancla navega in-page.
+      // coffe-dqz: las vistas se alternan a todo ancho (revierte la parte
+      // desktop de FPA-152); en mobile se evita el salto del ancla.
       if (window.matchMedia &&
           window.matchMedia("(max-width:599px)").matches) {{
         e.preventDefault();

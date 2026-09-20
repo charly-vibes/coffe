@@ -51,6 +51,78 @@ class TestVizPages(unittest.TestCase):
         if not cls.chrome:
             raise unittest.SkipTest("chromium de playwright no encontrado")
 
+    VIEWS = ("summary", "cost", "breakdown", "habits", "outlook", "data")
+
+    def _fpa_view_state(self, pg):
+        """Mapa vista -> visible para las 6 secciones .fpa-view."""
+        return {v: pg.is_visible(f"#{v}") for v in self.VIEWS}
+
+    def test_fpa_desktop_one_view_at_a_time(self):
+        """coffe-dqz F1: a 1280x900 el tab 'Hábitos' deja solo esa vista
+        visible y la página mide < 2 viewports (toggle a todo ancho)."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{page_path}")
+            pg.wait_for_timeout(300)
+            pg.click("a.tab[data-view='habits']")
+            pg.wait_for_timeout(200)
+            state = self._fpa_view_state(pg)
+            self.assertEqual(state,
+                dict.fromkeys(self.VIEWS, False) | {"habits": True},
+                f"fpa 1280x900: tras click en Hábitos el estado es {state}")
+            height = pg.evaluate("document.body.scrollHeight")
+            self.assertLess(height, 2 * 900,
+                f"fpa 1280x900: página mide {height}px (>= 2 viewports)")
+            browser.close()
+
+    def test_fpa_deeplink_view_param(self):
+        """coffe-dqz F1: con ?view=habits la vista activa al cargar es
+        Habits (contrato vigente de share-URL por query params)."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 1280, "height": 900})
+            pg.goto(f"file://{page_path}?view=habits")
+            pg.wait_for_timeout(300)
+            state = self._fpa_view_state(pg)
+            self.assertEqual(state,
+                dict.fromkeys(self.VIEWS, False) | {"habits": True},
+                f"fpa ?view=habits: estado al cargar es {state}")
+            self.assertEqual(
+                pg.get_attribute("a.tab[data-view='habits']", "aria-current"),
+                "true", "fpa ?view=habits: tab sin aria-current")
+            browser.close()
+
+    def test_fpa_mobile_toggle_regression(self):
+        """coffe-dqz F1: el toggle a 390x844 (mobile) sigue funcionando."""
+        page_path = REPO / "data" / "fpa-dashboard.html"
+        if not page_path.exists():
+            self.skipTest("fpa-dashboard.html no generado")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(executable_path=self.chrome,
+                                        args=["--no-sandbox"])
+            pg = browser.new_page()
+            pg.set_viewport_size({"width": 390, "height": 844})
+            pg.goto(f"file://{page_path}")
+            pg.wait_for_timeout(300)
+            pg.click("a.tab[data-view='cost']")
+            pg.wait_for_timeout(200)
+            state = self._fpa_view_state(pg)
+            self.assertEqual(state,
+                dict.fromkeys(self.VIEWS, False) | {"cost": True},
+                f"fpa 390x844: tras click en Costo el estado es {state}")
+            browser.close()
+
     def test_page_renders_without_errors(self):
         """Cada página: 0 pageerror, y produce su contenido esperado."""
         with sync_playwright() as p:
