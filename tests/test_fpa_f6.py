@@ -93,11 +93,12 @@ class TestInfoArchitecture(F6Base):
         for p in preguntas:
             self.assertIn(p, self.html)
 
-    def test_data_method_colapsado(self):
-        """FPA-157: Data & method colapsado por default (sin `open`)."""
+    def test_data_method_primario_abierto(self):
+        """FPA-157 (política update-fpa-dashboard-ux F5): Data & method es la
+        sección primaria de la vista Data → abierta por default (`open`)."""
         m = re.search(r'<details[^>]*id="data-method"[^>]*>', self.html)
         self.assertIsNotNone(m)
-        self.assertNotIn("open", m.group(0))
+        self.assertIn("open", m.group(0))
 
     def test_timeline_en_data_method(self):
         """FPA-157: el timeline de tools vive dentro de Data & method."""
@@ -242,7 +243,7 @@ class TestFindingTitles(F6Base):
         b = self._section("breakdown")
         m = re.search(r'<h2 class="finding">([^<]+)</h2>'
                       r'(?:</summary>)?\s*'
-                      r'<p class="small finding-meta">([^<]+)</p>', b)
+                      r'<p class="small finding-meta"[^>]*>([^<]+)</p>', b)
         self.assertIsNotNone(m)
         self.assertIn("concentran", m.group(1))
         self.assertIn("top3_share", m.group(2))
