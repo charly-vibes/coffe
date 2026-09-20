@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-usage-tracker.py v4.1 — Extractor completo de uso de IA.
+usage-tracker.py v4.2 — Extractor completo de uso de IA.
 Filtra solo proyectos charly, incluye Amp, sesiones y patrones.
 Corrige cálculo de costos: estima desde tokens × pricing para Claude JSONL,
 fusiona cache de dashboard para costos precisos, suma cuotas de suscripción.
 v4.1: cuenta tokens de cache (cacheRead/cacheWrite) de Pi y Claude
 (validado contra toolpath/path-cli).
+v4.2 (coffe-mbz): SUBSCRIPTIONS/MODEL_PRICING se cargan de config/fpa.json
+(fuente de verdad F0, versionada por fecha efectiva); fallback a constantes
+hardcodeadas si no hay config. Filtro charly → flag --filter {charly,all}.
 """
 
 import argparse
+import importlib.util
 import json
 import os
 import sys
@@ -22,14 +26,25 @@ AMP_DIR = Path.home() / ".amp"
 OUTPUT_DIR = Path("data")
 LOCAL_TZ = datetime.now().astimezone().tzinfo  # OJO: los buckets hourly/daily usan la TZ local de la máquina que extrae
 
-CHARLY_FILTER = True
+CHARLY_FILTER = True  # default del flag --filter (charly); main() lo setea desde args
 
 # Umbral anti-clobber: si los extractores encuentran menos interacciones que esto
 # (p.ej. máquina sin ~/.claude / ~/.pi/agent / ~/.amp), NO se escribe el reporte
 # sin --force, para no destruir el dataset versionado en data/.
 MIN_INTERACTIONS = 1000
 
-SUBSCRIPTIONS = {
+# =====================================================================
+# Config (coffe-mbz): SUBSCRIPTIONS y MODEL_PRICING viven en
+# config/fpa.json (fuente de verdad F0, pricing versionado por fecha
+# efectiva). Las constantes de abajo son solo el FALLBACK para máquinas
+# sin config — no editarlas para cambiar precios/suscripciones: editar
+# config/fpa.json.
+# =====================================================================
+
+_HERE = Path(__file__).resolve().parent
+_REPO_ROOT = _HERE.parent
+
+_FALLBACK_SUBSCRIPTIONS = {
     "claude-cli": [
         {"start": "2026-03-19", "end": "2026-04-19", "label": "Pro $20/mes", "monthly_fee": 20},
         {"start": "2026-04-19", "end": "2026-06-19", "label": "Max $100/mes", "monthly_fee": 100},
@@ -41,8 +56,8 @@ SUBSCRIPTIONS = {
     ],
 }
 
-# Model pricing per million tokens (pay-per-token rates)
-MODEL_PRICING = {
+# Model pricing per million tokens (pay-per-token rates) — FALLBACK
+_FALLBACK_MODEL_PRICING = {
     "claude": {
         "opus-4.7":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
         "opus-4.6":   {"input": 0.000015, "output": 0.000075, "cache_read": 0.0000015},
@@ -69,14 +84,119 @@ MODEL_PRICING = {
     },
 }
 
-DEFAULT_RATES = {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
+_FALLBACK_DEFAULT_RATES = {"input": 0.000003, "output": 0.000015, "cache_read": 0.0000003}
 
 
-def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0, cache_write=0):
-    """Estimate cost from token counts at pay-per-token rates."""
-    rates = MODEL_PRICING.get(family, {}).get(version, DEFAULT_RATES)
-    # Anthropic cobra cache writes a 1.25x del input rate
-    input_cost = (input_tokens + cache_write * 1.25) * rates["input"]
+def _import_fpa_config():
+    """Importar scripts/fpa_config.py funcionando tanto como script (sys.path
+    incluye el dir del script) como módulo cargado por ruta (tests)."""
+    try:
+        import fpa_config
+        return fpa_config
+    except ImportError:
+        pass
+    spec = importlib.util.spec_from_file_location("fpa_config", _HERE / "fpa_config.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+fpa_config = _import_fpa_config()
+
+
+def load_config(path=None):
+    """coffe-mbz: cargar SUBSCRIPTIONS/MODEL_PRICING desde config/fpa.json.
+
+    Resolución (en orden):
+    1. `path` explícito (flag --config): si no existe → FileNotFoundError.
+    2. TRACKER_CONFIG (env): ídem.
+    3. config/fpa.json relativo al CWD, luego al repo (si no hay ninguno:
+       fallback a constantes hardcodeadas + warning en stderr).
+
+    Con config se valida (validate_config); errores → ValueError (fail loud,
+    nunca fallback silencioso). Setea los globals del módulo y devuelve el
+    config (None si fallback).
+    """
+    global SUBSCRIPTIONS, MODEL_PRICING, DEFAULT_RATES, _CACHE_WRITE_FACTOR
+    global _FPA_CONFIG, _PRICING_VERSIONS, CONFIG_SOURCE
+
+    explicit = path or os.environ.get("TRACKER_CONFIG")
+    cfg = None
+    CONFIG_SOURCE = None
+    if explicit:
+        cfg = fpa_config.load_fpa_config(explicit)  # FileNotFoundError si no existe
+        CONFIG_SOURCE = str(explicit)
+    else:
+        for cand in (Path("config") / "fpa.json", _REPO_ROOT / "config" / "fpa.json"):
+            if cand.exists():
+                cfg = fpa_config.load_fpa_config(cand)
+                CONFIG_SOURCE = str(cand)
+                break
+
+    if cfg is None:
+        print(
+            "WARNING: config/fpa.json no encontrado — usando SUBSCRIPTIONS/"
+            "MODEL_PRICING hardcodeadas (fallback; ignorá este warning solo "
+            "en máquinas sin el repo)",
+            file=sys.stderr,
+        )
+        SUBSCRIPTIONS = _FALLBACK_SUBSCRIPTIONS
+        MODEL_PRICING = _FALLBACK_MODEL_PRICING
+        DEFAULT_RATES = _FALLBACK_DEFAULT_RATES
+        _CACHE_WRITE_FACTOR = 1.25
+        _PRICING_VERSIONS = [{"effective": None, "rates": MODEL_PRICING}]
+        _FPA_CONFIG = None
+        return None
+
+    errors = fpa_config.validate_config(cfg)
+    if errors:
+        raise ValueError(
+            f"config inválido ({CONFIG_SOURCE}):\n" + "\n".join(errors)
+        )
+
+    _FPA_CONFIG = cfg
+    pricing = cfg["model_pricing"]
+    SUBSCRIPTIONS = cfg["subscriptions"]
+    DEFAULT_RATES = pricing["default_rates"]
+    _CACHE_WRITE_FACTOR = pricing.get("cache_write_factor", 1.25)
+    _PRICING_VERSIONS = pricing.get("versions", [])
+    # Compat: rates de la última versión conocida (los extractores piden
+    # rates por fecha vía estimate_cost(..., when=...))
+    if _PRICING_VERSIONS:
+        MODEL_PRICING = max(_PRICING_VERSIONS, key=lambda v: v["effective"])["rates"]
+    else:
+        MODEL_PRICING = {}
+    return cfg
+
+
+load_config()
+
+
+def _pricing_for(when=None):
+    """{family: {model: rates}} vigentes para `when` (date) — FPA-016.
+
+    when=None → la última versión conocida (determinista para tests y
+    llamados sin fecha); con fecha, la última con effective <= when, o
+    default_rates si es anterior a todas.
+    """
+    if _FPA_CONFIG is not None:
+        if when is not None:
+            return fpa_config.rates_for(_FPA_CONFIG, when)
+        if _PRICING_VERSIONS:
+            return max(_PRICING_VERSIONS, key=lambda v: v["effective"])["rates"]
+    return MODEL_PRICING
+
+
+def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0,
+                  cache_write=0, when=None):
+    """Estimate cost from token counts at pay-per-token rates.
+
+    `when`: fecha de la interacción (date) para pricing versionado por
+    fecha efectiva (FPA-016); None → última versión conocida.
+    """
+    rates = _pricing_for(when).get(family, {}).get(version, DEFAULT_RATES)
+    # Anthropic cobra cache writes a _CACHE_WRITE_FACTOR x del input rate
+    input_cost = (input_tokens + cache_write * _CACHE_WRITE_FACTOR) * rates["input"]
     cache_read_cost = cache_read * rates.get("cache_read", rates["input"] * 0.1)
     output_cost = output_tokens * rates["output"]
     return round(input_cost + cache_read_cost + output_cost, 8)
@@ -212,7 +332,8 @@ def extract_claude(skipped=None, kinds=None, excluded=None):
                             out = usage.get("output_tokens", 0) or 0
                             cache_r = usage.get("cache_read_input_tokens", 0) or 0
                             cache_c = usage.get("cache_creation_input_tokens", 0) or 0
-                            cost = estimate_cost(fam, ver, inp, out, cache_r, cache_c)
+                            cost = estimate_cost(fam, ver, inp, out, cache_r, cache_c,
+                                                 when=ts.date())
                             jsonl_rows.append({
                                 "source": "claude_jsonl",
                                 "tool": "claude-cli",
@@ -505,10 +626,10 @@ def get_sub_cost(tool, ts_str, eff_cost):
     For subscription periods: real_cost = 0 (covered by subscription).
     For pay-per-token: real_cost = effective_cost.
     """
-    if tool not in ["claude-cli", "codex"]:
+    if tool not in SUBSCRIPTIONS:
         return eff_cost, eff_cost, "pay-per-token"
     date = (ts_str or "")[:10]
-    for period in SUBSCRIPTIONS[tool]:
+    for period in SUBSCRIPTIONS.get(tool, []):
         if period["start"] <= date and (period["end"] is None or date < period["end"]):
             if period["monthly_fee"] > 0:
                 return 0.0, eff_cost, period["label"]
@@ -526,21 +647,15 @@ def calc_subscription_fees(monthly_data):
     for m_key, m_data in monthly_data.items():
         # Find which months had which subscriptions active
         total = 0.0
-        # Check if the month has any claude-cli activity
         tools = m_data.get("tools", {})
-        if "claude-cli" in tools:
-            for period in SUBSCRIPTIONS["claude-cli"]:
+        for tool, periods in SUBSCRIPTIONS.items():
+            if tool not in tools:
+                continue
+            for period in periods:
                 if period["monthly_fee"] > 0:
                     p_start = period["start"]
                     p_end = period["end"] or "9999-12"
                     # Does this month overlap with the subscription period?
-                    if m_key >= p_start[:7] and m_key < p_end[:7]:
-                        total += period["monthly_fee"]
-        if "codex" in tools:
-            for period in SUBSCRIPTIONS["codex"]:
-                if period["monthly_fee"] > 0:
-                    p_start = period["start"]
-                    p_end = period["end"] or "9999-12"
                     if m_key >= p_start[:7] and m_key < p_end[:7]:
                         total += period["monthly_fee"]
         if total > 0:
@@ -1047,6 +1162,8 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "total_days": len(daily),
             "total_months": len(monthly),
             "total_projects": len(by_project),
+            # coffe-mbz: fuente de verdad de suscripciones/pricing
+            "config_source": CONFIG_SOURCE or "builtin-fallback",
         },
         "hourly": {h: b.to_dict() | {"projects_active": getattr(b, "projects_active", 0)}
                    for h, b in hourly.items()},
@@ -1072,18 +1189,41 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
         "sessions_monthly": dict(sorted(sessions_monthly.items())),
         "subscription_config": SUBSCRIPTIONS,
         "subscription_fees_by_month": sub_fees,
+        # coffe-mbz: config de pricing cargado (no constantes muertas)
+        "model_pricing_config": {
+            "default_rates": DEFAULT_RATES,
+            "cache_write_factor": _CACHE_WRITE_FACTOR,
+            "versions": _PRICING_VERSIONS,
+        },
     })
 
 def main():
-    ap = argparse.ArgumentParser(description="Extractor de uso de IA (charly only)")
+    ap = argparse.ArgumentParser(description="Extractor de uso de IA (filtro de proyectos configurable)")
     ap.add_argument("--output", default=None,
                     help="Ruta del JSON de salida (default: data/usage_report_v3.json)")
     ap.add_argument("--force", action="store_true",
                     help="Escribir aunque los datos extraídos sean casi vacíos")
+    ap.add_argument("--filter", choices=("charly", "all"), default="charly",
+                    help="Filtro de proyectos (default: charly, preserva el reporte histórico)")
+    ap.add_argument("--config", default=None,
+                    help="Ruta del config (default: config/fpa.json; si no hay, fallback a constantes)")
     args = ap.parse_args()
+
+    global CHARLY_FILTER
+    CHARLY_FILTER = args.filter == "charly"
+    try:
+        load_config(args.config)
+    except FileNotFoundError as e:
+        print(f"ERROR: config no encontrado: {e.filename}\n"
+              "  (default: config/fpa.json; sin config hay fallback a constantes)",
+              file=sys.stderr)
+        sys.exit(1)
+    except ValueError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
     out_path = Path(args.output) if args.output else OUTPUT_DIR / "usage_report_v3.json"
 
-    print("=== IA Usage Tracker v4.1 (Charly only) ===", flush=True)
+    print(f"=== IA Usage Tracker v4.2 (filtro: {args.filter}) ===", flush=True)
 
     interactions = []
     skipped = {}

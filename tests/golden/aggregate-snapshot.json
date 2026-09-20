@@ -148,6 +148,7 @@
     }
   },
   "metadata": {
+    "config_source": "config/fpa.json",
     "cost_total_effective": 0.03,
     "cost_total_real": 0.0,
     "date_range": {
@@ -169,6 +170,101 @@
     "total_months": 2,
     "total_output_tokens": 1500,
     "total_projects": 2
+  },
+  "model_pricing_config": {
+    "cache_write_factor": 1.25,
+    "default_rates": {
+      "cache_read": 3e-07,
+      "input": 3e-06,
+      "output": 1.5e-05
+    },
+    "versions": [
+      {
+        "effective": "2026-01-01",
+        "rates": {
+          "claude": {
+            "haiku": {
+              "cache_read": 2.5e-08,
+              "input": 2.5e-07,
+              "output": 1.25e-06
+            },
+            "opus-4.5": {
+              "cache_read": 1.5e-06,
+              "input": 1.5e-05,
+              "output": 7.5e-05
+            },
+            "opus-4.6": {
+              "cache_read": 1.5e-06,
+              "input": 1.5e-05,
+              "output": 7.5e-05
+            },
+            "opus-4.7": {
+              "cache_read": 1.5e-06,
+              "input": 1.5e-05,
+              "output": 7.5e-05
+            },
+            "sonnet-4.6": {
+              "cache_read": 3e-07,
+              "input": 3e-06,
+              "output": 1.5e-05
+            },
+            "synthetic": {
+              "cache_read": 3e-07,
+              "input": 3e-06,
+              "output": 1.5e-05
+            }
+          },
+          "codex": {
+            "gpt-5.3": {
+              "cache_read": 1e-06,
+              "input": 1e-05,
+              "output": 4e-05
+            },
+            "gpt-5.4": {
+              "cache_read": 1e-06,
+              "input": 1e-05,
+              "output": 4e-05
+            },
+            "gpt-5.5": {
+              "cache_read": 1e-06,
+              "input": 1e-05,
+              "output": 4e-05
+            }
+          },
+          "deepseek": {
+            "v4-flash": {
+              "cache_read": 3e-08,
+              "input": 3e-07,
+              "output": 1.2e-06
+            }
+          },
+          "gemini": {
+            "gemini-2.5": {
+              "cache_read": 3.125e-08,
+              "input": 6.25e-07,
+              "output": 2.5e-06
+            },
+            "gemini-3-pro": {
+              "cache_read": 6.25e-08,
+              "input": 1.25e-06,
+              "output": 5e-06
+            },
+            "gemini-3.1": {
+              "cache_read": 6.25e-08,
+              "input": 1.25e-06,
+              "output": 5e-06
+            }
+          },
+          "kimi": {
+            "k2": {
+              "cache_read": 2e-07,
+              "input": 2e-06,
+              "output": 8e-06
+            }
+          }
+        }
+      }
+    ]
   },
   "monthly": {
     "2026-05": {

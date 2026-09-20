@@ -268,10 +268,11 @@ class TestSchemaExtendido(unittest.TestCase):
 
 
 class TestConsistenciaConTracker(unittest.TestCase):
-    """Hasta que coffe-mbz parametrice el tracker, config y tracker no deben divergir.
-
-    Hallazgo ro5u CORR-001: config/fpa.json duplica SUBSCRIPTIONS y MODEL_PRICING
-    de scripts/usage-tracker.py; este test hace la divergencia sonora.
+    """coffe-mbz: la fuente de verdad es config/fpa.json — el tracker la carga
+    (antes duplicaba SUBSCRIPTIONS/MODEL_PRICING como constantes y este test
+    comparaba las dos copias). Hoy el tracker deriva sus valores del config;
+    la cobertura de carga/fallback/versionado vive en tests/test_tracker.py
+    (TestTrackerConfig); acá queda la guardia de consistencia simple.
     """
 
     def _tracker_mod(self):
@@ -290,9 +291,9 @@ class TestConsistenciaConTracker(unittest.TestCase):
     def test_pricing_igual(self):
         tracker = self._tracker_mod()
         cfg = fpa_config.load_fpa_config()
-        self.assertEqual(
-            tracker.MODEL_PRICING, cfg["model_pricing"]["versions"][0]["rates"]
-        )
+        versions = cfg["model_pricing"]["versions"]
+        latest = max(versions, key=lambda v: v["effective"])["rates"]
+        self.assertEqual(tracker.MODEL_PRICING, latest)
         self.assertEqual(tracker.DEFAULT_RATES, cfg["model_pricing"]["default_rates"])
 
 

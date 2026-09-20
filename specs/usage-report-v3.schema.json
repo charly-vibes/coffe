@@ -19,6 +19,7 @@
           }
         },
         "filter": {"enum": ["charly-only", "all"]},
+        "config_source": {"type": "string", "description": "coffe-mbz: fuente del config de suscripciones/pricing (ruta de config/fpa.json o 'builtin-fallback')"},
         "total_interactions": {"type": "integer", "minimum": 0},
         "total_input_tokens": {"type": "integer", "minimum": 0},
         "total_output_tokens": {"type": "integer", "minimum": 0},
@@ -261,6 +262,10 @@
     "subscription_fees_by_month": {
       "type": "object",
       "patternProperties": {"^[0-9]{4}-[0-9]{2}$": {"type": "number"}}
+    },
+    "model_pricing_config": {
+      "type": "object",
+      "description": "coffe-mbz: config de pricing cargado (default_rates, cache_write_factor, versions) — lo usado para calcular costes, no constantes hardcodeadas"
     }
   },
   "definitions": {

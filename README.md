@@ -18,7 +18,7 @@ de los últimos meses.
 
 | Archivo | Propósito |
 |---------|-----------|
-| `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force` (ver "Uso"). |
+| `scripts/usage-tracker.py` | Extractor de uso de IA v4.2. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force`, `--filter {charly,all}` (default charly), `--config RUTA` (ver "Uso"). SUBSCRIPTIONS/MODEL_PRICING se cargan de `config/fpa.json` (coffe-mbz). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 | `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
 | `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard FP&A (presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON, FPA-143). |
@@ -77,7 +77,7 @@ Notas de reproducibilidad entre máquinas:
 
 - El tracker **no sobreescribe** el reporte si extrae < 1,000 interacciones (máquina sin logs); usa `--force` para forzar.
 - Los buckets hourly/daily usan la **TZ local** de la máquina que extrae (`LOCAL_TZ` en el script): dos máquinas con TZ distinta producen agregaciones horarias distintas.
-- Las cuotas de suscripción (`SUBSCRIPTIONS`) y precios por modelo (`MODEL_PRICING`) están hardcoded en el script y afectan los cálculos de costo.
+- Las cuotas de suscripción y los precios por modelo ya NO están hardcoded: el tracker los carga de **`config/fpa.json`** (`subscriptions` y `model_pricing` versionado por fecha efectiva, coffe-mbz). Para cambiar precios/planes editá el config. Si no hay config disponible, usa constantes hardcodeadas como fallback con un warning; `--config RUTA` (o env `TRACKER_CONFIG`) apunta a otro config — una ruta explícita inexistente aborta con error. El reporte lo documenta: `metadata.config_source` y `model_pricing_config` reflejan lo cargado.
 
 ### GitHub Pages
 

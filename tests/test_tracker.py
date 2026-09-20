@@ -9,12 +9,15 @@ Estrategia (std-lib only, como el repo):
   tests/golden/. Regenerar con REGEN_GOLDEN=1 (revisar diff antes de aceptar).
 """
 
+import contextlib
 import importlib.util
+import io
 import json
 import os
 import re
+import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -149,6 +152,145 @@ class TestPureFunctions(unittest.TestCase):
     def test_hour_key_format(self):
         dt = datetime(2026, 5, 10, 23, 30, tzinfo=timezone.utc)
         self.assertRegex(ut.hour_key(dt), r"^\d{4}-\d{2}-\d{2} \d{2}:00$")
+
+
+# ============================ config (coffe-mbz) ============================
+
+class TestTrackerConfig(unittest.TestCase):
+    """coffe-mbz: SUBSCRIPTIONS/MODEL_PRICING viven en config/fpa.json (F0);
+    el tracker las carga de ahí. Fallback a constantes hardcodeadas solo si
+    no hay config (backwards compat, con warning)."""
+
+    REAL_CONFIG = REPO / "config" / "fpa.json"
+
+    def _reload_con_config(self, cfg, name="tracker_cfg_test"):
+        """Reimporta el tracker con TRACKER_CONFIG apuntando a un config dado."""
+        tmpdir = tempfile.mkdtemp()
+        path = Path(tmpdir) / "fpa.json"
+        path.write_text(json.dumps(cfg))
+        old = os.environ.get("TRACKER_CONFIG")
+        os.environ["TRACKER_CONFIG"] = str(path)
+        try:
+            spec = importlib.util.spec_from_file_location(name, TRACKER_PATH)
+            m = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(m)
+        finally:
+            if old is None:
+                os.environ.pop("TRACKER_CONFIG", None)
+            else:
+                os.environ["TRACKER_CONFIG"] = old
+        return m
+
+    def test_subs_desde_config_real(self):
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        self.assertEqual(ut.SUBSCRIPTIONS, cfg["subscriptions"])
+
+    def test_default_rates_desde_config_real(self):
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        self.assertEqual(ut.DEFAULT_RATES, cfg["model_pricing"]["default_rates"])
+        self.assertEqual(ut._CACHE_WRITE_FACTOR,
+                         cfg["model_pricing"]["cache_write_factor"])
+
+    def test_config_source_en_modulo(self):
+        self.assertIsNotNone(ut.CONFIG_SOURCE)
+        self.assertIn("fpa.json", ut.CONFIG_SOURCE)
+
+    def test_lee_suscripciones_de_config_dado(self):
+        """El tracker usa el config apuntado, no las constantes: con otro
+        config, get_sub_cost responde según ese config."""
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        cfg["subscriptions"] = {
+            "otro-cli": [{"start": "2026-01-01", "end": None,
+                          "label": "X", "monthly_fee": 5}]}
+        m = self._reload_con_config(cfg)
+        self.assertEqual(m.SUBSCRIPTIONS, cfg["subscriptions"])
+        real, _, label = m.get_sub_cost("otro-cli", "2026-02-01T00:00:00+00:00", 1.0)
+        self.assertEqual((real, label), (0.0, "X"))
+
+    def test_pricing_versionado_por_fecha(self):
+        """estimate_cost usa la versión de pricing vigente en la fecha de la
+        interacción (FPA-016), no una tabla plana."""
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        cfg["model_pricing"]["versions"] = [
+            {"effective": "2026-01-01", "rates": {
+                "claude": {"sonnet-4.6": {"input": 0.000001,
+                                          "output": 0.000002,
+                                          "cache_read": 0.0000001}}}},
+            {"effective": "2026-06-01", "rates": {
+                "claude": {"sonnet-4.6": {"input": 0.000002,
+                                          "output": 0.000004,
+                                          "cache_read": 0.0000002}}}},
+        ]
+        m = self._reload_con_config(cfg)
+        antes = m.estimate_cost("claude", "sonnet-4.6", 1_000_000, 0,
+                                when=date(2026, 5, 1))
+        despues = m.estimate_cost("claude", "sonnet-4.6", 1_000_000, 0,
+                                  when=date(2026, 7, 1))
+        self.assertAlmostEqual(antes, 1.0, places=8)
+        self.assertAlmostEqual(despues, 2.0, places=8)
+
+    def test_antes_de_primera_version_usa_default(self):
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        cfg["model_pricing"]["versions"] = [
+            {"effective": "2026-06-01", "rates": {
+                "claude": {"sonnet-4.6": {"input": 0.000002,
+                                          "output": 0.000004,
+                                          "cache_read": 0.0000002}}}},
+        ]
+        m = self._reload_con_config(cfg)
+        cost = m.estimate_cost("claude", "sonnet-4.6", 1_000_000, 0,
+                               when=date(2026, 1, 1))
+        self.assertAlmostEqual(
+            cost, 1_000_000 * cfg["model_pricing"]["default_rates"]["input"],
+            places=8)
+
+    def test_fallback_sin_config(self):
+        """Sin config disponible (CWD y repo sin config/): constantes
+        hardcodeadas + warning. Explicit --config/TRACKER_CONFIG inexistente
+        falla loud (FileNotFoundError), no fallback silencioso."""
+        old_cwd = os.getcwd()
+        old_root, old_subs, old_cfg = ut._REPO_ROOT, ut.SUBSCRIPTIONS, ut._FPA_CONFIG
+        os.chdir(tempfile.mkdtemp())
+        err = io.StringIO()
+        try:
+            ut._REPO_ROOT = Path(tempfile.mkdtemp())  # sin config/fpa.json
+            with contextlib.redirect_stderr(err):
+                cfg = ut.load_config()
+            self.assertIsNone(cfg)
+            self.assertEqual(ut.SUBSCRIPTIONS, ut._FALLBACK_SUBSCRIPTIONS)
+            self.assertIsNone(ut._FPA_CONFIG)
+            self.assertIn("WARNING", err.getvalue())
+            # explicit path inexistente → error, no fallback
+            with self.assertRaises(FileNotFoundError):
+                ut.load_config("/no/existe/fpa.json")
+        finally:
+            os.chdir(old_cwd)
+            ut._REPO_ROOT = old_root
+            ut.load_config()  # restaura globals con el config real
+            self.assertEqual(ut._FPA_CONFIG, old_cfg)
+
+    def test_config_invalido_falla_loud(self):
+        """Config con errores de validación → error claro, no fallback silencioso."""
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        cfg.pop("subscriptions", None)
+        with self.assertRaises(ValueError):
+            self._reload_con_config(cfg)
+
+    def test_model_pricing_config_en_reporte(self):
+        """El reporte refleja el config cargado, no constantes muertas."""
+        cfg = ut.fpa_config.load_fpa_config(self.REAL_CONFIG)
+        mpc = self.report["model_pricing_config"]
+        self.assertEqual(mpc["default_rates"], cfg["model_pricing"]["default_rates"])
+        self.assertEqual(mpc["cache_write_factor"],
+                         cfg["model_pricing"]["cache_write_factor"])
+        self.assertEqual(mpc["versions"], cfg["model_pricing"]["versions"])
+
+    def test_metadata_config_source(self):
+        self.assertIn("fpa.json", self.report["metadata"]["config_source"])
+
+    @classmethod
+    def setUpClass(cls):
+        cls.report = ut.aggregate(synthetic_rows(), synthetic_sessions())
 
 
 # ============================ aggregate ============================
