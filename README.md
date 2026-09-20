@@ -21,6 +21,7 @@ de los últimos meses.
 | `scripts/usage-tracker.py` | Extractor de uso de IA v4.1. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force` (ver "Uso"). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 | `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
+| `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard FP&A (presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON, FPA-143). |
 
 ### Datos generados
 
@@ -29,6 +30,7 @@ de los últimos meses.
 | `data/usage_report_v3.json` | 716K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-19 (139,609 interacciones). |
 | `data/dashboard.html` | 25K | **Dashboard de insights.** Tendencias mensuales, uso por proyecto, skills, comandos, heatmap, sesiones, timeline de herramientas. En <https://charly-vibes.github.io/coffe/data/dashboard.html>. |
 | `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffe/data/gantt-multitasking.html>). |
+| `data/fpa-dashboard.html` | 751K | **Dashboard FP&A.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix, forecast, alertas, economía de suscripción, patrones de uso. 5 vistas + selector de periodo; export CSV/SVG; share-URL. En <https://charly-vibes.github.io/coffe/data/fpa-dashboard.html>. |
 | `data/usage_report_v2.json` | 285K | Reporte v2 sin filtrar. 94,115 interacciones (incluye proyectos no-charly). |
 | `data/usage_hourly.json` | 399K | Datos hora a hora de v2 (sin filtrar). |
 | `data/daily_summary.json` | 33K | Resumen diario v2. |
@@ -66,6 +68,8 @@ los viz scripts lo validan con `--validate` (requiere `jsonschema`, opcional).
 python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requiere los logs locales)
 python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON
 python3 scripts/viz-dashboard.py   # regenera data/dashboard.html desde el JSON
+python3 scripts/viz-fpa.py         # regenera data/fpa-dashboard.html desde el JSON
+python3 scripts/viz-fpa.py --check-docs  # verificar cifras del README (FPA-143)
 python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas (viz-dashboard.py igual)
 ```
 
@@ -131,6 +135,6 @@ Con los datos actuales podemos generar:
 
 1. [x] ~~Confirmar fechas exactas de suscripción Claude (Pro→Max→Pro)~~ ✅ **Mar 19 Pro → Abr 19 Max → Jun 19 Pro**
 2. [ ] Investigar gap de enero 1-10 (¿Claude web? ¿Cursor?)
-3. [ ] Generar dashboard HTML con Chart.js
+3. [x] ~~Generar dashboard HTML con Chart.js~~ ✅ **Descartado: `scripts/viz-fpa.py` genera `data/fpa-dashboard.html` con SVG inline, stdlib-only (FPA-145)**
 4. [ ] Empezar a escribir post principal con datos reales
 5. [ ] Interpretar el Gantt: los gaps sin actividad (vacaciones?) y los bloques densos de julio-agosto (¿migración masiva? ¿agentes paralelos?)
