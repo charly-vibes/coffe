@@ -33,11 +33,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Regenerate Gantt + dashboard from committed data
+      - name: Regenerate Gantt + dashboard + guide from committed data
         run: |
           python3 scripts/viz-gantt.py
-          python3 scripts/viz-dashboard.py
           python3 scripts/viz-fpa.py
+          python3 scripts/viz_fpa_guide.py
           python3 scripts/viz-index.py
 
       - name: Doc-consistency check (FPA-143/107)
