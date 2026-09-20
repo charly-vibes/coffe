@@ -9,6 +9,12 @@ v4.1: cuenta tokens de cache (cacheRead/cacheWrite) de Pi y Claude
 v4.2 (coffe-mbz): SUBSCRIPTIONS/MODEL_PRICING se cargan de config/fpa.json
 (fuente de verdad F0, versionada por fecha efectiva); fallback a constantes
 hardcodeadas si no hay config. Filtro charly → flag --filter {charly,all}.
+v4.3 (coffe-snj): flags --since/--until (YYYY-MM-DD, extremos inclusive) para
+corridas reproducibles: los extractores descartan eventos fuera de la ventana
+(rows, kinds de user prompts y sesiones por solape); metadata.window registra
+el pedido; el guard de MIN_INTERACTIONS se relaja a ≥1 cuando hay ventana
+explícita (una ventana angosta legítimamente extrae poco). La ventana evalúa
+fechas UTC (los timestamps de rows son ISO UTC).
 """
 
 import argparse
@@ -17,7 +23,7 @@ import json
 import os
 import sys
 from collections import Counter, defaultdict
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 CLAUDE_DIR = Path.home() / ".claude"
@@ -27,6 +33,8 @@ OUTPUT_DIR = Path("data")
 LOCAL_TZ = datetime.now().astimezone().tzinfo  # OJO: los buckets hourly/daily usan la TZ local de la máquina que extrae
 
 CHARLY_FILTER = True  # default del flag --filter (charly); main() lo setea desde args
+SINCE = None  # date límite inferior (inclusive) de --since; None = sin límite
+UNTIL = None  # date límite superior (inclusive) de --until; None = sin límite
 
 # Umbral anti-clobber: si los extractores encuentran menos interacciones que esto
 # (p.ej. máquina sin ~/.claude / ~/.pi/agent / ~/.amp), NO se escribe el reporte
@@ -215,6 +223,64 @@ def parse_ts(ts):
 def hour_key(dt):
     return dt.astimezone(LOCAL_TZ).strftime("%Y-%m-%d %H:00")
 
+
+def parse_window(since=None, until=None):
+    """coffe-snj: valida --since/--until (YYYY-MM-DD, extremos inclusive).
+
+    Devuelve (date|None, date|None). ValueError si el formato es inválido
+    o since > until (falla loud, nunca ventana silenciosamente invertida).
+    """
+    def _d(s, flag):
+        if not s:
+            return None
+        try:
+            return date.fromisoformat(s)
+        except ValueError:
+            raise ValueError(
+                f"--{flag} inválido: {s!r} (esperado YYYY-MM-DD)") from None
+    sd, ud = _d(since, "since"), _d(until, "until")
+    if sd and ud and sd > ud:
+        raise ValueError(f"--since {sd} es posterior a --until {ud}")
+    return sd, ud
+
+
+def in_window(dt):
+    """True si dt cae en la ventana SINCE/UNTIL (extremos inclusive).
+
+    Acepta datetime o date; evalúa la fecha tal cual (los extractores
+    producen timestamps UTC-aware, así que la ventana es por fecha UTC).
+    Sin ventana activa → True. dt None → True (los extractores ya descartan
+    filas sin fecha antes de llegar acá)."""
+    if dt is None:
+        return True
+    d = dt.date() if isinstance(dt, datetime) else dt
+    if SINCE and d < SINCE:
+        return False
+    if UNTIL and d > UNTIL:
+        return False
+    return True
+
+
+def filter_sessions(sessions, since=None, until=None):
+    """Sesiones que se solapan con [since, until] (fechas, inclusive).
+
+    Una sesión que empieza antes de `since` pero termina dentro cuenta
+    (su trabajo parcial está en la ventana); sin ventana → lista completa.
+    Sesiones sin fechas no se descartan (los extractores ya filtran las
+    filas por fecha; una sesión sin fecha no se pierde en silencio)."""
+    if not since and not until:
+        return list(sessions)
+    kept = []
+    for s in sessions:
+        first = (s.get("first_ts") or "")[:10]
+        last = (s.get("last_ts_full") or s.get("first_ts") or "")[:10]
+        if since and last and last < since.isoformat():
+            continue
+        if until and first and first > until.isoformat():
+            continue
+        kept.append(s)
+    return kept
+
 def is_charly(proj):
     if not CHARLY_FILTER:
         return True
@@ -315,6 +381,7 @@ def extract_claude(skipped=None, kinds=None, excluded=None):
                         entry = json.loads(line)
                         ts = parse_ts(entry.get("timestamp"))
                         if not ts: continue
+                        if not in_window(ts): continue  # coffe-snj: ventana --since/--until
                         if entry.get("type") == "user":
                             if kinds is not None:
                                 kinds.setdefault(ts.strftime("%Y-%m"), Counter())["user_prompt"] += 1
@@ -369,6 +436,7 @@ def extract_claude(skipped=None, kinds=None, excluded=None):
             for turn in summary.get("turns", []):
                 ts = parse_ts(turn.get("ts"))
                 if not ts: continue
+                if not in_window(ts): continue  # coffe-snj: ventana
                 model = turn.get("model", "unknown")
                 cost = turn.get("cost", 0) or 0
                 # Build lookup key: (timestamp_iso, model, project)
@@ -437,7 +505,7 @@ def extract_pi(skipped=None, kinds=None, excluded=None):
                         if role == "user":
                             # FPA-140: user prompts se cuentan, no generan fila de coste
                             ts_u = parse_ts(entry.get("timestamp"))
-                            if kinds is not None and ts_u is not None:
+                            if kinds is not None and ts_u is not None and in_window(ts_u):
                                 kinds.setdefault(ts_u.strftime("%Y-%m"), Counter())["user_prompt"] += 1
                             continue
                         if role != "assistant": continue
@@ -452,8 +520,8 @@ def extract_pi(skipped=None, kinds=None, excluded=None):
                         provider = entry.get("provider", msg.get("provider", ""))
                         ts = parse_ts(entry.get("timestamp"))
                         if not ts: continue
+                        if not in_window(ts): continue  # coffe-snj: ventana
                         if kinds is not None:
-                            # FPA-140: Pi registra tool calls como partes del mensaje
                             kind = "tool_call" if _pi_has_tool_call(msg) else "assistant_turn"
                             kinds.setdefault(ts.strftime("%Y-%m"), Counter())[kind] += 1
                         fam, ver = model_details(model)
@@ -523,7 +591,7 @@ def extract_amp():
                 uri = entry.get("uri", "")
                 if "charly" in uri.lower() or "sk-" in uri.lower():
                     ts = parse_ts(entry.get("timestamp"))
-                    if ts:
+                    if ts and in_window(ts):  # coffe-snj: ventana
                         task_dates.append(ts)
                         if not task_proj:
                             task_proj = "charly"
@@ -577,7 +645,8 @@ def extract_session_stats():
             "n_errors": n_errors,
             "n_compactions": n_compactions,
         })
-    return sessions
+    # coffe-snj: sesiones que se solapan con la ventana --since/--until
+    return filter_sessions(sessions, SINCE, UNTIL)
 
 
 def collect_outcomes():
@@ -1205,12 +1274,20 @@ def main():
                     help="Escribir aunque los datos extraídos sean casi vacíos")
     ap.add_argument("--filter", choices=("charly", "all"), default="charly",
                     help="Filtro de proyectos (default: charly, preserva el reporte histórico)")
+    ap.add_argument("--since", default=None, metavar="YYYY-MM-DD",
+                    help="Fecha inicial (inclusive) — descarta eventos anteriores (UTC)")
+    ap.add_argument("--until", default=None, metavar="YYYY-MM-DD",
+                    help="Fecha final (inclusive) — descarta eventos posteriores (UTC)")
     ap.add_argument("--config", default=None,
                     help="Ruta del config (default: config/fpa.json; si no hay, fallback a constantes)")
     args = ap.parse_args()
 
-    global CHARLY_FILTER
+    global CHARLY_FILTER, SINCE, UNTIL
     CHARLY_FILTER = args.filter == "charly"
+    try:
+        SINCE, UNTIL = parse_window(args.since, args.until)
+    except ValueError as e:
+        ap.error(str(e))
     try:
         load_config(args.config)
     except FileNotFoundError as e:
@@ -1222,8 +1299,22 @@ def main():
         print(f"ERROR: {e}", file=sys.stderr)
         sys.exit(1)
     out_path = Path(args.output) if args.output else OUTPUT_DIR / "usage_report_v3.json"
+    if (SINCE or UNTIL) and not args.output and not args.force:
+        # coffe-snj: una corrida con ventana es un SUBCONJUNTO — sin --output
+        # pisaría el dataset principal de data/ (el guard de arriba ya no
+        # protege con ventana). Forzar explícitamente si es intencional.
+        print(
+            "\nABORTADO: --since/--until produce un subconjunto del histórico;"
+            "\n escribirlo en data/usage_report_v3.json pisaría el dataset principal."
+            "\nUsa --output RUTA para volcarlo a otro archivo, o --force si es intencional.",
+            flush=True,
+        )
+        sys.exit(1)
 
-    print(f"=== IA Usage Tracker v4.2 (filtro: {args.filter}) ===", flush=True)
+    ventana = ""
+    if SINCE or UNTIL:
+        ventana = f", ventana: {SINCE or 'inicio'}..{UNTIL or 'hoy'}"
+    print(f"=== IA Usage Tracker v4.3 (filtro: {args.filter}{ventana}) ===", flush=True)
 
     interactions = []
     skipped = {}
@@ -1255,10 +1346,14 @@ def main():
 
     print(f"  Total: {len(interactions)} → {len(unique)} unique", flush=True)
 
-    if len(unique) < MIN_INTERACTIONS and not args.force:
+    # coffe-snj: con ventana explícita, una extracción angosta es legítima —
+    # el guard solo protege contra corridas sin datos (máquina sin logs).
+    min_required = 1 if (SINCE or UNTIL) else MIN_INTERACTIONS
+    if len(unique) < min_required and not args.force:
         print(
-            f"\nABORTADO: solo {len(unique)} interacciones encontradas (< {MIN_INTERACTIONS}).",
-            "\nLos extractores leen ~/.claude, ~/.pi/agent y ~/.amp — ¿estás en la máquina con los logs?",
+            f"\nABORTADO: solo {len(unique)} interacciones encontradas"
+            f" (mínimo esperado: {min_required}).",
+            "\nLos extractores leen ~/.claude, ~/.pi/agent y ~/.amp — ¿estás en la máquina con los logs?"
             "\nUsa --force para escribir de todas formas.",
             flush=True,
         )
@@ -1276,6 +1371,12 @@ def main():
     if skipped:
         report["metadata"]["skipped"] = dict(skipped)
         report["metadata"]["skipped_lines"] = sum(skipped.values())
+    if SINCE or UNTIL:
+        # coffe-snj: registrar la ventana pedida (reproducibilidad)
+        report["metadata"]["window"] = {
+            "since": SINCE.isoformat() if SINCE else None,
+            "until": UNTIL.isoformat() if UNTIL else None,
+        }
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
@@ -1283,7 +1384,7 @@ def main():
 
     # Pretty print
     m = report["metadata"]
-    print(f"\n=== REPORT v4.1 ===")
+    print(f"\n=== REPORT v4.3 ===")
     print(f"Period: {m['date_range']['start']} → {m['date_range']['end']} ({m['filter']})")
     print(f"Interactions: {m['total_interactions']:,}")
     print(f"Cost effective: ${m['cost_total_effective']:,.2f}")

@@ -18,7 +18,7 @@ de los últimos meses.
 
 | Archivo | Propósito |
 |---------|-----------|
-| `scripts/usage-tracker.py` | Extractor de uso de IA v4.2. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force`, `--filter {charly,all}` (default charly), `--config RUTA` (ver "Uso"). SUBSCRIPTIONS/MODEL_PRICING se cargan de `config/fpa.json` (coffe-mbz). |
+| `scripts/usage-tracker.py` | Extractor de uso de IA v4.3. Lee datos de Claude, Pi (incluye Gemini vía google-gemini-cli) y Amp. Filtra solo proyectos charly. Produce reporte JSON con hourly/daily/monthly/projects/sessions/skills/commands/multitasking/project_daily. Flags: `--output RUTA`, `--force`, `--filter {charly,all}` (default charly), `--since/--until YYYY-MM-DD` (ventana inclusive, coffe-snj), `--config RUTA` (ver "Uso"). SUBSCRIPTIONS/MODEL_PRICING se cargan de `config/fpa.json` (coffe-mbz). |
 | `scripts/viz-gantt.py` | Genera `data/gantt-multitasking.html`: Gantt de actividad proyecto × día con concurrencia diaria. Autocontenido, sin dependencias. |
 | `scripts/viz-dashboard.py` | Genera `data/dashboard.html`: dashboard de insights (tendencia mensual, costo por herramienta, top proyectos, heatmap dow×hora, skills, comandos, sesiones, timeline de herramientas). Autocontenido, SVG puro. |
 | `scripts/viz-fpa.py` | Genera `data/fpa-dashboard.html`: dashboard FP&A (presupuestos, bridge PVM, forecast, alertas, economía de suscripción). Un solo HTML autocontenido, **SVG inline, sin librería de charts externa** (FPA-145); las matemáticas se pre-calculan en Python y el JS solo re-escala. Config en `config/fpa.json`. Flags: `--check-docs` (consistencia README↔JSON, FPA-143). |
@@ -66,6 +66,8 @@ los viz scripts lo validan con `--validate` (requiere `jsonschema`, opcional).
 
 ```bash
 python3 scripts/usage-tracker.py   # regenera data/usage_report_v3.json (requiere los logs locales)
+python3 scripts/usage-tracker.py --since 2026-01-01 --until 2026-06-30 --output data/usage_report_v2.json
+                                   # subconjunto reproducible: ventana temporal (extremos inclusive, fechas UTC; coffe-snj)
 python3 scripts/viz-gantt.py       # regenera data/gantt-multitasking.html desde el JSON
 python3 scripts/viz-dashboard.py   # regenera data/dashboard.html desde el JSON
 python3 scripts/viz-fpa.py         # regenera data/fpa-dashboard.html desde el JSON
@@ -76,6 +78,7 @@ python3 scripts/viz-gantt.py [reporte.json] [salida.html]  # rutas alternativas 
 Notas de reproducibilidad entre máquinas:
 
 - El tracker **no sobreescribe** el reporte si extrae < 1,000 interacciones (máquina sin logs); usa `--force` para forzar.
+- Con `--since/--until` (ventana temporal, extremos inclusive) la extracción es un subconjunto: el umbral de 1,000 no aplica (una ventana angosta legítimamente extrae poco), se registra la ventana pedida en `metadata.window`, y **es obligatorio `--output`** (o `--force`) para no pisar el dataset principal de `data/` con un subconjunto.
 - Los buckets hourly/daily usan la **TZ local** de la máquina que extrae (`LOCAL_TZ` en el script): dos máquinas con TZ distinta producen agregaciones horarias distintas.
 - Las cuotas de suscripción y los precios por modelo ya NO están hardcoded: el tracker los carga de **`config/fpa.json`** (`subscriptions` y `model_pricing` versionado por fecha efectiva, coffe-mbz). Para cambiar precios/planes editá el config. Si no hay config disponible, usa constantes hardcodeadas como fallback con un warning; `--config RUTA` (o env `TRACKER_CONFIG`) apunta a otro config — una ruta explícita inexistente aborta con error. El reporte lo documenta: `metadata.config_source` y `model_pricing_config` reflejan lo cargado.
 
