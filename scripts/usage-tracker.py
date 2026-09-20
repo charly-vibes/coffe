@@ -15,6 +15,10 @@ corridas reproducibles: los extractores descartan eventos fuera de la ventana
 el pedido; el guard de MIN_INTERACTIONS se relaja a ≥1 cuando hay ventana
 explícita (una ventana angosta legítimamente extrae poco). La ventana evalúa
 fechas UTC (los timestamps de rows son ISO UTC).
+v4.4 (coffe-n35): extract_amp unifica el filtro con is_charly (--filter all
+ahora sí amplía Amp) y deriva el label de proyecto del uri (org-repo, p.ej.
+"charly-coffe", vía amp_proj_from_uri); el "charly/amp-auto" fijo era un
+label que mentía sobre el proyecto.
 """
 
 import argparse
@@ -576,34 +580,57 @@ def _pi_has_tool_call(msg):
     return False
 
 
+def amp_proj_from_uri(uri):
+    """Deriva el proyecto (org-repo) desde el uri file:// de Amp (coffe-n35).
+
+    El proyecto canónico es el repo bajo para/areas/dev/gh/<org>/<repo>,
+    nombrado como clean_proj_name ("charly-coffe", "sk-REPLy-jl") para que
+    la taxonomía y project_daily lo crucen con las demás fuentes.
+    Devuelve None si el uri no es derivable.
+    """
+    path = uri or ""
+    if path.startswith("file://"):
+        path = path[len("file://"):]
+    marker = "/para/areas/dev/gh/"
+    if marker not in path:
+        return None
+    rest = path.split(marker, 1)[1].strip("/").split("/")
+    if len(rest) >= 2 and rest[1]:
+        return clean_proj_name(f"{rest[0]}-{rest[1]}")
+    return clean_proj_name(rest[0]) if rest and rest[0] else None
+
+
 def extract_amp():
-    """Extrae de Amp (@ampcode/cli, agente autónomo). Sin costo."""
+    """Extrae de Amp (@ampcode/cli, agente autónomo). Sin costo.
+
+    coffe-n35: el filtro es is_charly(uri) (respeta --filter) y el label
+    es el proyecto derivado del uri, no "charly/amp-auto" fijo.
+    """
     rows = []
     amp_dir = AMP_DIR / "file-changes"
     if not amp_dir.exists(): return rows
     for td in amp_dir.iterdir():
         if not td.is_dir(): continue
-        task_proj = None
-        task_dates = []
+        hits = []  # (ts, proyecto derivado) por archivo tocado
         for f in td.iterdir():
             try:
                 entry = json.loads(f.read_text())
                 uri = entry.get("uri", "")
-                if "charly" in uri.lower() or "sk-" in uri.lower():
-                    ts = parse_ts(entry.get("timestamp"))
-                    if ts and in_window(ts):  # coffe-snj: ventana
-                        task_dates.append(ts)
-                        if not task_proj:
-                            task_proj = "charly"
+                if not is_charly(uri):  # coffe-n35: unifica con --filter
+                    continue
+                ts = parse_ts(entry.get("timestamp"))
+                if ts and in_window(ts):  # coffe-snj: ventana
+                    proj = amp_proj_from_uri(uri) or "amp-unknown"
+                    hits.append((ts, proj))
             except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
                 if os.environ.get("TRACKER_DEBUG"):
                     print(f"  [skipped] amp: {e}", file=sys.stderr)
-        if task_proj and task_dates:
-            for ts in task_dates:
+        if hits:
+            for ts, proj in hits:
                 rows.append({
                     "source": "amp", "tool": "amp",
                     "model_raw": "amp", "model_family": "amp", "model_version": "v1",
-                    "project": "charly/amp-auto",
+                    "project": proj,
                     "timestamp": ts.isoformat(), "hour": hour_key(ts),
                     "input_tokens": 0, "output_tokens": 0,
                     "cache_read_tokens": 0, "cache_write_tokens": 0,
