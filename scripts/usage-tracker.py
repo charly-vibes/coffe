@@ -58,13 +58,16 @@ _REPO_ROOT = _HERE.parent
 
 _FALLBACK_SUBSCRIPTIONS = {
     "claude-cli": [
-        {"start": "2026-03-19", "end": "2026-04-19", "label": "Pro $20/mes", "monthly_fee": 20},
-        {"start": "2026-04-19", "end": "2026-06-19", "label": "Max $100/mes", "monthly_fee": 100},
-        {"start": "2026-06-19", "end": None, "label": "Pro $20/mes", "monthly_fee": 20},
+        {"start": "2026-03-19", "end": "2026-04-19", "label": "Max $100/mes", "monthly_fee": 100},
+        {"start": "2026-04-19", "end": "2026-05-19", "label": "Max $100/mes", "monthly_fee": 100},
+        {"start": "2026-05-19", "end": "2026-06-19", "label": "Pro $20/mes", "monthly_fee": 20},
     ],
     "codex": [
-        {"start": "2026-04-01", "end": "2026-05-15", "label": "Subscripción", "monthly_fee": 10},
-        {"start": "2026-05-15", "end": None, "label": "Pay-per-token", "monthly_fee": 0},
+        {"start": "2026-04-02", "end": "2026-05-02", "label": "ChatGPT Plus $20/mes", "monthly_fee": 20},
+        {"start": "2026-05-02", "end": "2026-06-02", "label": "ChatGPT Plus $20/mes", "monthly_fee": 20},
+    ],
+    "gemini-cli": [
+        {"start": "2025-12-03", "end": "2026-06-03", "label": "Google AI Pro $19.99/mes", "monthly_fee": 19.99},
     ],
 }
 

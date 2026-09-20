@@ -144,10 +144,11 @@ class TestPureFunctions(unittest.TestCase):
                    "2026-05": {"tools": ["claude-cli"]},
                    "2026-06": {"tools": {"claude-cli": 5}}}  # shape dict como el real
         fees = ut.calc_subscription_fees(monthly)
-        # el código suma la fee completa si el mes intersecta el periodo
-        self.assertIn("2026-04", fees)
-        self.assertIn("2026-05", fees)
-        self.assertIn("2026-06", fees)
+        # calendario corregido a facturas (FPA-082/reales): abril = Max $100
+        # + Plus $20; mayo = Pro $20 (el mes arranca en Pro tras el 19);
+        # junio = $0 — sin factura jun (claude cancelado, codex Free
+        # después del 02). El mes cuenta la fee del plan activo al inicio.
+        self.assertEqual({"2026-04": 120.0, "2026-05": 20.0}, fees)
 
     def test_hour_key_format(self):
         dt = datetime(2026, 5, 10, 23, 30, tzinfo=timezone.utc)

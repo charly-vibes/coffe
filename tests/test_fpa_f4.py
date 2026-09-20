@@ -115,15 +115,16 @@ class TestVerifyPlan(unittest.TestCase):
         self.assertNotIn("verify-plan", _rules(alerts))
 
     def test_fira_sobre_umbral(self):
-        """3000 efectivo ÷ $100 (Max en mayo) = 30× > 25×."""
+        """3000 efectivo ÷ $20 (mayo inicia en Pro tras el 19-05,
+        calendario corregido a facturas) = 150× > 25×."""
         alerts = viz.build_alerts(self._with_claude_cost(3000.0), CONFIG, today=TODAY)
         ev = _by_rule(alerts, "verify-plan")
         self.assertEqual(1, len(ev))
         self.assertEqual("2026-05", ev[0]["evidence"]["month"])
-        self.assertEqual(30.0, ev[0]["evidence"]["multiple"])
+        self.assertEqual(150.0, ev[0]["evidence"]["multiple"])
 
     def test_umbral_configurable(self):
-        fx = self._with_claude_cost(3000.0)
+        fx = self._with_claude_cost(2000.0)  # 2000 ÷ $20 = 100× (no > 100)
         alerts = viz.build_alerts(fx, _cfg(plan_usage_multiple=100.0), today=TODAY)
         self.assertNotIn("verify-plan", _rules(alerts))
 
@@ -315,22 +316,28 @@ class TestPlanEconomy(unittest.TestCase):
         cls.econ = viz.build_plan_economy(cls.fixture, CONFIG)
 
     def test_panel_por_plan(self):
-        """FPA-130: un panel por cada periodo del calendario de suscripciones."""
+        """FPA-130: un panel por cada periodo del calendario de suscripciones
+        (calendario corregido a facturas — coffe-a31)."""
         keys = [(p["tool"], p["start"]) for p in self.econ["plans"]]
-        self.assertIn(("claude-cli", "2026-03-19"), keys)
-        self.assertIn(("claude-cli", "2026-04-19"), keys)
-        self.assertIn(("claude-cli", "2026-06-19"), keys)
-        self.assertIn(("codex", "2026-04-01"), keys)
+        self.assertIn(("claude-cli", "2026-03-19"), keys)  # Max $100
+        self.assertIn(("claude-cli", "2026-04-19"), keys)  # Max $100
+        self.assertIn(("claude-cli", "2026-05-19"), keys)  # Pro $20
+        self.assertIn(("codex", "2026-04-02"), keys)  # ChatGPT Plus $20
+        self.assertIn(("codex", "2026-05-02"), keys)  # ChatGPT Plus $20
+        self.assertIn(("gemini-cli", "2025-12-03"), keys)  # Google AI Pro $19.99
 
     def test_utilizacion_formula(self):
         """FPA-130: utilización = coste efectivo del periodo ÷ precio del plan.
 
-        Abr19–Jun19 (Max $100/mes): el hourly del fixture registra $40 de
-        efectivo claude en el periodo, precio pro-rateado ~$200 (2 meses)."""
+        Abr19–May19 (Max $100/mes, calendario corregido a facturas): el
+        hourly del fixture registra $40 de efectivo claude en el periodo,
+        precio pro-rateado ~$98 → util ≈ 0.41."""
         p = next(p for p in self.econ["plans"]
                  if p["tool"] == "claude-cli" and p["start"] == "2026-04-19")
         self.assertAlmostEqual(40.0, p["eff_cost"])
-        self.assertAlmostEqual(0.199, p["utilization"], places=2)
+        self.assertAlmostEqual(p["eff_cost"] / p["price"], p["utilization"],
+                               places=4)
+        self.assertAlmostEqual(0.41, p["utilization"], places=2)
         self.assertEqual("assumed", p["provenance"])  # FPA-003
 
     def test_utilizacion_na_sin_datos_horarios(self):

@@ -302,7 +302,7 @@
       "q_base": 170.0,
       "rate_base": 0.407843
     },
-    "default_plan": "claude-cli:2",
+    "default_plan": "claude-cli:none",
     "future_months": [
       "2026-08",
       "2026-09",
@@ -325,20 +325,20 @@
         "symbol": "▼",
         "text": "bajo"
       },
-      "projected_cash": 145.0,
+      "projected_cash": 45.0,
       "projected_eff": 554.65,
       "provenance": "assumed",
-      "variance_cash": -587.26,
+      "variance_cash": -687.26,
       "variance_eff": -909.87,
-      "variance_pct_cash": -0.802,
+      "variance_pct_cash": -0.9385,
       "variance_pct_eff": -0.6213,
       "ym_to": "2026-12"
     },
     "plans": [
       {
-        "fee": 20,
+        "fee": 100,
         "key": "claude-cli:0",
-        "label": "Pro $20/mes",
+        "label": "Max $100/mes",
         "tool": "claude-cli"
       },
       {
@@ -351,6 +351,12 @@
         "fee": 20,
         "key": "claude-cli:2",
         "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 0.0,
+        "key": "claude-cli:none",
+        "label": "Sin suscripción (pay-per-token)",
         "tool": "claude-cli"
       }
     ],
@@ -370,7 +376,7 @@
     },
     "rows": [
       {
-        "cash": 20.0,
+        "cash": 0.0,
         "eff": 69.33,
         "label": "ago 26",
         "marker": {
@@ -381,7 +387,7 @@
         "ym": "2026-08"
       },
       {
-        "cash": 20.0,
+        "cash": 0.0,
         "eff": 69.33,
         "label": "sep 26",
         "marker": {
@@ -392,7 +398,7 @@
         "ym": "2026-09"
       },
       {
-        "cash": 20.0,
+        "cash": 0.0,
         "eff": 69.33,
         "label": "oct 26",
         "marker": {
@@ -403,7 +409,7 @@
         "ym": "2026-10"
       },
       {
-        "cash": 20.0,
+        "cash": 0.0,
         "eff": 69.33,
         "label": "nov 26",
         "marker": {
@@ -414,7 +420,7 @@
         "ym": "2026-11"
       },
       {
-        "cash": 20.0,
+        "cash": 0.0,
         "eff": 69.33,
         "label": "dic 26",
         "marker": {

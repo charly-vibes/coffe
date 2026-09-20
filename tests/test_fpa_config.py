@@ -60,16 +60,42 @@ class TestConfigRealValido(unittest.TestCase):
         self.assertEqual("09:00", cfg["working_hours"]["start"])
         self.assertEqual("18:00", cfg["working_hours"]["end"])
 
-    def test_suscripciones_default_spec(self):
-        """FPA-015: Pro Mar-19, Max Abr-19, Pro Jun-19."""
+    def test_suscripciones_claude_facturas(self):
+        """FPA-082/reales: calendario corregido a las facturas de claude-cli.
+        Max 19-mar, Max 19-abr, Pro 19-may — cancelado, sin factura jun."""
         subs = fpa_config.load_fpa_config()["subscriptions"]["claude-cli"]
-        self.assertEqual("2026-03-19", subs[0]["start"])
-        self.assertEqual(20, subs[0]["monthly_fee"])
-        self.assertEqual("2026-04-19", subs[1]["start"])
-        self.assertEqual(100, subs[1]["monthly_fee"])
-        self.assertEqual("2026-06-19", subs[2]["start"])
-        self.assertEqual(20, subs[2]["monthly_fee"])
-        self.assertIsNone(subs[2]["end"])
+        self.assertEqual([
+            ("2026-03-19", "2026-04-19", 100),
+            ("2026-04-19", "2026-05-19", 100),
+            ("2026-05-19", "2026-06-19", 20),
+        ], [(s["start"], s["end"], s["monthly_fee"]) for s in subs])
+
+    def test_suscripciones_codex_facturas(self):
+        """FPA-082/reales: ChatGPT Plus $20 el 2-abr y el 2-may; Free después."""
+        subs = fpa_config.load_fpa_config()["subscriptions"]["codex"]
+        self.assertEqual([
+            ("2026-04-02", "2026-05-02", 20),
+            ("2026-05-02", "2026-06-02", 20),
+        ], [(s["start"], s["end"], s["monthly_fee"]) for s in subs])
+
+    def test_suscripciones_gemini_facturas(self):
+        """FPA-082/reales: Google AI Pro $19.99/mes desde dic-2025,
+        cancelado después de mayo-2026 (sin facturas jun+)."""
+        subs = fpa_config.load_fpa_config()["subscriptions"]["gemini-cli"]
+        self.assertEqual([
+            ("2025-12-03", "2026-06-03", 19.99),
+        ], [(s["start"], s["end"], s["monthly_fee"]) for s in subs])
+
+    def test_suscripciones_sin_cola_fantasma(self):
+        """Los calendarios terminan según facturas: ninguna entrada con
+        end null (Free/cancelado = ausencia de suscripción, no fee 0 eterno)."""
+        subs = fpa_config.load_fpa_config()["subscriptions"]
+        for tool, entries in subs.items():
+            for entry in entries:
+                self.assertIsNotNone(
+                    entry["end"],
+                    f"{tool}: entrada con end null ({entry['start']})",
+                )
 
     def test_presupuesto_mes_inicio_default(self):
         """FPA-051: budgets aplican solo desde el mes de inicio (default Abril)."""

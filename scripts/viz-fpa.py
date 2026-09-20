@@ -698,7 +698,34 @@ def build_forecast(report, cfg):
         e = _plan_for(cfg, tool, end_date)
         if e and e["monthly_fee"] > best_fee:
             primary, best_fee = tool, e["monthly_fee"]
-    entries = cfg["subscriptions"].get(primary, [])
+    fallback_plan = None
+    if primary is None:
+        # FPA-082 (cargos reales): con el calendario corregido a las
+        # facturas puede no haber ninguna suscripción activa al cierre
+        # (Free/cancelado). El plan default pasa a "sin suscripción"
+        # (fee $0 → cash = p2p escalado, FPA-073) y los periodos del
+        # calendario quedan como escenarios hipotéticos; la herramienta
+        # primaria es la de la última suscripción vigente (fin más
+        # tardío; a igual fin, la de mayor cuota).
+        best_cand, best_tool = None, None
+        for tool, entries_ in cfg["subscriptions"].items():
+            for e in entries_:
+                if not e.get("end"):
+                    continue
+                cand = (e["end"], e["monthly_fee"], tool)
+                if best_cand is None or cand > best_cand:
+                    best_cand, best_tool = cand, tool
+        if best_tool is None:
+            primary = next(iter(cfg["subscriptions"]), None)
+            entries = list(cfg["subscriptions"].get(primary, []))
+        else:
+            primary = best_tool
+            entries = list(cfg["subscriptions"][primary])
+            fallback_plan = {"key": f"{primary}:none", "tool": primary,
+                             "label": "Sin suscripción (pay-per-token)",
+                             "fee": 0.0}
+    else:
+        entries = cfg["subscriptions"].get(primary, [])
     plans = [{"key": f"{primary}:{i}", "tool": primary,
               "label": e["label"], "fee": e["monthly_fee"]}
              for i, e in enumerate(entries)]
@@ -709,6 +736,13 @@ def build_forecast(report, cfg):
         if s <= end_date and (e_end is None or end_date < e_end):
             default_plan = f"{primary}:{i}"
             break
+    if fallback_plan:
+        plans.append(fallback_plan)
+        default_plan = fallback_plan["key"]
+    elif primary is None:
+        # sin activa al cierre y sin fines en el calendario: no inventar
+        # default — apply_scenario cae a base["fee_base"] (del reporte)
+        default_plan = None
 
     # meses futuros: del mes siguiente al cierre hasta diciembre (FPA-070)
     fut = [f"{end_ym[:4]}-{mm:02d}"

@@ -83,6 +83,9 @@ class TestF3Parity(unittest.TestCase):
 
     def test_default_iguala_python(self):
         """El escenario default ya renderizado iguala build_model de Python."""
+        # aislamiento: tests previos (p.ej. cambio de plan) mutan la página
+        self.page.reload()
+        self.page.wait_for_timeout(200)
         fc = self.model["forecast"]
         rows = self.page.eval_on_selector_all(
             "#forecast tr[data-fc-ym]",
@@ -137,6 +140,9 @@ class TestF3Parity(unittest.TestCase):
 
     def test_escenario_sin_reload_iguala_python(self):
         """FPA-077: escenario g=10%, r=5% → JS = apply_scenario de Python."""
+        # aislamiento: partir del estado default (tests previos mutan la página)
+        self.page.reload()
+        self.page.wait_for_timeout(200)
         out = viz.apply_scenario(self.model["forecast"], 0.10, 0.05,
                                  self.model["forecast"]["default_plan"])
         self.page.fill("#fc-growth", "10")

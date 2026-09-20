@@ -1,0 +1,310 @@
+{
+  "description": "Ledger de cargos reales (facturas de proveedores), transcripto de captures de billing el 2026-09-20. Provenance: reported (FPA-003). kind: subscription | credits | refund | api_cycle (factura $0). Solo gasto de IA: los cargos de storage (Google One 100 GB) quedan fuera del ledger por decisión de Sasha 2026-09-20. Los amounts son USD reales pagados en la fecha.",
+  "currency": "USD",
+  "providers": {
+    "claude-cli": [
+      {
+        "date": "2025-10-11",
+        "amount": 200,
+        "kind": "credits",
+        "note": "compra anterior al periodo del reporte (probablemente créditos API)"
+      },
+      {
+        "date": "2026-01-29",
+        "amount": 10,
+        "kind": "credits",
+        "note": "créditos API"
+      },
+      {
+        "date": "2026-01-31",
+        "amount": 10,
+        "kind": "credits",
+        "note": "créditos API"
+      },
+      {
+        "date": "2026-02-02",
+        "amount": 0,
+        "kind": "api_cycle",
+        "note": "factura de ciclo API $0"
+      },
+      {
+        "date": "2026-02-04",
+        "amount": 10,
+        "kind": "credits",
+        "note": "créditos API"
+      },
+      {
+        "date": "2026-02-11",
+        "amount": 20,
+        "kind": "credits",
+        "note": "créditos API"
+      },
+      {
+        "date": "2026-02-16",
+        "amount": 10,
+        "kind": "credits",
+        "note": "créditos API"
+      },
+      {
+        "date": "2026-02-19",
+        "amount": -28.22,
+        "kind": "refund",
+        "note": "refund/ajuste a favor"
+      },
+      {
+        "date": "2026-03-02",
+        "amount": 0,
+        "kind": "api_cycle",
+        "note": "factura de ciclo API $0"
+      },
+      {
+        "date": "2026-03-19",
+        "amount": 100,
+        "kind": "subscription",
+        "note": "Claude Max $100/mes — el calendario asumido decía Pro $20 (FPA-082)"
+      },
+      {
+        "date": "2026-04-19",
+        "amount": 100,
+        "kind": "subscription",
+        "note": "Claude Max $100/mes"
+      },
+      {
+        "date": "2026-05-19",
+        "amount": 20,
+        "kind": "subscription",
+        "note": "Claude Pro $20/mes"
+      }
+    ],
+    "codex": [
+      {
+        "date": "2026-04-02",
+        "amount": 20,
+        "kind": "subscription",
+        "note": "ChatGPT Plus $20/mes — el calendario asumido decía $10/mo (FPA-082)"
+      },
+      {
+        "date": "2026-05-02",
+        "amount": 20,
+        "kind": "subscription",
+        "note": "ChatGPT Plus $20/mes — última factura; cuenta en Free después"
+      }
+    ],
+    "amp": [
+      {
+        "date": "2025-12-13",
+        "amount": 50,
+        "kind": "credits",
+        "note": "Monthly charge 5,000 credits (10×500)"
+      },
+      {
+        "date": "2026-01-13",
+        "amount": 50,
+        "kind": "credits",
+        "note": "Monthly charge 5,000 credits (10×500)"
+      },
+      {
+        "date": "2026-01-13",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-01-22",
+        "amount": 5,
+        "kind": "credits",
+        "note": "Manual purchase 500 credits"
+      },
+      {
+        "date": "2026-01-22",
+        "amount": 5,
+        "kind": "credits",
+        "note": "Manual purchase 500 credits"
+      },
+      {
+        "date": "2026-01-22",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-02-01",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-02-10",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-02-10",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-02-13",
+        "amount": 50,
+        "kind": "credits",
+        "note": "Monthly charge 5,000 credits (10×500)"
+      },
+      {
+        "date": "2026-05-20",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-07-20",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-07-20",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-07-20",
+        "amount": 20,
+        "kind": "credits",
+        "note": "Manual purchase 2,000 credits (4×500)"
+      },
+      {
+        "date": "2026-07-24",
+        "amount": 10,
+        "kind": "credits",
+        "note": "Manual purchase 1,000 credits (2×500)"
+      },
+      {
+        "date": "2026-07-27",
+        "amount": 5,
+        "kind": "credits",
+        "note": "Manual purchase 500 credits"
+      }
+    ],
+    "gemini-cli": [
+      {
+        "date": "2025-12-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 2TB — Gemini pasó a pago desde dic (antes 100 GB solo storage $1.99, kind storage, fuera del cash de IA)"
+      },
+      {
+        "date": "2026-01-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 2TB"
+      },
+      {
+        "date": "2026-02-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 2TB"
+      },
+      {
+        "date": "2026-03-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 2TB"
+      },
+      {
+        "date": "2026-04-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 5TB"
+      },
+      {
+        "date": "2026-05-03",
+        "amount": 19.99,
+        "kind": "subscription",
+        "note": "Google AI Pro 5TB — última; cancelado después de mayo (sin facturas jun+)"
+      }
+    ],
+    "openrouter": [
+      {
+        "date": "2026-02-19",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-06-30",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-07",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-09",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-15",
+        "amount": 40,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-17",
+        "amount": 10,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-20",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-21",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-24",
+        "amount": 100,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-28",
+        "amount": 100,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-07-31",
+        "amount": 50,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-09-01",
+        "amount": 20,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      },
+      {
+        "date": "2026-09-17",
+        "amount": 30,
+        "kind": "credits",
+        "note": "recarga de créditos"
+      }
+    ]
+  }
+}

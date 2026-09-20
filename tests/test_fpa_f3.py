@@ -381,11 +381,18 @@ class TestForecast(F3Base):
         for p in fc["plans"]:
             self.assertIsInstance(p["fee"], (int, float))
 
-    def test_plan_default_vigente_al_cierre(self):
-        """Plan por defecto = el activo en la fecha de fin del reporte."""
+    def test_plan_default_sin_suscripcion_activa(self):
+        """FPA-071 + FPA-082/reales: el calendario corregido a facturas no
+        tiene ninguna suscripción activa al cierre del fixture (jul-10:
+        claude cancelado, codex Free) → plan default = "sin suscripción"
+        (fee $0; cash forecast = p2p escalado) y los planes del calendario
+        quedan como escenarios hipotéticos."""
         fc = self.model["forecast"]
         default = next(p for p in fc["plans"] if p["key"] == fc["default_plan"])
-        self.assertEqual(20.0, default["fee"])  # Pro activo desde 2026-06-19
+        self.assertEqual(0.0, default["fee"])
+        self.assertIn("sin suscripción", default["label"].lower())
+        # los planes reales del calendario siguen listables como escenarios
+        self.assertTrue(any(p["fee"] > 0 for p in fc["plans"]))
 
     def test_apply_scenario_cambia_filas(self):
         """FPA-077: el escenario feedea el recompute sin reload."""

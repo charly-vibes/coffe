@@ -758,7 +758,7 @@
       "q_base": 23298.666667,
       "rate_base": 0.004629
     },
-    "default_plan": "claude-cli:2",
+    "default_plan": "claude-cli:none",
     "future_months": [
       "2026-10",
       "2026-11",
@@ -779,20 +779,20 @@
         "symbol": "▲",
         "text": "sobre"
       },
-      "projected_cash": 750.85,
+      "projected_cash": 690.85,
       "projected_eff": 4144.35,
       "provenance": "assumed",
-      "variance_cash": -115.82,
+      "variance_cash": -175.82,
       "variance_eff": 2411.02,
-      "variance_pct_cash": -0.1336,
+      "variance_pct_cash": -0.2029,
       "variance_pct_eff": 1.391,
       "ym_to": "2026-12"
     },
     "plans": [
       {
-        "fee": 20,
+        "fee": 100,
         "key": "claude-cli:0",
-        "label": "Pro $20/mes",
+        "label": "Max $100/mes",
         "tool": "claude-cli"
       },
       {
@@ -805,6 +805,12 @@
         "fee": 20,
         "key": "claude-cli:2",
         "label": "Pro $20/mes",
+        "tool": "claude-cli"
+      },
+      {
+        "fee": 0.0,
+        "key": "claude-cli:none",
+        "label": "Sin suscripción (pay-per-token)",
         "tool": "claude-cli"
       }
     ],
@@ -824,7 +830,7 @@
     },
     "rows": [
       {
-        "cash": 43.77,
+        "cash": 23.77,
         "eff": 107.85,
         "label": "oct 26",
         "marker": {
@@ -835,7 +841,7 @@
         "ym": "2026-10"
       },
       {
-        "cash": 43.77,
+        "cash": 23.77,
         "eff": 107.85,
         "label": "nov 26",
         "marker": {
@@ -846,7 +852,7 @@
         "ym": "2026-11"
       },
       {
-        "cash": 43.77,
+        "cash": 23.77,
         "eff": 107.85,
         "label": "dic 26",
         "marker": {
