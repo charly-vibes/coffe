@@ -119,3 +119,29 @@ visualización única de su tipo y SHALL adoptar el tema compartido.
 - **WHEN** se inspecciona el repo y el deploy tras el change
 - **THEN** `data/dashboard.html` y `scripts/viz-dashboard.py` no existen y la
   suite verde no los referencia
+
+## MODIFIED Requirements
+
+### Requirement: accesibilidad y mobile
+
+El Dashboard SHALL (debe): operar todo control por teclado con focus visible;
+inspeccionar todo chart por tap/focus/hover con readout persistente (captions sin
+hover); touch targets ≥ 44×44 px; primera columna fija en tablas anchas con scroll
+horizontal < 600px; single-column < 600px; usar el tema visual compartido del sitio
+(módulo de tema único, ver "identidad visual del sitio") sin modo oscuro;
+formato USD y miles con tabular nums; skip-to-content y `lang` del documento;
+retro decorativo confinado a header/footer, opcional por config, sin animación bajo
+`prefers-reduced-motion`, contraste ≥ 4.5:1 para texto normal del tema compartido
+sobre el fondo silver; y funcionar sin storage con defaults.
+
+#### Scenario: smoke mobile 390×844
+
+- **WHEN** el smoke test carga la página a 390×844
+- **THEN** el primer viewport contiene título, period selector y primera headline,
+  sin scroll horizontal ni errores de consola
+
+#### Scenario: contraste AA bajo el tema compartido
+
+- **WHEN** se computan los pares texto/fondo de los tokens del tema compartido
+  (fg, muted, accent sobre bg silver y panel blanco)
+- **THEN** el texto normal alcanza contraste ≥ 4.5:1
