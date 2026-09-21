@@ -10,11 +10,13 @@ análisis se explica cuatro veces, de lo más simple a lo más técnico.
 | **3 · Practicante** | Quien lo construye y mantiene | Cómo se computa, trampas, decisiones |
 | **4 · Experto** | Un analista o estadístico | Supuestos, límites, métodos mejores |
 
-Las cifras citadas (efectivo $3,814.72, cash real $1,086.73, 54.0% del top-3 de
-proyectos, 18.4% de sesiones con agente, etc.) provienen del reporte actual
-`data/usage_report_v3.json` (periodo 2026-01-11 → 2026-09-20, filtro charly-only,
-141,851 interacciones) — las mismas que `python3 scripts/viz-fpa.py
---check-docs` verifica contra el README. Son una foto del momento de la
+Las cifras citadas (efectivo {{fig:efectivo_total}}, cash real
+{{fig:cash_real_total}}, {{fig:top3_share}} del top-3 de proyectos,
+{{fig:agent_share}} de sesiones con agente, etc.) provienen del reporte actual
+`data/usage_report_v3.json` (periodo {{fig:periodo}}, filtro {{fig:filtro}},
+{{fig:interacciones_total}} interacciones) — se derivan del reporte vigente en
+cada generación (tokens `fig:*` resueltos por `viz_fpa_guide.py`) y
+`python3 scripts/viz-fpa.py --check-docs` verifica lo acoplado al README. Son una foto del momento de la
 traducción; el dashboard calcula las cifras vivas en cada corrida.
 
 Los IDs de requisito (FPA-xxx) apuntan a la spec.
@@ -32,8 +34,9 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 - **2 · Cotidiano:** Algunas herramientas cobran por mes y otras por uso. El
   costo efectivo re-precia todo como si fuera pago-por-uso, para que las
   herramientas se comparen en limpio y veas cuánto valor te da una suscripción.
-  El apalancamiento es efectivo ÷ real. En el reporte actual: $3,814.72
-  efectivo contra $1,086.73 real, unos **3.5×**.
+  El apalancamiento es efectivo ÷ real. En el reporte actual:
+  {{fig:efectivo_total}} efectivo contra {{fig:cash_real_total}} real, unos
+  **{{fig:apalancamiento}}**.
 - **3 · Practicante:** Efectivo = Σ tokens × precio de lista por modelo
   (input, output, cache read, cache write — con los rates del config
   `model_pricing`, versionados por fecha para que los meses viejos no cambien
@@ -55,11 +58,11 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 - **1 · ELI5:** Cuánto cuesta en promedio cada "toque" al robot.
 - **2 · Cotidiano:** Costo total ÷ interacciones × 1,000. Si baja, cada acción
   salió más barata, aunque la factura total subiera. Actualmente el claim del
-  dashboard muestra **$26.89 efectivo por 1k** contra un objetivo de $3.00
-  (config `target_per_1k`, *assumed*): por ahora fuera de objetivo, con
+  dashboard muestra **{{fig:per_1k_efectivo}} efectivo por 1k** contra un
+  objetivo de {{fig:target_per_1k}} (config `target_per_1k`, *assumed*): por ahora fuera de objetivo, con
   métrica y umbral visibles en el claim.
 - **3 · Practicante:** El claim compara el costo *efectivo* por 1k contra el
-  objetivo del config. El costo real por 1k hoy es $7.66 — útil para mirar
+  objetivo del config. El costo real por 1k hoy es {{fig:per_1k_real}} — útil para mirar
   los dos por separado, nunca sumados. Baja la cifra cuando se aligera la
   mezcla de modelos; combinalo con el bridge (análisis 14). Depende de cómo
   se defina "interacción": los tool calls inflan el denominador, así que
@@ -75,8 +78,8 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 ### 3. Costo por sesión (FPA-035, 117)
 
 - **1 · ELI5:** El precio de una sentada con el robot.
-- **2 · Cotidiano:** Costo ÷ sesiones. Hoy: $3,814.72 efectivo ÷ 1,884
-  sesiones ≈ **$2.02 por sesión**. Las sesiones largas cuestan más porque el
+- **2 · Cotidiano:** Costo ÷ sesiones. Hoy: {{fig:efectivo_total}} efectivo ÷
+  {{fig:sesiones_total}} sesiones ≈ **{{fig:por_sesion}} por sesión**. Las sesiones largas cuestan más porque el
   asistente re-lee toda la conversación en cada turno.
 - **3 · Practicante:** El tracker no emite coste por sesión como dato
   primario (el dashboard lo deriva del total, FPA-116/117). Lo que el
@@ -93,8 +96,8 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 
 - **1 · ELI5:** Algunos juguetes se comen la mayor parte de tu mesada.
 - **2 · Cotidiano:** Ordenar proyectos por costo y ver qué share se llevan
-  los primeros. Hoy los tres primeros (miblioteca $946.29, dont $612.17,
-  atril $500.85) son el **54.0%** del costo efectivo. La alerta de
+  los primeros. Hoy los tres primeros ({{fig:top3_nombres_cifras}})
+  son el **{{fig:top3_share}}** del costo efectivo. La alerta de
   concentración está configurada para disparar si el top-3 pasa el **50%**
   (`concentration_top3_pct`).
 - **3 · Practicante:** El dashboard muestra la curva acumulada (Pareto) con
@@ -131,12 +134,12 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   barato que leer una nueva.
 - **2 · Cotidiano:** Los proveedores cobran mucho menos por texto que ya
   vieron hace poco. El cache-hit rate muestra cada cuánto te beneficiás.
-  Actualmente: **87.8%** de los tokens de entrada salieron de caché.
+  Actualmente: **{{fig:cache_hit}}** de los tokens de entrada salieron de caché.
 - **3 · Practicante:** `cache_read ÷ (input + cache_read + cache_write)` —
   exactamente esa fórmula computa el KPI del dashboard. Baja cuando las
   sesiones se reinician, cuando el prefijo del prompt cambia o cuando la
-  caché expira. El ratio salida/entrada (hoy ≈ 0.04: 48M de salida contra
-  1,259M de entrada) muestra si mayormente alimentás contexto o pedís
+  caché expira. El ratio salida/entrada (hoy ≈ {{fig:ratio_out_in}}: {{fig:tokens_out_m}}
+  de salida contra {{fig:tokens_in_m}} de entrada) muestra si mayormente alimentás contexto o pedís
   salida. El factor de cache write está en el config
   (`cache_write_factor` 1.25).
 - **4 · Experto:** El precio efectivo de entrada es una mezcla de los
@@ -155,8 +158,8 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 
 - **1 · ELI5:** Cada cuánto el robot trabaja solo mientras vos hacés otra
   cosa.
-- **2 · Cotidiano:** El share de sesiones que usan un agente. Hoy: **18.4%**
-  (346 de 1,884 sesiones).
+- **2 · Cotidiano:** El share de sesiones que usan un agente. Hoy: **{{fig:agent_share}}**
+  ({{fig:sesiones_agent}} de {{fig:sesiones_total}} sesiones).
 - **3 · Practicante:** Graficarlo por mes y leerlo junto al costo por sesión
   y los resultados. Autonomía sin resultados es solo costo.
 - **4 · Experto:** "Usó la tool Agent" es un proxy débil de autonomía.
@@ -168,12 +171,14 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 
 - **1 · ELI5:** Hacer malabares con varias pelotas a la vez.
 - **2 · Cotidiano:** El share de horas activas donde tocaste dos o más
-  proyectos. Hoy: **55.2%** de 834 horas activas, con un promedio de **2.31
-  proyectos por hora** y un pico de **10** proyectos en una misma hora.
+  proyectos. Hoy: **{{fig:multitask_pct}}** de {{fig:horas_activas}} horas
+  activas, con un promedio de **{{fig:avg_proj_hora}}
+  proyectos por hora** y un pico de **{{fig:pico_proyectos}}** proyectos en
+  una misma hora.
 - **3 · Practicante:** El dashboard lo parte en tres medidas separadas: el
   promedio de proyectos por hora y el pico de sesiones simultáneas miden
   *agentes paralelos* (medida `parallel-agent`); solo los **cambios de
-  proyecto por hora activa** (medida `human-context-switching`, hoy 69.93/h)
+  proyecto por hora activa** (medida `human-context-switching`, hoy {{fig:switches_hora}})
   miden tu propio cambio de contexto, que tiene un costo cognitivo real.
   Cuidado: el contador de cambios puede inflarse con agentes paralelos
   corriendo en el mismo minuto — el propio dataset lo advierte.
@@ -191,11 +196,12 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   trabajo fuera de horario o en fines de semana, y cuánto difiere cada
   semana de la anterior.
 - **3 · Practicante:** El heatmap usa la **timezone del reporte**
-  (`metadata.timezone`, hoy `-03`); el horario laboral está en el config
+  (`metadata.timezone`, hoy `{{fig:timezone}}`); el horario laboral está en el config
   (lunes a viernes, 09:00–18:00). Las semanas son ISO, con week-over-week y
   **varianza poblacional excluyendo las semanas de borde parciales** (no
   distorsionar la varianza con semanas incompletas). Hay una alerta de
-  staleness (14 días) que avisa si los datos envejecieron. La actividad
+  staleness (14 días) que avisa si los datos envejecieron, y el timeline de
+  tool/model marca pausas mayores que `gap_days` (7 días). La actividad
   nocturna puede ser runs agendados de agentes, no vos.
 - **4 · Experto:** El bucketing por hora local se rompe en los cambios de
   horario de verano. La hora del día es una variable circular. Usar métodos
@@ -223,8 +229,8 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 
 - **1 · ELI5:** Qué herramientas de tu caja de herramientas agarrás de
   verdad.
-- **2 · Cotidiano:** Las skills más usadas (hoy: rule-of-5-universal 115,
-  commit 75, …), las que se usaron exactamente una vez, y las nunca usadas.
+- **2 · Cotidiano:** Las skills más usadas (hoy: {{fig:skills_top1}},
+  {{fig:skills_top2}}, …), las que se usaron exactamente una vez, y las nunca usadas.
 - **3 · Practicante:** "Nunca usadas" requiere que el tracker emita la lista
   de skills instaladas (`skills_installed`); si no la emite, el dashboard
   muestra la categoría como **n/a con la razón** en lugar de inventar
@@ -276,13 +282,14 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 - **2 · Cotidiano:** La varianza es actual − presupuesto, donde positivo
   significa over. Las alertas se encienden por overspend, saltos de costo
   repentinos o cifras que no reconcilian. Ejemplo real: la alerta
-  verify-plan (uso vs precio del plan) disparó en **mayo (88.9×)** y en
-  **junio** (uso sin plan activo, tras cancelar el Pro).
+  verify-plan (uso vs precio del plan) disparó en **mayo** (efectivo muy por
+  encima del precio del plan) y en **junio** (uso sin plan activo, tras
+  cancelar el Pro).
 - **3 · Practicante:** El dashboard pro-ratea el presupuesto para meses
   parciales, y muestra un presupuesto efectivo (soft, informativo:
   `effective_monthly`) y un presupuesto real **cash** (el activo del config:
-  $100/mes desde 2026-04). Cada alerta muestra su regla, severidad y
-  evidencia, y tiene exactamente una acción. Los **7 umbrales** salen del
+  {{fig:budget_cash}}/mes desde {{fig:budget_start}}). Cada alerta muestra su regla, severidad y
+  evidencia, y tiene exactamente una acción. Los **6 umbrales** de alerta salen del
   config (`alert_thresholds`): 25× para verify-plan, 10% para la
   reconciliación cash, 15% de subida de costo unitario mes a mes, +5 puntos
   de share premium en 3 meses, 50% de concentración top-3, 14 días de
@@ -307,9 +314,9 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   tres suman el cambio de costo con identidad verificada dentro de $0.01
   (FPA-065); el residuo de redondeo se absorbe en Mix con falla ruidosa si
   no cuadra. Con mes parcial se usan valores FME y se etiquetan (FPA-066).
-  Un modelo nuevo este mes contribuye **solo a Mix** (FPA-064) — ejemplo
-  real: en abril-26 el bridge dio Volumen $0.00, Mix $1,110.03, Rate $0.00:
-  todos los modelos eran nuevos.
+  Un modelo nuevo este mes contribuye **solo a Mix** (FPA-064). Ejemplo
+  real, derivado del reporte vigente: en {{fig:bridge_mes}} el bridge dio
+  Volumen {{fig:bridge_v}}, Mix {{fig:bridge_m}}, Rate {{fig:bridge_r}}.
 - **4 · Experto:** Esta descomposición depende del orden (volumen al rate
   medio previo, mix a rates previos, rate a cantidades actuales), y los
   términos de interacción caen en Rate. Una descomposición de punto medio o
@@ -390,9 +397,9 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   meses incompletos.
 - **3 · Practicante:** El dashboard parte las interacciones por tipo
   (prompt, turno del asistente, tool call) y muestra el share de tool
-  calls. Reporta el share filtrado por el charly-filter (hoy: 172
-  interacciones fuera del filtro, **0.12%**). La timezone del bucketing va
-  registrada en el metadata (`-03`). Mes completo equivalente (FME) =
+  calls. Reporta el share filtrado por el charly-filter (hoy: {{fig:filtro_count}}
+  interacciones fuera del filtro, **{{fig:filtro_share}}**). La timezone
+  del bucketing va registrada en el metadata (`{{fig:timezone}}`). Mes completo equivalente (FME) =
   valor × días del mes ÷ días transcurridos (`fme()` exactamente esa
   fórmula); los meses parciales se marcan y se comparan como tasas diarias.
 - **4 · Experto:** Los cambios de logging o de comportamiento del agente
@@ -409,8 +416,8 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 - **2 · Cotidiano:** Cinco vistas, cada una respondiendo una pregunta. Un
   selector de periodo. Cada alerta tiene un botón. Los lectores reciben una
   invitación principal ("Leer la serie").
-- **3 · Practicante:** Títulos de hallazgo ("mayo manejó el 70% de las
-  interacciones"), top-5 por defecto, sección de método colapsada, URLs
+- **3 · Practicante:** Títulos de hallazgo ("{{fig:mes_pico}} manejó el {{fig:mes_pico_share}}
+  de las interacciones"), top-5 por defecto, sección de método colapsada, URLs
   compartibles, export CSV y SVG, targets táctiles de 44px, tap-to-inspect
   en los charts. Los CTAs viven en el config (`ctas`) y el generador falla
   loud si un target está vacío. Los rangos custom de periodo se

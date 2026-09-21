@@ -152,6 +152,210 @@ def analyses_flat(guide_dict):
 _MARKDOWN_RE = re.compile(r"\*\*?|`")
 
 
+# ----------------------------------------------------------------------
+# Cifras derivadas del reporte vigente (coffe-udt/0zp: los tokens
+# {{fig:...}} del markdown se resuelven en generación — las cifras de la
+# guía ya no quedan hardcodeadas ni se vuelven stale con cada regen).
+# ----------------------------------------------------------------------
+
+FIG_TOKEN_RE = re.compile(r"\{\{fig:([a-z0-9_]+)\}\}")
+
+_MONTHS_ES = {"01": "enero", "02": "febrero", "03": "marzo", "04": "abril",
+              "05": "mayo", "06": "junio", "07": "julio", "08": "agosto",
+              "09": "septiembre", "10": "octubre", "11": "noviembre",
+              "12": "diciembre"}
+_MONTHS_SHORT = {"01": "ene", "02": "feb", "03": "mar", "04": "abr",
+                 "05": "may", "06": "jun", "07": "jul", "08": "ago",
+                 "09": "sep", "10": "oct", "11": "nov", "12": "dic"}
+
+
+def _money(v):
+    return f"-${abs(v):,.2f}" if v < 0 else f"${v:,.2f}"
+
+
+def _pct(v, nd=1):
+    return f"{v:.{nd}f}%"
+
+
+def _short_proj(label):
+    """charly-miblioteca → miblioteca · sk-REPLy-jl → REPLy-jl."""
+    return label.split("-", 1)[1] if "-" in label else label
+
+
+def _bridge_example(report):
+    """Par completo más reciente con datos → (mes_label, V, M, R).
+
+    Reproduce build_pvm/build_bridge de viz-fpa.py (formulas puras, sin
+    importar el generador para no ciclar): mes parcial solo al final del
+    periodo, así que el par elegido (−3, −2) está completo y sin FME."""
+    months = [(ym, mo) for ym, mo in sorted(report["monthly"].items())
+              if mo["interactions"] > 0]
+    if len(months) < 3:
+        return "n/a", "n/a", "n/a", "n/a"  # reporte mínimo: sin ejemplo
+    prev_ym, prev = months[-3]
+    cur_ym, cur = months[-2]
+
+    def models(mo):
+        out = {}
+        for m, v in (mo.get("models") or {}).items():
+            if isinstance(v, dict):
+                out[m] = (v.get("interactions", 0), v.get("cost_effective", 0.0) or 0.0)
+        return out
+
+    pm, cm = models(prev), models(cur)
+    q0, q1 = prev["interactions"], cur["interactions"]
+    cost0, cost1 = prev["cost_effective"], cur["cost_effective"]
+    by_model = []
+    for m in sorted(set(pm) | set(cm)):
+        qi0, c0 = pm.get(m, (0, 0.0))
+        qi1, c1 = cm.get(m, (0, 0.0))
+        # FPA-064: sin mes previo → rate prior = rate actual (solo Mix)
+        p0 = (c0 / qi0) if qi0 else ((c1 / qi1) if qi1 else 0.0)
+        p1 = (c1 / qi1) if qi1 else 0.0
+        by_model.append((qi0, p0, qi1, p1))
+    rate0 = (sum(q * p for q, p, _, _ in by_model) / q0) if q0 else 0.0
+    volume = (q1 - q0) * rate0
+    mix = sum(q1 * p0 for _, p0, q1, _ in by_model) - q1 * rate0
+    rate = sum(q1 * (p1 - p0) for _, p0, q1, p1 in by_model)
+    delta = cost1 - cost0
+    residual = volume + mix + rate - delta
+    mix -= residual  # FPA-065
+    if abs(volume + mix + rate - delta) > 0.01:
+        raise SystemExit("ERROR: identidad del bridge de la guía rota (FPA-065)")
+    label = (f"{_MONTHS_SHORT[cur_ym[5:7]]}-{cur_ym[2:4]}")
+    return label, _money(volume), _money(mix), _money(rate)
+
+
+def derive_figures(report, cfg):
+    """Cifras citadas en la guía, derivadas del reporte vigente.
+
+    Determinista: el mismo reporte siempre produce las mismas cifras.
+    Se usa en generación (resolve_figures) y en --check (falla loud si un
+    token del markdown no existe acá)."""
+    md = report["metadata"]
+    eff = md.get("cost_total_effective") or 0.0
+    real = md.get("cost_total_real") or 0.0
+    inter = md.get("total_interactions") or 0
+    ses = report.get("sessions") or {}
+    ses_total = ses.get("total_sessions") or 0
+    dr = md.get("date_range") or {}
+
+    # top-3 de proyectos por costo efectivo (FPA-028/036)
+    projs = sorted(
+        ((k, v) for k, v in report.get("projects", {}).items()
+         if isinstance(v, dict)),
+        key=lambda kv: -(kv[1].get("cost_effective") or 0.0))
+    top3 = projs[:3]
+    top3_sum = sum((v.get("cost_effective") or 0.0) for _, v in top3)
+    top3_str = ", ".join(f"{_short_proj(k)} {_money(v.get('cost_effective') or 0.0)}"
+                         for k, v in top3)
+
+    # tokens y cache (FPA-043/044)
+    inp = md["total_input_tokens"] or 0
+    out = md["total_output_tokens"] or 0
+    cache_read = md["total_cache_read_tokens"] or 0
+    cache_write = md["total_cache_write_tokens"] or 0
+    cache_den = inp + cache_read + cache_write
+    cache_hit = 100.0 * cache_read / cache_den if cache_den else 0.0
+
+    # multitasking / concurrencia (FPA-039/120)
+    mh = (report.get("multitasking") or {}).get("hourly") or {}
+    switches = (report.get("multitasking") or {}).get("context_switches") or {}
+    active_hours = mh.get("total_active_hours") or 0
+    swph = (switches.get("total") or 0) / active_hours if active_hours else 0.0
+
+    # skills top-2 (FPA-113)
+    skills = sorted(
+        ((k, v) for k, v in (report.get("skills") or {}).items()),
+        key=lambda kv: -((kv[1].get("uses") if isinstance(kv[1], dict) else kv[1]) or 0))
+
+    # mes pico por share de interacciones (headline ejemplar, análisis 19)
+    monthly = {ym: mo for ym, mo in (report.get("monthly") or {}).items()
+               if mo.get("interactions")}
+    if monthly and inter:
+        pico_ym, pico_mo = max(monthly.items(),
+                               key=lambda kv: kv[1]["interactions"])
+        pico_txt = (_MONTHS_ES.get(pico_ym[5:7], pico_ym),
+                    _pct(100.0 * pico_mo["interactions"] / inter))
+    else:
+        pico_txt = ("n/a", "n/a")
+
+    # filtro y timezone (FPA-141/142)
+    fo = report.get("filtered_out") or {}
+    tz_name = md.get("timezone") or "UTC"
+    try:
+        from zoneinfo import ZoneInfo
+        from datetime import datetime as _dt
+        off = _dt(2026, 1, 15, tzinfo=ZoneInfo(tz_name)).utcoffset()
+    except Exception:
+        off = None
+    tz_txt = f"{off.total_seconds() / 3600:+03.0f}" if off is not None else tz_name
+
+    b = cfg.get("budgets") or {}
+    bridge_label, bridge_v, bridge_m, bridge_r = _bridge_example(report)
+    fo_share = 100.0 * (fo.get("share") or 0.0)
+    return {
+        "periodo": f"{dr.get('start')} → {dr.get('end')}",
+        "filtro": md.get("filter") or "in-scope",
+        "interacciones_total": f"{inter:,}",
+        "proyectos_total": str(md.get("total_projects") or len(projs)),
+        "efectivo_total": _money(eff),
+        "cash_real_total": _money(real),
+        "apalancamiento": (f"{eff / real:.1f}×" if real else "n/a"),
+        "per_1k_efectivo": _money(eff / inter * 1000) if inter else "n/a",
+        "per_1k_real": _money(real / inter * 1000) if inter else "n/a",
+        "target_per_1k": _money((b.get("target_per_1k") or 0.0)),
+        "por_sesion": _money(eff / ses_total) if ses_total else "n/a",
+        "sesiones_total": f"{ses_total:,}",
+        "sesiones_agent": str(ses.get("with_agent") or 0),
+        "agent_share": _pct(100.0 * (ses.get("with_agent") or 0) / ses_total
+                            if ses_total else 0.0),
+        "top3_nombres_cifras": top3_str,
+        "top3_share": _pct(100.0 * top3_sum / eff) if eff else "n/a",
+        "cache_hit": _pct(cache_hit),
+        "tokens_out_m": f"{out / 1e6:,.1f}M",
+        "tokens_in_m": f"{inp / 1e6:,.0f}M",
+        "ratio_out_in": f"{out / inp:.2f}" if inp else "n/a",
+        "multitask_pct": _pct(mh.get("pct_hours_multitasking") or 0.0),
+        "horas_activas": f"{active_hours:,}",
+        "avg_proj_hora": f"{mh.get('avg_projects_per_active_hour') or 0:.2f}",
+        "pico_proyectos": str((mh.get("max_projects_in_one_hour") or {}).get("count") or 0),
+        "switches_hora": f"{swph:.2f}/h",
+        "skills_top1": (f"{skills[0][0]} {skills[0][1]['uses'] if isinstance(skills[0][1], dict) else skills[0][1]}"
+                        if skills else "n/a"),
+        "skills_top2": (f"{skills[1][0]} {skills[1][1]['uses'] if isinstance(skills[1][1], dict) else skills[1][1]}"
+                        if len(skills) > 1 else "n/a"),
+        "mes_pico": pico_txt[0],
+        "mes_pico_share": pico_txt[1],
+        "filtro_count": str(fo.get("interactions") or 0),
+        "filtro_share": _pct(fo_share, 2),
+        "timezone": tz_txt,
+        "budget_cash": _money(b.get("cash_monthly") or 0.0),
+        "budget_start": b.get("start_month") or "n/a",
+        "bridge_mes": bridge_label,
+        "bridge_v": bridge_v,
+        "bridge_m": bridge_m,
+        "bridge_r": bridge_r,
+    }
+
+
+def resolve_figures(text, report, cfg):
+    """Resolver los tokens {{fig:...}} del markdown con derive_figures.
+
+    Token desconocido → falla loud (SystemExit): el build nunca publica
+    una cifra que no venga del reporte."""
+    figs = derive_figures(report, cfg)
+
+    def sub(m):
+        k = m.group(1)
+        if k not in figs:
+            raise SystemExit(f"ERROR: figura desconocida {{{{fig:{k}}}}} "
+                             f"en la guía — agregála a derive_figures")
+        return figs[k]
+
+    return FIG_TOKEN_RE.sub(sub, text)
+
+
 def _plain(text):
     """Markdown básico → texto plano (para tooltip y notas)."""
     return html_mod.escape(_MARKDOWN_RE.sub("", text))
@@ -330,6 +534,7 @@ def render_guide_html(guide_dict, cfg, generated=None):
     """HTML autocontenido de la guía completa (determinista)."""
     generated = generated or datetime.now().strftime("%Y-%m-%d %H:%M")
     site_name = cfg.get("site_name", "Uso y costos de IA")
+    n_analyses = len(analyses_flat(guide_dict))  # coffe-udt: 10a/10b → 20
     toc = []
     sections_html = []
     for s in guide_dict["sections"]:
@@ -365,7 +570,7 @@ def render_guide_html(guide_dict, cfg, generated=None):
 <header class="site">
   <h1>Guía de análisis — {html_mod.escape(site_name)}</h1>
   <p class="meta">Generado: {generated} · fuente: docs/fpa-analyses-guide.md
-  (19 análisis × 4 niveles)</p>
+  ({n_analyses} análisis × 4 niveles)</p>
 </header>
 <main>
 <nav class="toc" id="toc">
@@ -397,12 +602,18 @@ def main():
         for e in errors:
             print(f"ERROR: {e}", file=sys.stderr)
         sys.exit(1)
+    # coffe-udt/0zp: los tokens {{fig:...}} se resuelven contra el reporte
+    # vigente acá y en --check (falla loud si un token no existe).
+    report = json.loads(Path(args.report).read_text())
+    text = resolve_figures(text, report, cfg)
     if args.check:
-        print("OK: guía con grounding verificado (mapeo + umbrales vs config)")
+        print("OK: guía con grounding verificado (mapeo + umbrales + cifras "
+              "derivadas del reporte vigente)")
         return
     guide_dict = load_guide(text)
     OUT.write_text(render_guide_html(guide_dict, cfg), encoding="utf-8")
-    print(f"OK → {OUT} ({len(analyses_flat(guide_dict))} análisis)")
+    print(f"OK → {OUT} ({len(analyses_flat(guide_dict))} análisis, cifras "
+          f"derivadas del reporte)")
 
 
 if __name__ == "__main__":

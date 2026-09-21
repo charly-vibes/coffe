@@ -4012,9 +4012,11 @@ def render_html(report, cfg, generated=None, today=None):
 
     # Marginalia progressive disclosure (coffe-gen.4): strip por superficie
     # con chips de los análisis mapeados (scripts/viz_fpa_guide.py).
+    # coffe-udt/0zp: los tokens {{fig:...}} se resuelven contra el reporte
+    # vigente — los chips nunca muestran cifras de un snapshot viejo.
     if guide.GUIDE_MD.exists():
-        guide_dict = guide.load_guide(
-            guide.GUIDE_MD.read_text(encoding="utf-8"))
+        guide_dict = guide.load_guide(guide.resolve_figures(
+            guide.GUIDE_MD.read_text(encoding="utf-8"), report, cfg))
         marginalia = {
             s: guide.marginalia_html(guide_dict, cfg, s)
             for s in ("summary", "cost", "breakdown", "habits", "outlook",

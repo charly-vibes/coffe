@@ -184,6 +184,48 @@ class TestMarginalia(unittest.TestCase):
             browser.close()
 
 
+class TestFiguresDerivadas(unittest.TestCase):
+    """coffe-udt/0zp: las cifras de la guía se derivan del reporte vigente
+    (tokens {{fig:...}} resueltos en generación), no hardcodeadas."""
+
+    STALE = ("3,814.72", "1,086.73", "26.89", "7.66", "(346 de 1,884",
+             "54.0%", "$1,110.03", "7 umbrales")
+
+    def test_markdown_sin_cifras_del_snapshot_viejo(self):
+        for s in self.STALE:
+            self.assertNotIn(s, GUIDE_MD, s)
+
+    def test_resolucion_cubre_todos_los_tokens(self):
+        resolved = guide.resolve_figures(GUIDE_MD, REPORT, CONFIG)
+        self.assertNotIn("{{fig:", resolved)
+
+    def test_figura_desconocida_falla_loud(self):
+        with self.assertRaises(SystemExit):
+            guide.resolve_figures("{{fig:no_existe}}", REPORT, CONFIG)
+
+    def test_figuras_del_reporte(self):
+        figs = guide.derive_figures(REPORT, CONFIG)
+        md = REPORT["metadata"]
+        self.assertEqual(f"${md['cost_total_effective']:,.2f}",
+                         figs["efectivo_total"])
+        self.assertEqual(f"{md['total_interactions']:,}",
+                         figs["interacciones_total"])
+        self.assertEqual(str(REPORT["sessions"]["total_sessions"]),
+                         figs["sesiones_total"].replace(",", ""))
+
+    def test_render_y_chips_sin_tokens(self):
+        gd = guide.load_guide(guide.resolve_figures(GUIDE_MD, REPORT, CONFIG))
+        self.assertNotIn("{{fig:", guide.render_guide_html(gd, CONFIG))
+        for s in ("summary", "cost", "breakdown", "habits", "outlook", "data"):
+            self.assertNotIn("{{fig:", guide.marginalia_html(gd, CONFIG, s))
+
+    def test_header_cuenta_analisis_reales(self):
+        gd = guide.load_guide(GUIDE_MD)
+        n = len(guide.analyses_flat(gd))
+        self.assertIn(f"{n} análisis × 4 niveles",
+                      guide.render_guide_html(gd, CONFIG))
+
+
 class TestCheckDocumentation(unittest.TestCase):
     """check_documentation(): mapeo roto o umbral divergente → errores."""
 

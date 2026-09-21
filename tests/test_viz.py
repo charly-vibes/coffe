@@ -628,7 +628,10 @@ class TestFpaBridgeSelector(unittest.TestCase):
                 total = (_money(vals["cost₀"])
                          + _money(vals["Volumen"]) + _money(vals["Mix"])
                          + _money(vals["Rate"]))
-                self.assertLessEqual(abs(total - _money(vals["cost₁"])), 0.01,
+                # Los componentes display están redondeados a 2dp por su
+                # cuenta: la identidad FPA-065 se verifica exacta (sin
+                # redondeo) en el generador — acá tolera 0.02 (4 redondeos).
+                self.assertLessEqual(abs(total - _money(vals["cost₁"])), 0.02,
                     f"fpa bridge {opt}: identidad PVM rota ({vals})")
             browser.close()
 
