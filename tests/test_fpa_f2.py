@@ -245,6 +245,20 @@ class TestPortfolioTree(F2Base):
                          {c["label"] for c in coffee["children"]})
         for c in coffee["children"]:
             self.assertTrue(c["totals_only"])
+
+    def test_drill_cifras_de_project_models(self):
+        """coffe-0d5/coffe-itp: las filas pfm del drill leen el total
+        (__total__) — muestran las cifras de project_models, no n/a/0."""
+        full = self.model["views"]["all"]["trees"]["portfolio"]
+        charly = next(c for c in full["children"] if c["label"] == "charly")
+        coffee = next(c for c in charly["children"] if c["label"] == "charly-coffee")
+        for c in coffee["children"]:
+            pm = self.fixture["project_models"]["charly-coffee"][c["label"]]
+            self.assertEqual(pm["cost_effective"], c["cost"])
+            self.assertEqual(pm["interactions"], c["interactions"])
+            self.assertNotEqual("n/a", c["cost_display"])
+            self.assertNotEqual("n/a", c["interactions_display"])
+            self.assertEqual("n/a", c["delta_display"])  # totals_only: sin delta vs prior
         month_view = self.model["views"]["month:2026-06"]
         charly_m = next(c for c in month_view["trees"]["portfolio"]["children"]
                         if c["label"] == "charly")

@@ -2030,12 +2030,16 @@ def _node_add(node, ym, cost=0.0, interactions=0, budget=None):
 
 
 def _cost_of(node, months=None):
+    if node.get("totals_only"):  # coffe-0d5: el drill solo tiene el total
+        return node["by_month"].get("__total__", {}).get("cost", 0.0)
     if months is None:
         months = node["by_month"].keys()
     return sum(node["by_month"][m]["cost"] for m in months if m in node["by_month"])
 
 
 def _inter_of(node, months=None):
+    if node.get("totals_only"):  # coffe-0d5: el drill solo tiene el total
+        return node["by_month"].get("__total__", {}).get("interactions", 0)
     if months is None:
         months = node["by_month"].keys()
     return sum(node["by_month"][m]["interactions"]
@@ -2532,7 +2536,8 @@ def _tree_rows(node, window, prior, total_cost, is_time=False, full=False):
     Cada celda sale lista para render; JS no formatea nada."""
     cost = _cost_of(node, window)
     inter = _inter_of(node, window)
-    prior_cost = _cost_of(node, prior) if prior else None
+    prior_cost = None if node.get("totals_only") else (
+        _cost_of(node, prior) if prior else None)
     row = {
         "key": node["key"], "label": node["label"],
         "cost": round(cost, 2),

@@ -854,28 +854,28 @@
                   "children": [
                     {
                       "children": [],
-                      "cost": 0,
-                      "cost_display": "n/a",
+                      "cost": 60.0,
+                      "cost_display": "$60.00",
                       "delta_display": "n/a",
-                      "interactions": 0,
-                      "interactions_display": "0",
+                      "interactions": 70,
+                      "interactions_display": "70",
                       "key": "pfm:charly-coffee:claude-sonnet-4-6",
                       "label": "claude-sonnet-4-6",
-                      "pct_display": "n/a",
-                      "per_1k_display": "n/a",
+                      "pct_display": "41.4%",
+                      "per_1k_display": "$857.14",
                       "totals_only": true
                     },
                     {
                       "children": [],
-                      "cost": 0,
-                      "cost_display": "n/a",
+                      "cost": 25.0,
+                      "cost_display": "$25.00",
                       "delta_display": "n/a",
-                      "interactions": 0,
-                      "interactions_display": "0",
+                      "interactions": 75,
+                      "interactions_display": "75",
                       "key": "pfm:charly-coffee:claude-opus-4.7",
                       "label": "claude-opus-4.7",
-                      "pct_display": "n/a",
-                      "per_1k_display": "n/a",
+                      "pct_display": "17.2%",
+                      "per_1k_display": "$333.33",
                       "totals_only": true
                     }
                   ],
@@ -896,15 +896,15 @@
                   "children": [
                     {
                       "children": [],
-                      "cost": 0,
-                      "cost_display": "n/a",
+                      "cost": 55.0,
+                      "cost_display": "$55.00",
                       "delta_display": "n/a",
-                      "interactions": 0,
-                      "interactions_display": "0",
+                      "interactions": 145,
+                      "interactions_display": "145",
                       "key": "pfm:charly-atril:gpt-5.4",
                       "label": "gpt-5.4",
-                      "pct_display": "n/a",
-                      "per_1k_display": "n/a",
+                      "pct_display": "37.9%",
+                      "per_1k_display": "$379.31",
                       "totals_only": true
                     }
                   ],
@@ -939,15 +939,15 @@
                   "children": [
                     {
                       "children": [],
-                      "cost": 0,
-                      "cost_display": "n/a",
+                      "cost": 5.0,
+                      "cost_display": "$5.00",
                       "delta_display": "n/a",
-                      "interactions": 0,
-                      "interactions_display": "0",
+                      "interactions": 10,
+                      "interactions_display": "10",
                       "key": "pfm:proyecto-externo:gpt-5.4",
                       "label": "gpt-5.4",
-                      "pct_display": "n/a",
-                      "per_1k_display": "n/a",
+                      "pct_display": "3.4%",
+                      "per_1k_display": "$500.00",
                       "totals_only": true
                     }
                   ],
