@@ -323,6 +323,23 @@ class TestKpis(F2Base):
         # autonomous: (1+2)/8 sesiones
         self.assertAlmostEqual(3 / 8, kpis["autonomous_share"]["value"], places=4)
 
+    def test_top3_concentracion_del_periodo_no_suma_mensuales(self):
+        """coffe-hn7: el KPI top-3 de una ventana es el top-3 del agregado
+        del periodo (matchea Pareto y alerta), no la suma de top-3
+        mensuales (que sobreestima cuando el ranking cambia por mes)."""
+        fx = f2_fixture()
+        # 4to proyecto: su coste vive en jun, donde los demás ya son top
+        fx["project_monthly"]["charly-zzz"] = {
+            "2026-05": {"interactions": 0, "cost_effective": 0.0},
+            "2026-06": {"interactions": 60, "cost_effective": 60.0},
+            "2026-07": {"interactions": 0, "cost_effective": 0.0}}
+        kpis = {k["key"]: k for k in
+                viz.build_model(fx, CONFIG)["views"]["all"]["kpis"]}
+        # agregado del periodo: top-3 = coffee 85 + zzz 60 + atril 55 = 200
+        # (total 205) → 97.6%; la suma de top-3 mensuales daría 100%.
+        self.assertAlmostEqual(200.0 / 205.0,
+                               kpis["top3_concentration"]["value"], places=4)
+
     def test_delta_vs_prior_ventana_previa(self):
         """jun vs may por tasa diaria: 65/30 vs 50/31 → +34.3%.
         'all' no tiene periodo previo en el reporte → delta n/a."""

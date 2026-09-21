@@ -2233,7 +2233,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -2268,7 +2268,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -33560,10 +33560,10 @@
           "value": 2.54555790586991
         },
         {
-          "delta": -0.3143,
-          "delta_display": "-31.4%",
+          "delta": -0.4203,
+          "delta_display": "-42.0%",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -33598,7 +33598,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6856946357186894
+          "value": 0.5796875643290423
         },
         {
           "delta": -0.6357,
@@ -35749,10 +35749,10 @@
           "value": null
         },
         {
-          "delta": -0.4538,
-          "delta_display": "-45.4%",
+          "delta": -0.4331,
+          "delta_display": "-43.3%",
           "delta_kind": "periodo",
-          "display": "37.5%",
+          "display": "32.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -35787,7 +35787,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.37453666090720683
+          "value": 0.32860370137189354
         },
         {
           "delta": -1.0,
@@ -44543,7 +44543,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6223896564882649
+          "value": 0.6219454867592076
         },
         {
           "delta": null,
@@ -46699,7 +46699,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "67.9%",
+          "display": "60.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -46734,7 +46734,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6792769153593832
+          "value": 0.5997445225070193
         },
         {
           "delta": null,
@@ -48891,7 +48891,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -48926,7 +48926,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6857376857804307
+          "value": 0.5796081651578188
         },
         {
           "delta": null,
@@ -51084,7 +51084,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.8%",
+          "display": "54.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -51119,7 +51119,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6675893504014474
+          "value": 0.5492223441510146
         },
         {
           "delta": null,
@@ -53278,7 +53278,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.6%",
+          "display": "54.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -53313,7 +53313,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6662401318324578
+          "value": 0.5459698900212584
         },
         {
           "delta": null,
@@ -55473,7 +55473,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -55508,7 +55508,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -62081,7 +62081,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6223896564882649
+          "value": 0.6219454867592076
         },
         {
           "delta": null,
@@ -64236,7 +64236,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "67.9%",
+          "display": "60.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -64271,7 +64271,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6792769153593832
+          "value": 0.5997445225070193
         },
         {
           "delta": null,
@@ -66427,7 +66427,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -66462,7 +66462,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6857376857804307
+          "value": 0.5796081651578188
         },
         {
           "delta": null,
@@ -68619,7 +68619,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.8%",
+          "display": "54.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -68654,7 +68654,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6675893504014474
+          "value": 0.5492223441510146
         },
         {
           "delta": null,
@@ -70812,7 +70812,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.6%",
+          "display": "54.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -70847,7 +70847,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6662401318324578
+          "value": 0.5459698900212584
         },
         {
           "delta": null,
@@ -73006,7 +73006,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -73041,7 +73041,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -77424,7 +77424,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6223896564882649
+          "value": 0.6219454867592076
         },
         {
           "delta": null,
@@ -79578,7 +79578,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "67.9%",
+          "display": "60.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -79613,7 +79613,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6792769153593832
+          "value": 0.5997445225070193
         },
         {
           "delta": null,
@@ -81768,7 +81768,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -81803,7 +81803,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6857376857804307
+          "value": 0.5796081651578188
         },
         {
           "delta": null,
@@ -83959,7 +83959,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.8%",
+          "display": "54.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -83994,7 +83994,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6675893504014474
+          "value": 0.5492223441510146
         },
         {
           "delta": null,
@@ -86151,7 +86151,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.6%",
+          "display": "54.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -86186,7 +86186,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6662401318324578
+          "value": 0.5459698900212584
         },
         {
           "delta": null,
@@ -88344,7 +88344,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -88379,7 +88379,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -90573,7 +90573,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6223896564882649
+          "value": 0.6219454867592076
         },
         {
           "delta": null,
@@ -92726,7 +92726,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "67.9%",
+          "display": "60.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -92761,7 +92761,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6792769153593832
+          "value": 0.5997445225070193
         },
         {
           "delta": null,
@@ -94915,7 +94915,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -94950,7 +94950,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6857376857804307
+          "value": 0.5796081651578188
         },
         {
           "delta": null,
@@ -97105,7 +97105,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.8%",
+          "display": "54.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -97140,7 +97140,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6675893504014474
+          "value": 0.5492223441510146
         },
         {
           "delta": null,
@@ -99296,7 +99296,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.6%",
+          "display": "54.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -99331,7 +99331,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6662401318324578
+          "value": 0.5459698900212584
         },
         {
           "delta": null,
@@ -101488,7 +101488,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -101523,7 +101523,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -103678,10 +103678,10 @@
           "value": 2.351660497091486
         },
         {
-          "delta": -0.3208,
-          "delta_display": "-32.1%",
+          "delta": -0.4002,
+          "delta_display": "-40.0%",
           "delta_kind": "periodo",
-          "display": "67.9%",
+          "display": "60.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -103716,7 +103716,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6792293577173645
+          "value": 0.5998334541638594
         },
         {
           "delta": -0.6061,
@@ -105866,10 +105866,10 @@
           "value": 2.54555790586991
         },
         {
-          "delta": -0.3143,
-          "delta_display": "-31.4%",
+          "delta": -0.4203,
+          "delta_display": "-42.0%",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "58.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -105904,7 +105904,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6856946357186894
+          "value": 0.5796875643290423
         },
         {
           "delta": -0.6357,
@@ -108055,10 +108055,10 @@
           "value": 2.6998995240613435
         },
         {
-          "delta": -0.3325,
-          "delta_display": "-33.2%",
+          "delta": -0.4507,
+          "delta_display": "-45.1%",
           "delta_kind": "periodo",
-          "display": "66.8%",
+          "display": "54.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -108093,7 +108093,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6675464173240021
+          "value": 0.5492932799211669
         },
         {
           "delta": -0.6566,
@@ -110248,7 +110248,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.6%",
+          "display": "54.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -110283,7 +110283,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6661972798055802
+          "value": 0.5460399880726811
         },
         {
           "delta": null,
@@ -112439,7 +112439,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -112474,7 +112474,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6645637817603386
+          "value": 0.5432061729041295
         },
         {
           "delta": null,
@@ -114628,10 +114628,10 @@
           "value": 2.3851862464183378
         },
         {
-          "delta": 0.1472,
-          "delta_display": "+14.7%",
+          "delta": 0.1093,
+          "delta_display": "+10.9%",
           "delta_kind": "periodo",
-          "display": "71.4%",
+          "display": "69.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -114666,7 +114666,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.7139821095359326
+          "value": 0.6898931224869322
         },
         {
           "delta": -0.4345,
@@ -116816,10 +116816,10 @@
           "value": 2.5942550143266474
         },
         {
-          "delta": 0.1024,
-          "delta_display": "+10.2%",
+          "delta": 0.0318,
+          "delta_display": "+3.2%",
           "delta_kind": "periodo",
-          "display": "68.6%",
+          "display": "64.2%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -116854,7 +116854,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6861180545468065
+          "value": 0.6416958092987655
         },
         {
           "delta": -0.48,
@@ -119005,10 +119005,10 @@
           "value": 2.616045845272206
         },
         {
-          "delta": 0.0991,
-          "delta_display": "+9.9%",
+          "delta": 0.0238,
+          "delta_display": "+2.4%",
           "delta_kind": "periodo",
-          "display": "68.4%",
+          "display": "63.7%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -119043,7 +119043,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6840660270266089
+          "value": 0.6367339930759036
         },
         {
           "delta": -0.4844,
@@ -121195,10 +121195,10 @@
           "value": 2.6364183381088826
         },
         {
-          "delta": 0.0952,
-          "delta_display": "+9.5%",
+          "delta": 0.0166,
+          "delta_display": "+1.7%",
           "delta_kind": "periodo",
-          "display": "68.2%",
+          "display": "63.2%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -121233,7 +121233,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6816358410544906
+          "value": 0.6322878579991416
         },
         {
           "delta": -0.4884,
@@ -123386,10 +123386,10 @@
           "value": null
         },
         {
-          "delta": -0.1334,
-          "delta_display": "-13.3%",
+          "delta": -0.2004,
+          "delta_display": "-20.0%",
           "delta_kind": "periodo",
-          "display": "58.9%",
+          "display": "48.0%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -123424,7 +123424,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.588651476087588
+          "value": 0.47965222081376807
         },
         {
           "delta": -0.9927,
@@ -125574,10 +125574,10 @@
           "value": null
         },
         {
-          "delta": -0.1431,
-          "delta_display": "-14.3%",
+          "delta": -0.2262,
+          "delta_display": "-22.6%",
           "delta_kind": "periodo",
-          "display": "58.2%",
+          "display": "46.4%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -125612,7 +125612,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.5820772942906501
+          "value": 0.4640692970932105
         },
         {
           "delta": -0.993,
@@ -127763,10 +127763,10 @@
           "value": null
         },
         {
-          "delta": -0.1555,
-          "delta_display": "-15.5%",
+          "delta": -0.2525,
+          "delta_display": "-25.2%",
           "delta_kind": "periodo",
-          "display": "57.4%",
+          "display": "44.8%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -127801,7 +127801,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.5736524891937508
+          "value": 0.4483292093301144
         },
         {
           "delta": -0.9933,
@@ -129953,10 +129953,10 @@
           "value": null
         },
         {
-          "delta": -0.4748,
-          "delta_display": "-47.5%",
+          "delta": -0.4891,
+          "delta_display": "-48.9%",
           "delta_kind": "periodo",
-          "display": "37.5%",
+          "display": "35.2%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -129991,7 +129991,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.374976273869676
+          "value": 0.3524410812836457
         },
         {
           "delta": -1.0,
@@ -132141,10 +132141,10 @@
           "value": null
         },
         {
-          "delta": -0.4538,
-          "delta_display": "-45.4%",
+          "delta": -0.4331,
+          "delta_display": "-43.3%",
           "delta_kind": "periodo",
-          "display": "37.5%",
+          "display": "32.9%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -132179,7 +132179,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.37453666090720683
+          "value": 0.32860370137189354
         },
         {
           "delta": -1.0,
@@ -134330,10 +134330,10 @@
           "value": null
         },
         {
-          "delta": -0.3106,
-          "delta_display": "-31.1%",
+          "delta": -0.3825,
+          "delta_display": "-38.3%",
           "delta_kind": "periodo",
-          "display": "40.6%",
+          "display": "29.6%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -134368,7 +134368,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.40583581413292175
+          "value": 0.2961729995945748
         },
         {
           "delta": -1.0,
@@ -138708,7 +138708,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -138743,7 +138743,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,
@@ -143090,7 +143090,7 @@
           "delta": null,
           "delta_display": "n/a",
           "delta_kind": "periodo",
-          "display": "66.5%",
+          "display": "54.3%",
           "key": "top3_concentration",
           "label": "Concentración top-3",
           "provenance": "reported",
@@ -143125,7 +143125,7 @@
               "ym": "2026-09"
             }
           ],
-          "value": 0.6646066063936811
+          "value": 0.543136822595728
         },
         {
           "delta": null,

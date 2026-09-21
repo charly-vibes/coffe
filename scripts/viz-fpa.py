@@ -2246,10 +2246,10 @@ def kpi_ingredients(report, cfg):
         mt_inter = sum(hb["interactions"]
                        for h, hb in report.get("hourly", {}).items()
                        if h[:7] == ym and hb.get("projects_active", 0) >= 2)
-        proj_costs = sorted(
-            (v[ym]["cost_effective"]
-             for v in report.get("project_monthly", {}).values() if ym in v),
-            reverse=True)
+        proj_costs_map = {p: v[ym]["cost_effective"]
+                          for p, v in report.get("project_monthly", {}).items()
+                          if ym in v}
+        proj_costs = sorted(proj_costs_map.values(), reverse=True)
         outc = mo.get("outcomes_by_project") or {}
         premium_cost = sum(
             _bucket(st)[1] for model, st in mo.get("models", {}).items()
@@ -2271,6 +2271,9 @@ def kpi_ingredients(report, cfg):
             "mt_interactions": mt_inter,
             "top3_cost": sum(proj_costs[:3]),
             "proj_cost": sum(proj_costs),
+            # coffe-hn7: el top-3 de una ventana se computa sobre el agregado
+            # del periodo (matchea Pareto/alerta), no sumando top-3 mensuales
+            "proj_costs": proj_costs_map,
             "premium_cost": premium_cost,
             "commits": sum(o.get("commits", 0) or 0 for o in outc.values()),
             "releases": sum(o.get("releases", 0) or 0 for o in outc.values()),
@@ -2347,7 +2350,16 @@ def kpis_for_window(ing, window, prior):
     sessions = _sum_ing(ing, window, "sessions")
     sessions_agent = _sum_ing(ing, window, "sessions_agent")
     mt_inter = _sum_ing(ing, window, "mt_interactions")
-    top3 = _sum_ing(ing, window, "top3_cost")
+    # coffe-hn7: concentración top-3 del agregado de la ventana — el mismo
+    # número que el Pareto y la alerta de concentración muestran.
+    def _top3_of(ths):
+        acc = {}
+        for ym in ths:
+            for p, c in (ing.get(ym, {}).get("proj_costs") or {}).items():
+                acc[p] = acc.get(p, 0.0) + c
+        return sum(sorted(acc.values(), reverse=True)[:3])
+
+    top3 = _top3_of(window)
     proj_cost = _sum_ing(ing, window, "proj_cost")
     premium_cost = _sum_ing(ing, window, "premium_cost")
     commits = _sum_ing(ing, window, "commits")
@@ -2434,7 +2446,7 @@ def kpis_for_window(ing, window, prior):
         "top3_concentration", "Concentración top-3",
         top3 / proj_cost if proj_cost else None, lambda v: f"{v * 100:.1f}%",
         reason="sin coste por proyecto en el periodo" if not proj_cost else None,
-        prev=(_sum_ing(ing, prior, "top3_cost") / _sum_ing(ing, prior, "proj_cost"))
+        prev=(_top3_of(prior) / _sum_ing(ing, prior, "proj_cost"))
         if prior and _sum_ing(ing, prior, "proj_cost") else None,
         spark=_spark(ing, lambda i: i["top3_cost"] / i["proj_cost"]
                      if i["proj_cost"] else None)))
