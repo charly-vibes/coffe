@@ -287,11 +287,15 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   cancelar el Pro).
 - **3 · Practicante:** El dashboard pro-ratea el presupuesto para meses
   parciales, y muestra un presupuesto efectivo (soft, informativo:
-  `effective_monthly`) y un presupuesto real **cash** (el activo del config:
-  {{fig:budget_cash}}/mes desde {{fig:budget_start}}). Cada alerta muestra su regla, severidad y
-  evidencia, y tiene exactamente una acción. Los **6 umbrales** de alerta salen del
+  `effective_monthly` — su overage se ve en la tabla de varianza, no
+  alerta) y un presupuesto real **cash** (el activo del config:
+  {{fig:budget_cash}}/mes desde {{fig:budget_start}}; solo este dispara
+  overspend). Cada alerta muestra su regla, severidad y
+  evidencia, y tiene exactamente una acción. Los umbrales salen del
   config (`alert_thresholds`): 25× para verify-plan, 10% para la
-  reconciliación cash, 15% de subida de costo unitario mes a mes, +5 puntos
+  reconciliación cash, 15% de subida de costo unitario mes a mes (con
+  base previa mayor a $5/1k — el MoM sobre base casi nula es falso
+  positivo), +5 puntos
   de share premium en 3 meses, 50% de concentración top-3, 14 días de
   staleness.
 - **4 · Experto:** Un presupuesto estático mezcla volumen y eficiencia. Un

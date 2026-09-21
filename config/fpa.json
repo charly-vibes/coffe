@@ -174,7 +174,8 @@
     "unit_cost_rise_pct": 15,
     "premium_share_rise_pts": 5,
     "concentration_top3_pct": 50,
-    "staleness_days": 14
+    "staleness_days": 14,
+    "unit_cost_min_base_per_1k": 5.0
   },
   "premium_models": [
     "opus"

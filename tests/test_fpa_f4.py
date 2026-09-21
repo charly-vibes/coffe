@@ -211,12 +211,11 @@ class TestBudgetAlert(unittest.TestCase):
         self.assertAlmostEqual(5.0, months["2026-05"]["evidence"]["overage_cash"])
 
     def test_fira_con_efectivo_over(self):
+        """coffe-ox3: el presupuesto efectivo es informativo (OQ-1) — no
+        alerta; el gestionado y accionable es el cash."""
         alerts = viz.build_alerts(f2.f2_fixture(), _cfg_budget(effective_monthly=40.0),
                                   today=TODAY)
-        ev = _by_rule(alerts, "budget")
-        months = {a["evidence"]["month"]: a for a in ev}
-        self.assertIn("2026-05", months)
-        self.assertAlmostEqual(10.0, months["2026-05"]["evidence"]["overage_eff"])
+        self.assertNotIn("budget", _rules(alerts))
 
     def test_no_fira_en_presupuesto(self):
         alerts = viz.build_alerts(f2.f2_fixture(), CONFIG, today=TODAY)
@@ -248,6 +247,26 @@ class TestUnitCost(unittest.TestCase):
         fx["monthly"]["2026-06"]["interactions"] = 0
         alerts = viz.build_alerts(fx, CONFIG, today=TODAY)
         self.assertNotIn("unit-cost", _rules(alerts))
+
+    def test_base_casi_nula_no_dispara(self):
+        """coffe-wxc: base previa bajo el mínimo ($5/1k default) no dispara
+        — el MoM sobre base casi nula es falso positivo (+3871% sobre $1.45)."""
+        fx = self.fx
+        fx["monthly"]["2026-06"]["cost_effective"] = 0.4  # $4/1k < $5
+        alerts = viz.build_alerts(fx, CONFIG, today=TODAY)
+        self.assertNotIn("unit-cost", _rules(alerts))
+
+    def test_base_sobre_el_minimo_sigue_disparando(self):
+        """Base $500/1k >> mínimo → el alerta may→jun se mantiene."""
+        alerts = viz.build_alerts(self.fx, CONFIG, today=TODAY)
+        self.assertEqual(1, len(_by_rule(alerts, "unit-cost")))
+
+    def test_base_minima_configurable(self):
+        fx = self.fx
+        fx["monthly"]["2026-06"]["cost_effective"] = 0.4  # $4/1k
+        alerts = viz.build_alerts(
+            fx, _cfg(unit_cost_min_base_per_1k=1.0), today=TODAY)
+        self.assertIn("unit-cost", _rules(alerts))
 
 
 class TestPremiumMix(unittest.TestCase):

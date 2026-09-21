@@ -39,6 +39,7 @@
       },
       "evidence": {
         "cur_per_1k": 650.0,
+        "min_base_per_1k": 5.0,
         "month": "2026-06",
         "prev_per_1k": 500.0,
         "rise_pct": 0.3,

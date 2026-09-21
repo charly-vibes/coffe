@@ -1090,34 +1090,30 @@ def _check_budget(report, cfg, alerts):
                              "overage_cash": r["variance_cash"],
                              "budget_cash": r["budget_cash"]},
             })
-        if r["variance_eff"] is not None and r["variance_eff"] > 0.005:
-            alerts.append({
-                "severity": "medium", "rule": "budget",
-                "message": (f"{r['label']}: efectivo "
-                            f"{r['actual_display_eff']} sobre el presupuesto "
-                            f"(informativo) "
-                            f"({r['budget_display_eff']}) por "
-                            f"{_fmt_signed(r['variance_eff'])}"),
-                "evidence": {"month": r["ym"], "measure": "effective",
-                             "overage_eff": r["variance_eff"],
-                             "budget_eff": r["budget_eff"]},
-            })
+        # coffe-ox3: el presupuesto efectivo es informativo (soft, design.md
+        # OQ-1) — su overage queda visible en la tabla de varianza, sin
+        # alerta (disparaba todos los meses con montos provisionales).
 
 
 def _check_unit_cost(months, cfg, alerts):
     """FPA-084: coste por 1k interacciones (efectivo) +X% MoM → alerta.
-    Meses sin datos se excluyen de la comparación (FPA-017). El ratio
-    efectivo/interacciones es invariante al escalado FME (numerador y
-    denominador se anualizan por el mismo factor), así que los meses
-    parciales son comparables sin ajuste."""
+    Guard coffe-wxc: la base previa debe superar el mínimo
+    (`unit_cost_min_base_per_1k`, default $5/1k) — el MoM sobre base casi
+    nula es falso positivo (+3871% desde $1.45/1k). Meses sin datos se
+    excluyen de la comparación (FPA-017). El ratio efectivo/interacciones
+    es invariante al escalado FME (numerador y denominador se anualizan
+    por el mismo factor), así que los meses parciales son comparables sin
+    ajuste."""
     th = _th(cfg, "unit_cost_rise_pct", 15.0) / 100.0
+    min_base = _th(cfg, "unit_cost_min_base_per_1k", 5.0)
     prev = None
     for m in months:
         if not m["has_data"]:
             continue
         cur = (m["cost_effective"] / m["interactions"] * 1000
                if m["interactions"] else None)
-        if cur is not None and prev is not None and prev > 0:
+        if (cur is not None and prev is not None and prev > 0
+                and prev > min_base):
             rise = cur / prev - 1
             if rise > th:
                 alerts.append({
@@ -1130,7 +1126,8 @@ def _check_unit_cost(months, cfg, alerts):
                                  "prev_per_1k": round(prev, 4),
                                  "cur_per_1k": round(cur, 4),
                                  "rise_pct": round(rise, 4),
-                                 "threshold_pct": th * 100},
+                                 "threshold_pct": th * 100,
+                                 "min_base_per_1k": min_base},
                 })
         prev = cur
 
