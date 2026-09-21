@@ -216,7 +216,7 @@
     "alert_actions": {
       "verify-plan": {
         "label": "Revisar el plan",
-        "target": "config/fpa.json"
+        "target": "https://github.com/charly-vibes/coffee/blob/main/config/fpa.json"
       },
       "reconciliation": {
         "label": "Ver el reporte",
@@ -232,7 +232,7 @@
       },
       "mix": {
         "label": "Comparar planes",
-        "target": "config/fpa.json"
+        "target": "https://github.com/charly-vibes/coffee/blob/main/config/fpa.json"
       },
       "concentration": {
         "label": "Ver proyectos",

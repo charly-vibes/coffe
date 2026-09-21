@@ -1264,13 +1264,19 @@ def build_alerts(report, cfg, today=None):
 # FPA-167: acción default por regla de alerta (el config puede
 # sobrescribirla vía ctas.alert_actions; targets nunca vacíos — FPA-168).
 DEFAULT_ALERT_ACTIONS = {
-    "verify-plan": {"label": "Revisar el plan", "target": "config/fpa.json"},
+    # coffe-a37: config/fpa.json no se deploya al sitio → link al fuente en
+    # el repo (el config embede flags de privacidad que no van a producción).
+    "verify-plan": {"label": "Revisar el plan",
+                    "target": ("https://github.com/charly-vibes/coffee/"
+                               "blob/main/config/fpa.json")},
     "reconciliation": {"label": "Ver el reporte",
                        "target": "data/usage_report_v3.json"},
     "budget": {"label": "Ajustar presupuesto", "target": "#budget"},
     "unit-cost": {"label": "Ver el reporte",
                   "target": "data/usage_report_v3.json"},
-    "mix": {"label": "Comparar planes", "target": "config/fpa.json"},
+    "mix": {"label": "Comparar planes",
+            "target": ("https://github.com/charly-vibes/coffee/"
+                       "blob/main/config/fpa.json")},
     "concentration": {"label": "Ver proyectos", "target": "#pareto"},
     "staleness": {"label": "Regenerar datos",
                   "target": "https://github.com/charly-vibes/coffee"},

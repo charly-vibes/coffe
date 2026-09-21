@@ -3,7 +3,7 @@
     {
       "action": {
         "label": "Revisar el plan",
-        "target": "config/fpa.json"
+        "target": "https://github.com/charly-vibes/coffee/blob/main/config/fpa.json"
       },
       "evidence": {
         "claude_eff": 60.0,
@@ -19,7 +19,7 @@
     {
       "action": {
         "label": "Revisar el plan",
-        "target": "config/fpa.json"
+        "target": "https://github.com/charly-vibes/coffee/blob/main/config/fpa.json"
       },
       "evidence": {
         "claude_eff": 30.0,
