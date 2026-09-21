@@ -888,7 +888,9 @@
                   "label": "charly-coffee",
                   "pct_display": "58.6%",
                   "per_1k_display": "$586.21",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [
@@ -915,7 +917,9 @@
                   "label": "charly-atril",
                   "pct_display": "37.9%",
                   "per_1k_display": "$379.31",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 140.0,
@@ -1498,7 +1502,9 @@
                   "label": "charly-coffee",
                   "pct_display": "60.0%",
                   "per_1k_display": "$545.45",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -1511,7 +1517,9 @@
                   "label": "charly-atril",
                   "pct_display": "30.0%",
                   "per_1k_display": "$428.57",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 45.0,
@@ -2076,7 +2084,9 @@
                   "label": "charly-coffee",
                   "pct_display": "61.5%",
                   "per_1k_display": "$666.67",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -2089,7 +2099,9 @@
                   "label": "charly-atril",
                   "pct_display": "38.5%",
                   "per_1k_display": "$625.00",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 65.0,
@@ -2658,7 +2670,9 @@
                   "label": "charly-coffee",
                   "pct_display": "50.0%",
                   "per_1k_display": "$500.00",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -2671,7 +2685,9 @@
                   "label": "charly-atril",
                   "pct_display": "50.0%",
                   "per_1k_display": "$214.29",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 30.0,
@@ -3241,7 +3257,9 @@
                   "label": "charly-coffee",
                   "pct_display": "60.9%",
                   "per_1k_display": "$608.70",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -3254,7 +3272,9 @@
                   "label": "charly-atril",
                   "pct_display": "34.8%",
                   "per_1k_display": "$533.33",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 110.0,
@@ -3823,7 +3843,9 @@
                   "label": "charly-coffee",
                   "pct_display": "50.0%",
                   "per_1k_display": "$500.00",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -3836,7 +3858,9 @@
                   "label": "charly-atril",
                   "pct_display": "50.0%",
                   "per_1k_display": "$214.29",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 30.0,
@@ -4406,7 +4430,9 @@
                   "label": "charly-coffee",
                   "pct_display": "60.9%",
                   "per_1k_display": "$608.70",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -4419,7 +4445,9 @@
                   "label": "charly-atril",
                   "pct_display": "34.8%",
                   "per_1k_display": "$533.33",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 110.0,
@@ -4990,7 +5018,9 @@
                   "label": "charly-coffee",
                   "pct_display": "58.6%",
                   "per_1k_display": "$586.21",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -5003,7 +5033,9 @@
                   "label": "charly-atril",
                   "pct_display": "37.9%",
                   "per_1k_display": "$379.31",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 140.0,
@@ -5573,7 +5605,9 @@
                   "label": "charly-coffee",
                   "pct_display": "57.9%",
                   "per_1k_display": "$611.11",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -5586,7 +5620,9 @@
                   "label": "charly-atril",
                   "pct_display": "42.1%",
                   "per_1k_display": "$363.64",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 95.0,
@@ -6157,7 +6193,9 @@
                   "label": "charly-coffee",
                   "pct_display": "58.6%",
                   "per_1k_display": "$586.21",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -6170,7 +6208,9 @@
                   "label": "charly-atril",
                   "pct_display": "37.9%",
                   "per_1k_display": "$379.31",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 140.0,
@@ -6741,7 +6781,9 @@
                   "label": "charly-coffee",
                   "pct_display": "58.6%",
                   "per_1k_display": "$586.21",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/coffee"
                 },
                 {
                   "children": [],
@@ -6754,7 +6796,9 @@
                   "label": "charly-atril",
                   "pct_display": "37.9%",
                   "per_1k_display": "$379.31",
-                  "totals_only": false
+                  "private": false,
+                  "totals_only": false,
+                  "url": "https://github.com/charly-vibes/atril"
                 }
               ],
               "cost": 140.0,
