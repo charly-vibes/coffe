@@ -51,7 +51,7 @@ def _mini_report(**meta_over):
     return {
         "metadata": {
             "date_range": {"start": "2026-06-01", "end": "2026-06-10"},
-            "filter": "charly-only",
+            "filter": "in-scope",
             "total_interactions": 10,
             "total_days": 10,
             "total_hours": 5,
@@ -289,10 +289,12 @@ class TestRender(unittest.TestCase):
         self.assertTrue("no registrada" in html or "tracker_version" in html)
 
     def test_tema_claroy_oscuro(self):
-        """FPA-093: tema claro/oscuro siguiendo el sistema."""
+        """Tema: decisión D2 del change update-fpa-dashboard-ux — SOLO tema
+        claro (Corporate Infographics silver), sin dark mode. El assert
+        histórico de prefers-color-scheme quedó obsoleto con D2."""
         html = _rendered()
-        self.assertIn("prefers-color-scheme", html)
-        self.assertIn("dark", html)
+        self.assertNotIn("prefers-color-scheme", html)  # D2: sin dark mode
+        self.assertIn("--bg", html)  # tokens del tema compartido presentes
 
     def test_tabular_nums_en_css(self):
         """FPA-095: cifras tabulares en tablas/cards."""

@@ -29,7 +29,7 @@ de los últimos meses.
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (152,313 interacciones). |
 Jerarquía del sitio (coffe-gen.5): el dashboard principal es **Uso y
 costos de IA** (`data/fpa-dashboard.html`); el dashboard de insights
 (`data/dashboard.html`, antes generado por `scripts/viz-dashboard.py`)
@@ -39,7 +39,7 @@ El Gantt se conserva como visualización única de su tipo.
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones filtradas solo charly. Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (140,564 interacciones). |
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-20 (152,313 interacciones). |
 | `data/fpa-dashboard.html` | 1.7M | **Dashboard principal — Uso y costos de IA.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix (con selector de mes), forecast, alertas, economía de suscripción, patrones de uso. 6 vistas (una a la vez a todo ancho, tabs + deep-link por hash) + selector de periodo; export CSV/SVG; share-URL; disclosure por defecto solo en la sección primaria de cada vista; marginalia con guía a 4 niveles. En <https://charly-vibes.github.io/coffee/data/fpa-dashboard.html>. |
 | `data/fpa-guide.html` | — | **Guía de análisis.** Los 19 análisis del dashboard explicados a 4 niveles (ELI5 → experto), en español, con grounding verificado por `--check-docs`. En <https://charly-vibes.github.io/coffee/data/fpa-guide.html>. |
 | `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffee/data/gantt-multitasking.html>). |
@@ -101,17 +101,13 @@ El deploy es vía **GitHub Actions** (no hay branch `gh-pages`): `.github/workfl
 ## Estado de los datos
 
 <!-- CHECK-DOCS:BEGIN -->
-Cifras actuales del reporte, verificadas por
-`python3 scripts/viz-fpa.py --check-docs` contra `data/usage_report_v3.json`
-(FPA-143; corre en CI y falla el build ante cualquier desvío, FPA-107):
-
-- Interacciones: 141,851
-- Proyectos: 42
-- Costo efectivo: $3,814.72
-- Costo real: $565.38
-- Cash real (ledger): $1,086.73
-- Sesiones: 1,884
-- Periodo: 2026-01-11 → 2026-09-20
+- Interacciones: 152,356
+- Proyectos: 55
+- Costo efectivo: $4,008.94
+- Costo real: $712.38
+- Cash real (ledger): $1,156.72
+- Sesiones: 1,892
+- Periodo: 2025-12-23 → 2026-09-20
 <!-- CHECK-DOCS:END -->
 
 Nota: `Costo real` es la suma mensual del tracker (fees implícitos del
@@ -125,7 +121,7 @@ y difieren porque las cuotas implícitas son un calendario, no un gasto.
 
 - **81,887 interacciones** de enero 11 a junio 10 (solo charly)
 - **3 fuentes:** Claude CLI, Pi (Codex + Gemini CLI + OpenRouter), Amp
-- **Filtro charly:** excluye proyectos ak, sk-, phorma, ~/Downloads, etc.
+- **Filtro in-scope (coffe-vp8):** incluye repos de los tres orgs — charly, sk- y ak- (excluye phorma, ~/Downloads, etc.)
 - **Mensual:** enero (929 Amp), febrero (719), marzo (263), abril (20,671), mayo (57,647), junio (1,658)
 - **Modelos:** Sonnet 4.6 (~55K), Opus 4.6/4.7 (~12K), GPT-5.4 (~9K), GPT-5.5 (~3K), Gemini 3 Pro (~500), DeepSeek V4 (~400)
 - **Herramientas:** claude-cli, codex, gemini-cli, openrouter, amp, copilot

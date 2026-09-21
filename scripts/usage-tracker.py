@@ -15,10 +15,13 @@ corridas reproducibles: los extractores descartan eventos fuera de la ventana
 el pedido; el guard de MIN_INTERACTIONS se relaja a ≥1 cuando hay ventana
 explícita (una ventana angosta legítimamente extrae poco). La ventana evalúa
 fechas UTC (los timestamps de rows son ISO UTC).
-v4.4 (coffe-n35): extract_amp unifica el filtro con is_charly (--filter all
+v4.4 (coffe-n35): extract_amp unifica el filtro con in_scope (--filter all
 ahora sí amplía Amp) y deriva el label de proyecto del uri (org-repo, p.ej.
 "charly-coffe", vía amp_proj_from_uri); el "charly/amp-auto" fijo era un
 label que mentía sobre el proyecto.
+v4.5 (coffe-vp8): el scope incluye repos ak (akielbowicz) además de charly/sk
+(is_charly → in_scope, alias por compat); metadata.filter pasa de
+"charly-only" a "in-scope" (schema actualizado).
 """
 
 import argparse
@@ -403,11 +406,36 @@ def filter_sessions(sessions, since=None, until=None):
         kept.append(s)
     return kept
 
-def is_charly(proj):
+def in_scope(proj):
+    """Scope del reporte cuando --filter charly (default): proyectos de los
+    tres orgs — charly (charly-vibes), sk (sashakile) y ak (akielbowicz,
+    coffe-vp8). Con --filter all entra todo.
+
+    `proj` puede venir en dos formas: label limpio ("ak-journal", post
+    clean_proj_name) o path mungeado de Claude ("-var-home-sasha-para-
+    areas-dev-gh-charly-coffee"), por eso el match es por prefijo de label
+    O por segmento de org en el path ("-gh-<org>-", "/gh/<org>/").
+    """
     if not CHARLY_FILTER:
         return True
     p = (proj or "").lower()
-    return "charly" in p or "sk-" in p
+    for org in ("charly", "sk", "ak"):
+        if (p == org or p.startswith(org + "-") or p.startswith(org + "/")):
+            return True
+        for sep in ("-gh-", "/gh/"):
+            # el org debe ser un segmento completo: seguido de '-', '/' o fin
+            # (cubre path mungeado '-gh-charly-coffee' y uri '…/gh/charly/coffe')
+            i = p.find(sep + org)
+            while i != -1:
+                j = i + len(sep) + len(org)
+                if j >= len(p) or p[j] in "-/":
+                    return True
+                i = p.find(sep + org, i + 1)
+    return False
+
+
+# Alias histórico: el nombre viejo mentía (también filtra ak/sk desde v4.5).
+is_charly = in_scope
 
 def model_details(model_id):
     m = model_id.lower()
@@ -444,6 +472,12 @@ def clean_proj_name(raw):
     p = p.replace(".jl", "-jl")  # repos Julia: REPLy.jl → REPLy-jl
     return {"charly-mibilioteca": "charly-miblioteca",  # typo en sesiones Pi
             "sk-sxAct": "sk-XAct-jl",  # sxAct no existe; repo real XAct.jl
+            # coffe-vp8: Claude mungea puntos del path a '-', Pi no — un repo,
+            # un label.
+            "ak-akielbowicz-github-io": "ak-akielbowicz.github.io",
+            # coffe-vp8: uri de Amp apuntaba a un archivo en la raíz del org
+            # (gh/ak/justfile), no a un repo — el label correcto es la org.
+            "ak-justfile": "ak",
             # repo renombrado coffe→coffee (bd coffe-85z): los logs históricos
             # derivan 'charly-coffe' del path viejo; se canonicaliza al nombre
             # corregido para que todo el dataset use un solo label.
@@ -1389,7 +1423,7 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
                 "start": min(r["timestamp"] for r in interactions)[:10] if interactions else None,
                 "end": max(r["timestamp"] for r in interactions)[:10] if interactions else None,
             },
-            "filter": "charly-only" if CHARLY_FILTER else "all",
+            "filter": "in-scope" if CHARLY_FILTER else "all",
             "total_interactions": sum(b.interactions for b in hourly.values()),
             "total_input_tokens": sum(b.input_tokens for b in hourly.values()),
             "total_output_tokens": sum(b.output_tokens for b in hourly.values()),
@@ -1472,7 +1506,8 @@ def main():
     ap.add_argument("--force", action="store_true",
                     help="Escribir aunque los datos extraídos sean casi vacíos")
     ap.add_argument("--filter", choices=("charly", "all"), default="charly",
-                    help="Filtro de proyectos (default: charly, preserva el reporte histórico)")
+                    help=("Filtro de proyectos: charly = scope in-scope "
+                          "(repos charly/sk/ak, default); all = sin filtro"))
     ap.add_argument("--since", default=None, metavar="YYYY-MM-DD",
                     help="Fecha inicial (inclusive) — descarta eventos anteriores (UTC)")
     ap.add_argument("--until", default=None, metavar="YYYY-MM-DD",

@@ -130,10 +130,42 @@ class TestPureFunctions(unittest.TestCase):
     def test_clean_proj_name_julia_repos(self):
         self.assertEqual(ut.clean_proj_name("-sk-REPLy.jl"), "sk-REPLy-jl")
 
+    def test_clean_proj_name_dots_vs_dashes(self):
+        """coffe-vp8: Claude mungea '.' del path a '-', Pi no — alias a un label."""
+        self.assertEqual(ut.clean_proj_name("ak-akielbowicz-github-io"),
+                         "ak-akielbowicz.github.io")
+        self.assertEqual(ut.clean_proj_name("ak-akielbowicz.github.io"),
+                         "ak-akielbowicz.github.io")
+
+    def test_clean_proj_name_amp_org_root_file(self):
+        """coffe-vp8: uri de Amp a archivo en raíz del org (gh/ak/justfile)
+        derivaba un repo fantasma 'ak-justfile' — colapsa a la org."""
+        self.assertEqual(ut.clean_proj_name("ak-justfile"), "ak")
+
     def test_is_charly(self):
-        self.assertTrue(ut.is_charly("charly-coffee"))
-        self.assertTrue(ut.is_charly("sk-XAct-jl"))
-        self.assertFalse(ut.is_charly("otro-proyecto"))
+        # coffe-vp8: el scope incluye repos ak (akielbowicz) además de charly/sk
+        self.assertTrue(ut.in_scope("charly-coffee"))
+        self.assertTrue(ut.in_scope("sk-XAct-jl"))
+        self.assertTrue(ut.in_scope("ak-journal"))
+        self.assertTrue(ut.in_scope("ak-100DiasEnMeli"))
+        self.assertTrue(ut.in_scope("ak"))  # bare
+        self.assertTrue(ut.in_scope("sk"))  # bare
+        self.assertFalse(ut.in_scope("otro-proyecto"))
+        self.assertFalse(ut.in_scope("akelarre"))  # prefijo ak- exacto, no substring
+
+    def test_in_scope_path_forms(self):
+        """Claude mungea paths: -var-home-sasha-para-areas-dev-gh-<org>-<repo>.
+        Regression coffe-vp8: startswith puro dejaba fuera skills/commands."""
+        self.assertTrue(ut.in_scope("-var-home-sasha-para-areas-dev-gh-ak-journal"))
+        self.assertTrue(ut.in_scope("-var-home-sasha-para-areas-dev-gh-sk-poco"))
+        self.assertTrue(ut.in_scope("-var-home-sasha-para-areas-dev-gh-charly-tv"))
+        self.assertTrue(ut.in_scope(
+            "file:///var/home/sasha/para/areas/dev/gh/charly/coffe/a.py"))
+        self.assertTrue(ut.in_scope("file:///para/areas/dev/gh/ak/journal/x.py"))
+        self.assertFalse(ut.in_scope("-var-home-otro-akelarre"))
+        self.assertFalse(ut.in_scope("file:///tmp/akelarre/x.py"))
+        # segmento completo, no prefijo: -gh-akaria no es org ak
+        self.assertFalse(ut.in_scope("-var-home-sasha-para-areas-dev-gh-akaria-x"))
 
     def test_get_sub_cost_subscription_period(self):
         # mayo 2026 = Max $100 → real cost 0

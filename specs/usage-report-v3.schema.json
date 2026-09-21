@@ -18,7 +18,7 @@
             "end": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
           }
         },
-        "filter": {"enum": ["charly-only", "all"]},
+        "filter": {"enum": ["in-scope", "all"]},
         "config_source": {"type": "string", "description": "coffe-mbz: fuente del config de suscripciones/pricing (ruta de config/fpa.json o 'builtin-fallback')"},
         "charges_total_real": {
           "description": "coffe-a31.2: suma IA total del ledger data/charges.json (USD, provenance reported)",

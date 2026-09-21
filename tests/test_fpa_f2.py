@@ -102,7 +102,7 @@ def f2_fixture():
     return {
         "metadata": {
             "date_range": {"start": "2026-05-01", "end": "2026-07-10"},
-            "filter": "charly-only", "total_interactions": 300,
+            "filter": "in-scope", "total_interactions": 300,
             "total_days": 71, "total_hours": 4, "total_projects": 3,
             "cost_total_effective": 145.0, "cost_total_real": 45.0,
             "subscription_fees": 45.0,

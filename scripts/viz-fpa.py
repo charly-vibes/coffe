@@ -2108,6 +2108,34 @@ def build_time_tree(report, cfg):
     return root
 
 
+def repo_link(proj, cfg):
+    """coffe-vp8: link al repo GitHub del proyecto, sin red.
+
+    Los flags de visibilidad viven en config/fpa.json (repos): owners mapea
+    prefijo de label → org GH; private/no_remote se auditaron con gh api
+    (404 = sin remoto público → no se linkea; private=true → 🔒 en el UI).
+    Devuelve {'url', 'private'} o None si el proyecto no es linkeable.
+    """
+    repos = cfg.get("repos") or {}
+    owners = repos.get("owners") or {}
+    p = proj or ""
+    for org in sorted(owners, key=len, reverse=True):
+        if p == org:  # label bare → página de la org
+            return {"url": f"https://github.com/{owners[org]}",
+                    "private": False}
+        if p.startswith(org + "-") or p.startswith(org + "/"):
+            repo = p[len(org) + 1:]
+            if repo.endswith("-jl"):  # clean_proj_name convierte .jl → -jl
+                repo = repo[:-3] + ".jl"
+            if f"{org}/{repo}" in (repos.get("no_remote") or []):
+                return None
+            url = ((repos.get("url_overrides") or {}).get(p)
+                   or f"https://github.com/{owners[org]}/{repo}")
+            return {"url": url,
+                    "private": f"{org}/{repo}" in (repos.get("private") or [])}
+    return None
+
+
 def build_portfolio_tree(report, cfg):
     """FPA-018/020/021: Category → Project con drill a Model (totales).
     Con project_monthly (FPA-012) el árbol tiene valores por mes; el drill
@@ -2121,6 +2149,10 @@ def build_portfolio_tree(report, cfg):
                           if c["key"] == f"pf:{proj}"), None)
         if proj_node is None:
             proj_node = _node(f"pf:{proj}", proj)
+            link = repo_link(proj, cfg)  # coffe-vp8: link al repo GH
+            if link:
+                proj_node["url"] = link["url"]
+                proj_node["private"] = link["private"]
             cn["children"].append(proj_node)
         for ym, v in months.items():
             _node_add(proj_node, ym, v["cost_effective"], v["interactions"])
@@ -2525,6 +2557,9 @@ def _tree_rows(node, window, prior, total_cost, is_time=False, full=False):
                                    f"${abs(variance):,.2f}" if budget else "n/a")
         row["variance_pct_display"] = (f"{100 * variance / budget:+.1f}%"
                                        if budget else "n/a")
+    if node.get("url"):  # coffe-vp8: passthrough del link al repo
+        row["url"] = node["url"]
+        row["private"] = bool(node.get("private"))
     row["children"] = [
         _tree_rows(c, window, prior, total_cost, is_time, full)
         for c in node["children"]
@@ -3017,6 +3052,9 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 .ttree details > summary { cursor: pointer; list-style: none; }
 .ttree details > summary::before { content: '▸ '; color: var(--muted); }
 .ttree details[open] > summary::before { content: '▾ '; }
+.ttree .repo-link { color: inherit; text-decoration: underline dotted; }
+.ttree .repo-link:hover { color: var(--accent, #06c); }
+.ttree .lock { font-size: .85em; }
 #data { margin-top: 1.5rem; }
 #data table { border-collapse: collapse; }
 #data th, #data td { padding: .2rem .7rem; border-bottom: 1px solid var(--line);
@@ -3295,6 +3333,19 @@ def tree_section(name, title, root, is_time=False, open_=False):
             f'</details>')
 
 
+def _repo_anchor(row):
+    """coffe-vp8: label con ancla al repo GH y 🔒 si es privado."""
+    label = row["label"]
+    if not row.get("url"):
+        return esc_html(label)
+    anchor = (f'<a class="repo-link" href="{esc_html(row["url"])}" '
+              f'target="_blank" rel="noopener noreferrer">{esc_html(label)}</a>')
+    if row.get("private"):
+        anchor += (' <span class="lock" title="repo privado" '
+                   'aria-label="repo privado">🔒</span>')
+    return anchor
+
+
 def _tree_html(row, is_time=False, depth=0):
     cells = (f'<td>{row["cost_display"]}</td><td>{row["pct_display"]}</td>'
              f'<td>{row["interactions_display"]}</td><td>{row["per_1k_display"]}</td>'
@@ -3305,11 +3356,11 @@ def _tree_html(row, is_time=False, depth=0):
                   f'<td>{row["variance_pct_display"]}</td>')
     kids = "".join(_tree_html(c, is_time, depth + 1) for c in row["children"])
     if kids:
-        label = (f'<details open><summary class="tlabel">{row["label"]}</summary>'
+        label = (f'<details open><summary class="tlabel">{_repo_anchor(row)}</summary>'
                  f'</details>')
     else:
         label = (f'<span style="display:inline-block;margin-left:{depth * 14}px">'
-                 f'{row["label"]}</span>')
+                 f'{_repo_anchor(row)}</span>')
     return f'<tr class="trow" data-key="{row["key"]}"><td>{label}</td>{cells}</tr>{kids}'
 
 
@@ -4071,6 +4122,14 @@ def render_html(report, cfg, generated=None, today=None):
     }}).join(" ");
     return '<polyline fill="none" stroke="currentColor" stroke-width="1.5" points="' + pts + '"/>';
   }}
+  function repoAnchor(row) {{
+    // coffe-vp8: espejo JS de _repo_anchor — ancla al repo GH + 🔒 privado
+    var label = esc(row.label);
+    if (!row.url) return label;
+    var html = '<a class="repo-link" href="' + esc(row.url) + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
+    if (row.private) html += ' <span class="lock" title="repo privado" aria-label="repo privado">🔒</span>';
+    return html;
+  }}
   function treeRows(row, isTime, depth) {{
     var cells = '<td>' + esc(row.cost_display) + '</td><td>' + esc(row.pct_display)
       + '</td><td>' + esc(row.interactions_display) + '</td><td>' + esc(row.per_1k_display)
@@ -4078,8 +4137,8 @@ def render_html(report, cfg, generated=None, today=None):
     if (isTime) cells += '<td>' + esc(row.budget_display) + '</td><td>'
       + esc(row.variance_display) + '</td><td>' + esc(row.variance_pct_display) + '</td>';
     var label = row.children.length
-      ? '<details open><summary class="tlabel">' + esc(row.label) + '</summary></details>'
-      : '<span style="display:inline-block;margin-left:' + (depth * 14) + 'px">' + esc(row.label) + '</span>';
+      ? '<details open><summary class="tlabel">' + repoAnchor(row) + '</summary></details>'
+      : '<span style="display:inline-block;margin-left:' + (depth * 14) + 'px">' + repoAnchor(row) + '</span>';
     return '<tr class="trow" data-key="' + esc(row.key) + '"><td>' + label + '</td>' + cells + '</tr>'
       + row.children.map(function (c) {{ return treeRows(c, isTime, depth + 1); }}).join("");
   }}

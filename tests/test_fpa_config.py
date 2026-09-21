@@ -211,6 +211,20 @@ class TestClassifyProject(unittest.TestCase):
         cfg = _cfg()
         self.assertEqual("sk", fpa_config.classify_project(cfg, "sk-REPLy-jl"))
 
+    def test_regla_ak(self):
+        """coffe-vp8: repos ak (akielbowicz) son categoría propia."""
+        cfg = _cfg()
+        self.assertEqual("ak", fpa_config.classify_project(cfg, "ak-journal"))
+        self.assertEqual("ak", fpa_config.classify_project(cfg, "ak/dotfiles"))
+
+    def test_bare_org_clasifica(self):
+        """Labels bare ('charly', 'sk', 'ak') caen en su categoría, no en
+        Unclassified — aparecen en el dataset vía Amp/uris."""
+        cfg = _cfg()
+        self.assertEqual("charly", fpa_config.classify_project(cfg, "charly"))
+        self.assertEqual("sk", fpa_config.classify_project(cfg, "sk"))
+        self.assertEqual("ak", fpa_config.classify_project(cfg, "ak"))
+
     def test_override_gana_sobre_regla(self):
         cfg = _cfg()
         cfg["taxonomy"]["overrides"]["charly-wai"] = "otro"

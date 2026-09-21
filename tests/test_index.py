@@ -77,8 +77,12 @@ class TestRender(unittest.TestCase):
         self.assertNotIn("coffe ", self.html.replace("coffee ", ""))
 
     def test_marquee_carries_dataset_figures(self):
-        self.assertIn("datos actualizados al 2026-09-20", self.html)
-        self.assertIn("141,851 interacciones", self.html)
+        # derivado del reporte, no hardcodeado: la fecha es date_range.end
+        # y las interacciones el total del metadata (cambia con cada regen)
+        end = FIXTURE_REPORT["metadata"]["date_range"]["end"]
+        total = f"{FIXTURE_REPORT['metadata']['total_interactions']:,}".replace(",", ",")
+        self.assertIn(f"datos actualizados al {end}", self.html)
+        self.assertIn(f"{total} interacciones", self.html)
 
     def test_deterministic(self):
         again = viz_index.render(viz_index.build_stats(FIXTURE_REPORT, FIXTURE_CHARGES), SITE_NAME)
@@ -91,7 +95,8 @@ class TestGoldenRealData(unittest.TestCase):
     def test_real_dataset_renders(self):
         report = json.loads((ROOT / "data" / "usage_report_v3.json").read_text())
         html = viz_index.render(viz_index.build_stats(report, None), SITE_NAME)
-        self.assertIn("datos actualizados al 2026-09-20", html)
+        end = report["metadata"]["date_range"]["end"]
+        self.assertIn(f"datos actualizados al {end}", html)
         self.assertNotIn("{", html.split("<marquee")[1].split("</marquee>")[0])
 
 

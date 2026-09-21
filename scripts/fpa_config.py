@@ -74,6 +74,25 @@ def validate_config(cfg):
             if not isinstance(rule, dict) or "match" not in rule or "category" not in rule:
                 errors.append(f"taxonomy.rules[{i}] sin match/category")
 
+    repos = cfg.get("repos")
+    if repos is not None:  # coffe-vp8: bloque opcional pero con forma estricta
+        if not isinstance(repos, dict):
+            errors.append("repos debe ser un objeto")
+        else:
+            owners = repos.get("owners") or {}
+            if not isinstance(owners, dict) or not owners:
+                errors.append("repos.owners ausente o vacío (label-prefix → org GH)")
+            for key in ("private", "no_remote"):
+                for entry in repos.get(key) or []:
+                    if not isinstance(entry, str) or "/" not in entry:
+                        errors.append(f"repos.{key}: entrada sin 'org/repo': {entry!r}")
+                    elif entry.split("/", 1)[0] not in owners:
+                        errors.append(f"repos.{key}: org desconocida {entry!r} "
+                                      f"(owners: {sorted(owners)})")
+            for label, url in (repos.get("url_overrides") or {}).items():
+                if not isinstance(url, str) or not url.startswith("https://"):
+                    errors.append(f"repos.url_overrides[{label!r}]: URL no https: {url!r}")
+
     subscriptions = cfg.get("subscriptions", {})
     if not isinstance(subscriptions, dict):
         errors.append("subscriptions debe ser un objeto")
