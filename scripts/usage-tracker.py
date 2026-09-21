@@ -639,12 +639,13 @@ def extract_claude(skipped=None, kinds=None, excluded=None):
     return merged, excluded_rows
 
 
-def extract_pi(skipped=None, kinds=None, excluded=None):
+def extract_pi(skipped=None, kinds=None, excluded=None, sessions_dir=None):
     """Extrae sesiones Pi. kinds/excluded como en extract_claude
-    (FPA-140/141). Devuelve (rows, excluded_rows)."""
+    (FPA-140/141). Devuelve (rows, excluded_rows). sessions_dir permite
+    tests con tmpdir (coffe-8t8)."""
     rows = []
     excluded_rows = []
-    sessions_dir = PI_DIR / "sessions"
+    sessions_dir = sessions_dir or (PI_DIR / "sessions")
     if not sessions_dir.exists(): return rows, excluded_rows
     for sd in sessions_dir.iterdir():
         if not sd.is_dir(): continue
@@ -694,6 +695,14 @@ def extract_pi(skipped=None, kinds=None, excluded=None):
                         out = usage.get("output_tokens") or usage.get("output", 0) or 0
                         cache_r = usage.get("cacheRead") or usage.get("cache_read") or 0
                         cache_w = usage.get("cacheWrite") or usage.get("cache_write") or 0
+                        if not cost and (inp or out or cache_r):
+                            # coffe-8t8: los logs de gemini-cli (Pi) no traen
+                            # cost → estimación pay-per-token con los rates
+                            # vigentes en la fecha (FPA-016). Sin tokens no
+                            # hay base de estimación: queda 0.0 real.
+                            cost = estimate_cost(fam, ver, inp, out,
+                                                 cache_r or 0, cache_w or 0,
+                                                 when=ts.date())
                         rows.append({
                             "source": "pi",
                             "tool": tool,

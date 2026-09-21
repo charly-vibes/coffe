@@ -375,6 +375,34 @@ class TestPlanEconomyLedger(unittest.TestCase):
         self.assertIn(("codex", "ChatGPT Plus $20/mes"), labels)
 
 
+class TestPlanEconomySinCosteHorario(unittest.TestCase):
+    """coffe-8t8: tool presente en hourly con coste 0 ≠ ausencia de registros.
+
+    gemini-cli no reporta cost en los logs Pi: coste cero medido es
+    utilización 0.0 del plan, no n/a 'sin datos horarios'."""
+
+    def test_tool_presente_con_coste_cero_es_utilizacion_cero(self):
+        fx = _charged_fixture()
+        fx["hourly"]["2026-05-10 14:00"]["tools"]["gemini-cli"] = {
+            "req": 10, "in": 1000, "out": 500, "cache_read": 0,
+            "cache_write": 0, "cost_eff": 0.0, "cost_real": 0.0}
+        econ = viz.build_plan_economy(fx, CONFIG)
+        gem = [p for p in econ["plans"] if p["tool"] == "gemini-cli"]
+        self.assertTrue(gem)
+        for p in gem:
+            self.assertEqual(0.0, p["eff_cost"])
+            self.assertEqual(0.0, p["utilization"])
+            self.assertIsNone(p["utilization_reason"])
+
+    def test_tool_ausente_sigue_na(self):
+        econ = viz.build_plan_economy(_charged_fixture(), CONFIG)
+        gem = [p for p in econ["plans"] if p["tool"] == "gemini-cli"]
+        self.assertTrue(gem)
+        for p in gem:
+            self.assertIsNone(p["utilization"])
+            self.assertIsNotNone(p["utilization_reason"])
+
+
 class TestCheckDocsLedger(unittest.TestCase):
     """FPA-143: la cifra 'Cash real (ledger)' sale del reporte."""
 

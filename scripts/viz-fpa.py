@@ -1307,10 +1307,13 @@ def _plan_price_prorated(entry, period_start, period_end):
 
 def _eff_cost_in_period(report, tool, start, end):
     """Coste efectivo de `tool` dentro del periodo [start, end) desde hourly
-    per-tool. None si no hay hourly con coste en el periodo (n/a con razón,
-    FPA-008) — 0.0 real es distinto de "no hay datos"."""
+    per-tool. None si la tool no tiene registros horarios en el periodo
+    (n/a con razón, FPA-008) — 0.0 real es distinto de "no hay datos" y
+    distinto de None: una tool con registros de coste 0 (gemini-cli sin
+    cost en los logs, coffe-8t8) es utilización 0, no sin datos."""
     total = 0.0
-    seen = False
+    seen_cost = False   # al menos un registro con coste ≠ 0
+    present = False     # al menos un registro de la tool en el periodo
     for key, h in (report.get("hourly") or {}).items():
         try:
             day = date.fromisoformat(key[:10])
@@ -1318,10 +1321,14 @@ def _eff_cost_in_period(report, tool, start, end):
             continue
         if start <= day < end:
             st = h.get("tools", {}).get(tool) or {}
+            if st:
+                present = True
             ce = st.get("cost_eff", 0.0) or 0.0
             total += ce
-            seen = seen or ce != 0.0
-    return total if seen else None
+            seen_cost = seen_cost or ce != 0.0
+    if seen_cost:
+        return total
+    return 0.0 if present else None
 
 
 def build_plan_economy(report, cfg):

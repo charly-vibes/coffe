@@ -5,14 +5,14 @@
       "end": "2026-09-21"
     },
     "filter": "in-scope",
-    "total_interactions": 152356,
-    "total_input_tokens": 1390365885,
-    "total_output_tokens": 52492909,
-    "total_cache_read_tokens": 10474103837,
+    "total_interactions": 153017,
+    "total_input_tokens": 1395219304,
+    "total_output_tokens": 52707682,
+    "total_cache_read_tokens": 10497728091,
     "total_cache_write_tokens": 73315918,
-    "cost_total_effective": 4008.94,
-    "cost_total_real": 712.38,
-    "cost_real_total_tracker": 412.4,
+    "cost_total_effective": 5165.03,
+    "cost_total_real": 716.02,
+    "cost_real_total_tracker": 416.04,
     "subscription_fees": 299.98,
     "charges_total_real": 1356.72,
     "charges_source": "data/charges.json",
@@ -22,8 +22,8 @@
     "pay_per_token_note": "pay_per_token_charges es *reported* cuando el ledger tiene cargas pay-per-token reales del mes (cr\u00e9ditos/reembolsos, FPA-013); *assumed* (estimado tokens \u00d7 pricing) si no",
     "outcomes": "unavailable: mapeo proyecto\u2192repo GitHub pendiente (ver README)",
     "token_accounting": "cache_read/cache_write se reportan aparte de input/output. cache_read no se factura a input rate (10x mas barato); total tokens = input + output + cache_read + cache_write",
-    "total_hours": 937,
-    "total_days": 179,
+    "total_hours": 940,
+    "total_days": 180,
     "total_months": 10,
     "total_projects": 55,
     "config_source": "config/fpa.json"
@@ -4955,7 +4955,7 @@
       "output_tokens": 91640,
       "cache_read_tokens": 13105662,
       "cache_write_tokens": 0,
-      "cost_effective": 5.95,
+      "cost_effective": 6.47,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -4973,7 +4973,7 @@
           "out": 6033,
           "cache_read": 1839998,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.51688486,
           "cost_real": 0.0
         },
         "copilot": {
@@ -4998,7 +4998,7 @@
       "output_tokens": 4695,
       "cache_read_tokens": 1592935,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
+      "cost_effective": 0.7,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -5007,7 +5007,7 @@
           "out": 4695,
           "cache_read": 1592935,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.700741,
           "cost_real": 0.0
         }
       },
@@ -5477,7 +5477,7 @@
       "output_tokens": 5982,
       "cache_read_tokens": 1418975,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
+      "cost_effective": 0.54,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -5495,7 +5495,7 @@
           "out": 5982,
           "cache_read": 1418975,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.53525721,
           "cost_real": 0.0
         }
       },
@@ -5511,7 +5511,7 @@
       "output_tokens": 2151,
       "cache_read_tokens": 973378,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
+      "cost_effective": 0.13,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -5520,7 +5520,7 @@
           "out": 2151,
           "cache_read": 973378,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.13476238,
           "cost_real": 0.0
         }
       },
@@ -5559,7 +5559,7 @@
       "output_tokens": 4278,
       "cache_read_tokens": 1378824,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
+      "cost_effective": 0.47,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -5568,7 +5568,7 @@
           "out": 4278,
           "cache_read": 1378824,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.46850776,
           "cost_real": 0.0
         },
         "amp": {
@@ -5593,7 +5593,7 @@
       "output_tokens": 58277,
       "cache_read_tokens": 15130018,
       "cache_write_tokens": 0,
-      "cost_effective": 8.82,
+      "cost_effective": 9.17,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -5602,7 +5602,7 @@
           "out": 2312,
           "cache_read": 968610,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.34803062,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -5825,7 +5825,7 @@
       "output_tokens": 86394,
       "cache_read_tokens": 11869352,
       "cache_write_tokens": 277197,
-      "cost_effective": 25.61,
+      "cost_effective": 34.78,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -5843,7 +5843,7 @@
           "out": 43910,
           "cache_read": 4026024,
           "cache_write": 277197,
-          "cost_eff": 22.193727,
+          "cost_eff": 31.36661655,
           "cost_real": 0.0
         }
       },
@@ -5860,7 +5860,7 @@
       "output_tokens": 206541,
       "cache_read_tokens": 27038558,
       "cache_write_tokens": 510185,
-      "cost_effective": 110.66,
+      "cost_effective": 158.05,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -5869,7 +5869,7 @@
           "out": 131201,
           "cache_read": 18655838,
           "cache_write": 510185,
-          "cost_eff": 106.27943,
+          "cost_eff": 153.67404575,
           "cost_real": 0.0
         },
         "codex": {
@@ -5989,7 +5989,7 @@
       "output_tokens": 64170,
       "cache_read_tokens": 9195424,
       "cache_write_tokens": 0,
-      "cost_effective": 5.63,
+      "cost_effective": 5.76,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -6016,7 +6016,7 @@
           "out": 12382,
           "cache_read": 113824,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.13681025,
           "cost_real": 0.0
         }
       },
@@ -6034,7 +6034,7 @@
       "output_tokens": 7775,
       "cache_read_tokens": 423295,
       "cache_write_tokens": 0,
-      "cost_effective": 0.2,
+      "cost_effective": 0.33,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -6043,7 +6043,7 @@
           "out": 5615,
           "cache_read": 158975,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.1301947,
           "cost_real": 0.0
         },
         "codex": {
@@ -6160,7 +6160,7 @@
       "output_tokens": 182936,
       "cache_read_tokens": 24132382,
       "cache_write_tokens": 515111,
-      "cost_effective": 84.85,
+      "cost_effective": 107.85,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -6187,7 +6187,7 @@
           "out": 76845,
           "cache_read": 5014042,
           "cache_write": 515111,
-          "cost_eff": 76.375929,
+          "cost_eff": 99.32154825,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6196,7 +6196,7 @@
           "out": 1998,
           "cache_read": 66820,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.05682501,
           "cost_real": 0.0
         }
       },
@@ -6214,7 +6214,7 @@
       "output_tokens": 123108,
       "cache_read_tokens": 13644297,
       "cache_write_tokens": 378031,
-      "cost_effective": 49.25,
+      "cost_effective": 60.69,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -6223,7 +6223,7 @@
           "out": 21366,
           "cache_read": 826682,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.4149789,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -6232,7 +6232,7 @@
           "out": 79851,
           "cache_read": 10881103,
           "cache_write": 378031,
-          "cost_eff": 47.935903,
+          "cost_eff": 58.95820855,
           "cost_real": 0.0
         },
         "codex": {
@@ -6259,7 +6259,7 @@
       "output_tokens": 36628,
       "cache_read_tokens": 2562683,
       "cache_write_tokens": 135752,
-      "cost_effective": 25.11,
+      "cost_effective": 26.84,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -6268,7 +6268,7 @@
           "out": 20449,
           "cache_read": 937512,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.49782826,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -6277,7 +6277,7 @@
           "out": 16179,
           "cache_read": 1625171,
           "cache_write": 135752,
-          "cost_eff": 25.105463,
+          "cost_eff": 26.3450213,
           "cost_real": 0.0
         }
       },
@@ -6294,7 +6294,7 @@
       "output_tokens": 3470,
       "cache_read_tokens": 411899,
       "cache_write_tokens": 32271,
-      "cost_effective": 0.39,
+      "cost_effective": 0.73,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6303,7 +6303,7 @@
           "out": 1628,
           "cache_read": 284279,
           "cache_write": 32271,
-          "cost_eff": 0.393055,
+          "cost_eff": 0.62382295,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6312,7 +6312,7 @@
           "out": 1842,
           "cache_read": 127620,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.103345,
           "cost_real": 0.0
         }
       },
@@ -6362,7 +6362,7 @@
       "output_tokens": 50877,
       "cache_read_tokens": 6797575,
       "cache_write_tokens": 255565,
-      "cost_effective": 6.3,
+      "cost_effective": 10.06,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6371,7 +6371,7 @@
           "out": 50877,
           "cache_read": 6797575,
           "cache_write": 255565,
-          "cost_eff": 6.301107,
+          "cost_eff": 10.06241925,
           "cost_real": 0.0
         },
         "amp": {
@@ -6396,7 +6396,7 @@
       "output_tokens": 91383,
       "cache_read_tokens": 10652732,
       "cache_write_tokens": 285810,
-      "cost_effective": 20.65,
+      "cost_effective": 24.99,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6405,7 +6405,7 @@
           "out": 66917,
           "cache_read": 7528508,
           "cache_write": 285810,
-          "cost_eff": 18.689628,
+          "cost_eff": 23.0241699,
           "cost_real": 0.0
         },
         "amp": {
@@ -6465,7 +6465,7 @@
       "output_tokens": 91946,
       "cache_read_tokens": 12592693,
       "cache_write_tokens": 116747,
-      "cost_effective": 11.79,
+      "cost_effective": 14.42,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6474,7 +6474,7 @@
           "out": 46752,
           "cache_read": 4963381,
           "cache_write": 116747,
-          "cost_eff": 7.959494,
+          "cost_eff": 10.58786855,
           "cost_real": 0.0
         },
         "codex": {
@@ -6500,7 +6500,7 @@
       "output_tokens": 61361,
       "cache_read_tokens": 9899687,
       "cache_write_tokens": 116958,
-      "cost_effective": 12.99,
+      "cost_effective": 15.06,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -6518,7 +6518,7 @@
           "out": 32863,
           "cache_read": 3430277,
           "cache_write": 116958,
-          "cost_eff": 10.510273,
+          "cost_eff": 12.4711306,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6527,7 +6527,7 @@
           "out": 857,
           "cache_read": 779042,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.10876944,
           "cost_real": 0.0
         }
       },
@@ -6544,7 +6544,7 @@
       "output_tokens": 5517,
       "cache_read_tokens": 647254,
       "cache_write_tokens": 80431,
-      "cost_effective": 1.32,
+      "cost_effective": 1.97,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6553,7 +6553,7 @@
           "out": 4934,
           "cache_read": 647254,
           "cache_write": 80431,
-          "cost_eff": 1.322448,
+          "cost_eff": 1.89234645,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6562,7 +6562,7 @@
           "out": 583,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.07301625,
           "cost_real": 0.0
         }
       },
@@ -6578,7 +6578,7 @@
       "output_tokens": 167885,
       "cache_read_tokens": 18781731,
       "cache_write_tokens": 561385,
-      "cost_effective": 14.84,
+      "cost_effective": 25.05,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6587,7 +6587,7 @@
           "out": 164594,
           "cache_read": 18446498,
           "cache_write": 561385,
-          "cost_eff": 14.842059,
+          "cost_eff": 24.95120715,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6596,7 +6596,7 @@
           "out": 3291,
           "cache_read": 335233,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.10151041,
           "cost_real": 0.0
         }
       },
@@ -6612,7 +6612,7 @@
       "output_tokens": 102969,
       "cache_read_tokens": 8370107,
       "cache_write_tokens": 403021,
-      "cost_effective": 15.53,
+      "cost_effective": 19.35,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6621,7 +6621,7 @@
           "out": 50931,
           "cache_read": 3937398,
           "cache_write": 403021,
-          "cost_eff": 13.52239,
+          "cost_eff": 17.00072515,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6630,7 +6630,7 @@
           "out": 1446,
           "cache_read": 357957,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.34646992,
           "cost_real": 0.0
         },
         "codex": {
@@ -6656,7 +6656,7 @@
       "output_tokens": 134721,
       "cache_read_tokens": 24325208,
       "cache_write_tokens": 100225,
-      "cost_effective": 14.01,
+      "cost_effective": 15.85,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -6674,7 +6674,7 @@
           "out": 33987,
           "cache_read": 2392925,
           "cache_write": 100225,
-          "cost_eff": 5.831706,
+          "cost_eff": 7.43544225,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -6683,7 +6683,7 @@
           "out": 6553,
           "cache_read": 1846267,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.23911895,
           "cost_real": 0.0
         }
       },
@@ -6736,7 +6736,7 @@
       "output_tokens": 93239,
       "cache_read_tokens": 13502054,
       "cache_write_tokens": 239491,
-      "cost_effective": 122.18,
+      "cost_effective": 128.53,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6745,7 +6745,7 @@
           "out": 93239,
           "cache_read": 13502054,
           "cache_write": 239491,
-          "cost_eff": 122.184432,
+          "cost_eff": 128.53229445,
           "cost_real": 0.0
         },
         "codex": {
@@ -6771,7 +6771,7 @@
       "output_tokens": 36459,
       "cache_read_tokens": 5232139,
       "cache_write_tokens": 148903,
-      "cost_effective": 19.89,
+      "cost_effective": 22.56,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6780,7 +6780,7 @@
           "out": 36459,
           "cache_read": 5232139,
           "cache_write": 148903,
-          "cost_eff": 19.885067,
+          "cost_eff": 22.56039995,
           "cost_real": 0.0
         }
       },
@@ -6855,7 +6855,7 @@
       "output_tokens": 100555,
       "cache_read_tokens": 17234961,
       "cache_write_tokens": 140291,
-      "cost_effective": 7.4,
+      "cost_effective": 12.1,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6864,7 +6864,7 @@
           "out": 69472,
           "cache_read": 10422929,
           "cache_write": 140291,
-          "cost_eff": 4.487295,
+          "cost_eff": 9.18267795,
           "cost_real": 0.0
         },
         "codex": {
@@ -6890,7 +6890,7 @@
       "output_tokens": 49714,
       "cache_read_tokens": 4875356,
       "cache_write_tokens": 169516,
-      "cost_effective": 7.05,
+      "cost_effective": 9.48,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6899,7 +6899,7 @@
           "out": 46637,
           "cache_read": 3630172,
           "cache_write": 169516,
-          "cost_eff": 6.367702,
+          "cost_eff": 8.7936586,
           "cost_real": 0.0
         },
         "codex": {
@@ -6925,7 +6925,7 @@
       "output_tokens": 8893,
       "cache_read_tokens": 1797714,
       "cache_write_tokens": 15142,
-      "cost_effective": 5.13,
+      "cost_effective": 5.24,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -6934,7 +6934,7 @@
           "out": 963,
           "cache_read": 113362,
           "cache_write": 15142,
-          "cost_eff": 4.065021,
+          "cost_eff": 4.1702781,
           "cost_real": 0.0
         },
         "codex": {
@@ -6960,7 +6960,7 @@
       "output_tokens": 10073,
       "cache_read_tokens": 1107743,
       "cache_write_tokens": 30040,
-      "cost_effective": 3.63,
+      "cost_effective": 3.81,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -6978,7 +6978,7 @@
           "out": 2523,
           "cache_read": 98207,
           "cache_write": 30040,
-          "cost_eff": 2.995345,
+          "cost_eff": 3.1753291,
           "cost_real": 0.0
         }
       },
@@ -6995,7 +6995,7 @@
       "output_tokens": 20049,
       "cache_read_tokens": 2066387,
       "cache_write_tokens": 82981,
-      "cost_effective": 22.55,
+      "cost_effective": 23.46,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7004,7 +7004,7 @@
           "out": 15219,
           "cache_read": 1240019,
           "cache_write": 82981,
-          "cost_eff": 22.101197,
+          "cost_eff": 23.01289745,
           "cost_real": 0.0
         },
         "codex": {
@@ -7030,7 +7030,7 @@
       "output_tokens": 15662,
       "cache_read_tokens": 2703349,
       "cache_write_tokens": 51644,
-      "cost_effective": 9.36,
+      "cost_effective": 9.88,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -7048,7 +7048,7 @@
           "out": 7479,
           "cache_read": 717301,
           "cache_write": 51644,
-          "cost_eff": 8.019064,
+          "cost_eff": 8.5402003,
           "cost_real": 0.0
         }
       },
@@ -7065,7 +7065,7 @@
       "output_tokens": 50709,
       "cache_read_tokens": 4081213,
       "cache_write_tokens": 400772,
-      "cost_effective": 9.56,
+      "cost_effective": 12.88,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7074,7 +7074,7 @@
           "out": 49612,
           "cache_read": 3579581,
           "cache_write": 400772,
-          "cost_eff": 9.409742,
+          "cost_eff": 12.7311923,
           "cost_real": 0.0
         },
         "codex": {
@@ -7100,7 +7100,7 @@
       "output_tokens": 80150,
       "cache_read_tokens": 4976363,
       "cache_write_tokens": 521144,
-      "cost_effective": 45.49,
+      "cost_effective": 50.14,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7109,7 +7109,7 @@
           "out": 80150,
           "cache_read": 4976363,
           "cache_write": 521144,
-          "cost_eff": 45.487373,
+          "cost_eff": 50.1374909,
           "cost_real": 0.0
         }
       },
@@ -7125,7 +7125,7 @@
       "output_tokens": 111746,
       "cache_read_tokens": 6509088,
       "cache_write_tokens": 222443,
-      "cost_effective": 26.77,
+      "cost_effective": 29.34,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7134,7 +7134,7 @@
           "out": 42023,
           "cache_read": 2114092,
           "cache_write": 222443,
-          "cost_eff": 23.93497,
+          "cost_eff": 26.03400385,
           "cost_real": 0.0
         },
         "codex": {
@@ -7152,7 +7152,7 @@
           "out": 17756,
           "cache_read": 757108,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.46498927,
           "cost_real": 0.0
         }
       },
@@ -7170,7 +7170,7 @@
       "output_tokens": 51940,
       "cache_read_tokens": 13120887,
       "cache_write_tokens": 0,
-      "cost_effective": 7.3,
+      "cost_effective": 7.92,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -7179,7 +7179,7 @@
           "out": 14702,
           "cache_read": 1584759,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.62349748,
           "cost_real": 0.0
         },
         "codex": {
@@ -7214,7 +7214,7 @@
       "output_tokens": 47598,
       "cache_read_tokens": 10517633,
       "cache_write_tokens": 125727,
-      "cost_effective": 2.06,
+      "cost_effective": 5.72,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7223,7 +7223,7 @@
           "out": 36928,
           "cache_read": 8791169,
           "cache_write": 125727,
-          "cost_eff": 1.369221,
+          "cost_eff": 5.03228895,
           "cost_real": 0.0
         },
         "codex": {
@@ -7248,7 +7248,7 @@
       "output_tokens": 7126,
       "cache_read_tokens": 1040658,
       "cache_write_tokens": 29954,
-      "cost_effective": 1.15,
+      "cost_effective": 1.4,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -7257,7 +7257,7 @@
           "out": 3591,
           "cache_read": 273426,
           "cache_write": 29954,
-          "cost_eff": 0.580699,
+          "cost_eff": 0.8289493,
           "cost_real": 0.0
         },
         "codex": {
@@ -7282,7 +7282,7 @@
       "output_tokens": 50013,
       "cache_read_tokens": 1876400,
       "cache_write_tokens": 0,
-      "cost_effective": 1.07,
+      "cost_effective": 1.46,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -7291,7 +7291,7 @@
           "out": 20131,
           "cache_read": 760112,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.3933345,
           "cost_real": 0.0
         },
         "codex": {
@@ -7316,7 +7316,7 @@
       "output_tokens": 35569,
       "cache_read_tokens": 11473835,
       "cache_write_tokens": 0,
-      "cost_effective": 3.9,
+      "cost_effective": 4.41,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -7334,7 +7334,7 @@
           "out": 5468,
           "cache_read": 493611,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.5056207,
           "cost_real": 0.0
         }
       },
@@ -7480,7 +7480,7 @@
       "output_tokens": 7746,
       "cache_read_tokens": 888970,
       "cache_write_tokens": 0,
-      "cost_effective": 18.34,
+      "cost_effective": 18.62,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -7507,7 +7507,7 @@
           "out": 7510,
           "cache_read": 725642,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.27118763,
           "cost_real": 0.0
         }
       },
@@ -7524,7 +7524,7 @@
       "output_tokens": 16074,
       "cache_read_tokens": 3139756,
       "cache_write_tokens": 0,
-      "cost_effective": 10.27,
+      "cost_effective": 11.74,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -7533,7 +7533,7 @@
           "out": 16074,
           "cache_read": 3139756,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 1.46939103,
           "cost_real": 0.0
         },
         "amp": {
@@ -7568,7 +7568,7 @@
       "output_tokens": 438,
       "cache_read_tokens": 294505,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
+      "cost_effective": 0.23,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -7577,7 +7577,7 @@
           "out": 438,
           "cache_read": 294505,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.22585781,
           "cost_real": 0.0
         }
       },
@@ -7950,7 +7950,7 @@
       "output_tokens": 130050,
       "cache_read_tokens": 23337291,
       "cache_write_tokens": 133046,
-      "cost_effective": 12.78,
+      "cost_effective": 15.05,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -7968,7 +7968,7 @@
           "out": 11122,
           "cache_read": 797676,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.37112353,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -7977,7 +7977,7 @@
           "out": 23781,
           "cache_read": 3454815,
           "cache_write": 133046,
-          "cost_eff": 4.070161,
+          "cost_eff": 5.962549,
           "cost_real": 0.0
         }
       },
@@ -7994,7 +7994,7 @@
       "output_tokens": 153640,
       "cache_read_tokens": 13225357,
       "cache_write_tokens": 1013911,
-      "cost_effective": 19.09,
+      "cost_effective": 28.65,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8003,7 +8003,7 @@
           "out": 134347,
           "cache_read": 10073457,
           "cache_write": 1013911,
-          "cost_eff": 19.088335,
+          "cost_eff": 27.92939935,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8012,7 +8012,7 @@
           "out": 19293,
           "cache_read": 3151900,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.71985877,
           "cost_real": 0.0
         },
         "amp": {
@@ -8038,7 +8038,7 @@
       "output_tokens": 123916,
       "cache_read_tokens": 17921140,
       "cache_write_tokens": 497782,
-      "cost_effective": 20.01,
+      "cost_effective": 29.32,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8047,7 +8047,7 @@
           "out": 122411,
           "cache_read": 17294924,
           "cache_write": 497782,
-          "cost_eff": 20.012715,
+          "cost_eff": 28.9051947,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8056,7 +8056,7 @@
           "out": 1505,
           "cache_read": 626216,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.41841849,
           "cost_real": 0.0
         }
       },
@@ -8072,7 +8072,7 @@
       "output_tokens": 10848,
       "cache_read_tokens": 1179519,
       "cache_write_tokens": 40888,
-      "cost_effective": 4.17,
+      "cost_effective": 4.84,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8081,7 +8081,7 @@
           "out": 10848,
           "cache_read": 1179519,
           "cache_write": 40888,
-          "cost_eff": 4.167076,
+          "cost_eff": 4.8370777,
           "cost_real": 0.0
         }
       },
@@ -8096,7 +8096,7 @@
       "output_tokens": 7042,
       "cache_read_tokens": 609445,
       "cache_write_tokens": 30462,
-      "cost_effective": 1.82,
+      "cost_effective": 2.39,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8105,7 +8105,7 @@
           "out": 4525,
           "cache_read": 341466,
           "cache_write": 30462,
-          "cost_eff": 1.816594,
+          "cost_eff": 2.1011773,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8114,7 +8114,7 @@
           "out": 2517,
           "cache_read": 267979,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.28462744,
           "cost_real": 0.0
         }
       },
@@ -8130,7 +8130,7 @@
       "output_tokens": 16186,
       "cache_read_tokens": 1081350,
       "cache_write_tokens": 0,
-      "cost_effective": 1.37,
+      "cost_effective": 1.68,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -8139,7 +8139,7 @@
           "out": 8449,
           "cache_read": 947718,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.30883864,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -8174,7 +8174,7 @@
       "output_tokens": 57001,
       "cache_read_tokens": 7908399,
       "cache_write_tokens": 0,
-      "cost_effective": 6.63,
+      "cost_effective": 7.14,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -8201,7 +8201,7 @@
           "out": 9859,
           "cache_read": 2796591,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.5133557,
           "cost_real": 0.0
         }
       },
@@ -8218,7 +8218,7 @@
       "output_tokens": 44604,
       "cache_read_tokens": 7165148,
       "cache_write_tokens": 0,
-      "cost_effective": 6.51,
+      "cost_effective": 6.63,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -8236,7 +8236,7 @@
           "out": 3202,
           "cache_read": 1034460,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.12115125,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -8330,7 +8330,7 @@
       "output_tokens": 65445,
       "cache_read_tokens": 6334240,
       "cache_write_tokens": 317150,
-      "cost_effective": 7.61,
+      "cost_effective": 11.46,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -8348,7 +8348,7 @@
           "out": 63170,
           "cache_read": 5681440,
           "cache_write": 317150,
-          "cost_eff": 7.384965,
+          "cost_eff": 11.2267665,
           "cost_real": 0.0
         },
         "amp": {
@@ -8374,7 +8374,7 @@
       "output_tokens": 25872,
       "cache_read_tokens": 4942068,
       "cache_write_tokens": 77852,
-      "cost_effective": 3.87,
+      "cost_effective": 6.16,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8383,7 +8383,7 @@
           "out": 25244,
           "cache_read": 4826354,
           "cache_write": 77852,
-          "cost_eff": 3.872649,
+          "cost_eff": 5.9913882,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8392,7 +8392,7 @@
           "out": 628,
           "cache_read": 115714,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.16824088,
           "cost_real": 0.0
         }
       },
@@ -8408,7 +8408,7 @@
       "output_tokens": 17705,
       "cache_read_tokens": 891821,
       "cache_write_tokens": 81182,
-      "cost_effective": 2.89,
+      "cost_effective": 3.88,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8417,7 +8417,7 @@
           "out": 17250,
           "cache_read": 891821,
           "cache_write": 81182,
-          "cost_eff": 2.89295,
+          "cost_eff": 3.7238018,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8426,7 +8426,7 @@
           "out": 455,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.1548875,
           "cost_real": 0.0
         }
       },
@@ -8442,7 +8442,7 @@
       "output_tokens": 544,
       "cache_read_tokens": 28151,
       "cache_write_tokens": 1086,
-      "cost_effective": 0.04,
+      "cost_effective": 0.06,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8451,7 +8451,7 @@
           "out": 544,
           "cache_read": 28151,
           "cache_write": 1086,
-          "cost_eff": 0.041374,
+          "cost_eff": 0.0620608,
           "cost_real": 0.0
         }
       },
@@ -8466,7 +8466,7 @@
       "output_tokens": 16890,
       "cache_read_tokens": 2014646,
       "cache_write_tokens": 111855,
-      "cost_effective": 6.6,
+      "cost_effective": 8.16,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8475,7 +8475,7 @@
           "out": 16313,
           "cache_read": 1898613,
           "cache_write": 111855,
-          "cost_eff": 6.604144,
+          "cost_eff": 7.83918715,
           "cost_real": 0.0
         },
         "amp": {
@@ -8493,7 +8493,7 @@
           "out": 577,
           "cache_read": 116033,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.32473581,
           "cost_real": 0.0
         }
       },
@@ -8510,7 +8510,7 @@
       "output_tokens": 42919,
       "cache_read_tokens": 2216662,
       "cache_write_tokens": 163826,
-      "cost_effective": 4.13,
+      "cost_effective": 6.36,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8519,7 +8519,7 @@
           "out": 42593,
           "cache_read": 2216662,
           "cache_write": 163826,
-          "cost_eff": 4.132872,
+          "cost_eff": 6.0513471,
           "cost_real": 0.0
         },
         "amp": {
@@ -8537,7 +8537,7 @@
           "out": 326,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.30926375,
           "cost_real": 0.0
         }
       },
@@ -8554,7 +8554,7 @@
       "output_tokens": 84727,
       "cache_read_tokens": 5163511,
       "cache_write_tokens": 369730,
-      "cost_effective": 11.19,
+      "cost_effective": 15.85,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8563,7 +8563,7 @@
           "out": 84272,
           "cache_read": 5163511,
           "cache_write": 369730,
-          "cost_eff": 11.188176,
+          "cost_eff": 15.3883398,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8572,7 +8572,7 @@
           "out": 455,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.46523125,
           "cost_real": 0.0
         }
       },
@@ -8588,7 +8588,7 @@
       "output_tokens": 98299,
       "cache_read_tokens": 7559944,
       "cache_write_tokens": 178445,
-      "cost_effective": 18.24,
+      "cost_effective": 20.52,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8597,7 +8597,7 @@
           "out": 47329,
           "cache_read": 1662183,
           "cache_write": 178445,
-          "cost_eff": 15.330453,
+          "cost_eff": 17.20837065,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8606,7 +8606,7 @@
           "out": 2932,
           "cache_read": 728097,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.40338355,
           "cost_real": 0.0
         },
         "codex": {
@@ -8632,7 +8632,7 @@
       "output_tokens": 34909,
       "cache_read_tokens": 6239750,
       "cache_write_tokens": 33251,
-      "cost_effective": 2.48,
+      "cost_effective": 3.14,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -8650,7 +8650,7 @@
           "out": 3145,
           "cache_read": 370659,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.38792243,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -8659,7 +8659,7 @@
           "out": 2378,
           "cache_read": 376867,
           "cache_write": 33251,
-          "cost_eff": 0.419981,
+          "cost_eff": 0.69343835,
           "cost_real": 0.0
         }
       },
@@ -8676,7 +8676,7 @@
       "output_tokens": 195983,
       "cache_read_tokens": 19021371,
       "cache_write_tokens": 260862,
-      "cost_effective": 14.32,
+      "cost_effective": 19.53,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -8694,7 +8694,7 @@
           "out": 91492,
           "cache_read": 7191501,
           "cache_write": 260862,
-          "cost_eff": 7.991948,
+          "cost_eff": 12.5004788,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8703,7 +8703,7 @@
           "out": 6560,
           "cache_read": 1582190,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.70290938,
           "cost_real": 0.0
         },
         "amp": {
@@ -8730,7 +8730,7 @@
       "output_tokens": 156822,
       "cache_read_tokens": 13245985,
       "cache_write_tokens": 700788,
-      "cost_effective": 30.7,
+      "cost_effective": 39.82,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8739,7 +8739,7 @@
           "out": 149480,
           "cache_read": 11526088,
           "cache_write": 700788,
-          "cost_eff": 30.698075,
+          "cost_eff": 39.0292634,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8748,7 +8748,7 @@
           "out": 7342,
           "cache_read": 1719897,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.78984231,
           "cost_real": 0.0
         }
       },
@@ -8764,7 +8764,7 @@
       "output_tokens": 169003,
       "cache_read_tokens": 16620190,
       "cache_write_tokens": 759632,
-      "cost_effective": 22.19,
+      "cost_effective": 32.49,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8773,7 +8773,7 @@
           "out": 162456,
           "cache_read": 14502936,
           "cache_write": 759632,
-          "cost_eff": 22.191119,
+          "cost_eff": 31.8286538,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8782,7 +8782,7 @@
           "out": 6547,
           "cache_read": 2117254,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.65802087,
           "cost_real": 0.0
         }
       },
@@ -8798,7 +8798,7 @@
       "output_tokens": 118268,
       "cache_read_tokens": 9836202,
       "cache_write_tokens": 849160,
-      "cost_effective": 20.53,
+      "cost_effective": 28.72,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8807,7 +8807,7 @@
           "out": 117021,
           "cache_read": 9357744,
           "cache_write": 849160,
-          "cost_eff": 20.529191,
+          "cost_eff": 28.2769802,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8816,7 +8816,7 @@
           "out": 1247,
           "cache_read": 478458,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.44648613,
           "cost_real": 0.0
         }
       },
@@ -8832,7 +8832,7 @@
       "output_tokens": 33540,
       "cache_read_tokens": 4511372,
       "cache_write_tokens": 347356,
-      "cost_effective": 7.39,
+      "cost_effective": 10.43,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8841,7 +8841,7 @@
           "out": 28387,
           "cache_read": 3081802,
           "cache_write": 347356,
-          "cost_eff": 7.386973,
+          "cost_eff": 10.0401856,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8850,7 +8850,7 @@
           "out": 5153,
           "cache_read": 1429570,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.38997312,
           "cost_real": 0.0
         },
         "amp": {
@@ -8876,7 +8876,7 @@
       "output_tokens": 40810,
       "cache_read_tokens": 4740376,
       "cache_write_tokens": 292820,
-      "cost_effective": 9.17,
+      "cost_effective": 12.93,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8885,7 +8885,7 @@
           "out": 40253,
           "cache_read": 4740376,
           "cache_write": 292820,
-          "cost_eff": 9.169365,
+          "cost_eff": 12.2936028,
           "cost_real": 0.0
         },
         "amp": {
@@ -8903,7 +8903,7 @@
           "out": 557,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.634105,
           "cost_real": 0.0
         }
       },
@@ -8920,7 +8920,7 @@
       "output_tokens": 26011,
       "cache_read_tokens": 1651226,
       "cache_write_tokens": 168850,
-      "cost_effective": 3.47,
+      "cost_effective": 5.2,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8929,7 +8929,7 @@
           "out": 25796,
           "cache_read": 1651226,
           "cache_write": 168850,
-          "cost_eff": 3.469157,
+          "cost_eff": 4.9848743,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -8938,7 +8938,7 @@
           "out": 215,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.21196125,
           "cost_real": 0.0
         }
       },
@@ -8954,7 +8954,7 @@
       "output_tokens": 5779,
       "cache_read_tokens": 1661831,
       "cache_write_tokens": 70888,
-      "cost_effective": 5.14,
+      "cost_effective": 5.99,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8963,7 +8963,7 @@
           "out": 5779,
           "cache_read": 1661831,
           "cache_write": 70888,
-          "cost_eff": 5.1406,
+          "cost_eff": 5.9918023,
           "cost_real": 0.0
         }
       },
@@ -8978,7 +8978,7 @@
       "output_tokens": 6116,
       "cache_read_tokens": 2687955,
       "cache_write_tokens": 190220,
-      "cost_effective": 6.45,
+      "cost_effective": 8.06,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -8987,7 +8987,7 @@
           "out": 6116,
           "cache_read": 2687955,
           "cache_write": 190220,
-          "cost_eff": 6.452863,
+          "cost_eff": 8.0644405,
           "cost_real": 0.0
         }
       },
@@ -9002,7 +9002,7 @@
       "output_tokens": 7975,
       "cache_read_tokens": 758716,
       "cache_write_tokens": 58021,
-      "cost_effective": 1.88,
+      "cost_effective": 2.61,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -9011,7 +9011,7 @@
           "out": 397,
           "cache_read": 168361,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.22457631,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -9020,7 +9020,7 @@
           "out": 7578,
           "cache_read": 590355,
           "cache_write": 58021,
-          "cost_eff": 1.876841,
+          "cost_eff": 2.38966025,
           "cost_real": 0.0
         }
       },
@@ -9036,7 +9036,7 @@
       "output_tokens": 77611,
       "cache_read_tokens": 12131951,
       "cache_write_tokens": 129464,
-      "cost_effective": 7.58,
+      "cost_effective": 9.49,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -9054,7 +9054,7 @@
           "out": 38391,
           "cache_read": 2210883,
           "cache_write": 129464,
-          "cost_eff": 3.658285,
+          "cost_eff": 5.3830969,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -9063,7 +9063,7 @@
           "out": 2979,
           "cache_read": 1841196,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.18702225,
           "cost_real": 0.0
         }
       },
@@ -9080,7 +9080,7 @@
       "output_tokens": 9478,
       "cache_read_tokens": 3429376,
       "cache_write_tokens": 0,
-      "cost_effective": 1.62,
+      "cost_effective": 1.84,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -9098,7 +9098,7 @@
           "out": 252,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.21831625,
           "cost_real": 0.0
         }
       },
@@ -9269,7 +9269,7 @@
       "output_tokens": 64737,
       "cache_read_tokens": 5341989,
       "cache_write_tokens": 244044,
-      "cost_effective": 9.17,
+      "cost_effective": 11.62,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -9287,7 +9287,7 @@
           "out": 51954,
           "cache_read": 2531621,
           "cache_write": 244044,
-          "cost_eff": 5.888731,
+          "cost_eff": 8.3429443,
           "cost_real": 0.0
         }
       },
@@ -9303,7 +9303,7 @@
       "output_tokens": 977,
       "cache_read_tokens": 90223,
       "cache_write_tokens": 15329,
-      "cost_effective": 0.22,
+      "cost_effective": 0.32,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9312,7 +9312,7 @@
           "out": 977,
           "cache_read": 90223,
           "cache_write": 15329,
-          "cost_eff": 0.220799,
+          "cost_eff": 0.32002265,
           "cost_real": 0.0
         }
       },
@@ -9327,7 +9327,7 @@
       "output_tokens": 70503,
       "cache_read_tokens": 8974402,
       "cache_write_tokens": 242289,
-      "cost_effective": 10.75,
+      "cost_effective": 15.28,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9336,7 +9336,7 @@
           "out": 64792,
           "cache_read": 8830530,
           "cache_write": 242289,
-          "cost_eff": 10.271445,
+          "cost_eff": 14.80184775,
           "cost_real": 0.0
         },
         "codex": {
@@ -9371,7 +9371,7 @@
       "output_tokens": 42467,
       "cache_read_tokens": 7643170,
       "cache_write_tokens": 193965,
-      "cost_effective": 12.58,
+      "cost_effective": 15.89,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9380,7 +9380,7 @@
           "out": 38687,
           "cache_read": 6683682,
           "cache_write": 193965,
-          "cost_eff": 11.482975,
+          "cost_eff": 14.79649435,
           "cost_real": 0.0
         },
         "codex": {
@@ -9405,7 +9405,7 @@
       "output_tokens": 49334,
       "cache_read_tokens": 5305127,
       "cache_write_tokens": 107304,
-      "cost_effective": 2.09,
+      "cost_effective": 4.82,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9414,7 +9414,7 @@
           "out": 49334,
           "cache_read": 5305127,
           "cache_write": 107304,
-          "cost_eff": 2.08694,
+          "cost_eff": 4.8211601,
           "cost_real": 0.0
         }
       },
@@ -9429,7 +9429,7 @@
       "output_tokens": 32128,
       "cache_read_tokens": 2822390,
       "cache_write_tokens": 155082,
-      "cost_effective": 3.86,
+      "cost_effective": 5.77,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9438,7 +9438,7 @@
           "out": 32128,
           "cache_read": 2822390,
           "cache_write": 155082,
-          "cost_eff": 3.856154,
+          "cost_eff": 5.7665225,
           "cost_real": 0.0
         },
         "amp": {
@@ -9463,7 +9463,7 @@
       "output_tokens": 31904,
       "cache_read_tokens": 2039635,
       "cache_write_tokens": 178066,
-      "cost_effective": 9.7,
+      "cost_effective": 11.46,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9472,7 +9472,7 @@
           "out": 31904,
           "cache_read": 2039635,
           "cache_write": 178066,
-          "cost_eff": 9.702917,
+          "cost_eff": 11.461367,
           "cost_real": 0.0
         },
         "amp": {
@@ -9497,7 +9497,7 @@
       "output_tokens": 96507,
       "cache_read_tokens": 13746600,
       "cache_write_tokens": 403428,
-      "cost_effective": 11.02,
+      "cost_effective": 17.1,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9506,7 +9506,7 @@
           "out": 84017,
           "cache_read": 11037096,
           "cache_write": 403428,
-          "cost_eff": 8.592323,
+          "cost_eff": 14.6783048,
           "cost_real": 0.0
         },
         "codex": {
@@ -9531,7 +9531,7 @@
       "output_tokens": 55740,
       "cache_read_tokens": 11410883,
       "cache_write_tokens": 202140,
-      "cost_effective": 12.59,
+      "cost_effective": 13.99,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9540,7 +9540,7 @@
           "out": 14382,
           "cache_read": 1396163,
           "cache_write": 202140,
-          "cost_eff": 2.688914,
+          "cost_eff": 4.0933529,
           "cost_real": 0.0
         },
         "codex": {
@@ -9565,7 +9565,7 @@
       "output_tokens": 38069,
       "cache_read_tokens": 1889017,
       "cache_write_tokens": 77147,
-      "cost_effective": 4.31,
+      "cost_effective": 5.16,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9574,7 +9574,7 @@
           "out": 26946,
           "cache_read": 534265,
           "cache_write": 77147,
-          "cost_eff": 2.922582,
+          "cost_eff": 3.77644575,
           "cost_real": 0.0
         },
         "codex": {
@@ -9599,7 +9599,7 @@
       "output_tokens": 38463,
       "cache_read_tokens": 3558891,
       "cache_write_tokens": 192058,
-      "cost_effective": 16.32,
+      "cost_effective": 18.59,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -9617,7 +9617,7 @@
           "out": 37175,
           "cache_read": 3314155,
           "cache_write": 192058,
-          "cost_eff": 15.735799,
+          "cost_eff": 18.008065,
           "cost_real": 0.0
         }
       },
@@ -9633,7 +9633,7 @@
       "output_tokens": 258920,
       "cache_read_tokens": 30787866,
       "cache_write_tokens": 929530,
-      "cost_effective": 52.95,
+      "cost_effective": 68.3,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9642,7 +9642,7 @@
           "out": 248963,
           "cache_read": 27099930,
           "cache_write": 929530,
-          "cost_eff": 50.111696,
+          "cost_eff": 65.4634415,
           "cost_real": 0.0
         },
         "codex": {
@@ -9667,7 +9667,7 @@
       "output_tokens": 73229,
       "cache_read_tokens": 18471764,
       "cache_write_tokens": 30706,
-      "cost_effective": 16.78,
+      "cost_effective": 17.03,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -9685,7 +9685,7 @@
           "out": 3550,
           "cache_read": 277332,
           "cache_write": 30706,
-          "cost_eff": 0.7375,
+          "cost_eff": 0.9891271,
           "cost_real": 0.0
         }
       },
@@ -9725,7 +9725,7 @@
       "output_tokens": 4289,
       "cache_read_tokens": 238376,
       "cache_write_tokens": 25457,
-      "cost_effective": 0.68,
+      "cost_effective": 0.92,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9734,7 +9734,7 @@
           "out": 4289,
           "cache_read": 238376,
           "cache_write": 25457,
-          "cost_eff": 0.683744,
+          "cost_eff": 0.91508555,
           "cost_real": 0.0
         }
       },
@@ -9749,7 +9749,7 @@
       "output_tokens": 77708,
       "cache_read_tokens": 7361084,
       "cache_write_tokens": 242365,
-      "cost_effective": 12.33,
+      "cost_effective": 16.69,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9758,7 +9758,7 @@
           "out": 77708,
           "cache_read": 7361084,
           "cache_write": 242365,
-          "cost_eff": 12.329482,
+          "cost_eff": 16.68706795,
           "cost_real": 0.0
         }
       },
@@ -9773,7 +9773,7 @@
       "output_tokens": 56986,
       "cache_read_tokens": 4909462,
       "cache_write_tokens": 147295,
-      "cost_effective": 5.05,
+      "cost_effective": 7.93,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9782,7 +9782,7 @@
           "out": 56986,
           "cache_read": 4909462,
           "cache_write": 147295,
-          "cost_eff": 5.049514,
+          "cost_eff": 7.92974485,
           "cost_real": 0.0
         }
       },
@@ -9797,7 +9797,7 @@
       "output_tokens": 23256,
       "cache_read_tokens": 2929128,
       "cache_write_tokens": 169748,
-      "cost_effective": 4.8,
+      "cost_effective": 6.52,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9806,7 +9806,7 @@
           "out": 22078,
           "cache_read": 2505704,
           "cache_write": 169748,
-          "cost_eff": 3.826259,
+          "cost_eff": 5.5460102,
           "cost_real": 0.0
         },
         "codex": {
@@ -9831,7 +9831,7 @@
       "output_tokens": 117383,
       "cache_read_tokens": 11359038,
       "cache_write_tokens": 406946,
-      "cost_effective": 17.62,
+      "cost_effective": 24.32,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9840,7 +9840,7 @@
           "out": 117383,
           "cache_read": 11359038,
           "cache_write": 406946,
-          "cost_eff": 17.622444,
+          "cost_eff": 24.3175509,
           "cost_real": 0.0
         }
       },
@@ -9855,7 +9855,7 @@
       "output_tokens": 175166,
       "cache_read_tokens": 16109600,
       "cache_write_tokens": 407591,
-      "cost_effective": 17.73,
+      "cost_effective": 26.72,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9864,7 +9864,7 @@
           "out": 175166,
           "cache_read": 16109600,
           "cache_write": 407591,
-          "cost_eff": 17.726776,
+          "cost_eff": 26.71624525,
           "cost_real": 0.0
         }
       },
@@ -9879,7 +9879,7 @@
       "output_tokens": 48034,
       "cache_read_tokens": 2603231,
       "cache_write_tokens": 277600,
-      "cost_effective": 13.1,
+      "cost_effective": 15.29,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9888,7 +9888,7 @@
           "out": 41434,
           "cache_read": 1744607,
           "cache_write": 277600,
-          "cost_eff": 12.55251,
+          "cost_eff": 14.7386781,
           "cost_real": 0.0
         },
         "codex": {
@@ -9914,7 +9914,7 @@
       "output_tokens": 104713,
       "cache_read_tokens": 20719740,
       "cache_write_tokens": 175361,
-      "cost_effective": 10.82,
+      "cost_effective": 16.16,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -9923,7 +9923,7 @@
           "out": 54794,
           "cache_read": 12844156,
           "cache_write": 175361,
-          "cost_eff": 6.632809,
+          "cost_eff": 11.96993455,
           "cost_real": 0.0
         },
         "codex": {
@@ -9982,7 +9982,7 @@
       "output_tokens": 119593,
       "cache_read_tokens": 16480327,
       "cache_write_tokens": 48390,
-      "cost_effective": 10.5,
+      "cost_effective": 11.33,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -10000,7 +10000,7 @@
           "out": 14870,
           "cache_read": 1426503,
           "cache_write": 48390,
-          "cost_eff": 2.591876,
+          "cost_eff": 3.4244354,
           "cost_real": 0.0
         }
       },
@@ -10016,7 +10016,7 @@
       "output_tokens": 462060,
       "cache_read_tokens": 53004632,
       "cache_write_tokens": 1784168,
-      "cost_effective": 67.83,
+      "cost_effective": 95.27,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10025,7 +10025,7 @@
           "out": 440968,
           "cache_read": 47125848,
           "cache_write": 1784168,
-          "cost_eff": 65.750766,
+          "cost_eff": 93.1965624,
           "cost_real": 0.0
         },
         "codex": {
@@ -10050,7 +10050,7 @@
       "output_tokens": 109288,
       "cache_read_tokens": 11804098,
       "cache_write_tokens": 401528,
-      "cost_effective": 17.52,
+      "cost_effective": 24.2,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10059,7 +10059,7 @@
           "out": 109288,
           "cache_read": 11804098,
           "cache_write": 401528,
-          "cost_eff": 17.51801,
+          "cost_eff": 24.2049884,
           "cost_real": 0.0
         }
       },
@@ -10075,7 +10075,7 @@
       "output_tokens": 219007,
       "cache_read_tokens": 16512939,
       "cache_write_tokens": 847590,
-      "cost_effective": 25.44,
+      "cost_effective": 36.86,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10084,7 +10084,7 @@
           "out": 219007,
           "cache_read": 16512939,
           "cache_write": 847590,
-          "cost_eff": 25.437546,
+          "cost_eff": 36.8563092,
           "cost_real": 0.0
         }
       },
@@ -10100,7 +10100,7 @@
       "output_tokens": 188181,
       "cache_read_tokens": 16402181,
       "cache_write_tokens": 733663,
-      "cost_effective": 28.53,
+      "cost_effective": 39.03,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10109,7 +10109,7 @@
           "out": 188181,
           "cache_read": 16402181,
           "cache_write": 733663,
-          "cost_eff": 28.531715,
+          "cost_eff": 39.03186455,
           "cost_real": 0.0
         }
       },
@@ -10124,7 +10124,7 @@
       "output_tokens": 187676,
       "cache_read_tokens": 22969411,
       "cache_write_tokens": 577248,
-      "cost_effective": 26.96,
+      "cost_effective": 33.91,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10133,7 +10133,7 @@
           "out": 113412,
           "cache_read": 10290755,
           "cache_write": 577248,
-          "cost_eff": 15.021904,
+          "cost_eff": 21.9758035,
           "cost_real": 0.0
         },
         "codex": {
@@ -10206,7 +10206,7 @@
       "output_tokens": 33187,
       "cache_read_tokens": 4634366,
       "cache_write_tokens": 15438,
-      "cost_effective": 5.81,
+      "cost_effective": 5.92,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -10224,7 +10224,7 @@
           "out": 2188,
           "cache_read": 62206,
           "cache_write": 15438,
-          "cost_eff": 0.495676,
+          "cost_eff": 0.6050653,
           "cost_real": 0.0
         }
       },
@@ -10240,7 +10240,7 @@
       "output_tokens": 29331,
       "cache_read_tokens": 4105323,
       "cache_write_tokens": 100041,
-      "cost_effective": 5.67,
+      "cost_effective": 6.46,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -10258,7 +10258,7 @@
           "out": 15003,
           "cache_read": 631403,
           "cache_write": 100041,
-          "cost_eff": 2.258328,
+          "cost_eff": 3.04870965,
           "cost_real": 0.0
         }
       },
@@ -10274,7 +10274,7 @@
       "output_tokens": 25265,
       "cache_read_tokens": 3756327,
       "cache_write_tokens": 68685,
-      "cost_effective": 11.59,
+      "cost_effective": 12.43,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -10292,7 +10292,7 @@
           "out": 9387,
           "cache_read": 1479463,
           "cache_write": 68685,
-          "cost_eff": 8.281284,
+          "cost_eff": 9.12367665,
           "cost_real": 0.0
         }
       },
@@ -10308,7 +10308,7 @@
       "output_tokens": 274613,
       "cache_read_tokens": 34675181,
       "cache_write_tokens": 830144,
-      "cost_effective": 37.57,
+      "cost_effective": 51.44,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10317,7 +10317,7 @@
           "out": 223810,
           "cache_read": 24656365,
           "cache_write": 830144,
-          "cost_eff": 27.874789,
+          "cost_eff": 41.7460945,
           "cost_real": 0.0
         },
         "codex": {
@@ -10342,7 +10342,7 @@
       "output_tokens": 97656,
       "cache_read_tokens": 10505520,
       "cache_write_tokens": 324499,
-      "cost_effective": 12.63,
+      "cost_effective": 18.47,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10351,7 +10351,7 @@
           "out": 97656,
           "cache_read": 10505520,
           "cache_write": 324499,
-          "cost_eff": 12.632005,
+          "cost_eff": 18.46604425,
           "cost_real": 0.0
         }
       },
@@ -10366,7 +10366,7 @@
       "output_tokens": 61484,
       "cache_read_tokens": 12883009,
       "cache_write_tokens": 32816,
-      "cost_effective": 13.1,
+      "cost_effective": 13.31,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10375,7 +10375,7 @@
           "out": 1493,
           "cache_read": 214593,
           "cache_write": 32816,
-          "cost_eff": 0.468551,
+          "cost_eff": 0.6784229,
           "cost_real": 0.0
         },
         "codex": {
@@ -10400,7 +10400,7 @@
       "output_tokens": 151401,
       "cache_read_tokens": 16239976,
       "cache_write_tokens": 633737,
-      "cost_effective": 24.31,
+      "cost_effective": 31.6,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -10418,7 +10418,7 @@
           "out": 126466,
           "cache_read": 10047336,
           "cache_write": 633737,
-          "cost_eff": 19.164374,
+          "cost_eff": 26.45333855,
           "cost_real": 0.0
         }
       },
@@ -10435,7 +10435,7 @@
       "output_tokens": 169792,
       "cache_read_tokens": 17276608,
       "cache_write_tokens": 901176,
-      "cost_effective": 27.82,
+      "cost_effective": 38.94,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10444,7 +10444,7 @@
           "out": 169792,
           "cache_read": 17276608,
           "cache_write": 901176,
-          "cost_eff": 27.824554,
+          "cost_eff": 38.9353354,
           "cost_real": 0.0
         }
       },
@@ -10459,7 +10459,7 @@
       "output_tokens": 145083,
       "cache_read_tokens": 12114331,
       "cache_write_tokens": 1037935,
-      "cost_effective": 20.43,
+      "cost_effective": 30.69,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10468,7 +10468,7 @@
           "out": 126132,
           "cache_read": 12114331,
           "cache_write": 1037935,
-          "cost_eff": 20.426924,
+          "cost_eff": 29.84730755,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -10477,7 +10477,7 @@
           "out": 18951,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.83932252,
           "cost_real": 0.0
         }
       },
@@ -10493,7 +10493,7 @@
       "output_tokens": 112009,
       "cache_read_tokens": 6633330,
       "cache_write_tokens": 632565,
-      "cost_effective": 18.56,
+      "cost_effective": 24.6,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10502,7 +10502,7 @@
           "out": 112009,
           "cache_read": 6633330,
           "cache_write": 632565,
-          "cost_eff": 18.559953,
+          "cost_eff": 24.60294075,
           "cost_real": 0.0
         }
       },
@@ -10517,7 +10517,7 @@
       "output_tokens": 85619,
       "cache_read_tokens": 10914078,
       "cache_write_tokens": 338670,
-      "cost_effective": 11.36,
+      "cost_effective": 17.2,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10526,7 +10526,7 @@
           "out": 85619,
           "cache_read": 10914078,
           "cache_write": 338670,
-          "cost_eff": 11.360187,
+          "cost_eff": 17.1958029,
           "cost_real": 0.0
         }
       },
@@ -10541,7 +10541,7 @@
       "output_tokens": 26436,
       "cache_read_tokens": 1955932,
       "cache_write_tokens": 151722,
-      "cost_effective": 3.85,
+      "cost_effective": 5.4,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10550,7 +10550,7 @@
           "out": 26436,
           "cache_read": 1955932,
           "cache_write": 151722,
-          "cost_eff": 3.848228,
+          "cost_eff": 5.4006971,
           "cost_real": 0.0
         }
       },
@@ -10565,7 +10565,7 @@
       "output_tokens": 54767,
       "cache_read_tokens": 3930727,
       "cache_write_tokens": 205407,
-      "cost_effective": 6.74,
+      "cost_effective": 9.51,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10574,7 +10574,7 @@
           "out": 54767,
           "cache_read": 3930727,
           "cache_write": 205407,
-          "cost_eff": 6.736556,
+          "cost_eff": 9.50785535,
           "cost_real": 0.0
         }
       },
@@ -10589,7 +10589,7 @@
       "output_tokens": 14296,
       "cache_read_tokens": 767219,
       "cache_write_tokens": 54333,
-      "cost_effective": 0.81,
+      "cost_effective": 1.46,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10598,7 +10598,7 @@
           "out": 14296,
           "cache_read": 767219,
           "cache_write": 54333,
-          "cost_eff": 0.811986,
+          "cost_eff": 1.46039445,
           "cost_real": 0.0
         }
       },
@@ -10613,7 +10613,7 @@
       "output_tokens": 113328,
       "cache_read_tokens": 13364388,
       "cache_write_tokens": 359544,
-      "cost_effective": 15.79,
+      "cost_effective": 21.78,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10622,7 +10622,7 @@
           "out": 99949,
           "cache_read": 10456740,
           "cache_write": 359544,
-          "cost_eff": 13.383202,
+          "cost_eff": 19.369,
           "cost_real": 0.0
         },
         "codex": {
@@ -10647,7 +10647,7 @@
       "output_tokens": 44531,
       "cache_read_tokens": 4049511,
       "cache_write_tokens": 258712,
-      "cost_effective": 6.7,
+      "cost_effective": 9.55,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10656,7 +10656,7 @@
           "out": 44531,
           "cache_read": 4049511,
           "cache_write": 258712,
-          "cost_eff": 6.695968,
+          "cost_eff": 9.5492563,
           "cost_real": 0.0
         }
       },
@@ -10671,7 +10671,7 @@
       "output_tokens": 62236,
       "cache_read_tokens": 5504376,
       "cache_write_tokens": 398332,
-      "cost_effective": 9.98,
+      "cost_effective": 14.06,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10680,7 +10680,7 @@
           "out": 62236,
           "cache_read": 5504376,
           "cache_write": 398332,
-          "cost_eff": 9.984113,
+          "cost_eff": 14.0632208,
           "cost_real": 0.0
         }
       },
@@ -10695,7 +10695,7 @@
       "output_tokens": 65845,
       "cache_read_tokens": 6725199,
       "cache_write_tokens": 332404,
-      "cost_effective": 15.66,
+      "cost_effective": 19.91,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10704,7 +10704,7 @@
           "out": 65845,
           "cache_read": 6725199,
           "cache_write": 332404,
-          "cost_eff": 15.660381,
+          "cost_eff": 19.9125687,
           "cost_real": 0.0
         }
       },
@@ -10719,7 +10719,7 @@
       "output_tokens": 48619,
       "cache_read_tokens": 3927776,
       "cache_write_tokens": 112349,
-      "cost_effective": 4.01,
+      "cost_effective": 6.7,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10728,7 +10728,7 @@
           "out": 44842,
           "cache_read": 3927776,
           "cache_write": 112349,
-          "cost_eff": 4.01203,
+          "cost_eff": 6.28449655,
           "cost_real": 0.0
         },
         "gemini-cli": {
@@ -10737,7 +10737,7 @@
           "out": 3777,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 0.41699626,
           "cost_real": 0.0
         }
       },
@@ -10753,7 +10753,7 @@
       "output_tokens": 44629,
       "cache_read_tokens": 1934678,
       "cache_write_tokens": 194110,
-      "cost_effective": 4.3,
+      "cost_effective": 8.77,
       "cost_real": 0.0,
       "tools": {
         "gemini-cli": {
@@ -10762,7 +10762,7 @@
           "out": 6543,
           "cache_read": 0,
           "cache_write": 0,
-          "cost_eff": 0.0,
+          "cost_eff": 2.59575,
           "cost_real": 0.0
         },
         "claude-cli": {
@@ -10771,7 +10771,7 @@
           "out": 38086,
           "cache_read": 1934678,
           "cache_write": 194110,
-          "cost_eff": 4.297505,
+          "cost_eff": 6.1773659,
           "cost_real": 0.0
         }
       },
@@ -10787,7 +10787,7 @@
       "output_tokens": 183417,
       "cache_read_tokens": 14164078,
       "cache_write_tokens": 845183,
-      "cost_effective": 23.98,
+      "cost_effective": 34.16,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10796,7 +10796,7 @@
           "out": 183417,
           "cache_read": 14164078,
           "cache_write": 845183,
-          "cost_eff": 23.977877,
+          "cost_eff": 34.15519265,
           "cost_real": 0.0
         }
       },
@@ -10811,7 +10811,7 @@
       "output_tokens": 209369,
       "cache_read_tokens": 18072334,
       "cache_write_tokens": 663517,
-      "cost_effective": 25.41,
+      "cost_effective": 36.46,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10820,7 +10820,7 @@
           "out": 209369,
           "cache_read": 18072334,
           "cache_write": 663517,
-          "cost_eff": 25.410136,
+          "cost_eff": 36.46168495,
           "cost_real": 0.0
         }
       },
@@ -10835,7 +10835,7 @@
       "output_tokens": 251985,
       "cache_read_tokens": 14873371,
       "cache_write_tokens": 1084301,
-      "cost_effective": 31.44,
+      "cost_effective": 43.77,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10844,7 +10844,7 @@
           "out": 251985,
           "cache_read": 14873371,
           "cache_write": 1084301,
-          "cost_eff": 31.441368,
+          "cost_eff": 43.76689005,
           "cost_real": 0.0
         }
       },
@@ -10859,7 +10859,7 @@
       "output_tokens": 181183,
       "cache_read_tokens": 11528192,
       "cache_write_tokens": 1097368,
-      "cost_effective": 29.77,
+      "cost_effective": 40.06,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10868,7 +10868,7 @@
           "out": 181183,
           "cache_read": 11528192,
           "cache_write": 1097368,
-          "cost_eff": 29.768599,
+          "cost_eff": 40.0610446,
           "cost_real": 0.0
         }
       },
@@ -10883,7 +10883,7 @@
       "output_tokens": 269948,
       "cache_read_tokens": 17760990,
       "cache_write_tokens": 1026026,
-      "cost_effective": 33.09,
+      "cost_effective": 46.32,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10892,7 +10892,7 @@
           "out": 269948,
           "cache_read": 17760990,
           "cache_write": 1026026,
-          "cost_eff": 33.090319,
+          "cost_eff": 46.3168195,
           "cost_real": 0.0
         }
       },
@@ -10907,7 +10907,7 @@
       "output_tokens": 133759,
       "cache_read_tokens": 13409963,
       "cache_write_tokens": 478853,
-      "cost_effective": 25.44,
+      "cost_effective": 33.26,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10916,7 +10916,7 @@
           "out": 133759,
           "cache_read": 13409963,
           "cache_write": 478853,
-          "cost_eff": 25.439063,
+          "cost_eff": 33.26496665,
           "cost_real": 0.0
         }
       },
@@ -10931,7 +10931,7 @@
       "output_tokens": 87863,
       "cache_read_tokens": 6201169,
       "cache_write_tokens": 476433,
-      "cost_effective": 38.14,
+      "cost_effective": 52.93,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10940,7 +10940,7 @@
           "out": 87863,
           "cache_read": 6201169,
           "cache_write": 476433,
-          "cost_eff": 38.135377,
+          "cost_eff": 52.92743605,
           "cost_real": 0.0
         }
       },
@@ -10956,7 +10956,7 @@
       "output_tokens": 2224,
       "cache_read_tokens": 59445,
       "cache_write_tokens": 14096,
-      "cost_effective": 12.2,
+      "cost_effective": 12.72,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10965,7 +10965,7 @@
           "out": 2224,
           "cache_read": 59445,
           "cache_write": 14096,
-          "cost_eff": 12.202271,
+          "cost_eff": 12.7226135,
           "cost_real": 0.0
         }
       },
@@ -10981,7 +10981,7 @@
       "output_tokens": 18386,
       "cache_read_tokens": 2294310,
       "cache_write_tokens": 103023,
-      "cost_effective": 4.06,
+      "cost_effective": 10.87,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -10990,7 +10990,7 @@
           "out": 18386,
           "cache_read": 2294310,
           "cache_write": 103023,
-          "cost_eff": 4.058356,
+          "cost_eff": 10.86667225,
           "cost_real": 0.0
         }
       },
@@ -11005,7 +11005,7 @@
       "output_tokens": 534,
       "cache_read_tokens": 96492,
       "cache_write_tokens": 32670,
-      "cost_effective": 4.82,
+      "cost_effective": 5.62,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11014,7 +11014,7 @@
           "out": 534,
           "cache_read": 96492,
           "cache_write": 32670,
-          "cost_eff": 4.819963,
+          "cost_eff": 5.6173885,
           "cost_real": 0.0
         }
       },
@@ -11030,7 +11030,7 @@
       "output_tokens": 9156,
       "cache_read_tokens": 537285,
       "cache_write_tokens": 53017,
-      "cost_effective": 3.93,
+      "cost_effective": 4.42,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11039,7 +11039,7 @@
           "out": 9156,
           "cache_read": 537285,
           "cache_write": 53017,
-          "cost_eff": 3.925399,
+          "cost_eff": 4.42285825,
           "cost_real": 0.0
         }
       },
@@ -11055,7 +11055,7 @@
       "output_tokens": 4706,
       "cache_read_tokens": 131383,
       "cache_write_tokens": 32434,
-      "cost_effective": 0.63,
+      "cost_effective": 0.86,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11064,7 +11064,7 @@
           "out": 4706,
           "cache_read": 131383,
           "cache_write": 32434,
-          "cost_eff": 0.63006,
+          "cost_eff": 0.8617254,
           "cost_real": 0.0
         }
       },
@@ -11103,7 +11103,7 @@
       "output_tokens": 28888,
       "cache_read_tokens": 2606846,
       "cache_write_tokens": 111962,
-      "cost_effective": 2.74,
+      "cost_effective": 4.38,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11112,7 +11112,7 @@
           "out": 28888,
           "cache_read": 2606846,
           "cache_write": 111962,
-          "cost_eff": 2.743911,
+          "cost_eff": 4.3793073,
           "cost_real": 0.0
         }
       },
@@ -11127,7 +11127,7 @@
       "output_tokens": 61623,
       "cache_read_tokens": 3242299,
       "cache_write_tokens": 329336,
-      "cost_effective": 11.9,
+      "cost_effective": 15.03,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11136,7 +11136,7 @@
           "out": 61623,
           "cache_read": 3242299,
           "cache_write": 329336,
-          "cost_eff": 11.901381,
+          "cost_eff": 15.0338187,
           "cost_real": 0.0
         }
       },
@@ -11151,7 +11151,7 @@
       "output_tokens": 41855,
       "cache_read_tokens": 4247618,
       "cache_write_tokens": 90310,
-      "cost_effective": 3.88,
+      "cost_effective": 6.12,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11160,7 +11160,7 @@
           "out": 41855,
           "cache_read": 4247618,
           "cache_write": 90310,
-          "cost_eff": 3.883183,
+          "cost_eff": 6.1241659,
           "cost_real": 0.0
         }
       },
@@ -11175,7 +11175,7 @@
       "output_tokens": 66093,
       "cache_read_tokens": 5343138,
       "cache_write_tokens": 162453,
-      "cost_effective": 6.49,
+      "cost_effective": 9.69,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11184,7 +11184,7 @@
           "out": 66093,
           "cache_read": 5343138,
           "cache_write": 162453,
-          "cost_eff": 6.486808,
+          "cost_eff": 9.69061615,
           "cost_real": 0.0
         }
       },
@@ -11199,7 +11199,7 @@
       "output_tokens": 35942,
       "cache_read_tokens": 3360713,
       "cache_write_tokens": 122735,
-      "cost_effective": 4.26,
+      "cost_effective": 6.27,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11208,7 +11208,7 @@
           "out": 35942,
           "cache_read": 3360713,
           "cache_write": 122735,
-          "cost_eff": 4.258654,
+          "cost_eff": 6.26648215,
           "cost_real": 0.0
         }
       },
@@ -11223,7 +11223,7 @@
       "output_tokens": 1229,
       "cache_read_tokens": 252946,
       "cache_write_tokens": 25580,
-      "cost_effective": 0.67,
+      "cost_effective": 0.86,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11232,7 +11232,7 @@
           "out": 1229,
           "cache_read": 252946,
           "cache_write": 25580,
-          "cost_eff": 0.670762,
+          "cost_eff": 0.8610358,
           "cost_real": 0.0
         }
       },
@@ -11247,7 +11247,7 @@
       "output_tokens": 51296,
       "cache_read_tokens": 5198578,
       "cache_write_tokens": 288565,
-      "cost_effective": 10.78,
+      "cost_effective": 14.19,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11256,7 +11256,7 @@
           "out": 51296,
           "cache_read": 5198578,
           "cache_write": 288565,
-          "cost_eff": 10.776745,
+          "cost_eff": 14.18833015,
           "cost_real": 0.0
         }
       },
@@ -11271,7 +11271,7 @@
       "output_tokens": 10959,
       "cache_read_tokens": 647481,
       "cache_write_tokens": 60651,
-      "cost_effective": 2.59,
+      "cost_effective": 3.17,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11280,7 +11280,7 @@
           "out": 10959,
           "cache_read": 647481,
           "cache_write": 60651,
-          "cost_eff": 2.586764,
+          "cost_eff": 3.17290355,
           "cost_real": 0.0
         }
       },
@@ -11295,7 +11295,7 @@
       "output_tokens": 26842,
       "cache_read_tokens": 1045222,
       "cache_write_tokens": 106931,
-      "cost_effective": 2.57,
+      "cost_effective": 3.69,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11304,7 +11304,7 @@
           "out": 26842,
           "cache_read": 1045222,
           "cache_write": 106931,
-          "cost_eff": 2.571552,
+          "cost_eff": 3.68885385,
           "cost_real": 0.0
         }
       },
@@ -11343,7 +11343,7 @@
       "output_tokens": 17647,
       "cache_read_tokens": 1454032,
       "cache_write_tokens": 46368,
-      "cost_effective": 0.59,
+      "cost_effective": 1.47,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11352,7 +11352,7 @@
           "out": 17647,
           "cache_read": 1454032,
           "cache_write": 46368,
-          "cost_eff": 0.590111,
+          "cost_eff": 1.4650106,
           "cost_real": 0.0
         }
       },
@@ -11367,7 +11367,7 @@
       "output_tokens": 6477,
       "cache_read_tokens": 36771,
       "cache_write_tokens": 15892,
-      "cost_effective": 0.54,
+      "cost_effective": 0.71,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11376,7 +11376,7 @@
           "out": 6477,
           "cache_read": 36771,
           "cache_write": 15892,
-          "cost_eff": 0.537357,
+          "cost_eff": 0.7051503,
           "cost_real": 0.0
         }
       },
@@ -11391,7 +11391,7 @@
       "output_tokens": 7240,
       "cache_read_tokens": 484194,
       "cache_write_tokens": 48389,
-      "cost_effective": 1.1,
+      "cost_effective": 1.53,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11400,7 +11400,7 @@
           "out": 7240,
           "cache_read": 484194,
           "cache_write": 48389,
-          "cost_eff": 1.099378,
+          "cost_eff": 1.53475795,
           "cost_real": 0.0
         }
       },
@@ -11415,7 +11415,7 @@
       "output_tokens": 39974,
       "cache_read_tokens": 2161131,
       "cache_write_tokens": 178756,
-      "cost_effective": 4.93,
+      "cost_effective": 6.84,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11424,7 +11424,7 @@
           "out": 39974,
           "cache_read": 2161131,
           "cache_write": 178756,
-          "cost_eff": 4.926452,
+          "cost_eff": 6.8449073,
           "cost_real": 0.0
         }
       },
@@ -11439,7 +11439,7 @@
       "output_tokens": 24485,
       "cache_read_tokens": 1427174,
       "cache_write_tokens": 147906,
-      "cost_effective": 3.24,
+      "cost_effective": 4.59,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11448,7 +11448,7 @@
           "out": 24485,
           "cache_read": 1427174,
           "cache_write": 147906,
-          "cost_eff": 3.240214,
+          "cost_eff": 4.5904567,
           "cost_real": 0.0
         }
       },
@@ -11463,7 +11463,7 @@
       "output_tokens": 15870,
       "cache_read_tokens": 1246809,
       "cache_write_tokens": 76428,
-      "cost_effective": 1.59,
+      "cost_effective": 2.49,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11472,7 +11472,7 @@
           "out": 15870,
           "cache_read": 1246809,
           "cache_write": 76428,
-          "cost_eff": 1.58721,
+          "cost_eff": 2.4860337,
           "cost_real": 0.0
         }
       },
@@ -11487,7 +11487,7 @@
       "output_tokens": 82696,
       "cache_read_tokens": 4646252,
       "cache_write_tokens": 208467,
-      "cost_effective": 8.99,
+      "cost_effective": 12.4,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11496,7 +11496,7 @@
           "out": 82696,
           "cache_read": 4646252,
           "cache_write": 208467,
-          "cost_eff": 8.987555,
+          "cost_eff": 12.40391885,
           "cost_real": 0.0
         }
       },
@@ -11511,7 +11511,7 @@
       "output_tokens": 55061,
       "cache_read_tokens": 2750997,
       "cache_write_tokens": 146631,
-      "cost_effective": 5.03,
+      "cost_effective": 7.23,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11520,7 +11520,7 @@
           "out": 55061,
           "cache_read": 2750997,
           "cache_write": 146631,
-          "cost_eff": 5.028756,
+          "cost_eff": 7.23000135,
           "cost_real": 0.0
         }
       },
@@ -11535,7 +11535,7 @@
       "output_tokens": 18943,
       "cache_read_tokens": 1318172,
       "cache_write_tokens": 101012,
-      "cost_effective": 3.94,
+      "cost_effective": 5.01,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11544,7 +11544,7 @@
           "out": 18943,
           "cache_read": 1318172,
           "cache_write": 101012,
-          "cost_eff": 3.935724,
+          "cost_eff": 5.0063706,
           "cost_real": 0.0
         }
       },
@@ -11559,7 +11559,7 @@
       "output_tokens": 121421,
       "cache_read_tokens": 8591154,
       "cache_write_tokens": 285945,
-      "cost_effective": 12.2,
+      "cost_effective": 17.67,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11568,7 +11568,7 @@
           "out": 121421,
           "cache_read": 8591154,
           "cache_write": 285945,
-          "cost_eff": 12.197785,
+          "cost_eff": 17.66908495,
           "cost_real": 0.0
         }
       },
@@ -11583,7 +11583,7 @@
       "output_tokens": 39099,
       "cache_read_tokens": 3331188,
       "cache_write_tokens": 172291,
-      "cost_effective": 3.7,
+      "cost_effective": 5.94,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11592,7 +11592,7 @@
           "out": 39099,
           "cache_read": 3331188,
           "cache_write": 172291,
-          "cost_eff": 3.704697,
+          "cost_eff": 5.93685765,
           "cost_real": 0.0
         }
       },
@@ -11607,7 +11607,7 @@
       "output_tokens": 89181,
       "cache_read_tokens": 7055456,
       "cache_write_tokens": 266217,
-      "cost_effective": 9.53,
+      "cost_effective": 13.98,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11616,7 +11616,7 @@
           "out": 89181,
           "cache_read": 7055456,
           "cache_write": 266217,
-          "cost_eff": 9.529197,
+          "cost_eff": 13.98220455,
           "cost_real": 0.0
         }
       },
@@ -11631,7 +11631,7 @@
       "output_tokens": 1867,
       "cache_read_tokens": 251581,
       "cache_write_tokens": 34120,
-      "cost_effective": 6.88,
+      "cost_effective": 7.11,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11640,7 +11640,7 @@
           "out": 1867,
           "cache_read": 251581,
           "cache_write": 34120,
-          "cost_eff": 6.882132,
+          "cost_eff": 7.1136033,
           "cost_real": 0.0
         }
       },
@@ -11655,7 +11655,7 @@
       "output_tokens": 169866,
       "cache_read_tokens": 10303677,
       "cache_write_tokens": 425922,
-      "cost_effective": 26.28,
+      "cost_effective": 33.51,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11664,7 +11664,7 @@
           "out": 169866,
           "cache_read": 10303677,
           "cache_write": 425922,
-          "cost_eff": 26.276586,
+          "cost_eff": 33.5135076,
           "cost_real": 0.0
         }
       },
@@ -11679,7 +11679,7 @@
       "output_tokens": 254344,
       "cache_read_tokens": 37137642,
       "cache_write_tokens": 658672,
-      "cost_effective": 23.47,
+      "cost_effective": 40.9,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11688,7 +11688,7 @@
           "out": 254344,
           "cache_read": 37137642,
           "cache_write": 658672,
-          "cost_eff": 23.474842,
+          "cost_eff": 40.9029016,
           "cost_real": 0.0
         }
       },
@@ -11728,7 +11728,7 @@
       "output_tokens": 65971,
       "cache_read_tokens": 2063201,
       "cache_write_tokens": 196982,
-      "cost_effective": 5.63,
+      "cost_effective": 7.98,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11737,7 +11737,7 @@
           "out": 65971,
           "cache_read": 2063201,
           "cache_write": 196982,
-          "cost_eff": 5.629707,
+          "cost_eff": 7.9771608,
           "cost_real": 0.0
         }
       },
@@ -11752,7 +11752,7 @@
       "output_tokens": 11477,
       "cache_read_tokens": 1018836,
       "cache_write_tokens": 69306,
-      "cost_effective": 1.56,
+      "cost_effective": 2.29,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11761,7 +11761,7 @@
           "out": 11477,
           "cache_read": 1018836,
           "cache_write": 69306,
-          "cost_eff": 1.555634,
+          "cost_eff": 2.2934603,
           "cost_real": 0.0
         }
       },
@@ -11776,7 +11776,7 @@
       "output_tokens": 45193,
       "cache_read_tokens": 7382890,
       "cache_write_tokens": 182392,
-      "cost_effective": 20.79,
+      "cost_effective": 24.37,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11785,7 +11785,7 @@
           "out": 45193,
           "cache_read": 7382890,
           "cache_write": 182392,
-          "cost_eff": 20.789798,
+          "cost_eff": 24.367058,
           "cost_real": 0.0
         }
       },
@@ -11824,7 +11824,7 @@
       "output_tokens": 212122,
       "cache_read_tokens": 74961180,
       "cache_write_tokens": 528974,
-      "cost_effective": 5.31,
+      "cost_effective": 32.8,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11833,7 +11833,7 @@
           "out": 208507,
           "cache_read": 74609436,
           "cache_write": 528974,
-          "cost_eff": 4.856353,
+          "cost_eff": 32.3527303,
           "cost_real": 0.0
         },
         "codex": {
@@ -11858,7 +11858,7 @@
       "output_tokens": 84220,
       "cache_read_tokens": 15282192,
       "cache_write_tokens": 216227,
-      "cost_effective": 12.94,
+      "cost_effective": 18.75,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11867,7 +11867,7 @@
           "out": 72520,
           "cache_read": 13034000,
           "cache_write": 216227,
-          "cost_eff": 10.756818,
+          "cost_eff": 16.56647925,
           "cost_real": 0.0
         },
         "codex": {
@@ -11892,7 +11892,7 @@
       "output_tokens": 19366,
       "cache_read_tokens": 13445490,
       "cache_write_tokens": 43379,
-      "cost_effective": 13.36,
+      "cost_effective": 17.85,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11901,7 +11901,7 @@
           "out": 19366,
           "cache_read": 13445490,
           "cache_write": 43379,
-          "cost_eff": 13.360182,
+          "cost_eff": 17.84727525,
           "cost_real": 0.0
         }
       },
@@ -11916,7 +11916,7 @@
       "output_tokens": 19138,
       "cache_read_tokens": 3958049,
       "cache_write_tokens": 87018,
-      "cost_effective": 17.63,
+      "cost_effective": 21.78,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11925,7 +11925,7 @@
           "out": 7567,
           "cache_read": 1299745,
           "cache_write": 87018,
-          "cost_eff": 15.330877,
+          "cost_eff": 19.480222,
           "cost_real": 0.0
         },
         "codex": {
@@ -11951,7 +11951,7 @@
       "output_tokens": 256957,
       "cache_read_tokens": 21895220,
       "cache_write_tokens": 668004,
-      "cost_effective": 94.82,
+      "cost_effective": 134.42,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -11960,7 +11960,7 @@
           "out": 233650,
           "cache_read": 16756788,
           "cache_write": 668004,
-          "cost_eff": 91.638579,
+          "cost_eff": 131.240172,
           "cost_real": 0.0
         },
         "codex": {
@@ -12036,7 +12036,7 @@
       "output_tokens": 66305,
       "cache_read_tokens": 8053503,
       "cache_write_tokens": 335584,
-      "cost_effective": 43.96,
+      "cost_effective": 57.48,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -12054,7 +12054,7 @@
           "out": 39128,
           "cache_read": 2861823,
           "cache_write": 335584,
-          "cost_eff": 40.971643,
+          "cost_eff": 54.4929175,
           "cost_real": 0.0
         }
       },
@@ -12071,7 +12071,7 @@
       "output_tokens": 85341,
       "cache_read_tokens": 12567547,
       "cache_write_tokens": 422578,
-      "cost_effective": 54.69,
+      "cost_effective": 87.87,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12080,7 +12080,7 @@
           "out": 85341,
           "cache_read": 12567547,
           "cache_write": 422578,
-          "cost_eff": 54.690192,
+          "cost_eff": 87.86841,
           "cost_real": 0.0
         }
       },
@@ -12120,7 +12120,7 @@
       "output_tokens": 43074,
       "cache_read_tokens": 5345898,
       "cache_write_tokens": 140038,
-      "cost_effective": 59.32,
+      "cost_effective": 73.2,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12129,7 +12129,7 @@
           "out": 43074,
           "cache_read": 5345898,
           "cache_write": 140038,
-          "cost_eff": 59.319669,
+          "cost_eff": 73.1959335,
           "cost_real": 0.0
         }
       },
@@ -12146,7 +12146,7 @@
       "output_tokens": 564,
       "cache_read_tokens": 11766,
       "cache_write_tokens": 18911,
-      "cost_effective": 0.83,
+      "cost_effective": 1.24,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12155,7 +12155,7 @@
           "out": 564,
           "cache_read": 11766,
           "cache_write": 18911,
-          "cost_eff": 0.82915,
+          "cost_eff": 1.24372525,
           "cost_real": 0.0
         }
       },
@@ -12170,7 +12170,7 @@
       "output_tokens": 49624,
       "cache_read_tokens": 5243651,
       "cache_write_tokens": 213510,
-      "cost_effective": 33.46,
+      "cost_effective": 49.05,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12179,7 +12179,7 @@
           "out": 49624,
           "cache_read": 5243651,
           "cache_write": 213510,
-          "cost_eff": 33.456265,
+          "cost_eff": 49.048174,
           "cost_real": 0.0
         }
       },
@@ -12194,7 +12194,7 @@
       "output_tokens": 30174,
       "cache_read_tokens": 1339883,
       "cache_write_tokens": 174955,
-      "cost_effective": 31.34,
+      "cost_effective": 38.89,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12203,7 +12203,7 @@
           "out": 30174,
           "cache_read": 1339883,
           "cache_write": 174955,
-          "cost_eff": 31.337045,
+          "cost_eff": 38.89088075,
           "cost_real": 0.0
         }
       },
@@ -12218,7 +12218,7 @@
       "output_tokens": 10121,
       "cache_read_tokens": 457340,
       "cache_write_tokens": 84887,
-      "cost_effective": 8.37,
+      "cost_effective": 11.41,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12227,7 +12227,7 @@
           "out": 10121,
           "cache_read": 457340,
           "cache_write": 84887,
-          "cost_eff": 8.373042,
+          "cost_eff": 11.41016325,
           "cost_real": 0.0
         }
       },
@@ -12243,7 +12243,7 @@
       "output_tokens": 164849,
       "cache_read_tokens": 31728091,
       "cache_write_tokens": 312099,
-      "cost_effective": 36.82,
+      "cost_effective": 51.64,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12252,7 +12252,7 @@
           "out": 49711,
           "cache_read": 3493851,
           "cache_write": 312099,
-          "cost_eff": 20.113919,
+          "cost_eff": 34.93679675,
           "cost_real": 0.0
         },
         "codex": {
@@ -12280,7 +12280,7 @@
       "output_tokens": 55519,
       "cache_read_tokens": 10214512,
       "cache_write_tokens": 245369,
-      "cost_effective": 35.35,
+      "cost_effective": 57.69,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12289,7 +12289,7 @@
           "out": 54437,
           "cache_read": 9103472,
           "cache_write": 245369,
-          "cost_eff": 34.587258,
+          "cost_eff": 56.92781475,
           "cost_real": 0.0
         },
         "codex": {
@@ -12315,7 +12315,7 @@
       "output_tokens": 63707,
       "cache_read_tokens": 8825499,
       "cache_write_tokens": 445328,
-      "cost_effective": 16.09,
+      "cost_effective": 42.46,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12324,7 +12324,7 @@
           "out": 63707,
           "cache_read": 8825499,
           "cache_write": 445328,
-          "cost_eff": 16.093379,
+          "cost_eff": 42.4625525,
           "cost_real": 0.0
         }
       },
@@ -12340,7 +12340,7 @@
       "output_tokens": 2568,
       "cache_read_tokens": 749546,
       "cache_write_tokens": 36603,
-      "cost_effective": 8.57,
+      "cost_effective": 10.57,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12349,7 +12349,7 @@
           "out": 2568,
           "cache_read": 749546,
           "cache_write": 36603,
-          "cost_eff": 8.567812,
+          "cost_eff": 10.57139725,
           "cost_real": 0.0
         }
       },
@@ -12365,7 +12365,7 @@
       "output_tokens": 141961,
       "cache_read_tokens": 18491245,
       "cache_write_tokens": 644061,
-      "cost_effective": 31.96,
+      "cost_effective": 66.0,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12374,7 +12374,7 @@
           "out": 93632,
           "cache_read": 9961837,
           "cache_write": 644061,
-          "cost_eff": 26.420155,
+          "cost_eff": 60.46583425,
           "cost_real": 0.0
         },
         "codex": {
@@ -12451,7 +12451,7 @@
       "output_tokens": 36874,
       "cache_read_tokens": 6416157,
       "cache_write_tokens": 53411,
-      "cost_effective": 5.39,
+      "cost_effective": 6.06,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -12469,7 +12469,7 @@
           "out": 15687,
           "cache_read": 803613,
           "cache_write": 53411,
-          "cost_eff": 1.796988,
+          "cost_eff": 2.47394415,
           "cost_real": 0.0
         }
       },
@@ -12486,7 +12486,7 @@
       "output_tokens": 85043,
       "cache_read_tokens": 10879874,
       "cache_write_tokens": 314731,
-      "cost_effective": 12.11,
+      "cost_effective": 16.82,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12495,7 +12495,7 @@
           "out": 69656,
           "cache_read": 8260482,
           "cache_write": 314731,
-          "cost_eff": 9.671314,
+          "cost_eff": 14.38019185,
           "cost_real": 0.0
         },
         "codex": {
@@ -12522,7 +12522,7 @@
       "output_tokens": 113410,
       "cache_read_tokens": 14887041,
       "cache_write_tokens": 496275,
-      "cost_effective": 26.52,
+      "cost_effective": 37.57,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12531,7 +12531,7 @@
           "out": 91361,
           "cache_read": 11777665,
           "cache_write": 496275,
-          "cost_eff": 23.800349,
+          "cost_eff": 34.84420355,
           "cost_real": 0.0
         },
         "codex": {
@@ -12558,7 +12558,7 @@
       "output_tokens": 129498,
       "cache_read_tokens": 16456856,
       "cache_write_tokens": 404227,
-      "cost_effective": 12.18,
+      "cost_effective": 28.8,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12567,7 +12567,7 @@
           "out": 118531,
           "cache_read": 15222424,
           "cache_write": 404227,
-          "cost_eff": 11.422727,
+          "cost_eff": 28.04387225,
           "cost_real": 0.0
         },
         "codex": {
@@ -12594,7 +12594,7 @@
       "output_tokens": 16777,
       "cache_read_tokens": 1774259,
       "cache_write_tokens": 42630,
-      "cost_effective": 4.27,
+      "cost_effective": 4.95,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12603,7 +12603,7 @@
           "out": 10992,
           "cache_read": 1190067,
           "cache_write": 42630,
-          "cost_eff": 3.320073,
+          "cost_eff": 4.0019436,
           "cost_real": 0.0
         },
         "codex": {
@@ -12629,7 +12629,7 @@
       "output_tokens": 25194,
       "cache_read_tokens": 2797207,
       "cache_write_tokens": 62518,
-      "cost_effective": 4.57,
+      "cost_effective": 5.33,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -12647,7 +12647,7 @@
           "out": 14516,
           "cache_read": 1028247,
           "cache_write": 62518,
-          "cost_eff": 2.564354,
+          "cost_eff": 3.3251276,
           "cost_real": 0.0
         }
       },
@@ -12663,7 +12663,7 @@
       "output_tokens": 27572,
       "cache_read_tokens": 4600291,
       "cache_write_tokens": 24881,
-      "cost_effective": 4.85,
+      "cost_effective": 5.08,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -12681,7 +12681,7 @@
           "out": 4345,
           "cache_read": 249827,
           "cache_write": 24881,
-          "cost_eff": 1.034037,
+          "cost_eff": 1.26749385,
           "cost_real": 0.0
         }
       },
@@ -12697,7 +12697,7 @@
       "output_tokens": 26506,
       "cache_read_tokens": 4606261,
       "cache_write_tokens": 101125,
-      "cost_effective": 5.58,
+      "cost_effective": 6.75,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12706,7 +12706,7 @@
           "out": 12868,
           "cache_read": 1984309,
           "cache_write": 101125,
-          "cost_eff": 3.635293,
+          "cost_eff": 4.80299545,
           "cost_real": 0.0
         },
         "codex": {
@@ -12758,7 +12758,7 @@
       "output_tokens": 85626,
       "cache_read_tokens": 8482567,
       "cache_write_tokens": 375311,
-      "cost_effective": 13.19,
+      "cost_effective": 28.53,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12767,7 +12767,7 @@
           "out": 81101,
           "cache_read": 8446215,
           "cache_write": 375311,
-          "cost_eff": 13.029512,
+          "cost_eff": 28.36923035,
           "cost_real": 0.0
         },
         "codex": {
@@ -12793,7 +12793,7 @@
       "output_tokens": 313109,
       "cache_read_tokens": 68559395,
       "cache_write_tokens": 1189312,
-      "cost_effective": 52.36,
+      "cost_effective": 192.19,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12802,7 +12802,7 @@
           "out": 303430,
           "cache_read": 66965539,
           "cache_write": 1189312,
-          "cost_eff": 51.568291,
+          "cost_eff": 191.3960917,
           "cost_real": 0.0
         },
         "codex": {
@@ -12828,7 +12828,7 @@
       "output_tokens": 25625,
       "cache_read_tokens": 1357336,
       "cache_write_tokens": 134383,
-      "cost_effective": 2.87,
+      "cost_effective": 4.17,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12837,7 +12837,7 @@
           "out": 25625,
           "cache_read": 1357336,
           "cache_write": 134383,
-          "cost_eff": 2.873917,
+          "cost_eff": 4.16959705,
           "cost_real": 0.0
         }
       },
@@ -12852,7 +12852,7 @@
       "output_tokens": 552,
       "cache_read_tokens": 45202,
       "cache_write_tokens": 22281,
-      "cost_effective": 0.21,
+      "cost_effective": 0.32,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12861,7 +12861,7 @@
           "out": 552,
           "cache_read": 45202,
           "cache_write": 22281,
-          "cost_eff": 0.210812,
+          "cost_eff": 0.31621835,
           "cost_real": 0.0
         }
       },
@@ -12876,7 +12876,7 @@
       "output_tokens": 2154,
       "cache_read_tokens": 223531,
       "cache_write_tokens": 13803,
-      "cost_effective": 0.44,
+      "cost_effective": 0.59,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12885,7 +12885,7 @@
           "out": 2154,
           "cache_read": 223531,
           "cache_write": 13803,
-          "cost_eff": 0.43632,
+          "cost_eff": 0.58748655,
           "cost_real": 0.0
         }
       },
@@ -12900,7 +12900,7 @@
       "output_tokens": 4608,
       "cache_read_tokens": 504081,
       "cache_write_tokens": 42315,
-      "cost_effective": 6.88,
+      "cost_effective": 7.26,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12909,7 +12909,7 @@
           "out": 4608,
           "cache_read": 504081,
           "cache_write": 42315,
-          "cost_eff": 6.878245,
+          "cost_eff": 7.25735455,
           "cost_real": 0.0
         }
       },
@@ -12924,7 +12924,7 @@
       "output_tokens": 42347,
       "cache_read_tokens": 5180632,
       "cache_write_tokens": 148623,
-      "cost_effective": 3.36,
+      "cost_effective": 6.11,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12933,7 +12933,7 @@
           "out": 42347,
           "cache_read": 5180632,
           "cache_write": 148623,
-          "cost_eff": 3.360247,
+          "cost_eff": 6.10735885,
           "cost_real": 0.0
         }
       },
@@ -12948,7 +12948,7 @@
       "output_tokens": 20353,
       "cache_read_tokens": 1724004,
       "cache_write_tokens": 107121,
-      "cost_effective": 3.71,
+      "cost_effective": 4.93,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12957,7 +12957,7 @@
           "out": 20353,
           "cache_read": 1724004,
           "cache_write": 107121,
-          "cost_eff": 3.708514,
+          "cost_eff": 4.93286695,
           "cost_real": 0.0
         }
       },
@@ -12972,7 +12972,7 @@
       "output_tokens": 126398,
       "cache_read_tokens": 6552606,
       "cache_write_tokens": 728404,
-      "cost_effective": 23.12,
+      "cost_effective": 29.72,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -12981,7 +12981,7 @@
           "out": 126398,
           "cache_read": 6552606,
           "cache_write": 728404,
-          "cost_eff": 23.119151,
+          "cost_eff": 29.7205058,
           "cost_real": 0.0
         }
       },
@@ -12996,7 +12996,7 @@
       "output_tokens": 48404,
       "cache_read_tokens": 9195930,
       "cache_write_tokens": 358677,
-      "cost_effective": 9.58,
+      "cost_effective": 14.41,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13005,7 +13005,7 @@
           "out": 48404,
           "cache_read": 9195930,
           "cache_write": 358677,
-          "cost_eff": 9.582625,
+          "cost_eff": 14.41310875,
           "cost_real": 0.0
         }
       },
@@ -13020,7 +13020,7 @@
       "output_tokens": 1121,
       "cache_read_tokens": 159590,
       "cache_write_tokens": 18748,
-      "cost_effective": 10.37,
+      "cost_effective": 10.51,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13029,7 +13029,7 @@
           "out": 1121,
           "cache_read": 159590,
           "cache_write": 18748,
-          "cost_eff": 10.370573,
+          "cost_eff": 10.505594,
           "cost_real": 0.0
         }
       },
@@ -13045,7 +13045,7 @@
       "output_tokens": 21202,
       "cache_read_tokens": 1664924,
       "cache_write_tokens": 103693,
-      "cost_effective": 4.37,
+      "cost_effective": 5.57,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13054,7 +13054,7 @@
           "out": 21202,
           "cache_read": 1664924,
           "cache_write": 103693,
-          "cost_eff": 4.367865,
+          "cost_eff": 5.57434995,
           "cost_real": 0.0
         }
       },
@@ -13069,7 +13069,7 @@
       "output_tokens": 1455,
       "cache_read_tokens": 338631,
       "cache_write_tokens": 21092,
-      "cost_effective": 0.39,
+      "cost_effective": 0.59,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13078,7 +13078,7 @@
           "out": 1455,
           "cache_read": 338631,
           "cache_write": 21092,
-          "cost_eff": 0.391479,
+          "cost_eff": 0.5940303,
           "cost_real": 0.0
         }
       },
@@ -13093,7 +13093,7 @@
       "output_tokens": 94115,
       "cache_read_tokens": 7440647,
       "cache_write_tokens": 430227,
-      "cost_effective": 18.14,
+      "cost_effective": 23.39,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13102,7 +13102,7 @@
           "out": 93690,
           "cache_read": 7424775,
           "cache_write": 430227,
-          "cost_eff": 18.101788,
+          "cost_eff": 23.34871075,
           "cost_real": 0.0
         },
         "codex": {
@@ -13127,7 +13127,7 @@
       "output_tokens": 191231,
       "cache_read_tokens": 35143227,
       "cache_write_tokens": 173502,
-      "cost_effective": 13.73,
+      "cost_effective": 18.36,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13136,7 +13136,7 @@
           "out": 68759,
           "cache_read": 9816123,
           "cache_write": 173502,
-          "cost_eff": 2.306433,
+          "cost_eff": 6.9339564,
           "cost_real": 0.0
         },
         "codex": {
@@ -13186,7 +13186,7 @@
       "output_tokens": 97730,
       "cache_read_tokens": 11816283,
       "cache_write_tokens": 319988,
-      "cost_effective": 22.92,
+      "cost_effective": 29.13,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13195,7 +13195,7 @@
           "out": 97730,
           "cache_read": 11816283,
           "cache_write": 319988,
-          "cost_eff": 22.915288,
+          "cost_eff": 29.1268579,
           "cost_real": 0.0
         },
         "codex": {
@@ -13220,7 +13220,7 @@
       "output_tokens": 39544,
       "cache_read_tokens": 3569339,
       "cache_write_tokens": 197955,
-      "cost_effective": 9.04,
+      "cost_effective": 11.45,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13229,7 +13229,7 @@
           "out": 39544,
           "cache_read": 3569339,
           "cache_write": 197955,
-          "cost_eff": 9.043064,
+          "cost_eff": 11.45088995,
           "cost_real": 0.0
         }
       },
@@ -13244,7 +13244,7 @@
       "output_tokens": 4907,
       "cache_read_tokens": 440157,
       "cache_write_tokens": 32586,
-      "cost_effective": 0.86,
+      "cost_effective": 1.19,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13253,7 +13253,7 @@
           "out": 4907,
           "cache_read": 440157,
           "cache_write": 32586,
-          "cost_eff": 0.86127,
+          "cost_eff": 1.1891886,
           "cost_real": 0.0
         }
       },
@@ -13268,7 +13268,7 @@
       "output_tokens": 33071,
       "cache_read_tokens": 3819793,
       "cache_write_tokens": 93229,
-      "cost_effective": 5.88,
+      "cost_effective": 7.87,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13277,7 +13277,7 @@
           "out": 33071,
           "cache_read": 3819793,
           "cache_write": 93229,
-          "cost_eff": 5.882518,
+          "cost_eff": 7.87442965,
           "cost_real": 0.0
         }
       },
@@ -13292,7 +13292,7 @@
       "output_tokens": 70336,
       "cache_read_tokens": 9202203,
       "cache_write_tokens": 48915,
-      "cost_effective": 5.3,
+      "cost_effective": 5.9,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13301,7 +13301,7 @@
           "out": 11630,
           "cache_read": 829979,
           "cache_write": 48915,
-          "cost_eff": 0.124254,
+          "cost_eff": 0.73123695,
           "cost_real": 0.0
         },
         "codex": {
@@ -13712,7 +13712,7 @@
       "output_tokens": 9388,
       "cache_read_tokens": 243558,
       "cache_write_tokens": 303374,
-      "cost_effective": 0.84,
+      "cost_effective": 1.35,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13721,7 +13721,7 @@
           "out": 9388,
           "cache_read": 243558,
           "cache_write": 303374,
-          "cost_eff": 0.839451,
+          "cost_eff": 1.35172695,
           "cost_real": 0.0
         }
       },
@@ -13736,7 +13736,7 @@
       "output_tokens": 2857,
       "cache_read_tokens": 92784,
       "cache_write_tokens": 129345,
-      "cost_effective": 0.35,
+      "cost_effective": 0.56,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13745,7 +13745,7 @@
           "out": 2857,
           "cache_read": 92784,
           "cache_write": 129345,
-          "cost_eff": 0.348642,
+          "cost_eff": 0.55580595,
           "cost_real": 0.0
         }
       },
@@ -13760,7 +13760,7 @@
       "output_tokens": 7069,
       "cache_read_tokens": 728223,
       "cache_write_tokens": 108505,
-      "cost_effective": 0.53,
+      "cost_effective": 0.73,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13769,7 +13769,7 @@
           "out": 7069,
           "cache_read": 728223,
           "cache_write": 108505,
-          "cost_eff": 0.528067,
+          "cost_eff": 0.73151155,
           "cost_real": 0.0
         }
       },
@@ -13856,7 +13856,7 @@
       "output_tokens": 49769,
       "cache_read_tokens": 7817244,
       "cache_write_tokens": 283152,
-      "cost_effective": 2.68,
+      "cost_effective": 4.15,
       "cost_real": 0.0,
       "tools": {
         "codex": {
@@ -13874,7 +13874,7 @@
           "out": 49769,
           "cache_read": 7817244,
           "cache_write": 283152,
-          "cost_eff": 2.67502725,
+          "cost_eff": 4.1541642,
           "cost_real": 0.0
         }
       },
@@ -13891,7 +13891,7 @@
       "output_tokens": 60613,
       "cache_read_tokens": 7429208,
       "cache_write_tokens": 282416,
-      "cost_effective": 2.76,
+      "cost_effective": 4.2,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13900,7 +13900,7 @@
           "out": 60613,
           "cache_read": 7429208,
           "cache_write": 282416,
-          "cost_eff": 2.756838,
+          "cost_eff": 4.1975634,
           "cost_real": 0.0
         }
       },
@@ -13915,7 +13915,7 @@
       "output_tokens": 86660,
       "cache_read_tokens": 20302470,
       "cache_write_tokens": 273024,
-      "cost_effective": 7.96,
+      "cost_effective": 8.42,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13924,7 +13924,7 @@
           "out": 86660,
           "cache_read": 20302470,
           "cache_write": 273024,
-          "cost_eff": 7.960932,
+          "cost_eff": 8.4153,
           "cost_real": 0.0
         }
       },
@@ -13939,7 +13939,7 @@
       "output_tokens": 6886,
       "cache_read_tokens": 716150,
       "cache_write_tokens": 155481,
-      "cost_effective": 0.67,
+      "cost_effective": 0.9,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13948,7 +13948,7 @@
           "out": 6886,
           "cache_read": 716150,
           "cache_write": 155481,
-          "cost_eff": 0.66716235,
+          "cost_eff": 0.90132975,
           "cost_real": 0.0
         }
       },
@@ -13963,7 +13963,7 @@
       "output_tokens": 150258,
       "cache_read_tokens": 20681826,
       "cache_write_tokens": 550368,
-      "cost_effective": 7.93,
+      "cost_effective": 10.52,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13972,7 +13972,7 @@
           "out": 150258,
           "cache_read": 20681826,
           "cache_write": 550368,
-          "cost_eff": 7.9312176,
+          "cost_eff": 10.5237378,
           "cost_real": 0.0
         }
       },
@@ -13987,7 +13987,7 @@
       "output_tokens": 105527,
       "cache_read_tokens": 9564068,
       "cache_write_tokens": 487987,
-      "cost_effective": 5.8,
+      "cost_effective": 6.28,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": {
@@ -13996,7 +13996,7 @@
           "out": 105527,
           "cache_read": 9564068,
           "cache_write": 487987,
-          "cost_eff": 5.79945975,
+          "cost_eff": 6.28281165,
           "cost_real": 0.0
         }
       },
@@ -14011,7 +14011,7 @@
       "output_tokens": 97883,
       "cache_read_tokens": 12860155,
       "cache_write_tokens": 146164,
-      "cost_effective": 0.7,
+      "cost_effective": 3.32,
       "cost_real": 0.39,
       "tools": {
         "claude-cli": {
@@ -14020,7 +14020,7 @@
           "out": 42982,
           "cache_read": 5774843,
           "cache_write": 146164,
-          "cost_eff": 0.30942285,
+          "cost_eff": 2.9256369,
           "cost_real": 0.0
         },
         "openrouter": {
@@ -21568,8 +21568,8 @@
       "output_tokens": 28371,
       "cache_read_tokens": 1709248,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
-      "cost_real": 0.0,
+      "cost_effective": 1.53,
+      "cost_real": 1.53,
       "tools": {
         "openrouter": {
           "req": 82,
@@ -21577,8 +21577,8 @@
           "out": 28371,
           "cache_read": 1709248,
           "cache_write": 0,
-          "cost_eff": 0.0,
-          "cost_real": 0.0
+          "cost_eff": 1.5315744,
+          "cost_real": 1.5315744
         }
       },
       "models": {
@@ -21592,8 +21592,8 @@
       "output_tokens": 5996,
       "cache_read_tokens": 595712,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
-      "cost_real": 0.0,
+      "cost_effective": 0.62,
+      "cost_real": 0.62,
       "tools": {
         "openrouter": {
           "req": 20,
@@ -21601,8 +21601,8 @@
           "out": 5996,
           "cache_read": 595712,
           "cache_write": 0,
-          "cost_eff": 0.0,
-          "cost_real": 0.0
+          "cost_eff": 0.6161286,
+          "cost_real": 0.6161286
         }
       },
       "models": {
@@ -21616,8 +21616,8 @@
       "output_tokens": 2494,
       "cache_read_tokens": 399040,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
-      "cost_real": 0.0,
+      "cost_effective": 0.56,
+      "cost_real": 0.56,
       "tools": {
         "openrouter": {
           "req": 13,
@@ -21625,8 +21625,8 @@
           "out": 2494,
           "cache_read": 399040,
           "cache_write": 0,
-          "cost_eff": 0.0,
-          "cost_real": 0.0
+          "cost_eff": 0.558603,
+          "cost_real": 0.558603
         }
       },
       "models": {
@@ -24380,26 +24380,98 @@
       "projects_active": 4
     },
     "2026-09-20 21:00": {
-      "interactions": 78,
-      "input_tokens": 152800,
-      "output_tokens": 19256,
-      "cache_read_tokens": 5052992,
+      "interactions": 94,
+      "input_tokens": 253064,
+      "output_tokens": 26142,
+      "cache_read_tokens": 6354304,
       "cache_write_tokens": 0,
-      "cost_effective": 0.11,
-      "cost_real": 0.11,
+      "cost_effective": 0.14,
+      "cost_real": 0.14,
       "tools": {
         "openrouter": {
-          "req": 78,
-          "in": 152800,
-          "out": 19256,
-          "cache_read": 5052992,
+          "req": 94,
+          "in": 253064,
+          "out": 26142,
+          "cache_read": 6354304,
           "cache_write": 0,
-          "cost_eff": 0.11048266,
-          "cost_real": 0.11048266
+          "cost_eff": 0.14499583,
+          "cost_real": 0.14499583
         }
       },
       "models": {
-        "z-ai/glm-5.3-flash": 78
+        "z-ai/glm-5.3-flash": 94
+      },
+      "projects_active": 1
+    },
+    "2026-09-21 09:00": {
+      "interactions": 424,
+      "input_tokens": 3499342,
+      "output_tokens": 138639,
+      "cache_read_tokens": 11394404,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.56,
+      "cost_real": 0.56,
+      "tools": {
+        "openrouter": {
+          "req": 424,
+          "in": 3499342,
+          "out": 138639,
+          "cache_read": 11394404,
+          "cache_write": 0,
+          "cost_eff": 0.56163175,
+          "cost_real": 0.56163175
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 424
+      },
+      "projects_active": 2
+    },
+    "2026-09-21 10:00": {
+      "interactions": 124,
+      "input_tokens": 951365,
+      "output_tokens": 41658,
+      "cache_read_tokens": 5931939,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.2,
+      "cost_real": 0.2,
+      "tools": {
+        "openrouter": {
+          "req": 124,
+          "in": 951365,
+          "out": 41658,
+          "cache_read": 5931939,
+          "cache_write": 0,
+          "cost_eff": 0.20489515,
+          "cost_real": 0.20489515
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 124
+      },
+      "projects_active": 1
+    },
+    "2026-09-21 11:00": {
+      "interactions": 97,
+      "input_tokens": 302448,
+      "output_tokens": 27590,
+      "cache_read_tokens": 4996599,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.13,
+      "cost_real": 0.13,
+      "tools": {
+        "openrouter": {
+          "req": 97,
+          "in": 302448,
+          "out": 27590,
+          "cache_read": 4996599,
+          "cache_write": 0,
+          "cost_eff": 0.1254361,
+          "cost_real": 0.1254361
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 97
       },
       "projects_active": 1
     }
@@ -25421,7 +25493,7 @@
       "output_tokens": 141078,
       "cache_read_tokens": 22744805,
       "cache_write_tokens": 0,
-      "cost_effective": 12.24,
+      "cost_effective": 13.46,
       "cost_real": 4.67,
       "tools": {
         "codex": 264,
@@ -25478,7 +25550,7 @@
       "output_tokens": 130175,
       "cache_read_tokens": 26307617,
       "cache_write_tokens": 0,
-      "cost_effective": 11.09,
+      "cost_effective": 11.76,
       "cost_real": 4.67,
       "tools": {
         "codex": 363,
@@ -25497,7 +25569,7 @@
       "output_tokens": 99332,
       "cache_read_tokens": 20423722,
       "cache_write_tokens": 0,
-      "cost_effective": 14.35,
+      "cost_effective": 15.17,
       "cost_real": 4.67,
       "tools": {
         "codex": 261,
@@ -25518,7 +25590,7 @@
       "output_tokens": 324518,
       "cache_read_tokens": 44569990,
       "cache_write_tokens": 787382,
-      "cost_effective": 150.91,
+      "cost_effective": 207.48,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 1219,
@@ -25539,7 +25611,7 @@
       "output_tokens": 461696,
       "cache_read_tokens": 55738556,
       "cache_write_tokens": 1061165,
-      "cost_effective": 286.7,
+      "cost_effective": 323.47,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 1541,
@@ -25563,7 +25635,7 @@
       "output_tokens": 850997,
       "cache_read_tokens": 112794780,
       "cache_write_tokens": 2308536,
-      "cost_effective": 270.05,
+      "cost_effective": 308.39,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 3432,
@@ -25586,7 +25658,7 @@
       "output_tokens": 547089,
       "cache_read_tokens": 68990694,
       "cache_write_tokens": 1759700,
-      "cost_effective": 170.99,
+      "cost_effective": 194.66,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 2014,
@@ -25608,7 +25680,7 @@
       "output_tokens": 149116,
       "cache_read_tokens": 31162093,
       "cache_write_tokens": 29954,
-      "cost_effective": 13.85,
+      "cost_effective": 15.0,
       "cost_real": 4.67,
       "tools": {
         "codex": 336,
@@ -25627,7 +25699,7 @@
       "output_tokens": 82611,
       "cache_read_tokens": 16831391,
       "cache_write_tokens": 0,
-      "cost_effective": 44.84,
+      "cost_effective": 46.81,
       "cost_real": 4.67,
       "tools": {
         "codex": 206,
@@ -25648,7 +25720,7 @@
       "output_tokens": 613272,
       "cache_read_tokens": 83924609,
       "cache_write_tokens": 1716089,
-      "cost_effective": 87.02,
+      "cost_effective": 110.34,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 2275,
@@ -25669,7 +25741,7 @@
       "output_tokens": 115954,
       "cache_read_tokens": 13567928,
       "cache_write_tokens": 477270,
-      "cost_effective": 15.66,
+      "cost_effective": 22.79,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 458,
@@ -25690,7 +25762,7 @@
       "output_tokens": 951360,
       "cache_read_tokens": 86429633,
       "cache_write_tokens": 3774905,
-      "cost_effective": 137.77,
+      "cost_effective": 185.03,
       "cost_real": 4.67,
       "tools": {
         "claude-cli": 3282,
@@ -25711,7 +25783,7 @@
       "output_tokens": 173780,
       "cache_read_tokens": 27061431,
       "cache_write_tokens": 910263,
-      "cost_effective": 35.31,
+      "cost_effective": 46.13,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 654,
@@ -25762,7 +25834,7 @@
       "output_tokens": 355939,
       "cache_read_tokens": 46242591,
       "cache_write_tokens": 802931,
-      "cost_effective": 51.43,
+      "cost_effective": 64.56,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 859,
@@ -25782,7 +25854,7 @@
       "output_tokens": 783924,
       "cache_read_tokens": 110310400,
       "cache_write_tokens": 2583274,
-      "cost_effective": 154.54,
+      "cost_effective": 191.9,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 2841,
@@ -25801,7 +25873,7 @@
       "output_tokens": 1802872,
       "cache_read_tokens": 198858997,
       "cache_write_tokens": 5829833,
-      "cost_effective": 249.9,
+      "cost_effective": 338.66,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 5637,
@@ -25820,7 +25892,7 @@
       "output_tokens": 1280939,
       "cache_read_tokens": 140391927,
       "cache_write_tokens": 5327168,
-      "cost_effective": 200.26,
+      "cost_effective": 267.43,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 4569,
@@ -25840,7 +25912,7 @@
       "output_tokens": 1698936,
       "cache_read_tokens": 131575470,
       "cache_write_tokens": 7341228,
-      "cost_effective": 275.91,
+      "cost_effective": 380.45,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 6286,
@@ -25861,7 +25933,7 @@
       "output_tokens": 319708,
       "cache_read_tokens": 27311608,
       "cache_write_tokens": 1352085,
-      "cost_effective": 55.51,
+      "cost_effective": 79.67,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1438
@@ -25878,7 +25950,7 @@
       "output_tokens": 149494,
       "cache_read_tokens": 8502814,
       "cache_write_tokens": 681321,
-      "cost_effective": 18.63,
+      "cost_effective": 25.98,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 522
@@ -25893,7 +25965,7 @@
       "output_tokens": 898449,
       "cache_read_tokens": 77449320,
       "cache_write_tokens": 2496259,
-      "cost_effective": 108.89,
+      "cost_effective": 154.98,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 2439
@@ -25909,7 +25981,7 @@
       "output_tokens": 935510,
       "cache_read_tokens": 183131797,
       "cache_write_tokens": 2693500,
-      "cost_effective": 367.93,
+      "cost_effective": 514.37,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 4002,
@@ -25930,7 +26002,7 @@
       "output_tokens": 585763,
       "cache_read_tokens": 89462173,
       "cache_write_tokens": 2175723,
-      "cost_effective": 210.84,
+      "cost_effective": 337.02,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1416,
@@ -25950,7 +26022,7 @@
       "output_tokens": 366789,
       "cache_read_tokens": 49492408,
       "cache_write_tokens": 1268644,
-      "cost_effective": 56.81,
+      "cost_effective": 89.86,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1330,
@@ -25970,7 +26042,7 @@
       "output_tokens": 559508,
       "cache_read_tokens": 103581750,
       "cache_write_tokens": 1952441,
-      "cost_effective": 93.59,
+      "cost_effective": 253.01,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1781,
@@ -25990,7 +26062,7 @@
       "output_tokens": 245385,
       "cache_read_tokens": 23540374,
       "cache_write_tokens": 1417691,
-      "cost_effective": 57.46,
+      "cost_effective": 73.52,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1451
@@ -26006,7 +26078,7 @@
       "output_tokens": 455008,
       "cache_read_tokens": 62848792,
       "cache_write_tokens": 1279043,
-      "cost_effective": 70.68,
+      "cost_effective": 90.91,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 1994,
@@ -26024,7 +26096,7 @@
       "output_tokens": 231309,
       "cache_read_tokens": 37442860,
       "cache_write_tokens": 142144,
-      "cost_effective": 23.94,
+      "cost_effective": 26.54,
       "cost_real": 2.0,
       "tools": {
         "codex": 605,
@@ -26074,7 +26146,7 @@
       "output_tokens": 19532,
       "cache_read_tokens": 1064565,
       "cache_write_tokens": 541224,
-      "cost_effective": 1.74,
+      "cost_effective": 2.66,
       "cost_real": 2.0,
       "tools": {
         "claude-cli": 47,
@@ -26121,7 +26193,7 @@
       "output_tokens": 197042,
       "cache_read_tokens": 35548922,
       "cache_write_tokens": 838592,
-      "cost_effective": 13.39,
+      "cost_effective": 16.77,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 456,
@@ -26139,7 +26211,7 @@
       "output_tokens": 6886,
       "cache_read_tokens": 716150,
       "cache_write_tokens": 155481,
-      "cost_effective": 0.67,
+      "cost_effective": 0.9,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 22
@@ -26154,7 +26226,7 @@
       "output_tokens": 353668,
       "cache_read_tokens": 43106049,
       "cache_write_tokens": 1184519,
-      "cost_effective": 14.43,
+      "cost_effective": 20.13,
       "cost_real": 0.39,
       "tools": {
         "claude-cli": 521,
@@ -26951,8 +27023,8 @@
       "output_tokens": 36861,
       "cache_read_tokens": 2704000,
       "cache_write_tokens": 0,
-      "cost_effective": 0.0,
-      "cost_real": 0.0,
+      "cost_effective": 2.71,
+      "cost_real": 2.71,
       "tools": {
         "openrouter": 115
       },
@@ -27267,18 +27339,33 @@
       }
     },
     "2026-09-20": {
-      "interactions": 3886,
-      "input_tokens": 16274734,
-      "output_tokens": 1561513,
-      "cache_read_tokens": 246767922,
+      "interactions": 3902,
+      "input_tokens": 16374998,
+      "output_tokens": 1568399,
+      "cache_read_tokens": 248069234,
       "cache_write_tokens": 0,
-      "cost_effective": 6.38,
-      "cost_real": 6.38,
+      "cost_effective": 6.41,
+      "cost_real": 6.41,
       "tools": {
-        "openrouter": 3886
+        "openrouter": 3902
       },
       "models": {
-        "z-ai/glm-5.3-flash": 3886
+        "z-ai/glm-5.3-flash": 3902
+      }
+    },
+    "2026-09-21": {
+      "interactions": 645,
+      "input_tokens": 4753155,
+      "output_tokens": 207887,
+      "cache_read_tokens": 22322942,
+      "cache_write_tokens": 0,
+      "cost_effective": 0.89,
+      "cost_real": 0.89,
+      "tools": {
+        "openrouter": 645
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 645
       }
     }
   },
@@ -27486,7 +27573,7 @@
       "output_tokens": 4813741,
       "cache_read_tokens": 639712378,
       "cache_write_tokens": 11915001,
-      "cost_effective": 1245.06,
+      "cost_effective": 1483.93,
       "cost_real": 139.99,
       "tools": {
         "amp": {
@@ -27502,7 +27589,7 @@
         },
         "claude-cli": {
           "interactions": 14601,
-          "cost_effective": 1064.598023,
+          "cost_effective": 1286.67042605,
           "cost_real": 0.0,
           "models": {
             "<synthetic>": {
@@ -27511,11 +27598,11 @@
             },
             "claude-opus-4-6": {
               "interactions": 3441,
-              "cost_effective": 687.298926
+              "cost_effective": 771.89966475
             },
             "claude-sonnet-4-6": {
               "interactions": 11155,
-              "cost_effective": 377.299097
+              "cost_effective": 514.7707613
             }
           }
         },
@@ -27551,24 +27638,24 @@
         },
         "gemini-cli": {
           "interactions": 823,
-          "cost_effective": 0.0,
+          "cost_effective": 16.80520014,
           "cost_real": 0.0,
           "models": {
             "gemini-2.5-pro": {
               "interactions": 39,
-              "cost_effective": 0.0
+              "cost_effective": 0.95858241
             },
             "gemini-3-flash-preview": {
               "interactions": 258,
-              "cost_effective": 0.0
+              "cost_effective": 4.58092286
             },
             "gemini-3-pro-preview": {
               "interactions": 514,
-              "cost_effective": 0.0
+              "cost_effective": 11.20073418
             },
             "gemini-3.1-pro-preview": {
               "interactions": 12,
-              "cost_effective": 0.0
+              "cost_effective": 0.06496069
             }
           }
         }
@@ -27584,27 +27671,27 @@
         },
         "claude-opus-4-6": {
           "interactions": 3441,
-          "cost_effective": 687.298926
+          "cost_effective": 771.89966475
         },
         "claude-sonnet-4-6": {
           "interactions": 11155,
-          "cost_effective": 377.299097
+          "cost_effective": 514.7707613
         },
         "gemini-2.5-pro": {
           "interactions": 39,
-          "cost_effective": 0.0
+          "cost_effective": 0.95858241
         },
         "gemini-3-flash-preview": {
           "interactions": 259,
-          "cost_effective": 0.0
+          "cost_effective": 4.58092286
         },
         "gemini-3-pro-preview": {
           "interactions": 514,
-          "cost_effective": 0.0
+          "cost_effective": 11.20073418
         },
         "gemini-3.1-pro-preview": {
           "interactions": 12,
-          "cost_effective": 0.0
+          "cost_effective": 0.06496069
         },
         "gpt-5.3-codex": {
           "interactions": 145,
@@ -27694,7 +27781,7 @@
       "output_tokens": 11086251,
       "cache_read_tokens": 1353092445,
       "cache_write_tokens": 38794772,
-      "cost_effective": 2058.78,
+      "cost_effective": 2963.06,
       "cost_real": 59.99,
       "tools": {
         "amp": {
@@ -27710,7 +27797,7 @@
         },
         "claude-cli": {
           "interactions": 37509,
-          "cost_effective": 1778.770651,
+          "cost_effective": 2677.72239175,
           "cost_real": 0.0,
           "models": {
             "<synthetic>": {
@@ -27723,15 +27810,15 @@
             },
             "claude-opus-4-6": {
               "interactions": 2179,
-              "cost_effective": 453.040127
+              "cost_effective": 602.0903675
             },
             "claude-opus-4-7": {
               "interactions": 2223,
-              "cost_effective": 110.542795
+              "cost_effective": 375.92742625
             },
             "claude-sonnet-4-6": {
               "interactions": 33066,
-              "cost_effective": 1215.187729
+              "cost_effective": 1699.704598
             }
           }
         },
@@ -27752,16 +27839,16 @@
         },
         "gemini-cli": {
           "interactions": 36,
-          "cost_effective": 0.0,
+          "cost_effective": 5.32804984,
           "cost_real": 0.0,
           "models": {
             "gemini-2.5-pro": {
               "interactions": 17,
-              "cost_effective": 0.0
+              "cost_effective": 3.85206878
             },
             "gemini-3-pro-preview": {
               "interactions": 19,
-              "cost_effective": 0.0
+              "cost_effective": 1.47598106
             }
           }
         }
@@ -27781,23 +27868,23 @@
         },
         "claude-opus-4-6": {
           "interactions": 2179,
-          "cost_effective": 453.040127
+          "cost_effective": 602.0903675
         },
         "claude-opus-4-7": {
           "interactions": 2223,
-          "cost_effective": 110.542795
+          "cost_effective": 375.92742625
         },
         "claude-sonnet-4-6": {
           "interactions": 33066,
-          "cost_effective": 1215.187729
+          "cost_effective": 1699.704598
         },
         "gemini-2.5-pro": {
           "interactions": 17,
-          "cost_effective": 0.0
+          "cost_effective": 3.85206878
         },
         "gemini-3-pro-preview": {
           "interactions": 19,
-          "cost_effective": 0.0
+          "cost_effective": 1.47598106
         },
         "gpt-5.4": {
           "interactions": 3601,
@@ -27887,12 +27974,12 @@
       "output_tokens": 5582606,
       "cache_read_tokens": 695683509,
       "cache_write_tokens": 20852873,
-      "cost_effective": 357.36,
+      "cost_effective": 366.66,
       "cost_real": 65.32,
       "tools": {
         "claude-cli": {
           "interactions": 7849,
-          "cost_effective": 335.74101855,
+          "cost_effective": 345.04150245,
           "cost_real": 43.700706,
           "models": {
             "<synthetic>": {
@@ -27901,7 +27988,7 @@
             },
             "claude-sonnet-4-6": {
               "interactions": 7836,
-              "cost_effective": 335.74101855
+              "cost_effective": 345.04150245
             }
           }
         },
@@ -27967,7 +28054,7 @@
         },
         "claude-sonnet-4-6": {
           "interactions": 7836,
-          "cost_effective": 335.74101855
+          "cost_effective": 345.04150245
         },
         "deepseek/deepseek-v4-flash": {
           "interactions": 386,
@@ -28203,13 +28290,13 @@
       "output_tokens": 2904562,
       "cache_read_tokens": 808244950,
       "cache_write_tokens": 0,
-      "cost_effective": 27.71,
-      "cost_real": 27.71,
+      "cost_effective": 30.42,
+      "cost_real": 30.42,
       "tools": {
         "openrouter": {
           "interactions": 7496,
-          "cost_effective": 27.71218552,
-          "cost_real": 27.71218552,
+          "cost_effective": 30.41849152,
+          "cost_real": 30.41849152,
           "models": {
             "deepseek/deepseek-v4-flash": {
               "interactions": 6286,
@@ -28221,7 +28308,7 @@
             },
             "stealth/ox-alpha": {
               "interactions": 115,
-              "cost_effective": 0.0
+              "cost_effective": 2.706306
             },
             "z-ai/glm-5.2": {
               "interactions": 178,
@@ -28249,7 +28336,7 @@
         },
         "stealth/ox-alpha": {
           "interactions": 115,
-          "cost_effective": 0.0
+          "cost_effective": 2.706306
         },
         "z-ai/glm-5.2": {
           "interactions": 178,
@@ -28265,7 +28352,7 @@
         }
       },
       "subscription_fees": 0.0,
-      "cost_real_tracker": 27.71,
+      "cost_real_tracker": 30.42,
       "pay_per_token_provenance": "assumed",
       "tokens_by_model": {
         "deepseek/deepseek-v4-flash": {
@@ -28305,7 +28392,7 @@
           "cache_write": 0
         }
       },
-      "pay_per_token_charges": 27.71,
+      "pay_per_token_charges": 30.42,
       "interaction_kinds": {
         "tool_call": 7126,
         "assistant_turn": 448,
@@ -28314,18 +28401,18 @@
       "outcomes_by_project": {}
     },
     "2026-09": {
-      "interactions": 13463,
-      "input_tokens": 80743723,
-      "output_tokens": 6410776,
-      "cache_read_tokens": 886393589,
+      "interactions": 14124,
+      "input_tokens": 85597142,
+      "output_tokens": 6625549,
+      "cache_read_tokens": 910017843,
       "cache_write_tokens": 0,
-      "cost_effective": 27.51,
-      "cost_real": 27.51,
+      "cost_effective": 28.44,
+      "cost_real": 28.44,
       "tools": {
         "openrouter": {
-          "interactions": 13463,
-          "cost_effective": 27.51173275,
-          "cost_real": 27.51173275,
+          "interactions": 14124,
+          "cost_effective": 28.43820893,
+          "cost_real": 28.43820893,
           "models": {
             "deepseek/deepseek-v4-flash": {
               "interactions": 268,
@@ -28336,8 +28423,8 @@
               "cost_effective": 0.44325187
             },
             "z-ai/glm-5.3-flash": {
-              "interactions": 13143,
-              "cost_effective": 26.51913694
+              "interactions": 13804,
+              "cost_effective": 27.44561312
             }
           }
         }
@@ -28352,12 +28439,12 @@
           "cost_effective": 0.44325187
         },
         "z-ai/glm-5.3-flash": {
-          "interactions": 13143,
-          "cost_effective": 26.51913694
+          "interactions": 13804,
+          "cost_effective": 27.44561312
         }
       },
       "subscription_fees": 0.0,
-      "cost_real_tracker": 27.51,
+      "cost_real_tracker": 28.44,
       "pay_per_token_provenance": "reported",
       "tokens_by_model": {
         "deepseek/deepseek-v4-flash": {
@@ -28373,17 +28460,17 @@
           "cache_write": 0
         },
         "z-ai/glm-5.3-flash": {
-          "in": 77864976,
-          "out": 6265273,
-          "cache_read": 867151346,
+          "in": 82718395,
+          "out": 6480046,
+          "cache_read": 890775600,
           "cache_write": 0
         }
       },
       "pay_per_token_charges": 50.0,
       "interaction_kinds": {
-        "tool_call": 12594,
-        "assistant_turn": 869,
-        "user_prompt": 903
+        "tool_call": 13238,
+        "assistant_turn": 886,
+        "user_prompt": 921
       },
       "outcomes_by_project": {}
     }
@@ -28395,7 +28482,7 @@
       "output_tokens": 4717816,
       "cache_read_tokens": 518957146,
       "cache_write_tokens": 16895938,
-      "cost_effective": 946.29,
+      "cost_effective": 1394.33,
       "cost_real": 0.21,
       "tools": {
         "claude-cli": 14764,
@@ -28434,7 +28521,7 @@
       "output_tokens": 5116269,
       "cache_read_tokens": 914578663,
       "cache_write_tokens": 14687065,
-      "cost_effective": 612.17,
+      "cost_effective": 834.58,
       "cost_real": 24.08,
       "tools": {
         "claude-cli": 11887,
@@ -28480,7 +28567,7 @@
       "output_tokens": 831342,
       "cache_read_tokens": 114933459,
       "cache_write_tokens": 2712634,
-      "cost_effective": 500.85,
+      "cost_effective": 576.4,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 5383,
@@ -28513,7 +28600,7 @@
       "output_tokens": 3854562,
       "cache_read_tokens": 395665740,
       "cache_write_tokens": 4552845,
-      "cost_effective": 252.94,
+      "cost_effective": 330.71,
       "cost_real": 17.04,
       "tools": {
         "claude-cli": 4895,
@@ -28543,13 +28630,48 @@
         "grill-me": 1
       }
     },
+    "charly-pretender": {
+      "interactions": 7746,
+      "input_tokens": 68884492,
+      "output_tokens": 2983826,
+      "cache_read_tokens": 559732176,
+      "cache_write_tokens": 6410571,
+      "cost_effective": 257.14,
+      "cost_real": 33.28,
+      "tools": {
+        "claude-cli": 3633,
+        "openrouter": 3366,
+        "codex": 747
+      },
+      "models": {
+        "claude-sonnet-4-6": 3021,
+        "deepseek/deepseek-v4-flash": 2663,
+        "claude-opus-4-7": 533,
+        "z-ai/glm-5.3-flash": 501,
+        "gpt-5.4": 491,
+        "gpt-5.5": 256,
+        "z-ai/glm-5.2": 202,
+        "claude-opus-4-6": 73,
+        "<synthetic>": 6
+      },
+      "first_seen": "2026-05-06",
+      "last_seen": "2026-09-21",
+      "skills": {
+        "rule-of-5-universal": 4,
+        "issue-review": 2,
+        "testability-implementability-evaluator": 1,
+        "formal-verification-evaluator": 1,
+        "rule-of-5": 1,
+        "tdd": 1
+      }
+    },
     "charly-wai": {
       "interactions": 6055,
       "input_tokens": 33643162,
       "output_tokens": 1610850,
       "cache_read_tokens": 458001884,
       "cache_write_tokens": 1500945,
-      "cost_effective": 198.46,
+      "cost_effective": 236.8,
       "cost_real": 15.41,
       "tools": {
         "openrouter": 2983,
@@ -28583,48 +28705,13 @@
         "resume-handoff": 1
       }
     },
-    "charly-pretender": {
-      "interactions": 7735,
-      "input_tokens": 68147618,
-      "output_tokens": 2980723,
-      "cache_read_tokens": 558857552,
-      "cache_write_tokens": 6410571,
-      "cost_effective": 196.15,
-      "cost_real": 33.2,
-      "tools": {
-        "claude-cli": 3633,
-        "openrouter": 3355,
-        "codex": 747
-      },
-      "models": {
-        "claude-sonnet-4-6": 3021,
-        "deepseek/deepseek-v4-flash": 2663,
-        "claude-opus-4-7": 533,
-        "gpt-5.4": 491,
-        "z-ai/glm-5.3-flash": 490,
-        "gpt-5.5": 256,
-        "z-ai/glm-5.2": 202,
-        "claude-opus-4-6": 73,
-        "<synthetic>": 6
-      },
-      "first_seen": "2026-05-06",
-      "last_seen": "2026-09-20",
-      "skills": {
-        "rule-of-5-universal": 4,
-        "issue-review": 2,
-        "testability-implementability-evaluator": 1,
-        "formal-verification-evaluator": 1,
-        "rule-of-5": 1,
-        "tdd": 1
-      }
-    },
     "charly-espectacular": {
       "interactions": 6183,
       "input_tokens": 55137830,
       "output_tokens": 2678321,
       "cache_read_tokens": 447645876,
       "cache_write_tokens": 7469003,
-      "cost_effective": 170.56,
+      "cost_effective": 228.8,
       "cost_real": 20.65,
       "tools": {
         "claude-cli": 3423,
@@ -28681,7 +28768,7 @@
       "output_tokens": 927868,
       "cache_read_tokens": 180706940,
       "cache_write_tokens": 1641755,
-      "cost_effective": 108.81,
+      "cost_effective": 123.39,
       "cost_real": 5.03,
       "tools": {
         "claude-cli": 1387,
@@ -28714,13 +28801,40 @@
         "anti-slop-prose": 1
       }
     },
+    "charly-superficies": {
+      "interactions": 2405,
+      "input_tokens": 1908078,
+      "output_tokens": 628367,
+      "cache_read_tokens": 75197746,
+      "cache_write_tokens": 1972206,
+      "cost_effective": 120.21,
+      "cost_real": 0.0,
+      "tools": {
+        "claude-cli": 1952,
+        "codex": 451,
+        "gemini-cli": 2
+      },
+      "models": {
+        "claude-sonnet-4-6": 1952,
+        "gpt-5.5": 282,
+        "gpt-5.4": 169,
+        "gemini-2.5-pro": 2
+      },
+      "first_seen": "2026-05-04",
+      "last_seen": "2026-05-07",
+      "skills": {
+        "commit": 2,
+        "rule-of-5-universal": 1,
+        "issue-review": 1
+      }
+    },
     "charly": {
       "interactions": 3777,
       "input_tokens": 45026559,
       "output_tokens": 1995861,
       "cache_read_tokens": 262600546,
       "cache_write_tokens": 3159949,
-      "cost_effective": 101.17,
+      "cost_effective": 112.81,
       "cost_real": 32.87,
       "tools": {
         "openrouter": 2226,
@@ -28743,40 +28857,13 @@
         "issue-review": 1
       }
     },
-    "charly-superficies": {
-      "interactions": 2405,
-      "input_tokens": 1908078,
-      "output_tokens": 628367,
-      "cache_read_tokens": 75197746,
-      "cache_write_tokens": 1972206,
-      "cost_effective": 88.76,
-      "cost_real": 0.0,
-      "tools": {
-        "claude-cli": 1952,
-        "codex": 451,
-        "gemini-cli": 2
-      },
-      "models": {
-        "claude-sonnet-4-6": 1952,
-        "gpt-5.5": 282,
-        "gpt-5.4": 169,
-        "gemini-2.5-pro": 2
-      },
-      "first_seen": "2026-05-04",
-      "last_seen": "2026-05-07",
-      "skills": {
-        "commit": 2,
-        "rule-of-5-universal": 1,
-        "issue-review": 1
-      }
-    },
     "sk-clojnder": {
       "interactions": 2079,
       "input_tokens": 1525616,
       "output_tokens": 474020,
       "cache_read_tokens": 58637925,
       "cache_write_tokens": 2498247,
-      "cost_effective": 79.27,
+      "cost_effective": 103.78,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 1687,
@@ -28798,7 +28885,7 @@
       "output_tokens": 517568,
       "cache_read_tokens": 39656513,
       "cache_write_tokens": 1897100,
-      "cost_effective": 67.12,
+      "cost_effective": 93.12,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 1695,
@@ -28823,7 +28910,7 @@
       "output_tokens": 473226,
       "cache_read_tokens": 37155884,
       "cache_write_tokens": 1685514,
-      "cost_effective": 65.72,
+      "cost_effective": 88.02,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 1531,
@@ -28848,7 +28935,7 @@
       "output_tokens": 491696,
       "cache_read_tokens": 67215753,
       "cache_write_tokens": 1123719,
-      "cost_effective": 55.25,
+      "cost_effective": 70.58,
       "cost_real": 0.0,
       "tools": {
         "claude-cli": 988,
@@ -28874,7 +28961,7 @@
       "output_tokens": 666980,
       "cache_read_tokens": 111601602,
       "cache_write_tokens": 1702329,
-      "cost_effective": 50.29,
+      "cost_effective": 58.95,
       "cost_real": 4.79,
       "tools": {
         "claude-cli": 925,
@@ -28906,7 +28993,7 @@
       "output_tokens": 2996848,
       "cache_read_tokens": 881866779,
       "cache_write_tokens": 210970,
-      "cost_effective": 49.49,
+      "cost_effective": 52.49,
       "cost_real": 38.9,
       "tools": {
         "openrouter": 8336,
@@ -28925,6 +29012,34 @@
         "rule-of-5-universal": 1,
         "openspec:apply": 1,
         "close": 1
+      }
+    },
+    "charly-paranoid": {
+      "interactions": 1393,
+      "input_tokens": 732528,
+      "output_tokens": 322689,
+      "cache_read_tokens": 24211065,
+      "cache_write_tokens": 1661022,
+      "cost_effective": 49.05,
+      "cost_real": 0.0,
+      "tools": {
+        "claude-cli": 985,
+        "amp": 215,
+        "codex": 193
+      },
+      "models": {
+        "claude-sonnet-4-6": 985,
+        "amp": 215,
+        "gpt-5.4": 154,
+        "gpt-5.5": 39
+      },
+      "first_seen": "2026-04-14",
+      "last_seen": "2026-06-15",
+      "skills": {
+        "issue-review": 2,
+        "rule-of-5-universal": 2,
+        "commit": 1,
+        "openspec:proposal": 1
       }
     },
     "charly-testaruda": {
@@ -28948,41 +29063,13 @@
       "last_seen": "2026-09-20",
       "skills": {}
     },
-    "charly-paranoid": {
-      "interactions": 1393,
-      "input_tokens": 732528,
-      "output_tokens": 322689,
-      "cache_read_tokens": 24211065,
-      "cache_write_tokens": 1661022,
-      "cost_effective": 41.67,
-      "cost_real": 0.0,
-      "tools": {
-        "claude-cli": 985,
-        "amp": 215,
-        "codex": 193
-      },
-      "models": {
-        "claude-sonnet-4-6": 985,
-        "amp": 215,
-        "gpt-5.4": 154,
-        "gpt-5.5": 39
-      },
-      "first_seen": "2026-04-14",
-      "last_seen": "2026-06-15",
-      "skills": {
-        "issue-review": 2,
-        "rule-of-5-universal": 2,
-        "commit": 1,
-        "openspec:proposal": 1
-      }
-    },
     "charly-incitaciones": {
       "interactions": 2487,
       "input_tokens": 18910700,
       "output_tokens": 1242761,
       "cache_read_tokens": 177921298,
       "cache_write_tokens": 173256,
-      "cost_effective": 27.72,
+      "cost_effective": 31.4,
       "cost_real": 8.19,
       "tools": {
         "openrouter": 1862,
@@ -29036,8 +29123,8 @@
       "output_tokens": 220585,
       "cache_read_tokens": 46969444,
       "cache_write_tokens": 982144,
-      "cost_effective": 26.33,
-      "cost_real": 16.68,
+      "cost_effective": 27.24,
+      "cost_real": 17.59,
       "tools": {
         "openrouter": 346,
         "codex": 310,
@@ -29098,6 +29185,30 @@
       "last_seen": "2026-08-27",
       "skills": {}
     },
+    "ak-el-mundo-ha-vivido-equivocado": {
+      "interactions": 4057,
+      "input_tokens": 101020728,
+      "output_tokens": 1648242,
+      "cache_read_tokens": 530302992,
+      "cache_write_tokens": 0,
+      "cost_effective": 22.62,
+      "cost_real": 22.62,
+      "tools": {
+        "openrouter": 4057
+      },
+      "models": {
+        "deepseek/deepseek-v4-flash": 2887,
+        "z-ai/glm-5.3-flash": 939,
+        "z-ai/glm-5.2": 94,
+        "deepseek/deepseek-v4-pro": 69,
+        "stealth/ox-alpha": 63,
+        "z-ai/glm-5.2:free": 4,
+        "google/gemini-2.5-flash-image": 1
+      },
+      "first_seen": "2026-07-21",
+      "last_seen": "2026-09-18",
+      "skills": {}
+    },
     "sk-chacana": {
       "interactions": 634,
       "input_tokens": 12846531,
@@ -29122,37 +29233,13 @@
       "last_seen": "2026-07-21",
       "skills": {}
     },
-    "ak-el-mundo-ha-vivido-equivocado": {
-      "interactions": 4057,
-      "input_tokens": 101020728,
-      "output_tokens": 1648242,
-      "cache_read_tokens": 530302992,
-      "cache_write_tokens": 0,
-      "cost_effective": 20.82,
-      "cost_real": 20.82,
-      "tools": {
-        "openrouter": 4057
-      },
-      "models": {
-        "deepseek/deepseek-v4-flash": 2887,
-        "z-ai/glm-5.3-flash": 939,
-        "z-ai/glm-5.2": 94,
-        "deepseek/deepseek-v4-pro": 69,
-        "stealth/ox-alpha": 63,
-        "z-ai/glm-5.2:free": 4,
-        "google/gemini-2.5-flash-image": 1
-      },
-      "first_seen": "2026-07-21",
-      "last_seen": "2026-09-18",
-      "skills": {}
-    },
     "charly-fabbro": {
       "interactions": 1432,
       "input_tokens": 3244011,
       "output_tokens": 118823,
       "cache_read_tokens": 24118886,
       "cache_write_tokens": 0,
-      "cost_effective": 13.77,
+      "cost_effective": 14.66,
       "cost_real": 0.0,
       "tools": {
         "amp": 1131,
@@ -29211,21 +29298,44 @@
       "skills": {}
     },
     "charly-coffee": {
-      "interactions": 2726,
-      "input_tokens": 14638448,
-      "output_tokens": 1429964,
-      "cache_read_tokens": 177318521,
+      "interactions": 3376,
+      "input_tokens": 18754993,
+      "output_tokens": 1641634,
+      "cache_read_tokens": 200068151,
       "cache_write_tokens": 0,
-      "cost_effective": 4.94,
-      "cost_real": 4.94,
+      "cost_effective": 5.78,
+      "cost_real": 5.78,
       "tools": {
-        "openrouter": 2726
+        "openrouter": 3376
       },
       "models": {
-        "z-ai/glm-5.3-flash": 2726
+        "z-ai/glm-5.3-flash": 3376
       },
       "first_seen": "2026-09-19",
       "last_seen": "2026-09-21",
+      "skills": {}
+    },
+    "charly-canticos": {
+      "interactions": 257,
+      "input_tokens": 986690,
+      "output_tokens": 96271,
+      "cache_read_tokens": 11213970,
+      "cache_write_tokens": 167256,
+      "cost_effective": 4.89,
+      "cost_real": 2.78,
+      "tools": {
+        "openrouter": 109,
+        "claude-cli": 75,
+        "codex": 73
+      },
+      "models": {
+        "deepseek/deepseek-v4-flash": 109,
+        "claude-sonnet-4-6": 75,
+        "gpt-5.4": 72,
+        "gpt-5.3-codex": 1
+      },
+      "first_seen": "2026-05-18",
+      "last_seen": "2026-08-02",
       "skills": {}
     },
     "charly-dulce-de-leche": {
@@ -29247,36 +29357,13 @@
       "last_seen": "2026-09-15",
       "skills": {}
     },
-    "charly-canticos": {
-      "interactions": 257,
-      "input_tokens": 986690,
-      "output_tokens": 96271,
-      "cache_read_tokens": 11213970,
-      "cache_write_tokens": 167256,
-      "cost_effective": 4.26,
-      "cost_real": 2.78,
-      "tools": {
-        "openrouter": 109,
-        "claude-cli": 75,
-        "codex": 73
-      },
-      "models": {
-        "deepseek/deepseek-v4-flash": 109,
-        "claude-sonnet-4-6": 75,
-        "gpt-5.4": 72,
-        "gpt-5.3-codex": 1
-      },
-      "first_seen": "2026-05-18",
-      "last_seen": "2026-08-02",
-      "skills": {}
-    },
     "ak-hipervinculos": {
       "interactions": 177,
       "input_tokens": 355225,
       "output_tokens": 34523,
       "cache_read_tokens": 3985595,
       "cache_write_tokens": 55044,
-      "cost_effective": 3.29,
+      "cost_effective": 3.79,
       "cost_real": 0.0,
       "tools": {
         "codex": 94,
@@ -29290,6 +29377,32 @@
       },
       "first_seen": "2026-01-19",
       "last_seen": "2026-05-06",
+      "skills": {}
+    },
+    "ak-journal": {
+      "interactions": 266,
+      "input_tokens": 884799,
+      "output_tokens": 114641,
+      "cache_read_tokens": 9892047,
+      "cache_write_tokens": 22041,
+      "cost_effective": 2.61,
+      "cost_real": 0.21,
+      "tools": {
+        "openrouter": 192,
+        "codex": 64,
+        "claude-cli": 8,
+        "amp": 2
+      },
+      "models": {
+        "z-ai/glm-5.3-flash": 160,
+        "gpt-5.4": 46,
+        "deepseek/deepseek-v4-flash": 32,
+        "gpt-5.5": 18,
+        "claude-opus-4-7": 8,
+        "amp": 2
+      },
+      "first_seen": "2025-12-23",
+      "last_seen": "2026-09-01",
       "skills": {}
     },
     "sk-poco": {
@@ -29333,32 +29446,6 @@
       },
       "first_seen": "2026-02-11",
       "last_seen": "2026-09-16",
-      "skills": {}
-    },
-    "ak-journal": {
-      "interactions": 266,
-      "input_tokens": 884799,
-      "output_tokens": 114641,
-      "cache_read_tokens": 9892047,
-      "cache_write_tokens": 22041,
-      "cost_effective": 1.96,
-      "cost_real": 0.21,
-      "tools": {
-        "openrouter": 192,
-        "codex": 64,
-        "claude-cli": 8,
-        "amp": 2
-      },
-      "models": {
-        "z-ai/glm-5.3-flash": 160,
-        "gpt-5.4": 46,
-        "deepseek/deepseek-v4-flash": 32,
-        "gpt-5.5": 18,
-        "claude-opus-4-7": 8,
-        "amp": 2
-      },
-      "first_seen": "2025-12-23",
-      "last_seen": "2026-09-01",
       "skills": {}
     },
     "ak-uarup": {
@@ -29855,14 +29942,14 @@
   "multitasking": {
     "description": "Proyectos distintos con actividad en la misma ventana. 'context_switches' cuenta cambios de proyecto entre requests consecutivos (puede inflarse por agentes paralelos en el mismo minuto).",
     "hourly": {
-      "total_active_hours": 937,
-      "hours_with_multiple_projects": 510,
+      "total_active_hours": 940,
+      "hours_with_multiple_projects": 511,
       "pct_hours_multitasking": 54.4,
       "avg_projects_per_active_hour": 2.32,
       "distribution": {
-        "1": 427,
+        "1": 429,
         "4+": 192,
-        "2": 165,
+        "2": 166,
         "3": 153
       },
       "max_projects_in_one_hour": {
@@ -30029,9 +30116,9 @@
       ]
     },
     "daily": {
-      "total_active_days": 179,
-      "days_with_multiple_projects": 107,
-      "pct_days_multitasking": 59.8,
+      "total_active_days": 180,
+      "days_with_multiple_projects": 108,
+      "pct_days_multitasking": 60.0,
       "avg_projects_per_active_day": 3.27,
       "top_10_days": [
         {
@@ -30217,8 +30304,8 @@
       ]
     },
     "context_switches": {
-      "total": 62899,
-      "avg_per_active_day": 351.4,
+      "total": 62921,
+      "avg_per_active_day": 349.6,
       "max_in_one_day": 11161,
       "top_10_days": {
         "2026-07-28": 11161,
@@ -30507,7 +30594,8 @@
       "2026-09-17",
       "2026-09-18",
       "2026-09-19",
-      "2026-09-20"
+      "2026-09-20",
+      "2026-09-21"
     ],
     "matrix": {
       "charly-dont": [
@@ -30782,6 +30870,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-miblioteca": [
@@ -30950,6 +31039,7 @@
         0,
         0,
         227,
+        0,
         0,
         0,
         0,
@@ -31330,7 +31420,8 @@
         0,
         0,
         0,
-        655
+        655,
+        0
       ],
       "sk-REPLy-jl": [
         0,
@@ -31602,6 +31693,7 @@
         0,
         0,
         382,
+        0,
         0,
         0,
         0
@@ -31878,7 +31970,8 @@
         0,
         0,
         0,
-        108
+        108,
+        0
       ],
       "charly-pretender": [
         0,
@@ -32152,7 +32245,8 @@
         0,
         0,
         0,
-        490
+        490,
+        11
       ],
       "charly-vampiro": [
         0,
@@ -32426,7 +32520,8 @@
         0,
         0,
         0,
-        242
+        242,
+        0
       ],
       "charly-atril": [
         0,
@@ -32571,6 +32666,7 @@
         0,
         0,
         145,
+        0,
         0,
         0,
         0,
@@ -32974,6 +33070,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-wai": [
@@ -33248,6 +33345,7 @@
         161,
         0,
         0,
+        0,
         0
       ],
       "sk-Tray-jl": [
@@ -33473,6 +33571,7 @@
         0,
         0,
         152,
+        0,
         0,
         0,
         0,
@@ -33796,6 +33895,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "ak-el-mundo-ha-vivido-equivocado": [
@@ -34069,6 +34169,7 @@
         0,
         72,
         49,
+        0,
         0,
         0
       ],
@@ -34344,6 +34445,7 @@
         0,
         88,
         0,
+        0,
         0
       ],
       "sk-XAct-jl": [
@@ -34618,281 +34720,8 @@
         0,
         0,
         0,
+        0,
         0
-      ],
-      "charly-genesis": [
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        341,
-        977,
-        248,
-        278,
-        192,
-        0,
-        0,
-        0,
-        0,
-        169,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        274,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        264,
-        10,
-        282,
-        0,
-        0,
-        221
       ],
       "charly-coffee": [
         0,
@@ -35166,7 +34995,283 @@
         0,
         0,
         1101,
-        1625
+        1641,
+        634
+      ],
+      "charly-genesis": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        341,
+        977,
+        248,
+        278,
+        192,
+        0,
+        0,
+        0,
+        0,
+        169,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        274,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        264,
+        10,
+        282,
+        0,
+        0,
+        221,
+        0
       ],
       "charly-incitaciones": [
         0,
@@ -35440,6 +35545,7 @@
         0,
         146,
         0,
+        0,
         0
       ],
       "charly-superficies": [
@@ -35579,6 +35685,7 @@
         1061,
         196,
         2,
+        0,
         0,
         0,
         0,
@@ -35988,6 +36095,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-clojnder": [
@@ -36124,6 +36232,7 @@
         0,
         0,
         9,
+        0,
         0,
         0,
         0,
@@ -36536,6 +36645,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-tRAGar": [
@@ -36810,6 +36920,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-ruta": [
@@ -36935,6 +37046,7 @@
         489,
         1029,
         154,
+        0,
         0,
         0,
         0,
@@ -37358,6 +37470,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-fabbro": [
@@ -37477,6 +37590,7 @@
         0,
         38,
         60,
+        0,
         0,
         0,
         0,
@@ -37906,6 +38020,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-paranoid": [
@@ -38084,6 +38199,7 @@
         0,
         54,
         34,
+        0,
         0,
         0,
         0,
@@ -38454,6 +38570,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "ak": [
@@ -38577,6 +38694,7 @@
         0,
         374,
         365,
+        0,
         0,
         0,
         0,
@@ -39002,6 +39120,7 @@
         176,
         0,
         0,
+        0,
         0
       ],
       "charly-jams": [
@@ -39273,6 +39392,7 @@
         0,
         0,
         43,
+        0,
         0,
         0,
         0,
@@ -39550,6 +39670,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-chacana": [
@@ -39764,6 +39885,7 @@
         0,
         0,
         357,
+        0,
         0,
         0,
         0,
@@ -40098,6 +40220,7 @@
         54,
         0,
         0,
+        0,
         0
       ],
       "charly-tv": [
@@ -40372,7 +40495,8 @@
         0,
         101,
         25,
-        348
+        348,
+        0
       ],
       "ak-suipacha": [
         0,
@@ -40646,6 +40770,7 @@
         321,
         0,
         0,
+        0,
         0
       ],
       "charly-michael": [
@@ -40905,6 +41030,7 @@
         0,
         226,
         209,
+        0,
         0,
         0,
         0,
@@ -41194,6 +41320,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-nayra": [
@@ -41295,6 +41422,7 @@
         0,
         0,
         36,
+        0,
         0,
         0,
         0,
@@ -41742,7 +41870,8 @@
         0,
         0,
         0,
-        41
+        41,
+        0
       ],
       "ak-journal": [
         1,
@@ -42016,6 +42145,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-rizomas": [
@@ -42079,6 +42209,7 @@
         12,
         8,
         5,
+        0,
         0,
         0,
         0,
@@ -42564,6 +42695,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-poco": [
@@ -42838,7 +42970,8 @@
         0,
         0,
         0,
-        156
+        156,
+        0
       ],
       "sk-smithy": [
         0,
@@ -43047,6 +43180,7 @@
         0,
         165,
         61,
+        0,
         0,
         0,
         0,
@@ -43386,6 +43520,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk-cosito": [
@@ -43480,6 +43615,7 @@
         0,
         0,
         44,
+        0,
         0,
         0,
         0,
@@ -43934,6 +44070,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "sk": [
@@ -44208,6 +44345,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "charly-paseos": [
@@ -44464,6 +44602,7 @@
         0,
         0,
         47,
+        0,
         0,
         0,
         0,
@@ -44756,6 +44895,7 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "ak-borradores": [
@@ -44846,6 +44986,7 @@
         0,
         0,
         1,
+        0,
         0,
         0,
         0,
@@ -45304,10 +45445,12 @@
         0,
         0,
         0,
+        0,
         0
       ],
       "ak-la-vida-privada-de-los-pensamientos": [
         1,
+        0,
         0,
         0,
         0,
@@ -45618,7 +45761,7 @@
       },
       "2026-05": {
         "interactions": 39,
-        "cost_effective": 0.9269405
+        "cost_effective": 1.5822717500000003
       },
       "2026-07": {
         "interactions": 32,
@@ -45650,7 +45793,7 @@
       },
       "2026-04": {
         "interactions": 301,
-        "cost_effective": 13.765051999999997
+        "cost_effective": 14.65628311
       }
     },
     "ak-hipervinculos": {
@@ -45664,7 +45807,7 @@
       },
       "2026-05": {
         "interactions": 90,
-        "cost_effective": 2.096215499999999
+        "cost_effective": 2.5928628
       }
     },
     "charly-nayra": {
@@ -45692,11 +45835,11 @@
       },
       "2026-04": {
         "interactions": 392,
-        "cost_effective": 10.378035999999998
+        "cost_effective": 11.7487788
       },
       "2026-05": {
         "interactions": 226,
-        "cost_effective": 9.150510999999995
+        "cost_effective": 11.465710070000004
       },
       "2026-07": {
         "interactions": 645,
@@ -45718,11 +45861,11 @@
       },
       "2026-04": {
         "interactions": 1631,
-        "cost_effective": 52.15742899999992
+        "cost_effective": 63.21666513999996
       },
       "2026-05": {
         "interactions": 1116,
-        "cost_effective": 51.62314250000007
+        "cost_effective": 55.142489000000054
       },
       "2026-07": {
         "interactions": 594,
@@ -45766,11 +45909,11 @@
       },
       "2026-04": {
         "interactions": 918,
-        "cost_effective": 78.41272500000011
+        "cost_effective": 82.56967439000009
       },
       "2026-05": {
         "interactions": 1865,
-        "cost_effective": 101.4910689999996
+        "cost_effective": 135.67471794999994
       },
       "2026-06": {
         "interactions": 91,
@@ -45826,11 +45969,11 @@
       },
       "2026-04": {
         "interactions": 127,
-        "cost_effective": 1.751629500000001
+        "cost_effective": 2.927605189999999
       },
       "2026-05": {
         "interactions": 677,
-        "cost_effective": 28.99623200000003
+        "cost_effective": 36.47701955000004
       },
       "2026-06": {
         "interactions": 320,
@@ -45860,7 +46003,7 @@
       },
       "2026-08": {
         "interactions": 68,
-        "cost_effective": 0.021319339999999996
+        "cost_effective": 0.9295615399999998
       }
     },
     "sk-chacana": {
@@ -45892,11 +46035,11 @@
     "charly-paranoid": {
       "2026-04": {
         "interactions": 761,
-        "cost_effective": 18.46865700000003
+        "cost_effective": 21.453339000000028
       },
       "2026-05": {
         "interactions": 544,
-        "cost_effective": 18.879166500000025
+        "cost_effective": 23.275290600000027
       },
       "2026-06": {
         "interactions": 88,
@@ -45906,21 +46049,21 @@
     "charly-atril": {
       "2026-04": {
         "interactions": 4552,
-        "cost_effective": 429.0945915000003
+        "cost_effective": 479.76524781000046
       },
       "2026-05": {
         "interactions": 1890,
-        "cost_effective": 71.75729000000005
+        "cost_effective": 96.6360684499999
       }
     },
     "sk-REPLy-jl": {
       "2026-04": {
         "interactions": 5802,
-        "cost_effective": 215.98098849999977
+        "cost_effective": 284.6130832399991
       },
       "2026-05": {
         "interactions": 469,
-        "cost_effective": 19.915265000000023
+        "cost_effective": 29.050853300000032
       },
       "2026-07": {
         "interactions": 2375,
@@ -45938,15 +46081,15 @@
     "charly-dont": {
       "2026-04": {
         "interactions": 1469,
-        "cost_effective": 112.96425394999962
+        "cost_effective": 158.95720610999945
       },
       "2026-05": {
         "interactions": 10367,
-        "cost_effective": 375.9575179999996
+        "cost_effective": 545.9440147599981
       },
       "2026-06": {
         "interactions": 2596,
-        "cost_effective": 108.34889857439993
+        "cost_effective": 114.77927527439981
       },
       "2026-07": {
         "interactions": 2587,
@@ -45960,7 +46103,7 @@
     "charly-ruta": {
       "2026-04": {
         "interactions": 1672,
-        "cost_effective": 55.25336670000004
+        "cost_effective": 70.58322045000001
       }
     },
     "sk-titi": {
@@ -45984,7 +46127,7 @@
       },
       "2026-05": {
         "interactions": 850,
-        "cost_effective": 40.92953150000001
+        "cost_effective": 52.56729529999995
       },
       "2026-06": {
         "interactions": 671,
@@ -46006,43 +46149,43 @@
     "charly-tRAGar": {
       "2026-04": {
         "interactions": 1246,
-        "cost_effective": 50.89943900000003
+        "cost_effective": 70.61640589999986
       },
       "2026-05": {
         "interactions": 489,
-        "cost_effective": 16.22214600000001
+        "cost_effective": 22.504432800000032
       }
     },
     "sk-clojnder": {
       "2026-04": {
         "interactions": 1432,
-        "cost_effective": 48.54223150000008
+        "cost_effective": 65.4384937
       },
       "2026-05": {
         "interactions": 647,
-        "cost_effective": 30.72474
+        "cost_effective": 38.34029415000003
       }
     },
     "charly-superficies": {
       "2026-05": {
         "interactions": 2405,
-        "cost_effective": 88.75506650000014
+        "cost_effective": 120.20979694999991
       }
     },
     "charly-miblioteca": {
       "2026-05": {
         "interactions": 15800,
-        "cost_effective": 940.7041115000007
+        "cost_effective": 1386.1504755599938
       },
       "2026-06": {
         "interactions": 227,
-        "cost_effective": 5.5859028964
+        "cost_effective": 8.182064646399997
       }
     },
     "charly-pretender": {
       "2026-05": {
         "interactions": 2615,
-        "cost_effective": 104.19348950000001
+        "cost_effective": 165.09572674999995
       },
       "2026-06": {
         "interactions": 1765,
@@ -46057,20 +46200,20 @@
         "cost_effective": 1.398889968
       },
       "2026-09": {
-        "interactions": 490,
-        "cost_effective": 0.7673381519999994
+        "interactions": 501,
+        "cost_effective": 0.8503309439999994
       }
     },
     "sk-clojure-tutor": {
       "2026-05": {
         "interactions": 1650,
-        "cost_effective": 65.72417499999999
+        "cost_effective": 88.02118630000002
       }
     },
     "sk-Testimonial-jl": {
       "2026-05": {
         "interactions": 217,
-        "cost_effective": 10.587519999999987
+        "cost_effective": 13.589622099999978
       },
       "2026-07": {
         "interactions": 7749,
@@ -46088,7 +46231,7 @@
     "charly-espectacular": {
       "2026-05": {
         "interactions": 1722,
-        "cost_effective": 70.65973100000024
+        "cost_effective": 128.89680725000002
       },
       "2026-06": {
         "interactions": 2219,
@@ -46110,11 +46253,11 @@
     "charly-canticos": {
       "2026-05": {
         "interactions": 53,
-        "cost_effective": 0.9778769999999999
+        "cost_effective": 1.3345931999999998
       },
       "2026-06": {
         "interactions": 125,
-        "cost_effective": 3.1642147399999985
+        "cost_effective": 3.4381601899999987
       },
       "2026-08": {
         "interactions": 79,
@@ -46178,7 +46321,7 @@
       },
       "2026-08": {
         "interactions": 1385,
-        "cost_effective": 4.691266773348005
+        "cost_effective": 6.489330573348004
       },
       "2026-09": {
         "interactions": 722,
@@ -46293,8 +46436,8 @@
     },
     "charly-coffee": {
       "2026-09": {
-        "interactions": 2726,
-        "cost_effective": 4.938182897999999
+        "interactions": 3376,
+        "cost_effective": 5.781666288000011
       }
     }
   },
@@ -46330,7 +46473,7 @@
       },
       "claude-opus-4-7": {
         "interactions": 8,
-        "cost_effective": 0.33296
+        "cost_effective": 0.98829125
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 32,
@@ -46362,7 +46505,7 @@
       },
       "gemini-3-flash-preview": {
         "interactions": 31,
-        "cost_effective": 0.0
+        "cost_effective": 0.89123111
       },
       "gpt-5.3-codex": {
         "interactions": 1,
@@ -46380,7 +46523,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 52,
-        "cost_effective": 1.140702
+        "cost_effective": 1.6373493
       },
       "gpt-5.4": {
         "interactions": 94,
@@ -46400,7 +46543,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 134,
-        "cost_effective": 3.955262
+        "cost_effective": 5.7049523
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 434,
@@ -46408,15 +46551,15 @@
       },
       "gemini-2.5-pro": {
         "interactions": 45,
-        "cost_effective": 0.0
+        "cost_effective": 1.52409118
       },
       "gemini-3-flash-preview": {
         "interactions": 20,
-        "cost_effective": 0.0
+        "cost_effective": 0.23669731
       },
       "gemini-3-pro-preview": {
         "interactions": 12,
-        "cost_effective": 0.0
+        "cost_effective": 0.17546308
       },
       "gpt-5.4": {
         "interactions": 321,
@@ -46446,7 +46589,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 1387,
-        "cost_effective": 50.921843
+        "cost_effective": 63.6487091
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 793,
@@ -46458,11 +46601,11 @@
       },
       "gemini-3-flash-preview": {
         "interactions": 74,
-        "cost_effective": 0.0
+        "cost_effective": 1.50993158
       },
       "gemini-3-pro-preview": {
         "interactions": 33,
-        "cost_effective": 0.0
+        "cost_effective": 0.34178496
       },
       "gpt-5.4": {
         "interactions": 942,
@@ -46506,15 +46649,15 @@
       },
       "claude-opus-4-6": {
         "interactions": 667,
-        "cost_effective": 108.47184
+        "cost_effective": 125.31366825
       },
       "claude-opus-4-7": {
         "interactions": 34,
-        "cost_effective": 1.599298
+        "cost_effective": 3.885847
       },
       "claude-sonnet-4-6": {
         "interactions": 1359,
-        "cost_effective": 39.76857395
+        "cost_effective": 57.82001975
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 2180,
@@ -46522,7 +46665,7 @@
       },
       "gemini-3-flash-preview": {
         "interactions": 64,
-        "cost_effective": 0.0
+        "cost_effective": 1.16077529
       },
       "gpt-5.4": {
         "interactions": 622,
@@ -46574,7 +46717,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 925,
-        "cost_effective": 38.3452325
+        "cost_effective": 46.25529395
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 748,
@@ -46582,7 +46725,7 @@
       },
       "gemini-3-pro-preview": {
         "interactions": 46,
-        "cost_effective": 0.0
+        "cost_effective": 0.74670179
       },
       "gpt-5.4": {
         "interactions": 26,
@@ -46624,7 +46767,7 @@
       },
       "stealth/ox-alpha": {
         "interactions": 52,
-        "cost_effective": 0.0
+        "cost_effective": 0.9082422
       }
     },
     "sk-chacana": {
@@ -46672,7 +46815,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 985,
-        "cost_effective": 34.14418485
+        "cost_effective": 41.52499095
       },
       "gpt-5.4": {
         "interactions": 154,
@@ -46686,15 +46829,15 @@
     "charly-atril": {
       "claude-opus-4-6": {
         "interactions": 2172,
-        "cost_effective": 379.679687
+        "cost_effective": 426.98252075
       },
       "claude-sonnet-4-6": {
         "interactions": 3211,
-        "cost_effective": 91.548313
+        "cost_effective": 119.39239255
       },
       "gemini-3-pro-preview": {
         "interactions": 39,
-        "cost_effective": 0.0
+        "cost_effective": 0.40252146
       },
       "gpt-5.4": {
         "interactions": 898,
@@ -46716,11 +46859,11 @@
       },
       "claude-opus-4-6": {
         "interactions": 176,
-        "cost_effective": 35.619469
+        "cost_effective": 45.9082855
       },
       "claude-sonnet-4-6": {
         "interactions": 4717,
-        "cost_effective": 165.766362
+        "cost_effective": 231.88567485
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 2414,
@@ -46728,11 +46871,11 @@
       },
       "gemini-3-flash-preview": {
         "interactions": 36,
-        "cost_effective": 0.0
+        "cost_effective": 0.32578268
       },
       "gemini-3-pro-preview": {
         "interactions": 108,
-        "cost_effective": 0.0
+        "cost_effective": 1.03377101
       },
       "google/gemini-2.5-pro": {
         "interactions": 2,
@@ -46754,15 +46897,15 @@
       },
       "claude-opus-4-6": {
         "interactions": 465,
-        "cost_effective": 96.288159
+        "cost_effective": 131.57432925
       },
       "claude-opus-4-7": {
         "interactions": 417,
-        "cost_effective": 19.337336
+        "cost_effective": 72.65476325
       },
       "claude-sonnet-4-6": {
         "interactions": 10988,
-        "cost_effective": 395.32314505
+        "cost_effective": 518.63143465
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 2307,
@@ -46770,15 +46913,15 @@
       },
       "gemini-3-flash-preview": {
         "interactions": 34,
-        "cost_effective": 0.0
+        "cost_effective": 0.45650489
       },
       "gemini-3-pro-preview": {
         "interactions": 295,
-        "cost_effective": 0.0
+        "cost_effective": 9.97647294
       },
       "gemini-3.1-pro-preview": {
         "interactions": 12,
-        "cost_effective": 0.0
+        "cost_effective": 0.06496069
       },
       "gpt-5.3-codex": {
         "interactions": 47,
@@ -46808,11 +46951,11 @@
     "charly-ruta": {
       "claude-opus-4-6": {
         "interactions": 26,
-        "cost_effective": 3.744699
+        "cost_effective": 4.9954755
       },
       "claude-sonnet-4-6": {
         "interactions": 962,
-        "cost_effective": 30.771298
+        "cost_effective": 44.85037525
       },
       "gpt-5.3-codex": {
         "interactions": 97,
@@ -46852,11 +46995,11 @@
       },
       "claude-opus-4-6": {
         "interactions": 105,
-        "cost_effective": 18.477756
+        "cost_effective": 24.52570275
       },
       "claude-sonnet-4-6": {
         "interactions": 1295,
-        "cost_effective": 52.6144478
+        "cost_effective": 58.20426485
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 1514,
@@ -46882,7 +47025,7 @@
       },
       "claude-sonnet-4-6": {
         "interactions": 1694,
-        "cost_effective": 66.105504
+        "cost_effective": 92.1047577
       },
       "gpt-5.4": {
         "interactions": 40,
@@ -46892,7 +47035,7 @@
     "sk-clojnder": {
       "claude-sonnet-4-6": {
         "interactions": 1687,
-        "cost_effective": 67.114162
+        "cost_effective": 91.62597835
       },
       "gpt-5.4": {
         "interactions": 392,
@@ -46902,11 +47045,11 @@
     "charly-superficies": {
       "claude-sonnet-4-6": {
         "interactions": 1952,
-        "cost_effective": 70.511283
+        "cost_effective": 101.7432897
       },
       "gemini-2.5-pro": {
         "interactions": 2,
-        "cost_effective": 0.0
+        "cost_effective": 0.22272375
       },
       "gpt-5.4": {
         "interactions": 169,
@@ -46928,15 +47071,15 @@
       },
       "claude-opus-4-6": {
         "interactions": 1487,
-        "cost_effective": 348.439106
+        "cost_effective": 457.134482
       },
       "claude-opus-4-7": {
         "interactions": 855,
-        "cost_effective": 44.780229
+        "cost_effective": 170.64742725
       },
       "claude-sonnet-4-6": {
         "interactions": 12404,
-        "cost_effective": 498.38186875
+        "cost_effective": 708.79798405
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 53,
@@ -46944,7 +47087,7 @@
       },
       "gemini-2.5-pro": {
         "interactions": 9,
-        "cost_effective": 0.0
+        "cost_effective": 3.06383626
       },
       "gpt-5.4": {
         "interactions": 535,
@@ -46962,15 +47105,15 @@
       },
       "claude-opus-4-6": {
         "interactions": 73,
-        "cost_effective": 16.766605
+        "cost_effective": 24.70383625
       },
       "claude-opus-4-7": {
         "interactions": 533,
-        "cost_effective": 21.942827
+        "cost_effective": 58.828883
       },
       "claude-sonnet-4-6": {
         "interactions": 3021,
-        "cost_effective": 115.9101154
+        "cost_effective": 131.9890654
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 2663,
@@ -46989,14 +47132,14 @@
         "cost_effective": 2.29969842
       },
       "z-ai/glm-5.3-flash": {
-        "interactions": 490,
-        "cost_effective": 0.76733815
+        "interactions": 501,
+        "cost_effective": 0.85033094
       }
     },
     "sk-clojure-tutor": {
       "claude-sonnet-4-6": {
         "interactions": 1531,
-        "cost_effective": 60.816471
+        "cost_effective": 83.1134823
       },
       "gpt-5.5": {
         "interactions": 119,
@@ -47006,7 +47149,7 @@
     "sk-Testimonial-jl": {
       "claude-sonnet-4-6": {
         "interactions": 217,
-        "cost_effective": 10.58752
+        "cost_effective": 13.5896221
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 7633,
@@ -47028,11 +47171,11 @@
       },
       "claude-opus-4-7": {
         "interactions": 376,
-        "cost_effective": 22.550145
+        "cost_effective": 68.9222145
       },
       "claude-sonnet-4-6": {
         "interactions": 3043,
-        "cost_effective": 117.4911602
+        "cost_effective": 129.35616695
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 2055,
@@ -47058,7 +47201,7 @@
     "charly-canticos": {
       "claude-sonnet-4-6": {
         "interactions": 75,
-        "cost_effective": 1.47670605
+        "cost_effective": 2.1073677
       },
       "deepseek/deepseek-v4-flash": {
         "interactions": 109,
@@ -47146,7 +47289,7 @@
       },
       "stealth/ox-alpha": {
         "interactions": 63,
-        "cost_effective": 0.0
+        "cost_effective": 1.7980638
       },
       "z-ai/glm-5.2": {
         "interactions": 94,
@@ -47277,8 +47420,8 @@
     },
     "charly-coffee": {
       "z-ai/glm-5.3-flash": {
-        "interactions": 2726,
-        "cost_effective": 4.9381829
+        "interactions": 3376,
+        "cost_effective": 5.78166629
       }
     }
   },
@@ -47295,7 +47438,7 @@
     },
     "project_switches_per_active_hour": {
       "measure": "human-context-switching",
-      "value": 67.13
+      "value": 66.94
     }
   },
   "filtered_out": {
@@ -47638,7 +47781,7 @@
         "charges_real": 100.0,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 100.0,
-        "cost_effective": 1064.598023,
+        "cost_effective": 1286.67042605,
         "fee_month_total": 139.99
       },
       "codex": {
@@ -47659,7 +47802,7 @@
         "charges_real": 19.99,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 19.99,
-        "cost_effective": 0.0,
+        "cost_effective": 16.80520014,
         "fee_month_total": 139.99
       },
       "openrouter": {
@@ -47682,7 +47825,7 @@
         "charges_real": 20.0,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 20.0,
-        "cost_effective": 1778.770651,
+        "cost_effective": 2677.72239175,
         "fee_month_total": 59.99
       },
       "codex": {
@@ -47703,7 +47846,7 @@
         "charges_real": 19.99,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 19.99,
-        "cost_effective": 0.0,
+        "cost_effective": 5.32804984,
         "fee_month_total": 59.99
       },
       "openrouter": {
@@ -47726,7 +47869,7 @@
         "charges_real": 0.0,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 0.0,
-        "cost_effective": 335.74101855,
+        "cost_effective": 345.04150245,
         "fee_month_total": 0.0
       },
       "codex": {
@@ -47842,7 +47985,7 @@
         "charges_real": 0.0,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 0.0,
-        "cost_effective": 27.71218552,
+        "cost_effective": 30.41849152,
         "fee_month_total": 0.0
       }
     },
@@ -47886,7 +48029,7 @@
         "charges_real": 50.0,
         "charges_provenance": "reported",
         "subscription_fee_implicit": 0.0,
-        "cost_effective": 27.51173275,
+        "cost_effective": 28.43820893,
         "fee_month_total": 0.0
       }
     }

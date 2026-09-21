@@ -395,6 +395,43 @@ class TestAggregate(unittest.TestCase):
 
 # ============================ golden ============================
 
+class TestPiCostEstimate(unittest.TestCase):
+    """coffe-8t8: logs Pi sin cost (gemini-cli) → estimación pay-per-token
+    con estimate_cost (rates del config versionados por fecha)."""
+
+    def _extract(self, usage):
+        entry = {"type": "message", "timestamp": "2026-05-10T14:23:00Z",
+                 "provider": "google-gemini-cli",
+                 "message": {"role": "assistant", "model": "gemini-3-pro",
+                             "usage": usage}}
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "charly-coffee"
+            d.mkdir()
+            (d / "s1.jsonl").write_text(json.dumps(entry) + "\n")
+            rows, _ = ut.extract_pi(sessions_dir=Path(tmp))
+        return rows
+
+    def test_gemini_sin_cost_se_estima(self):
+        rows = self._extract({"input_tokens": 1000, "output_tokens": 500,
+                              "cacheRead": 100, "cacheWrite": 0, "cost": {}})
+        self.assertEqual(1, len(rows))
+        ts = date(2026, 5, 10)
+        expected = ut.estimate_cost("gemini", "gemini-3-pro", 1000, 500,
+                                    100, 0, when=ts)
+        self.assertEqual(expected, rows[0]["cost_effective"])
+        self.assertGreater(rows[0]["cost_effective"], 0)
+
+    def test_cost_presente_pasa_directo(self):
+        rows = self._extract({"input_tokens": 1000, "output_tokens": 500,
+                              "cost": {"total": 0.42}})
+        self.assertEqual(0.42, rows[0]["cost_effective"])
+
+    def test_cero_coste_y_cero_tokens_queda_cero(self):
+        rows = self._extract({"input_tokens": 0, "output_tokens": 0,
+                              "cost": {}})
+        self.assertEqual(0.0, rows[0]["cost_effective"])
+
+
 class TestGolden(unittest.TestCase):
 
     def test_aggregate_golden(self):
