@@ -749,7 +749,7 @@ def amp_proj_from_uri(uri):
     """Deriva el proyecto (org-repo) desde el uri file:// de Amp (coffe-n35).
 
     El proyecto canónico es el repo bajo para/areas/dev/gh/<org>/<repo>,
-    nombrado como clean_proj_name ("charly-coffe", "sk-REPLy-jl") para que
+    nombrado como clean_proj_name ("charly-coffee", "sk-REPLy-jl") para que
     la taxonomía y project_daily lo crucen con las demás fuentes.
     Devuelve None si el uri no es derivable.
     """
