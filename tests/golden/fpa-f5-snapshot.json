@@ -1,6 +1,13 @@
 {
   "usage": {
     "agent_share": {
+      "agent_semantics": "claude-cli: sesión con herramienta Agent",
+      "by_tool_shares": {
+        "claude-cli": {
+          "reason": null,
+          "share": 0.25
+        }
+      },
       "monthly": [
         {
           "share": 0.2,
@@ -395,6 +402,7 @@
       "clear_monthly": null,
       "clear_monthly_reason": "el tracker no emite /clear ni sesiones por mes (FPA-118)",
       "clear_per_100": 25.0,
+      "clear_scope_reason": null,
       "cost_by_bucket": null,
       "cost_by_bucket_reason": "el tracker no emite coste por sesión (FPA-116/117)",
       "long_no_clear": null,
@@ -417,7 +425,14 @@
         }
       ],
       "median_p90": null,
-      "median_p90_reason": "el tracker no emite coste por sesión (FPA-116/117)"
+      "median_p90_reason": "el tracker no emite coste por sesión (FPA-116/117)",
+      "resets_by_tool": {
+        "claude-cli": {
+          "count": 5,
+          "signal": "/clear en history.jsonl"
+        }
+      },
+      "total_sessions": 20
     },
     "skills": {
       "once": [

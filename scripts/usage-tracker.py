@@ -825,6 +825,8 @@ def extract_session_stats():
         ls = summary.get("last_ts")
         msgs = summary.get("user_messages", 0)
         sessions.append({
+            "tool": "claude-cli",  # coffe-i31: provenance por tool
+            "source": "claude_cache",
             "project": proj,
             "first_ts": (fs or " ")[:10],
             "first_ts_full": fs,
@@ -839,6 +841,135 @@ def extract_session_stats():
         })
     # coffe-snj: sesiones que se solapan con la ventana --since/--until
     return filter_sessions(sessions, SINCE, UNTIL)
+
+
+def extract_pi_sessions(sessions_dir=None):
+    """coffe-i31: sesiones pi — 1 archivo JSONL = 1 sesión.
+
+    En pi el reset es /new (no /clear) y el TUI lo intercepta: nunca
+    aparece como user message en el JSONL (verificado en la auditoría:
+    0 /new en 981 archivos). La señal correcta de sesión/reset es el
+    archivo mismo: cada /new abre JSONL nuevo.
+
+    Métricas sin señal en pi (skills/errores/compactions) van en None —
+    _session_stats las excluye de los totales en vez de contarlas como 0.
+    has_agent=False: la semántica Agent (subagentes) es de Claude; el
+    alcance se declara en sessions.agent_semantics.
+
+    sessions_dir permite tests con tmpdir (como extract_pi, coffe-8t8).
+    La ventana --since/--until se aplica en extract_sessions() (una sesión
+    puede solaparse con la ventana — filter_sessions).
+    """
+    sessions = []
+    sessions_dir = sessions_dir or (PI_DIR / "sessions")
+    if not sessions_dir.exists(): return sessions
+    for sd in sorted(sessions_dir.iterdir()):
+        if not sd.is_dir(): continue
+        proj = sd.name
+        if not is_charly(proj): continue  # coffe-i31: scope consistente
+        for f in sorted(sd.glob("*.jsonl")):
+            try:
+                msgs = user_prompts = 0
+                first_ts = last_ts = None
+                first_raw = last_raw = None
+                tools = set()
+                with open(f) as fh:
+                    for line in fh:
+                        entry = json.loads(line)
+                        if entry.get("type") != "message": continue
+                        ts = parse_ts(entry.get("timestamp"))
+                        if ts is not None:
+                            if first_ts is None:
+                                first_ts = ts
+                                first_raw = entry.get("timestamp")
+                            last_ts = ts
+                            last_raw = entry.get("timestamp")
+                        msg = entry.get("message", {}) or {}
+                        role = msg.get("role")
+                        if role == "user":
+                            user_prompts += 1
+                        elif role == "assistant":
+                            msgs += 1
+                            if _pi_has_tool_call(msg):
+                                for part in (msg.get("parts") or msg.get("content") or []):
+                                    if isinstance(part, dict) and str(part.get("type", "")).startswith("tool"):
+                                        name = part.get("toolName") or part.get("name")
+                                        tools.add(str(name) if name else "tool-call")
+                if first_ts is None: continue  # archivo sin mensajes
+                sessions.append({
+                    "tool": "pi",
+                    "source": "pi_session_files",
+                    "project": proj,
+                    "first_ts": first_ts.isoformat()[:10],
+                    "first_ts_full": first_raw,
+                    "last_ts_full": last_raw,
+                    "duration_msgs": user_prompts,
+                    "n_turns": msgs,
+                    "n_tools": len(tools),
+                    "has_agent": False,
+                    "n_skills": None,
+                    "n_errors": None,
+                    "n_compactions": None,
+                })
+            except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError) as e:
+                if os.environ.get("TRACKER_DEBUG"):
+                    print(f"  [skipped pi-session] {f.name}: {e}", file=sys.stderr)
+    return sessions
+
+
+def extract_amp_sessions(amp_dir=None):
+    """coffe-i31: sesiones amp — 1 dir de file-changes = 1 tarea.
+
+    Amp es un agente autónomo: has_agent=True por definición (se declara
+    en sessions.agent_semantics). n_turns = archivos tocados; sin señal
+    de skills/errores/compactions (None).
+    """
+    sessions = []
+    amp_dir = amp_dir or (AMP_DIR / "file-changes")
+    if not amp_dir.exists(): return sessions
+    for td in sorted(amp_dir.iterdir()):
+        if not td.is_dir(): continue
+        hits = []  # (ts, proyecto derivado, timestamp crudo) por archivo
+        for f in td.iterdir():
+            try:
+                entry = json.loads(f.read_text())
+                uri = entry.get("uri", "")
+                if not is_charly(uri):
+                    continue
+                ts = parse_ts(entry.get("timestamp"))
+                if ts:
+                    hits.append((ts, amp_proj_from_uri(uri) or "amp-unknown",
+                                 entry.get("timestamp")))
+            except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError):
+                continue
+        if not hits: continue
+        hits.sort()
+        first, last = hits[0][0], hits[-1][0]
+        sessions.append({
+            "tool": "amp",
+            "source": "amp_file_changes",
+            "project": hits[0][1],
+            "first_ts": first.isoformat()[:10],
+            "first_ts_full": hits[0][2],  # timestamp crudo del log
+            "last_ts_full": hits[-1][2],
+            "duration_msgs": len(hits),
+            "n_turns": len(hits),
+            "n_tools": 0,
+            "has_agent": True,
+            "n_skills": None,
+            "n_errors": None,
+            "n_compactions": None,
+        })
+    return sessions
+
+
+def extract_sessions():
+    """coffe-i31: sesiones de todas las tools (claude cache + pi files +
+    amp tasks), con la ventana --since/--until aplicada a las nuevas
+    fuentes (el claude cache ya la aplica en extract_session_stats)."""
+    return (extract_session_stats()
+            + filter_sessions(extract_pi_sessions(), SINCE, UNTIL)
+            + filter_sessions(extract_amp_sessions(), SINCE, UNTIL))
 
 
 def collect_outcomes():
@@ -1099,8 +1230,14 @@ def _multitasking_block(hour_projects, day_projects, daily, switches_by_day):
     }
 
 
-def _session_stats(sessions):
-    """Estadísticas de sesiones (largos, autonomía, promedios, top)."""
+def _session_stats(sessions, commands=None):
+    """Estadísticas de sesiones (largos, autonomía, promedios, top).
+
+    coffe-i31: multi-tool con provenance — by_tool (totals/with_agent/
+    resets por tool) y agent_semantics declarando el alcance. Los campos
+    sin señal en una tool (pi/amp: skills/errores/compactions) van en
+    None y se excluyen de los totales, no se cuentan como 0.
+    """
     stats = {
         "total_sessions": len(sessions),
         "length_distribution": Counter(),
@@ -1110,6 +1247,13 @@ def _session_stats(sessions):
         "avg_turns": 0,
         "avg_tools": 0,
         "avg_skills": 0,
+        "agent_semantics": (
+            "claude-cli: sesión con herramienta Agent (subagentes); "
+            "amp: autónomo por definición (has_agent=True); "
+            "pi: sin señal de subagentes (has_agent=False)"),
+        "by_tool": defaultdict(lambda: {
+            "total": 0, "with_agent": 0,
+            "resets": {"signal": "", "count": 0}}),
     }
     longest = []
     for s in sessions:
@@ -1120,20 +1264,44 @@ def _session_stats(sessions):
         elif n <= 300: stats["length_distribution"]["101-300"] += 1
         elif n <= 500: stats["length_distribution"]["301-500"] += 1
         else: stats["length_distribution"]["500+"] += 1
-        if s["has_agent"]:
+        if s.get("has_agent"):
             stats["with_agent"] += 1
-        stats["total_api_errors"] += s["n_errors"]
-        stats["total_compactions"] += s["n_compactions"]
+        # coffe-i31: None = sin señal (no 0) — excluido del total
+        stats["total_api_errors"] += s.get("n_errors") or 0
+        stats["total_compactions"] += s.get("n_compactions") or 0
         stats["avg_turns"] += n
-        stats["avg_tools"] += s["n_tools"]
-        stats["avg_skills"] += s["n_skills"]
+        stats["avg_tools"] += s.get("n_tools") or 0
+        if s.get("n_skills") is not None:
+            stats["avg_skills"] += s["n_skills"]
         longest.append((n, s["duration_msgs"], s["first_ts"], s["project"]))
+
+        bt = stats["by_tool"][s.get("tool", "claude-cli")]
+        bt["total"] += 1
+        if s.get("has_agent"): bt["with_agent"] += 1
 
     if sessions:
         n = len(sessions)
         stats["avg_turns"] /= n
         stats["avg_tools"] /= n
-        stats["avg_skills"] /= n
+        n_sk = sum(1 for s in sessions if s.get("n_skills") is not None)
+        stats["avg_skills"] = stats["avg_skills"] / n_sk if n_sk else 0
+
+    # coffe-i31: resets por tool — señales distintas por harness
+    # (FPA-117/118 adaptado): claude cuenta /clear del history.jsonl;
+    # en pi cada /new abre un archivo nuevo (el conteo de archivos de
+    # sesión ES el conteo de resets); amp es 1 tarea = 1 corrida.
+    commands = commands or Counter()
+    for tool, bt in stats["by_tool"].items():
+        if tool == "claude-cli":
+            bt["resets"] = {"signal": "/clear en history.jsonl (solo claude)",
+                            "count": commands.get("/clear", 0)}
+        elif tool == "pi":
+            bt["resets"] = {"signal": "archivos de sesión pi (1 archivo = 1 /new)",
+                            "count": bt["total"]}
+        else:
+            bt["resets"] = {"signal": f"tareas {tool} (1 dir = 1 corrida)",
+                            "count": bt["total"]}
+    stats["by_tool"] = dict(stats["by_tool"])
 
     longest.sort(key=lambda x: -x[0])
     stats["top_longest_by_turns"] = [
@@ -1361,7 +1529,7 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             by_project[proj_clean].skills = Counter(sk)
 
     # --- Sessions ---
-    session_stats = _session_stats(sessions)
+    session_stats = _session_stats(sessions, commands)
 
     # --- project_daily ---
     project_daily = _project_daily(by_project, day_projects, proj_day)
@@ -1603,7 +1771,7 @@ def main():
         sys.exit(1)
 
     print("Session stats...", flush=True)
-    sessions = extract_session_stats()
+    sessions = extract_sessions()  # coffe-i31: claude + pi + amp con provenance
     print(f"  {len(sessions)} charly sessions", flush=True)
 
     print("Aggregating...", flush=True)

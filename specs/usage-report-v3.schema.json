@@ -110,6 +110,28 @@
         "total_sessions": {"type": "integer", "minimum": 0},
         "length_distribution": {"type": "object"},
         "with_agent": {"type": "integer", "minimum": 0},
+        "agent_semantics": {
+          "description": "coffe-i31: alcance del flag has_agent por tool — la semántica de subagentes difiere por harness",
+          "type": "string"},
+        "by_tool": {
+          "description": "coffe-i31: sesiones con provenance por tool. resets = señal de reset por harness (claude: /clear de history.jsonl; pi: 1 archivo de sesión = 1 /new; amp: 1 tarea = 1 corrida)",
+          "type": "object",
+          "patternProperties": {"^[a-z][a-z0-9-]*$": {
+            "type": "object",
+            "required": ["total", "with_agent", "resets"],
+            "properties": {
+              "total": {"type": "integer", "minimum": 0},
+              "with_agent": {"type": "integer", "minimum": 0},
+              "resets": {
+                "type": "object",
+                "required": ["signal", "count"],
+                "properties": {
+                  "signal": {"type": "string"},
+                  "count": {"type": "integer", "minimum": 0}
+                }
+              }
+            }
+          }}},
         "total_api_errors": {"type": "integer"},
         "total_compactions": {"type": "integer"},
         "avg_turns": {"type": "number"},
@@ -256,7 +278,7 @@
       }
     },
     "sessions_monthly": {
-      "description": "Sesiones por mes (KPIs: coste por sesión, autonomous share)",
+      "description": "Sesiones por mes (KPIs: coste por sesión, autonomous share) — coffe-i31: incluye todas las tools (claude + pi + amp)",
       "type": "object",
       "patternProperties": {"^[0-9]{4}-[0-9]{2}$": {
         "type": "object",

@@ -96,6 +96,14 @@ def f5_fixture():
     fx["commands"] = {"/clear": 5, "/model": 2}
     fx["sessions"] = {
         "total_sessions": 20, "with_agent": 5,
+        # coffe-i31: shape multi-tool — clear_per_100 usa denominador
+        # claude-only y el /clear viene de by_tool.claude-cli.resets
+        "agent_semantics": "claude-cli: sesión con herramienta Agent",
+        "by_tool": {
+            "claude-cli": {"total": 20, "with_agent": 5,
+                           "resets": {"signal": "/clear en history.jsonl",
+                                      "count": 5}},
+        },
         "length_distribution": {"1-10": 8, "11-50": 7, "51-100": 3,
                                 "101-300": 2},
         "top_longest_by_turns": [

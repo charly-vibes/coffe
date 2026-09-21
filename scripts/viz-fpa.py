@@ -1660,7 +1660,9 @@ _SESSION_BUCKET_LABELS = (("1-10", "1–10"), ("11-50", "11–50"),
 def build_usage_sessions(report, cfg):
     """FPA-116…118: buckets de longitud de sesión (1–10, 11–50, 51–100,
     100+), sesiones más largas, coste/mediana/p90 (n/a sin coste por
-    sesión) y /clear por 100 sesiones."""
+    sesión) y resets por 100 sesiones con provenance por tool (coffe-i31:
+    /clear es una métrica claude-only; en pi el reset es /new = archivo
+    nuevo, el denominador del ratio es claude-only y se declara)."""
     sessions = report.get("sessions", {}) or {}
     raw = sessions.get("length_distribution", {}) or {}
     counts = {label: raw.get(key, 0) for key, label in _SESSION_BUCKET_LABELS}
@@ -1674,9 +1676,21 @@ def build_usage_sessions(report, cfg):
                 "cost_reason": cost_reason}
                for s in sessions.get("top_longest_by_turns", [])]
     total_sessions = sessions.get("total_sessions") or 0
-    clears = (report.get("commands", {}) or {}).get("/clear")
-    clear_per_100 = (100.0 * clears / total_sessions
-                     if clears is not None and total_sessions else None)
+    # coffe-i31: clear_per_100 con denominador claude-only (el /clear solo
+    # existe en Claude; dividir por el total global sesga el ratio)
+    by_tool = sessions.get("by_tool", {}) or {}
+    claude = by_tool.get("claude-cli", {}) or {}
+    claude_total = claude.get("total") or 0
+    clears = ((claude.get("resets") or {}).get("count"))
+    if claude_total and clears is not None:
+        clear_per_100 = 100.0 * clears / claude_total
+        clear_scope_reason = None
+    else:
+        clear_per_100 = None
+        clear_scope_reason = ("sin sesiones claude en la ventana o sin /clear "
+                              "emitido (FPA-118); el ratio es claude-only")
+    resets_by_tool = {t: (v.get("resets") or {})
+                      for t, v in by_tool.items()}
     monthly_trend, monthly_reason = _na(
         "el tracker no emite /clear ni sesiones por mes (FPA-118)")
     long_turns = _cfg_int(cfg, "sessions", "long_turns", 100)
@@ -1688,6 +1702,9 @@ def build_usage_sessions(report, cfg):
         "cost_by_bucket": None, "cost_by_bucket_reason": cost_reason,
         "median_p90": None, "median_p90_reason": cost_reason,
         "clear_per_100": clear_per_100,
+        "clear_scope_reason": clear_scope_reason,
+        "resets_by_tool": resets_by_tool,
+        "total_sessions": total_sessions,
         "clear_monthly": monthly_trend,
         "clear_monthly_reason": monthly_reason,
         "long_no_clear": no_clear,
@@ -1787,11 +1804,19 @@ def build_usage_concurrency(report):
 
 def build_agent_share(report):
     """FPA-121: share de sesiones con Agent, total y trend mensual si el
-    tracker emite sesiones por mes."""
+    tracker emite sesiones por mes. coffe-i31: share por tool — la
+    semántica de Agent difiere por harness (agent_semantics)."""
     sessions = report.get("sessions", {}) or {}
     total = sessions.get("total_sessions") or 0
     with_agent = sessions.get("with_agent") or 0
     share = with_agent / total if total else None
+    by_tool_shares = {}
+    for t, v in (sessions.get("by_tool", {}) or {}).items():
+        t_total = v.get("total") or 0
+        by_tool_shares[t] = {
+            "share": (v.get("with_agent", 0) / t_total) if t_total else None,
+            "reason": None if t_total else "sin sesiones de esta tool",
+        }
     monthly_raw = report.get("sessions_monthly")
     if monthly_raw:
         monthly = [{"ym": ym,
@@ -1803,7 +1828,9 @@ def build_agent_share(report):
         monthly, monthly_reason = _na(
             "el tracker no emite sesiones por mes (FPA-121)")
     return {"share": share, "monthly": monthly,
-            "monthly_reason": monthly_reason}
+            "monthly_reason": monthly_reason,
+            "by_tool_shares": by_tool_shares,
+            "agent_semantics": sessions.get("agent_semantics")}
 
 
 def build_lifecycle(report, cfg):
@@ -3756,6 +3783,11 @@ def sessions_html(usage):
     long_rows, show_all = top5_rows(long_raw)
     clear = (f"{s['clear_per_100']:.1f}" if s["clear_per_100"] is not None
              else "n/a")
+    clear_scope = (" (claude-only)" if s["clear_per_100"] is not None
+                   else f' — {_na_cell(s["clear_scope_reason"])}')
+    resets_rows = " · ".join(
+        f"{esc_html(t)}: {fmt_int(v.get('count', 0))} ({esc_html(v.get('signal', ''))})"
+        for t, v in sorted((s.get("resets_by_tool") or {}).items()))
     clear_monthly = (s["clear_monthly"] if s["clear_monthly"]
                      else _na_cell(s["clear_monthly_reason"]))
     no_clear = (s["long_no_clear"] if s["long_no_clear"]
@@ -3770,9 +3802,10 @@ def sessions_html(usage):
 <tbody>{long_rows}</tbody></table>
 {show_all}
 <p>Coste por bucket: {cost_bucket} · mediana/p90 por sesión: {median_p90}</p>
-<p>/clear por 100 sesiones (FPA-118):
+<p>/clear por 100 sesiones (FPA-118){clear_scope}:
 {fig(clear, "reported")} · por mes: {clear_monthly} ·
 sesiones > {s["long_turns"]} turns sin /clear: {no_clear}</p>
+<p>Resets por tool (coffe-i31, señales distintas por harness): {resets_rows}</p>
 </details>'''
 
 
@@ -3818,6 +3851,9 @@ def concurrency_html(usage):
               else _na_cell(sw.get("reason")))
     a = usage["agent_share"]
     share = _share(a["share"])
+    per_tool = " · ".join(
+        f"{esc_html(t)}: {_share(v['share']) if v['share'] is not None else _na_cell(v['reason'])}"
+        for t, v in sorted((a.get("by_tool_shares") or {}).items()))
     if a["monthly"]:
         m_rows = "".join(f'<tr><td>{m["ym"]}</td><td>{_share(m["share"])}</td></tr>'
                          for m in a["monthly"])
@@ -3834,6 +3870,8 @@ def concurrency_html(usage):
 <li>Switches de proyecto por hora activa ({esc_html(sw["measure"])}): {sw_txt}</li>
 </ul>
 <p>Share de sesiones con Agent (FPA-121): {fig(share, "reported")}</p>
+<p class="small">Por tool: {per_tool} —
+{esc_html(a.get("agent_semantics") or "")}</p>
 {monthly}
 </details>'''
 
