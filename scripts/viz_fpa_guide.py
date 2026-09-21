@@ -562,6 +562,7 @@ def render_guide_html(guide_dict, cfg, generated=None):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
 <title>Guía de análisis — {html_mod.escape(site_name)}</title>
 <style>{CSS}</style>
 </head>

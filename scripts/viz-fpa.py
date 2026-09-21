@@ -3219,6 +3219,18 @@ body[data-view="data"] #data { display: block; }
   .fc-tbl td:first-child, #data th:first-child, #data td:first-child,
   table.small th:first-child, table.small td:first-child {
     position:sticky; left: 0; background: var(--bg); }
+  /* coffe-26b: touch targets WCAG 2.5.8 — los 5 inputs del dashboard
+     suben a 44px (Apple HIG; coste nulo); los 73 summaries anidados del
+     ttree suben a >= 24px (mínimo AA real) porque llevarlos a 44px
+     duplicaría el scroll del Desglose, denso por diseño. */
+  .fc-input, .b-input { min-height: 44px; }
+  .ttree details > summary { padding: .25rem 0; }
+  /* coffe-26b: labels del forecast en bloque — inline fluyen con el
+     label anterior y parten el texto con el input intercalado. */
+  #forecast > label { display: block; margin: .45rem 0; }
+  /* coffe-26b: al cambiar de tab el h2 de la vista entra bajo la
+     topbar (sticky ~4rem) en vez de a ~350px de header común. */
+  .fpa-view > h2 { scroll-margin-top: 4rem; }
 }
 """)
 
@@ -4139,6 +4151,7 @@ def render_html(report, cfg, generated=None, today=None):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
 <title>{site_name}</title>
 <style>{CSS}{CSS_LEGACY if retro else ""}</style>
 </head>
@@ -4376,7 +4389,14 @@ def render_html(report, cfg, generated=None, today=None):
       if (window.matchMedia &&
           window.matchMedia("(max-width:599px)").matches) {{
         e.preventDefault();
-        window.scrollTo(0, 0);
+        setView(t.getAttribute("data-view"));
+        // coffe-26b: el h2 de la vista entra bajo la topbar — los
+        // primeros ~350px (header/topbar/banner) no cambian entre
+        // vistas y el salto a scrollY=0 no da señal del cambio.
+        var h = document.querySelector(
+          "#" + t.getAttribute("data-view") + " > h2");
+        if (h) h.scrollIntoView({{ block: "start" }});
+        return;
       }}
       setView(t.getAttribute("data-view"));
     }});
