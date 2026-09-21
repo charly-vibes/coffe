@@ -2092,7 +2092,11 @@ def build_time_tree(report, cfg):
     for meta in build_months(report):
         ym = meta["ym"]
         y, q = ym[:4], f"Q{(int(ym[5:7]) - 1) // 3 + 1}"
-        budget = cash_budget if (start and ym >= start and cash_budget) else None
+        budget = None
+        if start and ym >= start and cash_budget:
+            # FPA-052 (coffe-9p4): pro-rata de mes parcial, misma fuente que
+            # build_budget — el árbol no contradice la tabla de varianza.
+            budget = round(cash_budget * meta["elapsed"] / meta["total_days"], 2)
         month_node = _node(f"time:{ym}", month_label(ym))
         _node_add(month_node, ym, meta["cost_cash"], meta["interactions"], budget)
         ynode = years.setdefault(y, _node(f"time:{y}", y))
@@ -2554,9 +2558,16 @@ def _tree_rows(node, window, prior, total_cost, is_time=False, full=False):
         "children": [],
     }
     if is_time:
-        budget = sum(node["by_month"][m].get("budget", 0.0) or 0.0
-                     for m in window if m in node["by_month"])
-        variance = cost - budget
+        # coffe-9p4: los presupuestos solo existen en meses in-budget; si la
+        # ventana mezcla meses fuera del periodo presupuestado (root, años),
+        # la varianza compara solo el tramo in-budget en vez de mezclar
+        # coste de 10 meses contra presupuesto de 6.
+        bmonths = [m for m in window if m in node["by_month"]
+                   and node["by_month"][m].get("budget")]
+        budget = sum(node["by_month"][m]["budget"] for m in bmonths)
+        if budget:
+            variance = (sum(node["by_month"][m]["cost"] for m in bmonths)
+                        if len(bmonths) < len(window) else cost) - budget
         row["budget_display"] = fmt_usd(budget) + " *" if budget else "n/a"
         row["variance_display"] = (f"{'+' if variance >= 0 else '-'}"
                                    f"${abs(variance):,.2f}" if budget else "n/a")
@@ -3334,7 +3345,9 @@ def tree_section(name, title, root, is_time=False, open_=False):
             f'<summary><h2>{title}</h2></summary>'
             f'<table class="ttree"><thead><tr>{head}</tr></thead>'
             f'<tbody>{rows}</tbody></table>'
-            f'{"<p class=\"small\">* presupuesto cash del config (assumed)." if is_time else ""}'
+            f'{"<p class=\"small\">* presupuesto cash del config (assumed). "
+            f'En ventanas que mezclan meses fuera del periodo presupuestado, '
+            f'la varianza compara solo el tramo con presupuesto (coffe-9p4).</p>' if is_time else ""}'
             f'</details>')
 
 
@@ -4171,7 +4184,7 @@ def render_html(report, cfg, generated=None, today=None):
       + '</h2></summary><button class="export-csv" type="button">Exportar CSV</button>'
       + '<table class="ttree"><thead><tr>' + head
       + '</tr></thead><tbody>' + treeRows(root, isTime, 0) + '</tbody></table>'
-      + (isTime ? '<p class="small">* presupuesto cash del config (assumed).</p>' : "")
+      + (isTime ? '<p class="small">* presupuesto cash del config (assumed). En ventanas que mezclan meses fuera del periodo presupuestado, la varianza compara solo el tramo con presupuesto.</p>' : "")
       + '</details>';
   }}
   var sel = document.getElementById("period-select");

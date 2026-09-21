@@ -6201,7 +6201,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -6254,7 +6254,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -6387,7 +6387,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -6422,7 +6422,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -6434,8 +6434,8 @@
                       "pct_display": "4.3%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -6448,8 +6448,8 @@
                   "pct_display": "41.9%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 1086.73,
@@ -6462,8 +6462,8 @@
               "pct_display": "93.9%",
               "per_1k_display": "$7.13",
               "totals_only": false,
-              "variance_display": "+$486.73",
-              "variance_pct_display": "+81.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 1156.72,
@@ -6476,8 +6476,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.59",
           "totals_only": false,
-          "variance_display": "+$556.72",
-          "variance_pct_display": "+92.8%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -28071,7 +28071,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$100.00 *",
+          "budget_display": "$70.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -28124,7 +28124,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$100.00 *",
+              "budget_display": "$70.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -28257,7 +28257,7 @@
                   "variance_pct_display": "n/a"
                 },
                 {
-                  "budget_display": "$100.00 *",
+                  "budget_display": "$70.00 *",
                   "children": [
                     {
                       "budget_display": "n/a",
@@ -28292,7 +28292,7 @@
                       "variance_pct_display": "n/a"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -28304,8 +28304,8 @@
                       "pct_display": "100.0%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 50.0,
@@ -28318,8 +28318,8 @@
                   "pct_display": "100.0%",
                   "per_1k_display": "$3.71",
                   "totals_only": false,
-                  "variance_display": "-$50.00",
-                  "variance_pct_display": "-50.0%"
+                  "variance_display": "-$20.00",
+                  "variance_pct_display": "-28.6%"
                 }
               ],
               "cost": 50.0,
@@ -28332,8 +28332,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$3.71",
               "totals_only": false,
-              "variance_display": "-$50.00",
-              "variance_pct_display": "-50.0%"
+              "variance_display": "-$20.00",
+              "variance_pct_display": "-28.6%"
             }
           ],
           "cost": 50.0,
@@ -28346,8 +28346,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$3.71",
           "totals_only": false,
-          "variance_display": "-$50.00",
-          "variance_pct_display": "-50.0%"
+          "variance_display": "-$20.00",
+          "variance_pct_display": "-28.6%"
         },
         "tool": {
           "children": [
@@ -36825,7 +36825,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$300.00 *",
+          "budget_display": "$270.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -36878,7 +36878,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$300.00 *",
+              "budget_display": "$270.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -37011,7 +37011,7 @@
                   "variance_pct_display": "n/a"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -37046,7 +37046,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -37058,8 +37058,8 @@
                       "pct_display": "10.3%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -37072,8 +37072,8 @@
                   "pct_display": "100.0%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 485.0,
@@ -37086,8 +37086,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.39",
               "totals_only": false,
-              "variance_display": "+$185.00",
-              "variance_pct_display": "+61.7%"
+              "variance_display": "+$215.00",
+              "variance_pct_display": "+79.6%"
             }
           ],
           "cost": 485.0,
@@ -37100,8 +37100,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.39",
           "totals_only": false,
-          "variance_display": "+$185.00",
-          "variance_pct_display": "+61.7%"
+          "variance_display": "+$215.00",
+          "variance_pct_display": "+79.6%"
         },
         "tool": {
           "children": [
@@ -45844,8 +45844,8 @@
               "pct_display": "88.0%",
               "per_1k_display": "$21.49",
               "totals_only": false,
-              "variance_display": "+$411.74",
-              "variance_pct_display": "+411.7%"
+              "variance_display": "+$39.99",
+              "variance_pct_display": "+40.0%"
             }
           ],
           "cost": 581.73,
@@ -45858,8 +45858,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$24.42",
           "totals_only": false,
-          "variance_display": "+$481.73",
-          "variance_pct_display": "+481.7%"
+          "variance_display": "+$39.99",
+          "variance_pct_display": "+40.0%"
         },
         "tool": {
           "children": [
@@ -48036,8 +48036,8 @@
               "pct_display": "89.3%",
               "per_1k_display": "$8.57",
               "totals_only": false,
-              "variance_display": "+$381.73",
-              "variance_pct_display": "+190.9%"
+              "variance_display": "+$9.98",
+              "variance_pct_display": "+5.0%"
             }
           ],
           "cost": 651.72,
@@ -48050,8 +48050,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$9.60",
           "totals_only": false,
-          "variance_display": "+$451.72",
-          "variance_pct_display": "+225.9%"
+          "variance_display": "+$9.98",
+          "variance_pct_display": "+5.0%"
         },
         "tool": {
           "children": [
@@ -50229,8 +50229,8 @@
               "pct_display": "89.6%",
               "per_1k_display": "$7.87",
               "totals_only": false,
-              "variance_display": "+$301.73",
-              "variance_pct_display": "+100.6%"
+              "variance_display": "-$70.02",
+              "variance_pct_display": "-23.3%"
             }
           ],
           "cost": 671.72,
@@ -50243,8 +50243,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$8.78",
           "totals_only": false,
-          "variance_display": "+$371.72",
-          "variance_pct_display": "+123.9%"
+          "variance_display": "-$70.02",
+          "variance_pct_display": "-23.3%"
         },
         "tool": {
           "children": [
@@ -52423,8 +52423,8 @@
               "pct_display": "93.7%",
               "per_1k_display": "$7.89",
               "totals_only": false,
-              "variance_display": "+$636.73",
-              "variance_pct_display": "+159.2%"
+              "variance_display": "+$264.98",
+              "variance_pct_display": "+66.2%"
             }
           ],
           "cost": 1106.72,
@@ -52437,8 +52437,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$8.42",
           "totals_only": false,
-          "variance_display": "+$706.72",
-          "variance_pct_display": "+176.7%"
+          "variance_display": "+$264.98",
+          "variance_pct_display": "+66.2%"
         },
         "tool": {
           "children": [
@@ -54618,8 +54618,8 @@
               "pct_display": "93.7%",
               "per_1k_display": "$7.46",
               "totals_only": false,
-              "variance_display": "+$536.73",
-              "variance_pct_display": "+107.3%"
+              "variance_display": "+$164.98",
+              "variance_pct_display": "+33.0%"
             }
           ],
           "cost": 1106.72,
@@ -54632,8 +54632,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.97",
           "totals_only": false,
-          "variance_display": "+$606.72",
-          "variance_pct_display": "+121.3%"
+          "variance_display": "+$164.98",
+          "variance_pct_display": "+33.0%"
         },
         "tool": {
           "children": [
@@ -56553,7 +56553,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -56606,7 +56606,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -56739,7 +56739,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -56774,7 +56774,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -56786,8 +56786,8 @@
                       "pct_display": "4.3%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -56800,8 +56800,8 @@
                   "pct_display": "41.9%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 1086.73,
@@ -56814,8 +56814,8 @@
               "pct_display": "93.9%",
               "per_1k_display": "$7.13",
               "totals_only": false,
-              "variance_display": "+$486.73",
-              "variance_pct_display": "+81.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 1156.72,
@@ -56828,8 +56828,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.59",
           "totals_only": false,
-          "variance_display": "+$556.72",
-          "variance_pct_display": "+92.8%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -63381,8 +63381,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$21.49",
               "totals_only": false,
-              "variance_display": "+$411.74",
-              "variance_pct_display": "+411.7%"
+              "variance_display": "+$39.99",
+              "variance_pct_display": "+40.0%"
             }
           ],
           "cost": 511.74,
@@ -63395,8 +63395,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$21.49",
           "totals_only": false,
-          "variance_display": "+$411.74",
-          "variance_pct_display": "+411.7%"
+          "variance_display": "+$39.99",
+          "variance_pct_display": "+40.0%"
         },
         "tool": {
           "children": [
@@ -65572,8 +65572,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$8.57",
               "totals_only": false,
-              "variance_display": "+$381.73",
-              "variance_pct_display": "+190.9%"
+              "variance_display": "+$9.98",
+              "variance_pct_display": "+5.0%"
             }
           ],
           "cost": 581.73,
@@ -65586,8 +65586,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$8.57",
           "totals_only": false,
-          "variance_display": "+$381.73",
-          "variance_pct_display": "+190.9%"
+          "variance_display": "+$9.98",
+          "variance_pct_display": "+5.0%"
         },
         "tool": {
           "children": [
@@ -67764,8 +67764,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.87",
               "totals_only": false,
-              "variance_display": "+$301.73",
-              "variance_pct_display": "+100.6%"
+              "variance_display": "-$70.02",
+              "variance_pct_display": "-23.3%"
             }
           ],
           "cost": 601.73,
@@ -67778,8 +67778,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.87",
           "totals_only": false,
-          "variance_display": "+$301.73",
-          "variance_pct_display": "+100.6%"
+          "variance_display": "-$70.02",
+          "variance_pct_display": "-23.3%"
         },
         "tool": {
           "children": [
@@ -69957,8 +69957,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.89",
               "totals_only": false,
-              "variance_display": "+$636.73",
-              "variance_pct_display": "+159.2%"
+              "variance_display": "+$264.98",
+              "variance_pct_display": "+66.2%"
             }
           ],
           "cost": 1036.73,
@@ -69971,8 +69971,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.89",
           "totals_only": false,
-          "variance_display": "+$636.73",
-          "variance_pct_display": "+159.2%"
+          "variance_display": "+$264.98",
+          "variance_pct_display": "+66.2%"
         },
         "tool": {
           "children": [
@@ -72151,8 +72151,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.46",
               "totals_only": false,
-              "variance_display": "+$536.73",
-              "variance_pct_display": "+107.3%"
+              "variance_display": "+$164.98",
+              "variance_pct_display": "+33.0%"
             }
           ],
           "cost": 1036.73,
@@ -72165,8 +72165,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.46",
           "totals_only": false,
-          "variance_display": "+$536.73",
-          "variance_pct_display": "+107.3%"
+          "variance_display": "+$164.98",
+          "variance_pct_display": "+33.0%"
         },
         "tool": {
           "children": [
@@ -74085,7 +74085,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -74138,7 +74138,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -74271,7 +74271,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -74306,7 +74306,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -74318,8 +74318,8 @@
                       "pct_display": "4.6%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -74332,8 +74332,8 @@
                   "pct_display": "44.6%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 1086.73,
@@ -74346,8 +74346,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.13",
               "totals_only": false,
-              "variance_display": "+$486.73",
-              "variance_pct_display": "+81.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 1086.73,
@@ -74360,8 +74360,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.13",
           "totals_only": false,
-          "variance_display": "+$486.73",
-          "variance_pct_display": "+81.1%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -78723,8 +78723,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$17.19",
               "totals_only": false,
-              "variance_display": "+$291.75",
-              "variance_pct_display": "+291.8%"
+              "variance_display": "+$39.99",
+              "variance_pct_display": "+40.0%"
             }
           ],
           "cost": 391.75,
@@ -78737,8 +78737,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$17.19",
           "totals_only": false,
-          "variance_display": "+$291.75",
-          "variance_pct_display": "+291.8%"
+          "variance_display": "+$39.99",
+          "variance_pct_display": "+40.0%"
         },
         "tool": {
           "children": [
@@ -80913,8 +80913,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.91",
               "totals_only": false,
-              "variance_display": "+$261.74",
-              "variance_pct_display": "+130.9%"
+              "variance_display": "+$9.98",
+              "variance_pct_display": "+5.0%"
             }
           ],
           "cost": 461.74,
@@ -80927,8 +80927,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.91",
           "totals_only": false,
-          "variance_display": "+$261.74",
-          "variance_pct_display": "+130.9%"
+          "variance_display": "+$9.98",
+          "variance_pct_display": "+5.0%"
         },
         "tool": {
           "children": [
@@ -83104,8 +83104,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.38",
               "totals_only": false,
-              "variance_display": "+$181.74",
-              "variance_pct_display": "+60.6%"
+              "variance_display": "-$70.02",
+              "variance_pct_display": "-23.3%"
             }
           ],
           "cost": 481.74,
@@ -83118,8 +83118,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.38",
           "totals_only": false,
-          "variance_display": "+$181.74",
-          "variance_pct_display": "+60.6%"
+          "variance_display": "-$70.02",
+          "variance_pct_display": "-23.3%"
         },
         "tool": {
           "children": [
@@ -85296,8 +85296,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.03",
               "totals_only": false,
-              "variance_display": "+$516.74",
-              "variance_pct_display": "+129.2%"
+              "variance_display": "+$264.98",
+              "variance_pct_display": "+66.2%"
             }
           ],
           "cost": 916.74,
@@ -85310,8 +85310,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.03",
           "totals_only": false,
-          "variance_display": "+$516.74",
-          "variance_pct_display": "+129.2%"
+          "variance_display": "+$264.98",
+          "variance_pct_display": "+66.2%"
         },
         "tool": {
           "children": [
@@ -87489,8 +87489,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.65",
               "totals_only": false,
-              "variance_display": "+$416.74",
-              "variance_pct_display": "+83.3%"
+              "variance_display": "+$164.98",
+              "variance_pct_display": "+33.0%"
             }
           ],
           "cost": 916.74,
@@ -87503,8 +87503,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.65",
           "totals_only": false,
-          "variance_display": "+$416.74",
-          "variance_pct_display": "+83.3%"
+          "variance_display": "+$164.98",
+          "variance_pct_display": "+33.0%"
         },
         "tool": {
           "children": [
@@ -89422,7 +89422,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -89475,7 +89475,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -89608,7 +89608,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -89643,7 +89643,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -89655,8 +89655,8 @@
                       "pct_display": "5.2%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -89669,8 +89669,8 @@
                   "pct_display": "50.2%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 966.74,
@@ -89683,8 +89683,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.39",
               "totals_only": false,
-              "variance_display": "+$366.74",
-              "variance_pct_display": "+61.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 966.74,
@@ -89697,8 +89697,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.39",
           "totals_only": false,
-          "variance_display": "+$366.74",
-          "variance_pct_display": "+61.1%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -91871,8 +91871,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$11.78",
               "totals_only": false,
-              "variance_display": "+$159.98",
-              "variance_pct_display": "+160.0%"
+              "variance_display": "+$39.99",
+              "variance_pct_display": "+40.0%"
             }
           ],
           "cost": 259.98,
@@ -91885,8 +91885,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$11.78",
           "totals_only": false,
-          "variance_display": "+$159.98",
-          "variance_pct_display": "+160.0%"
+          "variance_display": "+$39.99",
+          "variance_pct_display": "+40.0%"
         },
         "tool": {
           "children": [
@@ -94060,8 +94060,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$4.99",
               "totals_only": false,
-              "variance_display": "+$129.97",
-              "variance_pct_display": "+65.0%"
+              "variance_display": "+$9.98",
+              "variance_pct_display": "+5.0%"
             }
           ],
           "cost": 329.97,
@@ -94074,8 +94074,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$4.99",
           "totals_only": false,
-          "variance_display": "+$129.97",
-          "variance_pct_display": "+65.0%"
+          "variance_display": "+$9.98",
+          "variance_pct_display": "+5.0%"
         },
         "tool": {
           "children": [
@@ -96250,8 +96250,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$4.68",
               "totals_only": false,
-              "variance_display": "+$49.97",
-              "variance_pct_display": "+16.7%"
+              "variance_display": "-$70.02",
+              "variance_pct_display": "-23.3%"
             }
           ],
           "cost": 349.97,
@@ -96264,8 +96264,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$4.68",
           "totals_only": false,
-          "variance_display": "+$49.97",
-          "variance_pct_display": "+16.7%"
+          "variance_display": "-$70.02",
+          "variance_pct_display": "-23.3%"
         },
         "tool": {
           "children": [
@@ -98441,8 +98441,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.05",
               "totals_only": false,
-              "variance_display": "+$384.97",
-              "variance_pct_display": "+96.2%"
+              "variance_display": "+$264.98",
+              "variance_pct_display": "+66.2%"
             }
           ],
           "cost": 784.97,
@@ -98455,8 +98455,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.05",
           "totals_only": false,
-          "variance_display": "+$384.97",
-          "variance_pct_display": "+96.2%"
+          "variance_display": "+$264.98",
+          "variance_pct_display": "+66.2%"
         },
         "tool": {
           "children": [
@@ -100633,8 +100633,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$5.72",
               "totals_only": false,
-              "variance_display": "+$284.97",
-              "variance_pct_display": "+57.0%"
+              "variance_display": "+$164.98",
+              "variance_pct_display": "+33.0%"
             }
           ],
           "cost": 784.97,
@@ -100647,8 +100647,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$5.72",
           "totals_only": false,
-          "variance_display": "+$284.97",
-          "variance_pct_display": "+57.0%"
+          "variance_display": "+$164.98",
+          "variance_pct_display": "+33.0%"
         },
         "tool": {
           "children": [
@@ -102565,7 +102565,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -102618,7 +102618,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -102751,7 +102751,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -102786,7 +102786,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -102798,8 +102798,8 @@
                       "pct_display": "6.0%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -102812,8 +102812,8 @@
                   "pct_display": "58.1%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 834.97,
@@ -102826,8 +102826,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$5.54",
               "totals_only": false,
-              "variance_display": "+$234.97",
-              "variance_pct_display": "+39.2%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 834.97,
@@ -102840,8 +102840,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$5.54",
           "totals_only": false,
-          "variance_display": "+$234.97",
-          "variance_pct_display": "+39.2%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -113515,7 +113515,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -113568,7 +113568,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -113701,7 +113701,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -113736,7 +113736,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -113748,8 +113748,8 @@
                       "pct_display": "7.0%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -113762,8 +113762,8 @@
                   "pct_display": "67.8%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 714.98,
@@ -113776,8 +113776,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$4.76",
               "totals_only": false,
-              "variance_display": "+$114.98",
-              "variance_pct_display": "+19.2%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 714.98,
@@ -113790,8 +113790,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$4.76",
           "totals_only": false,
-          "variance_display": "+$114.98",
-          "variance_pct_display": "+19.2%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -122273,7 +122273,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$500.00 *",
+          "budget_display": "$470.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -122326,7 +122326,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$500.00 *",
+              "budget_display": "$470.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -122459,7 +122459,7 @@
                   "variance_pct_display": "-55.0%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -122494,7 +122494,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -122506,8 +122506,8 @@
                       "pct_display": "8.7%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -122520,8 +122520,8 @@
                   "pct_display": "84.3%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 574.99,
@@ -122534,8 +122534,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$4.47",
               "totals_only": false,
-              "variance_display": "+$74.99",
-              "variance_pct_display": "+15.0%"
+              "variance_display": "+$104.99",
+              "variance_pct_display": "+22.3%"
             }
           ],
           "cost": 574.99,
@@ -122548,8 +122548,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$4.47",
           "totals_only": false,
-          "variance_display": "+$74.99",
-          "variance_pct_display": "+15.0%"
+          "variance_display": "+$104.99",
+          "variance_pct_display": "+22.3%"
         },
         "tool": {
           "children": [
@@ -128840,7 +128840,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$400.00 *",
+          "budget_display": "$370.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -128893,7 +128893,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$400.00 *",
+              "budget_display": "$370.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -129026,7 +129026,7 @@
                   "variance_pct_display": "-80.0%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -129061,7 +129061,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -129073,8 +129073,8 @@
                       "pct_display": "9.9%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -129087,8 +129087,8 @@
                   "pct_display": "96.0%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 505.0,
@@ -129101,8 +129101,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$5.98",
               "totals_only": false,
-              "variance_display": "+$105.00",
-              "variance_pct_display": "+26.2%"
+              "variance_display": "+$135.00",
+              "variance_pct_display": "+36.5%"
             }
           ],
           "cost": 505.0,
@@ -129115,8 +129115,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$5.98",
           "totals_only": false,
-          "variance_display": "+$105.00",
-          "variance_pct_display": "+26.2%"
+          "variance_display": "+$135.00",
+          "variance_pct_display": "+36.5%"
         },
         "tool": {
           "children": [
@@ -133217,7 +133217,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$300.00 *",
+          "budget_display": "$270.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -133270,7 +133270,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$300.00 *",
+              "budget_display": "$270.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -133403,7 +133403,7 @@
                   "variance_pct_display": "n/a"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -133438,7 +133438,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -133450,8 +133450,8 @@
                       "pct_display": "10.3%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -133464,8 +133464,8 @@
                   "pct_display": "100.0%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 485.0,
@@ -133478,8 +133478,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$6.39",
               "totals_only": false,
-              "variance_display": "+$185.00",
-              "variance_pct_display": "+61.7%"
+              "variance_display": "+$215.00",
+              "variance_pct_display": "+79.6%"
             }
           ],
           "cost": 485.0,
@@ -133492,8 +133492,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$6.39",
           "totals_only": false,
-          "variance_display": "+$185.00",
-          "variance_pct_display": "+61.7%"
+          "variance_display": "+$215.00",
+          "variance_pct_display": "+79.6%"
         },
         "tool": {
           "children": [
@@ -135405,7 +135405,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$200.00 *",
+          "budget_display": "$170.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -135458,7 +135458,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$200.00 *",
+              "budget_display": "$170.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -135591,7 +135591,7 @@
                   "variance_pct_display": "n/a"
                 },
                 {
-                  "budget_display": "$200.00 *",
+                  "budget_display": "$170.00 *",
                   "children": [
                     {
                       "budget_display": "n/a",
@@ -135626,7 +135626,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -135638,8 +135638,8 @@
                       "pct_display": "100.0%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 50.0,
@@ -135652,8 +135652,8 @@
                   "pct_display": "100.0%",
                   "per_1k_display": "$2.39",
                   "totals_only": false,
-                  "variance_display": "-$150.00",
-                  "variance_pct_display": "-75.0%"
+                  "variance_display": "-$120.00",
+                  "variance_pct_display": "-70.6%"
                 }
               ],
               "cost": 50.0,
@@ -135666,8 +135666,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$2.39",
               "totals_only": false,
-              "variance_display": "-$150.00",
-              "variance_pct_display": "-75.0%"
+              "variance_display": "-$120.00",
+              "variance_pct_display": "-70.6%"
             }
           ],
           "cost": 50.0,
@@ -135680,8 +135680,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$2.39",
           "totals_only": false,
-          "variance_display": "-$150.00",
-          "variance_pct_display": "-75.0%"
+          "variance_display": "-$120.00",
+          "variance_pct_display": "-70.6%"
         },
         "tool": {
           "children": [
@@ -139787,7 +139787,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -139840,7 +139840,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -139973,7 +139973,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -140008,7 +140008,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -140020,8 +140020,8 @@
                       "pct_display": "4.6%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -140034,8 +140034,8 @@
                   "pct_display": "44.6%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 1086.73,
@@ -140048,8 +140048,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.13",
               "totals_only": false,
-              "variance_display": "+$486.73",
-              "variance_pct_display": "+81.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 1086.73,
@@ -140062,8 +140062,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.13",
           "totals_only": false,
-          "variance_display": "+$486.73",
-          "variance_pct_display": "+81.1%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [
@@ -144169,7 +144169,7 @@
           "totals_only": false
         },
         "time": {
-          "budget_display": "$600.00 *",
+          "budget_display": "$570.00 *",
           "children": [
             {
               "budget_display": "n/a",
@@ -144222,7 +144222,7 @@
               "variance_pct_display": "n/a"
             },
             {
-              "budget_display": "$600.00 *",
+              "budget_display": "$570.00 *",
               "children": [
                 {
                   "budget_display": "n/a",
@@ -144355,7 +144355,7 @@
                   "variance_pct_display": "-23.3%"
                 },
                 {
-                  "budget_display": "$300.00 *",
+                  "budget_display": "$270.00 *",
                   "children": [
                     {
                       "budget_display": "$100.00 *",
@@ -144390,7 +144390,7 @@
                       "variance_pct_display": "-100.0%"
                     },
                     {
-                      "budget_display": "$100.00 *",
+                      "budget_display": "$70.00 *",
                       "children": [],
                       "cost": 50.0,
                       "cost_display": "$50.00",
@@ -144402,8 +144402,8 @@
                       "pct_display": "4.6%",
                       "per_1k_display": "$3.71",
                       "totals_only": false,
-                      "variance_display": "-$50.00",
-                      "variance_pct_display": "-50.0%"
+                      "variance_display": "-$20.00",
+                      "variance_pct_display": "-28.6%"
                     }
                   ],
                   "cost": 485.0,
@@ -144416,8 +144416,8 @@
                   "pct_display": "44.6%",
                   "per_1k_display": "$6.39",
                   "totals_only": false,
-                  "variance_display": "+$185.00",
-                  "variance_pct_display": "+61.7%"
+                  "variance_display": "+$215.00",
+                  "variance_pct_display": "+79.6%"
                 }
               ],
               "cost": 1086.73,
@@ -144430,8 +144430,8 @@
               "pct_display": "100.0%",
               "per_1k_display": "$7.13",
               "totals_only": false,
-              "variance_display": "+$486.73",
-              "variance_pct_display": "+81.1%"
+              "variance_display": "+$144.98",
+              "variance_pct_display": "+25.4%"
             }
           ],
           "cost": 1086.73,
@@ -144444,8 +144444,8 @@
           "pct_display": "100.0%",
           "per_1k_display": "$7.13",
           "totals_only": false,
-          "variance_display": "+$486.73",
-          "variance_pct_display": "+81.1%"
+          "variance_display": "+$144.98",
+          "variance_pct_display": "+25.4%"
         },
         "tool": {
           "children": [

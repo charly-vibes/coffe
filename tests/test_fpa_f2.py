@@ -208,11 +208,32 @@ class TestTimeTree(F2Base):
     def test_budget_del_config_en_todos_los_meses(self):
         """FPA-024/050: presupuesto cash desde budgets.start_month (2026-04)."""
         tree = self.model["views"]["all"]["trees"]["time"]
-        month_nodes = [c for y in tree["children"] for q in y["children"]
-                       for c in q["children"]]
-        for c in month_nodes:
-            self.assertNotEqual("n/a", c["budget_display"], c["label"])
-            self.assertIn("$100.00", c["budget_display"])
+        month_nodes = {c["key"]: c for y in tree["children"]
+                       for q in y["children"] for c in q["children"]}
+        self.assertIn("$100.00", month_nodes["time:2026-05"]["budget_display"])
+        self.assertIn("$100.00", month_nodes["time:2026-06"]["budget_display"])
+
+    def test_budget_pro_rata_mes_parcial(self):
+        """coffe-9p4/FPA-052: julio parcial (10/31) recibe presupuesto
+        pro-rateado $32.26, no $100 — misma fuente que build_budget."""
+        tree = self.model["views"]["all"]["trees"]["time"]
+        jul = [c for y in tree["children"] for q in y["children"]
+               for c in q["children"] if c["key"] == "time:2026-07"][0]
+        self.assertIn("$32.26", jul["budget_display"])
+        # YTD del árbol = 100 + 100 + 32.26 (no $300)
+        self.assertIn("$232.26", tree["budget_display"])
+
+    def test_varianza_ventana_mixta_tramo_in_budget(self):
+        """coffe-9p4: ventana que mezcla meses fuera del periodo presupuestado
+        — la varianza compara solo el tramo in-budget (may cash $20 queda fuera)."""
+        cfg = json.loads(json.dumps(CONFIG))
+        cfg["budgets"]["start_month"] = "2026-06"
+        model = viz.build_model(self.fixture, cfg)
+        root = model["views"]["all"]["trees"]["time"]
+        # budget = 100 (jun) + 32.26 (jul pro-rata); coste in-budget = 25 + 0
+        self.assertIn("$132.26", root["budget_display"])
+        self.assertEqual("-$107.26", root["variance_display"])
+        self.assertEqual("-81.1%", root["variance_pct_display"])
 
     def test_varianza_cash_vs_presupuesto(self):
         """jun: cash 25.0 vs presupuesto 100 → varianza -75 (-75%)."""
