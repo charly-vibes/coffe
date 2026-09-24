@@ -273,5 +273,55 @@
     "url_overrides": {
       "charly-vibes": "https://github.com/charly-vibes/charly-vibes"
     }
+  },
+  "energy_coefficients": {
+    "cache_read_energy_factor": 0.1,
+    "default_tier": "mid",
+    "versions": [
+      {
+        "effective": "2025-12-23",
+        "tiers": {
+          "flash": 0.03,
+          "mid": 0.1,
+          "frontier": 0.2
+        },
+        "model_tiers": {
+          "deepseek/deepseek-v4-flash": "flash",
+          "deepseek/deepseek-v4-flash:free": "flash",
+          "z-ai/glm-5.3-flash": "flash",
+          "gemini-3-flash-preview": "flash",
+          "google/gemini-2.5-flash": "flash",
+          "google/gemini-2.5-flash-image": "flash",
+          "google/gemini-3.5-flash": "flash",
+          "google/gemini-3.8-flash": "flash",
+          "gpt-5.3-codex": "flash",
+          "claude-opus-4-7": "frontier",
+          "claude-opus-4-6": "frontier",
+          "anthropic/claude-opus-4.8": "frontier",
+          "gpt-5.5": "frontier",
+          "gemini-3-pro-preview": "frontier",
+          "gemini-3.1-pro-preview": "frontier",
+          "google/gemini-3.1-pro-preview-customtools": "frontier",
+          "gemini-2.5-pro": "frontier",
+          "google/gemini-2.5-pro": "frontier",
+          "deepseek/deepseek-v4-pro": "frontier",
+          "stealth/ox-alpha": "frontier",
+          "claude-sonnet-4-6": "mid",
+          "anthropic/claude-sonnet-4.6": "mid",
+          "z-ai/glm-5.2": "mid",
+          "z-ai/glm-5.2:free": "mid",
+          "gpt-5.4": "mid",
+          "moonshotai/kimi-k2": "mid",
+          "claude-3-sonnet-20240229": "mid",
+          "amp": "mid",
+          "<synthetic>": "mid"
+        }
+      }
+    ],
+    "tiers": {
+      "flash": 0.03,
+      "mid": 0.1,
+      "frontier": 0.2
+    }
   }
 }

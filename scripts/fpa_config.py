@@ -9,6 +9,12 @@ Responsabilidades:
   cuyo patrón matchea el nombre del proyecto, si no el fallback ("Unclassified").
 - rates_for(): pricing FPA-016 versionado por fecha efectiva — la última versión
   con effective <= fecha; si no hay ninguna, default_rates.
+- energy_for(): coeficientes de energía (kWh) versionados por fecha — igual
+  contrato que rates_for pero SIN fallback silencioso: None si el `when` es
+  anterior a toda versión (el tracker aborta loud, coffe-7mj.1).
+- validate_config() exige el bloque energy_coefficients (coffe-7mj.1): tiers de
+  J/token entregado, default_tier, cache_read_energy_factor y versions
+  consistentes.
 
 Rationale: los valores de coste son *assumed* (FPA-003); centralizarlos en un
 JSON versionado evita precios hardcodeados (hallazgo FPA-015/016 de la spec).
@@ -26,6 +32,7 @@ REQUIRED_SECTIONS = (
     "taxonomy",
     "subscriptions",
     "model_pricing",
+    "energy_coefficients",
     "budgets",
     "alert_thresholds",
     "premium_models",
@@ -123,6 +130,55 @@ def validate_config(cfg):
             if not isinstance(version, dict) or not _DATE_RE.match(str(version.get("effective", ""))):
                 errors.append(f"model_pricing.versions[{i}].effective inválida")
 
+    # coffe-7mj.1: energía estimada (kWh) — bloque requerido, fail-loud
+    energy = cfg.get("energy_coefficients")
+    if not isinstance(energy, dict):
+        errors.append("energy_coefficients debe ser un objeto (ausente en "
+                      "configs previos a add-energy-estimates)")
+    else:
+        factor = energy.get("cache_read_energy_factor")
+        if not isinstance(factor, (int, float)) or isinstance(factor, bool) \
+                or not 0 <= factor <= 1:
+            errors.append(f"energy_coefficients.cache_read_energy_factor "
+                          f"inválido: {factor!r} (número en [0, 1])")
+        tiers = energy.get("tiers")
+        if not isinstance(tiers, dict) or not all(
+                isinstance(v, (int, float)) and not isinstance(v, bool)
+                and v > 0 for v in tiers.values()) \
+                or not {"flash", "mid", "frontier"}.issubset(tiers):
+            errors.append("energy_coefficients.tiers debe ser objeto con "
+                          "J/token > 0 por tier (mínimo flash/mid/frontier)")
+        default_tier = energy.get("default_tier")
+        if not isinstance(default_tier, str) or not isinstance(tiers, dict) \
+                or default_tier not in tiers:
+            errors.append(f"energy_coefficients.default_tier inválido: "
+                          f"{default_tier!r} (debe ser un tier declarado)")
+        versions = energy.get("versions")
+        if not isinstance(versions, list) or not versions:
+            errors.append("energy_coefficients.versions ausente o vacía")
+        for i, version in enumerate(versions or []):
+            if not isinstance(version, dict) or not _DATE_RE.match(str(version.get("effective", ""))):
+                errors.append(f"energy_coefficients.versions[{i}].effective inválida")
+                continue
+            vtiers = version.get("tiers")
+            if not isinstance(vtiers, dict):
+                errors.append(f"energy_coefficients.versions[{i}].tiers "
+                              "debe ser objeto")
+            elif isinstance(tiers, dict) and any(
+                    k not in tiers for k in vtiers):
+                errors.append(f"energy_coefficients.versions[{i}].tiers usa "
+                              "tiers no declarados en el bloque raíz")
+            mapping = version.get("model_tiers")
+            if not isinstance(mapping, dict):
+                errors.append(f"energy_coefficients.versions[{i}].model_tiers "
+                              "debe ser objeto (modelo → tier declarado)")
+            elif isinstance(vtiers, dict):
+                for model, tier in mapping.items():
+                    if tier not in vtiers:
+                        errors.append(f"energy_coefficients.versions[{i}]"
+                                      f".model_tiers[{model!r}]: tier "
+                                      f"desconocido {tier!r}")
+
     budgets = cfg.get("budgets", {})
     if "start_month" in budgets and not _MONTH_RE.match(str(budgets["start_month"])):
         errors.append(f"budgets.start_month inválido: {budgets['start_month']}")
@@ -205,6 +261,24 @@ def rates_for(cfg, when):
     if not applicable:
         return pricing["default_rates"]
     return max(applicable, key=lambda v: v["effective"])["rates"]
+
+
+def energy_for(cfg, when):
+    """coffe-7mj.1: versión de energy_coefficients vigente para `when` (date).
+
+    Igual contrato que rates_for PERO sin fallback silencioso: devuelve None
+    si `when` es anterior a toda versión — el tracker aborta loud nombrando
+    el mes (el agregado mensual de tokens no puede partirse entre versiones,
+    así que la selección es por primer día del bucket).
+    """
+    energy = cfg["energy_coefficients"]
+    applicable = [
+        v for v in energy.get("versions", [])
+        if date.fromisoformat(v["effective"]) <= when
+    ]
+    if not applicable:
+        return None
+    return max(applicable, key=lambda v: v["effective"])
 
 
 if __name__ == "__main__":

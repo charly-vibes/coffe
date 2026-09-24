@@ -22,6 +22,13 @@ label que mentía sobre el proyecto.
 v4.5 (coffe-vp8): el scope incluye repos ak (akielbowicz) además de charly/sk
 (is_charly → in_scope, alias por compat); metadata.filter pasa de
 "charly-only" a "in-scope" (schema actualizado).
+v4.6 (coffe-7mj.1): energía estimada por modelo — bloque energy_coefficients
+en config (tiers J/token entregado versionados por effective, requerido y
+fail-loud); emisión aditiva monthly.energy_kwh_by_model ({"kwh","tier"} o
+null+"sin telemetría de tokens") + monthly.energy_kwh + metadata.energy_*.
+La energía es SIEMPRE provenance "assumed": coeficientes de laboratorio
+(Luccioni et al. / AI Energy Score), orden de magnitud, nunca medición;
+jamás se mezcla con los costes USD (FPA-002).
 """
 
 import argparse
@@ -251,7 +258,7 @@ def load_config(path=None):
     config (None si fallback).
     """
     global SUBSCRIPTIONS, MODEL_PRICING, DEFAULT_RATES, _CACHE_WRITE_FACTOR
-    global _FPA_CONFIG, _PRICING_VERSIONS, CONFIG_SOURCE
+    global _FPA_CONFIG, _PRICING_VERSIONS, CONFIG_SOURCE, _ENERGY_COEFFS
 
     explicit = path or os.environ.get("TRACKER_CONFIG")
     cfg = None
@@ -279,6 +286,7 @@ def load_config(path=None):
         _CACHE_WRITE_FACTOR = 1.25
         _PRICING_VERSIONS = [{"effective": None, "rates": MODEL_PRICING}]
         _FPA_CONFIG = None
+        _ENERGY_COEFFS = None
         return None
 
     errors = fpa_config.validate_config(cfg)
@@ -293,6 +301,9 @@ def load_config(path=None):
     DEFAULT_RATES = pricing["default_rates"]
     _CACHE_WRITE_FACTOR = pricing.get("cache_write_factor", 1.25)
     _PRICING_VERSIONS = pricing.get("versions", [])
+    # coffe-7mj.1: coeficientes de energía (bloque requerido, validado arriba
+    # por validate_config → ValueError si falta o está malformado)
+    _ENERGY_COEFFS = cfg["energy_coefficients"]
     # Compat: rates de la última versión conocida (los extractores piden
     # rates por fecha vía estimate_cost(..., when=...))
     if _PRICING_VERSIONS:
@@ -333,6 +344,64 @@ def estimate_cost(family, version, input_tokens, output_tokens, cache_read=0,
     cache_read_cost = cache_read * rates.get("cache_read", rates["input"] * 0.1)
     output_cost = output_tokens * rates["output"]
     return round(input_cost + cache_read_cost + output_cost, 8)
+
+
+def _energy_kwh(in_tok, out_tok, cache_read, cache_write, j_per_token,
+                factor):
+    """coffe-7mj.1: kWh estimado de un modelo con tokens (3 decimales).
+
+    (input + output + cache_write a peso completo — escribir KV es cómputo
+    de prefill — + cache_read × factor) × J/token del tier / 3.6e6. Los
+    coeficientes J/token son estimaciones de laboratorio (Luccioni et al. /
+    AI Energy Score): la energía es siempre provenance "assumed".
+    """
+    fresh = in_tok + out_tok + cache_write
+    return round((fresh + cache_read * factor) * j_per_token / 3.6e6, 3)
+
+
+def _energy_for_month(monthly_dicts):
+    """coffe-7mj.1: emisión aditiva de energía mensual por modelo.
+
+    - Selección de versión de coeficientes por PRIMER DÍA del bucket
+      mensual (tokens_by_model es agregado mensual: no se puede partir un
+      mes entre versiones, a diferencia de estimate_cost(when) que es por
+      interacción). Mes sin cobertura → ValueError loud nombrando el mes.
+    - Modelo con interacciones pero tokens en cero (amp, <synthetic>) →
+      {"kwh": null, "reason": "sin telemetría de tokens"} — nunca 0,
+      que sugeriría medición (FPA-008).
+    - total energy_kwh = suma de modelos con datos.
+    """
+    if _FPA_CONFIG is None:
+        return  # fallback sin config: metadata.energy_* registra la razón
+    energy_cfg = _ENERGY_COEFFS
+    factor = energy_cfg["cache_read_energy_factor"]
+    default_tier = energy_cfg["default_tier"]
+    for m_key, mo in monthly_dicts.items():
+        first_day = date.fromisoformat(m_key + "-01")
+        version = fpa_config.energy_for(_FPA_CONFIG, first_day)
+        if version is None:
+            effs = [v["effective"] for v in energy_cfg.get("versions", [])]
+            raise ValueError(
+                f"energy_coefficients: mes {m_key} sin cobertura "
+                f"(primer effective declarado: {min(effs) if effs else 'ninguna'}) "
+                "— el config debe cubrir el rango de datos")
+        tiers = version["tiers"]
+        mapping = version.get("model_tiers", {})
+        by_model = {}
+        total = 0.0
+        for model, tok in mo["tokens_by_model"].items():
+            if not any((tok["in"], tok["out"], tok["cache_read"],
+                        tok["cache_write"])):
+                by_model[model] = {"kwh": None,
+                                   "reason": "sin telemetría de tokens"}
+                continue
+            tier = mapping.get(model, default_tier)
+            kwh = _energy_kwh(tok["in"], tok["out"], tok["cache_read"],
+                              tok["cache_write"], tiers[tier], factor)
+            total += kwh
+            by_model[model] = {"kwh": kwh, "tier": tier}
+        mo["energy_kwh_by_model"] = by_model
+        mo["energy_kwh"] = round(total, 3)
 
 
 def parse_ts(ts):
@@ -1519,6 +1588,9 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
         # FPA-014: outcomes donde haya GitHub token (vacío si no, con razón)
         mo["outcomes_by_project"] = (outcomes or {}).get(m_key, {})
 
+    # --- coffe-7mj.1: energía estimada (kWh) por mes y modelo (aditivo) ---
+    _energy_for_month(monthly_dicts)
+
     # --- Skills (inyectados; default: colección en vivo) ---
     if skills_total is None or skills_by_project is None or commands is None:
         skills_total, skills_by_project, commands = collect_skills_and_commands()
@@ -1620,6 +1692,23 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "charges_source": CHARGES_SOURCE,
             "charges_provenance": "reported" if charges_ok else "unavailable",
             "charges_reason": charges_reason,  # FPA-008: n/a con razón
+            # coffe-7mj.1: energía estimada — SIEMPRE assumed (ningún
+            # proveedor reporta kWh; coeficientes de laboratorio versionados
+            # en config/fpa.json). Unavailable con razón solo en fallback
+            # sin config (FPA-008).
+            "energy_provenance": "assumed" if _FPA_CONFIG is not None else "unavailable",
+            "energy_config_source": CONFIG_SOURCE if _FPA_CONFIG is not None else None,
+            "energy_cache_read_factor": (
+                _ENERGY_COEFFS["cache_read_energy_factor"]
+                if _FPA_CONFIG is not None else None),
+            "energy_method": (
+                "tokens (input+output+cache_write a peso completo; "
+                "cache_read × cache_read_energy_factor) × J/token del tier "
+                "(config energy_coefficients versionado) / 3.6e6 — "
+                "coeficientes de laboratorio (Luccioni et al. / AI Energy "
+                "Score), orden de magnitud, nunca medición"),
+            **({"energy_reason": "config/fpa.json no encontrado (fallback)"}
+               if _FPA_CONFIG is None else {}),
             "timezone": str(LOCAL_TZ),  # FPA-142: TZ usada en buckets hourly/daily
             "pay_per_token_note": (
                 "pay_per_token_charges es *reported* cuando el ledger tiene "

@@ -36,6 +36,28 @@
           "description": "coffe-a31.2 (FPA-008): razón si el ledger no está disponible; null si reported",
           "type": ["string", "null"]
         },
+        "energy_provenance": {
+          "description": "coffe-7mj.1: la energía es SIEMPRE assumed (ningún proveedor reporta kWh); unavailable con energy_reason solo en fallback sin config (FPA-008).",
+          "enum": ["assumed", "unavailable"]
+        },
+        "energy_config_source": {
+          "description": "coffe-7mj.1: config/fpa.json que proveyó los coeficientes (null en fallback).",
+          "type": ["string", "null"]
+        },
+        "energy_cache_read_factor": {
+          "description": "coffe-7mj.1: factor aplicado a cache_read tokens (parámetro dominante del estimado).",
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "energy_method": {
+          "description": "coffe-7mj.1: fórmula documentada del estimado.",
+          "type": "string"
+        },
+        "energy_reason": {
+          "description": "coffe-7mj.1: razón de energy_provenance=unavailable (solo fallback).",
+          "type": "string"
+        },
         "cost_real_total_tracker": {
           "description": "coffe-a31.2: parte tracker del cost_total_real (p2p real estimado por el tracker, sin fees implícitos del calendario)",
           "type": "number"
@@ -387,6 +409,35 @@
         "cost_real_tracker": {
           "description": "coffe-a31.2: parte tracker del cost_real mensual (p2p real estimado por el tracker), sin fees implícitos del calendario",
           "type": "number"
+        },
+        "energy_kwh": {
+          "description": "coffe-7mj.1: energía estimada del mes en kWh (suma de modelos con datos; SIEMPRE provenance assumed — coeficientes de laboratorio, nunca medición). 0 legítimo en meses solo con modelos sin telemetría de tokens.",
+          "type": "number",
+          "minimum": 0
+        },
+        "energy_kwh_by_model": {
+          "description": "coffe-7mj.1: kWh estimado por modelo — {\"kwh\": <3 dec>, \"tier\": <str>} o {\"kwh\": null, \"reason\": \"sin telemetría de tokens\"} para modelos con interacciones pero tokens en cero (FPA-008: nunca 0, que sugeriría medición). Cada modelo registra su tier efectivo (auditable).",
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": ["kwh", "tier"],
+                "properties": {
+                  "kwh": {"type": "number", "minimum": 0},
+                  "tier": {"type": "string", "minLength": 1}
+                }
+              },
+              {
+                "type": "object",
+                "required": ["kwh", "reason"],
+                "properties": {
+                  "kwh": {"type": "null"},
+                  "reason": {"type": "string", "minLength": 1}
+                }
+              }
+            ]
+          }
         },
         "interaction_kinds": {
           "description": "FPA-140: interacciones por kind en el mes",
