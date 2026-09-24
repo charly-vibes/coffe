@@ -188,6 +188,26 @@ class TestExtractAmpSessions(unittest.TestCase):
         })
         self.assertEqual(ut.extract_amp_sessions(amp_dir=self.tmp), [])
 
+    def test_timestamp_epoch_int_normalizado(self):
+        """coffe-372: logs amp reales usan epoch ms INT — el ts crudo se
+        normaliza a ISO (filter_sessions hace [:10] sobre el campo; un int
+        crashea con TypeError con --since/--until)."""
+        self._task("t1", {
+            "a.json": ("file:///home/sasha/para/areas/dev/gh/charly/coffee/x.py",
+                       1766492001723),
+            "b.json": ("file:///home/sasha/para/areas/dev/gh/charly/coffee/y.py",
+                       1766492585074),
+        })
+        sessions = ut.extract_amp_sessions(amp_dir=self.tmp)
+        self.assertEqual(len(sessions), 1)
+        s = sessions[0]
+        self.assertIsInstance(s["first_ts_full"], str)
+        self.assertIsInstance(s["last_ts_full"], str)
+        # y la ventana ya no crashea (el gate que la destapó)
+        kept = ut.filter_sessions(sessions, until=ut.parse_ts(
+            "2026-09-23T00:00:00+00:00").date())
+        self.assertEqual(len(kept), 1)
+
 
 class TestSessionStatsByTool(unittest.TestCase):
     """by_tool: totals, with_agent y resets con señal por tool."""

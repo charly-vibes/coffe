@@ -1007,8 +1007,12 @@ def extract_amp_sessions(amp_dir=None):
                     continue
                 ts = parse_ts(entry.get("timestamp"))
                 if ts:
-                    hits.append((ts, amp_proj_from_uri(uri) or "amp-unknown",
-                                 entry.get("timestamp")))
+                    raw = entry.get("timestamp")
+                    # coffe-372: logs amp reales usan epoch ms INT — el crudo
+                    # se normaliza a ISO (filter_sessions hace [:10]; un int
+                    # crashea con ventana --since/--until). Strings intactos.
+                    raw = raw if isinstance(raw, str) else ts.isoformat()
+                    hits.append((ts, amp_proj_from_uri(uri) or "amp-unknown", raw))
             except (json.JSONDecodeError, OSError, ValueError, TypeError, KeyError):
                 continue
         if not hits: continue
