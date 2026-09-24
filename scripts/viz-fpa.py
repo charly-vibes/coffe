@@ -2695,9 +2695,10 @@ def build_energy(report):
     energy_kwh es 0.0 por modelos sin telemetría se listan con las razones
     por modelo (loss visible, FPA-008): nunca se muestran como medición.
     """
-    factors = (report["metadata"].get("energy_band_cache_factors")
-               if report["metadata"].get("energy_provenance") == "assumed"
-               else None)
+    md = report["metadata"]
+    factors = (md.get("energy_band_cache_factors")
+               if md.get("energy_provenance") == "assumed" else None)
+    end = md.get("date_range", {}).get("end")
     months = []
     tot_kwh = tot_low = tot_high = 0.0
     for ym in sorted(report["monthly"].keys()):
@@ -2709,19 +2710,25 @@ def build_energy(report):
         no_tel = [f"{model}: {e['reason']}"
                   for model, e in (mo.get("energy_kwh_by_model") or {}).items()
                   if isinstance(e, dict) and e.get("kwh") is None]
+        # FPA-004: meses parciales marcados (días transcurridos / total)
+        total_days = month_total_days(ym)
+        partial = bool(end) and end[:7] == ym and end[8:10] and \
+            int(end[8:10]) < total_days
+        elapsed = int(end[8:10]) if partial else total_days
         tot_kwh += kwh
         tot_low += band["low"]
         tot_high += band["high"]
         months.append({"ym": ym, "label": month_label(ym), "kwh": kwh,
                        "low": band["low"], "high": band["high"],
-                       "no_telemetry": no_tel})
+                       "no_telemetry": no_tel, "partial": partial,
+                       "elapsed": elapsed, "total_days": total_days})
     return {
         "months": months,
         "total": {"kwh": round(tot_kwh, 3), "low": round(tot_low, 3),
                   "high": round(tot_high, 3)},
-        "provenance": report["metadata"].get("energy_provenance", "unavailable"),
+        "provenance": md.get("energy_provenance", "unavailable"),
         "factors": factors,
-        "nominal_factor": report["metadata"].get("energy_cache_read_factor"),
+        "nominal_factor": md.get("energy_cache_read_factor"),
     }
 
 
@@ -2743,8 +2750,10 @@ def energy_bars_svg(energy, w=560, h=190):
     parts = []
     x = 12.0
     for m in ms:
+        pm = " (parcial: {}/{} días)".format(m["elapsed"], m["total_days"]) \
+            if m.get("partial") else ""
         label = (f"{m['label']}: {m['kwh']:.3f} kWh "
-                 f"(banda {m['low']:.3f}–{m['high']:.3f})")
+                 f"(banda {m['low']:.3f}–{m['high']:.3f}){pm}")
         parts.append(
             f'<rect class="enb" x="{x:.1f}" y="{Y(m["high"]):.1f}" '
             f'width="{bw:.1f}" height="{max(Y(m["low"]) - Y(m["high"]), 1.0):.1f}" '
@@ -2769,14 +2778,30 @@ def energy_bars_svg(energy, w=560, h=190):
 
 def energy_html(energy):
     """F8 (coffe-5ng): sección de la vista Energía — KPI total con banda,
-    chart mensual, caption de extremos y meses sin telemetría con razón."""
+    chart mensual, caption de extremos y meses sin telemetría con razón.
+    FPA-008: sin config de energía (fallback) muestra n/a con razón,
+    nunca un 0 que parezca medición."""
     t = energy["total"]
+    if energy["provenance"] != "assumed":
+        reason = ("sin config de energía (fallback): sin coeficientes "
+                  "versionados no hay estimación")
+        na = fig('<span class="na">n/a</span>', energy["provenance"])
+        return (f'\n  <p class="finding">{na}</p>'
+                f'\n  <p class="finding-meta">{reason}</p>')
     kpi = (f"{t['kwh']:.1f} kWh (banda {t['low']:.1f}–{t['high']:.1f})")
+    parciales = [m for m in energy["months"] if m.get("partial")]
+    nota_par = ""
+    if parciales:
+        pm = ", ".join(f"{m['label']} ({m['elapsed']}/{m['total_days']} días)"
+                       for m in parciales)
+        nota_par = (f" Meses parciales sin anualizar: {pm} — el total "
+                    "acumula lo transcurrido, no proyecta fin de mes.")
     cap = ("Estimación con coeficientes de laboratorio (assumed, nunca "
            "medición). La banda muestra los extremos de sensibilidad al "
            "acierto de caché: low = 0% y high = 100% de los tokens de "
            "cache_read servidos desde caché; la marca en cada barra es el "
-           f"escenario base (factor nominal {energy['nominal_factor']}).")
+           f"escenario base (factor nominal {energy['nominal_factor']})."
+           + nota_par)
     no_tel = [(m["label"], m["no_telemetry"])
               for m in energy["months"] if m["no_telemetry"]]
     no_tel_html = ("<details class=\"tree\" id=\"energy-no-telemetry\">"
@@ -3242,6 +3267,11 @@ header.site .meta, .small { color: var(--muted); font-size: .82rem; }
 .wf .wfdn { fill: var(--ok); opacity: .75; }
 .wf .wft { font-size: 9px; font-variant-numeric: tabular-nums; fill: var(--fg); }
 .wf .wfl { font-size: 9px; fill: var(--muted); }
+/* F8 (coffe-5ng): vista Energía — banda low–high con marca nominal */
+.enb-chart .enb { fill: var(--line); stroke: var(--muted); stroke-width: .5; }
+.enb-chart .enbn { stroke: var(--acc); stroke-width: 2; }
+.enb-chart .enbt { font-size: 9px; font-variant-numeric: tabular-nums; fill: var(--fg); }
+.enb-chart .enbl { font-size: 9px; fill: var(--muted); }
 .stackbar { display: inline-block; height: 14px; }
 .fc-tbl, .btable { border-collapse: collapse; font-size: .85rem;
   font-variant-numeric: tabular-nums; }
@@ -3422,9 +3452,9 @@ def add_export_buttons(html):
         '<button class="export-csv" type="button">Exportar CSV</button><table',
         html)
     html = re.sub(
-        r'<svg class="wf chart"',
+        r'<svg class="(wf |enb-chart )chart"',
         '<button class="dl-svg" type="button">Descargar SVG</button>'
-        '<svg class="wf chart"',
+        '<svg class="\\1chart"',
         html)
     return html
 
@@ -4585,7 +4615,7 @@ def render_html(report, cfg, generated=None, today=None):
   // (re-bindable: el bridge monta waterfalls dinámicamente, D6 coffe-8nw)
   var readout = document.getElementById("wf-readout");
   function bindReadout() {{
-    document.querySelectorAll(".wf.chart rect[data-label]").forEach(function (r) {{
+    document.querySelectorAll(".wf.chart rect[data-label], .enb-chart rect[data-label]").forEach(function (r) {{
       if (r.__wfReadout) return;
       r.__wfReadout = true;
       function show() {{ if (readout) readout.textContent = r.getAttribute("aria-label"); }}

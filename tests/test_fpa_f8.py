@@ -53,9 +53,10 @@ def _fixture():
     rep["monthly"]["2026-06"]["energy_kwh_band"] = {"low": 1.0, "high": 3.0}
     rep["monthly"]["2026-06"]["energy_kwh_by_model"] = {
         "gpt-5.4": {"kwh": 1.25, "tier": "mid"}}
-    rep["monthly"]["2026-07"]["energy_kwh"] = 0.0
-    rep["monthly"]["2026-07"]["energy_kwh_band"] = {"low": 0.0, "high": 0.0}
+    rep["monthly"]["2026-07"]["energy_kwh"] = 0.6
+    rep["monthly"]["2026-07"]["energy_kwh_band"] = {"low": 0.2, "high": 1.0}
     rep["monthly"]["2026-07"]["energy_kwh_by_model"] = {
+        "gpt-5.4": {"kwh": 0.6, "tier": "mid"},
         "amp": {"kwh": None, "reason": "sin telemetría de tokens"}}
     return rep
 
@@ -116,14 +117,12 @@ class TestModeloEnergia(unittest.TestCase):
 
     def test_total_del_periodo_suma_nominal_y_banda(self):
         t = self.e["total"]
-        self.assertAlmostEqual(t["kwh"], 8.75, places=3)
-        self.assertAlmostEqual(t["low"], 3.0, places=3)
-        self.assertAlmostEqual(t["high"], 43.0, places=3)
+        self.assertAlmostEqual(t["kwh"], 9.35, places=3)
+        self.assertAlmostEqual(t["low"], 3.2, places=3)
+        self.assertAlmostEqual(t["high"], 44.0, places=3)
 
     def test_mes_sin_telemetria_visible_con_razon(self):
         jul = self.e["months"][2]
-        self.assertEqual(jul["kwh"], 0.0)
-        self.assertEqual((jul["low"], jul["high"]), (0.0, 0.0))
         self.assertTrue(any("amp" in r for r in jul["no_telemetry"]))
 
     def test_provenance_y_factores_para_caption(self):
@@ -145,9 +144,9 @@ class TestChartBanda(unittest.TestCase):
 
     def test_rects_accesibles_con_banda_en_aria_label(self):
         rects = re.findall(r'<rect [^>]*aria-label="([^"]*)"', self.sec)
-        # 2 meses con banda > 0; el mes solo-sin-telemetría (jul) no dibuja
-        # bar (banda 0/0) y aparece en el bloque de razones (loss visible)
-        self.assertGreaterEqual(len(rects), 2, "un bar por mes con banda")
+        # 3 meses con banda > 0 (may, jun, jul con telemetría mixta);
+        # los modelos sin telemetría quedan en el bloque de razones
+        self.assertGreaterEqual(len(rects), 3, "un bar por mes con banda")
         join = " | ".join(rects)
         self.assertIn("kWh", join)
         self.assertIn("banda", join)
@@ -210,6 +209,50 @@ class TestDatasetReal(unittest.TestCase):
 
     def test_provenance_assumed(self):
         self.assertEqual(self.e["provenance"], "assumed")
+
+
+class TestReviewFixes(unittest.TestCase):
+    """Hallazgos rule-of-5 post-ship (ro5u): readout, export, fallback,
+    meses parciales."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.html = viz.render_html(_fixture(), CONFIG, generated="2026-09-24 20:00")
+        cls.sec = _energy_section(cls.html)
+
+    def test_readout_cubre_chart_energia(self):
+        """EDGE-001: el selector del readout incluye .enb-chart (FPA-175)."""
+        self.assertIn(".enb-chart rect[data-label]", self.html)
+
+    def test_boton_descargar_svg_en_energia(self):
+        """EDGE-002: el chart energía recibe botón Descargar SVG (FPA-169)."""
+        self.assertIn('<button class="dl-svg" type="button">Descargar SVG</button>'
+                      '<svg class="enb-chart chart"', self.html)
+
+    def test_css_tema_para_barras_energia(self):
+        """CLAR-001: las barras usan el tema compartido, no defaults."""
+        self.assertIn(".enb-chart .enb { fill: var(--line)", self.html)
+        self.assertIn(".enb-chart .enbn { stroke: var(--acc)", self.html)
+
+    def test_mes_parcial_marcado(self):
+        """CORR-003 (FPA-004): el fixture termina 2026-07-10 — julio parcial
+        visible en aria-label y en el caption del total."""
+        jul = re.search(r'aria-label="jul 26:[^"]*parcial', self.sec)
+        self.assertIsNotNone(jul)
+        self.assertIn("Meses parciales sin anualizar", self.sec)
+        self.assertIn("jul 26 (10/31 días)", self.sec)
+
+    def test_fallback_sin_config_na_con_razon(self):
+        """CORR-001 (FPA-008): sin energía en el reporte la vista muestra
+        n/a con razón, jamás '0.0 kWh' que parezca medición."""
+        f2 = _load("test_fpa_f2_rf", "tests/test_fpa_f2.py")
+        html = viz.render_html(f2.f2_fixture(), CONFIG,
+                               generated="2026-09-24 20:00")
+        sec = _energy_section(html)
+        self.assertIn('data-provenance="unavailable"', sec)
+        self.assertIn('class="na">n/a</span>', sec)
+        self.assertIn("sin config de energía", sec)
+        self.assertNotIn("0.0 kWh", sec)
 
 
 class TestDeterminismo(unittest.TestCase):
