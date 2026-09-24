@@ -28,4 +28,4 @@
   `data/fpa-dashboard.html` en una sola corrida; determinismo doble corrida
   (única diff permitida: timestamp — FPA-104)
 - [x] 3.2 README: sección Energía referenciando la vista + check-docs verificado
-- [ ] 3.3 Commits por fase y push; cerrar coffe-5ng; `openspec archive`
+- [x] 3.3 Commits por fase y push; cerrar coffe-5ng; `openspec archive`
