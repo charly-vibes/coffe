@@ -29,7 +29,7 @@ de los últimos meses.
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-21 (153,192 interacciones). |
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt) y energía estimada por modelo (coffe-7mj, *assumed*). Última regeneración: 2026-09-24 (153,741 interacciones). |
 Jerarquía del sitio (coffe-gen.5): el dashboard principal es **Uso y
 costos de IA** (`data/fpa-dashboard.html`); el dashboard de insights
 (`data/dashboard.html`, antes generado por `scripts/viz-dashboard.py`)
@@ -39,7 +39,7 @@ El Gantt se conserva como visualización única de su tipo.
 
 | Archivo | Tamaño | Contenido |
 |---------|--------|-----------|
-| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt). Última regeneración: 2026-09-21 (153,192 interacciones). |
+| `data/usage_report_v3.json` | 766K | **Reporte principal.** Interacciones del scope in-scope (charly/sk/ak, coffe-vp8). Incluye hourly, daily, monthly, projects, sessions, skills, commands, multitasking, project_daily (matriz para el Gantt) y energía estimada por modelo (coffe-7mj, *assumed*). Última regeneración: 2026-09-24 (153,741 interacciones). |
 | `data/fpa-dashboard.html` | 1.7M | **Dashboard principal — Uso y costos de IA.** Resumen ejecutivo, KPIs, presupuestos, bridge precio-volumen-mix (con selector de mes), forecast, alertas, economía de suscripción, patrones de uso. 6 vistas (una a la vez a todo ancho, tabs + deep-link por hash) + selector de periodo; export CSV/SVG; share-URL; disclosure por defecto solo en la sección primaria de cada vista; marginalia con guía a 4 niveles. En <https://charly-vibes.github.io/coffee/data/fpa-dashboard.html>. |
 | `data/fpa-guide.html` | — | **Guía de análisis.** Los 19 análisis del dashboard explicados a 4 niveles (ELI5 → experto), en español, con grounding verificado por `--check-docs`. En <https://charly-vibes.github.io/coffee/data/fpa-guide.html>. |
 | `data/gantt-multitasking.html` | 41K | **Visualización Gantt.** Actividad por proyecto/día, fila de concurrencia diaria, toggle interacciones/presencia, tooltips. Abrir en navegador (o en <https://charly-vibes.github.io/coffee/data/gantt-multitasking.html>). |
@@ -101,13 +101,13 @@ El deploy es vía **GitHub Actions** (no hay branch `gh-pages`): `.github/workfl
 ## Estado de los datos
 
 <!-- CHECK-DOCS:BEGIN -->
-- Interacciones: 153,192
+- Interacciones: 153,824
 - Proyectos: 55
-- Costo efectivo: $5,165.42
-- Costo real: $716.41
+- Costo efectivo: $5,166.73
+- Costo real: $717.72
 - Cash real (ledger): $1,156.72
-- Sesiones: 3,077
-- Periodo: 2025-12-23 → 2026-09-21
+- Sesiones: 3,086
+- Periodo: 2025-12-23 → 2026-09-24
 <!-- CHECK-DOCS:END -->
 
 Nota: `Costo real` es la suma mensual del tracker (fees implícitos del
@@ -116,6 +116,23 @@ real pagado según el ledger `data/charges.json` (*reported*, FPA-003;
 coffe-a31.2/3). Ambos números no se suman entre sí (FPA-002): efectivo
 es la estimación del tracker, cash es la factura real de los proveedores
 y difieren porque las cuotas implícitas son un calendario, no un gasto.
+
+### Energía estimada (coffe-7mj)
+
+El reporte incluye `monthly[].energy_kwh_by_model` y `energy_kwh`:
+kWh **estimados** por modelo, calculados como
+`(input + output + cache_write + cache_read × 0.10) × J/token del tier / 3.6e6`.
+Los coeficientes (flash 0.03 / mid 0.1 / frontier 0.2 J/token entregado)
+vienen del config `energy_coefficients` versionado por fecha y son
+estimaciones de laboratorio — Luccioni et al. ("Power Hungry
+Processing"), Hugging Face AI Energy Score — nunca mediciones: la
+metadata registra `energy_provenance: "assumed"` siempre. Los modelos
+con interacciones pero sin telemetría de tokens (amp, `<synthetic>`)
+emiten `null` con razón. Referencia de contexto: Google reportó 0.24 Wh
+por prompt mediano de Gemini Apps (0.03 gCO2e), que NO calibra uso CLI
+agéntico (contextos 10–100× mayores). El multiplicador de cache_read es
+el parámetro dominante: con 0% / 10% / 100% la banda total es
+~18 / ~33 / ~175 kWh.
 
 ### ✅ Extraído y documentado
 
