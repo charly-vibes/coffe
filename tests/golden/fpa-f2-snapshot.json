@@ -289,6 +289,17 @@
     "tool_call_share": 0.1667,
     "unverified_time": false
   },
+  "energy": {
+    "factors": null,
+    "months": [],
+    "nominal_factor": null,
+    "provenance": "unavailable",
+    "total": {
+      "high": 0.0,
+      "kwh": 0.0,
+      "low": 0.0
+    }
+  },
   "forecast": {
     "base": {
       "eff_base": 69.333333,

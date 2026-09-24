@@ -326,6 +326,8 @@ def build_model(report, cfg):
         "usage": build_usage_patterns(report, cfg),
         # coffe-a31.3 (CRG-F2): cash por proveedor y reconciliación FPA-082
         "reconciliation": build_reconciliation(report),
+        # coffe-5ng (F8): energía estimada con banda de caché
+        "energy": build_energy(report),
     }
 
 
@@ -2682,6 +2684,116 @@ def build_views(report, cfg):
     return views
 
 
+# ======================================================================
+# F8 (coffe-5ng): vista de energía estimada con banda de caché
+# ======================================================================
+
+def build_energy(report):
+    """F8 (coffe-5ng): datos de la vista Energía — kWh mensuales del
+    reporte (7mj, nominal con factor del config) + banda de sensibilidad
+    de caché (coffe-5ng: low/high con factor 0.0/1.0). Los meses cuyo
+    energy_kwh es 0.0 por modelos sin telemetría se listan con las razones
+    por modelo (loss visible, FPA-008): nunca se muestran como medición.
+    """
+    factors = (report["metadata"].get("energy_band_cache_factors")
+               if report["metadata"].get("energy_provenance") == "assumed"
+               else None)
+    months = []
+    tot_kwh = tot_low = tot_high = 0.0
+    for ym in sorted(report["monthly"].keys()):
+        mo = report["monthly"][ym]
+        if "energy_kwh" not in mo:
+            continue  # fallback sin config (7mj): sin campos mensuales
+        kwh = mo.get("energy_kwh") or 0.0
+        band = mo.get("energy_kwh_band") or {"low": 0.0, "high": 0.0}
+        no_tel = [f"{model}: {e['reason']}"
+                  for model, e in (mo.get("energy_kwh_by_model") or {}).items()
+                  if isinstance(e, dict) and e.get("kwh") is None]
+        tot_kwh += kwh
+        tot_low += band["low"]
+        tot_high += band["high"]
+        months.append({"ym": ym, "label": month_label(ym), "kwh": kwh,
+                       "low": band["low"], "high": band["high"],
+                       "no_telemetry": no_tel})
+    return {
+        "months": months,
+        "total": {"kwh": round(tot_kwh, 3), "low": round(tot_low, 3),
+                  "high": round(tot_high, 3)},
+        "provenance": report["metadata"].get("energy_provenance", "unavailable"),
+        "factors": factors,
+        "nominal_factor": report["metadata"].get("energy_cache_read_factor"),
+    }
+
+
+def energy_bars_svg(energy, w=560, h=190):
+    """F8 (coffe-5ng): barras mensuales con banda low–high y marcador
+    del nominal dentro. SVG inline determinista; cada bar lleva el
+    contrato del readout (tabindex/aria-label/data-label, FPA-175)."""
+    ms = [m for m in energy["months"] if m["low"] > 0 or m["high"] > 0]
+    if not ms:
+        return ""
+    hi = max(m["high"] for m in ms) or 1.0
+    n = len(ms)
+    bw = min(60.0, (w - 30) / n - 14)
+    gap = (w - 20 - n * bw) / max(n - 1, 1)
+
+    def Y(v):
+        return h - 26 - v / hi * (h - 48)
+
+    parts = []
+    x = 12.0
+    for m in ms:
+        label = (f"{m['label']}: {m['kwh']:.3f} kWh "
+                 f"(banda {m['low']:.3f}–{m['high']:.3f})")
+        parts.append(
+            f'<rect class="enb" x="{x:.1f}" y="{Y(m["high"]):.1f}" '
+            f'width="{bw:.1f}" height="{max(Y(m["low"]) - Y(m["high"]), 1.0):.1f}" '
+            f'tabindex="0" role="img" aria-label="{esc_html(label)}" '
+            f'data-label="{esc_html(m["label"])}" '
+            f'data-value="{esc_html(f"{m["kwh"]:.3f}")}"/>')
+        parts.append(
+            f'<line class="enbn" x1="{x:.1f}" x2="{x + bw:.1f}" '
+            f'y1="{Y(m["kwh"]):.1f}" y2="{Y(m["kwh"]):.1f}"/>')
+        parts.append(
+            f'<text x="{x + bw / 2:.1f}" y="{Y(m["high"]) - 4:.1f}" '
+            f'class="enbt" text-anchor="middle">{m["kwh"]:.1f}</text>')
+        parts.append(
+            f'<text x="{x + bw / 2:.1f}" y="{h - 8:.1f}" class="enbl" '
+            f'text-anchor="middle">{m["label"]}</text>')
+        x += bw + gap
+    return (f'<svg class="enb-chart chart" width="{w}" height="{h}" '
+            f'viewBox="0 0 {w} {h}" role="img" '
+            f'aria-label="Energía estimada por mes con banda de caché">'
+            f'{"".join(parts)}</svg>')
+
+
+def energy_html(energy):
+    """F8 (coffe-5ng): sección de la vista Energía — KPI total con banda,
+    chart mensual, caption de extremos y meses sin telemetría con razón."""
+    t = energy["total"]
+    kpi = (f"{t['kwh']:.1f} kWh (banda {t['low']:.1f}–{t['high']:.1f})")
+    cap = ("Estimación con coeficientes de laboratorio (assumed, nunca "
+           "medición). La banda muestra los extremos de sensibilidad al "
+           "acierto de caché: low = 0% y high = 100% de los tokens de "
+           "cache_read servidos desde caché; la marca en cada barra es el "
+           f"escenario base (factor nominal {energy['nominal_factor']}).")
+    no_tel = [(m["label"], m["no_telemetry"])
+              for m in energy["months"] if m["no_telemetry"]]
+    no_tel_html = ("<details class=\"tree\" id=\"energy-no-telemetry\">"
+                   "<summary><h3>Meses sin telemetría de tokens</h3></summary>"
+                   + "".join(
+                       f"<p class=\"small\"><strong>{lbl}</strong>: "
+                       + "; ".join(reasons) + "</p>"
+                       for lbl, reasons in no_tel)
+                   + "</details>") if no_tel else ""
+    return f"""
+  <p class="finding">{fig(f'<span class="val">{kpi}</span>', energy["provenance"])}</p>
+  <p class="finding-meta">total del periodo, banda de sensibilidad de caché incluida</p>
+  {energy_bars_svg(energy)}
+  <p class="small">{cap}</p>
+  {no_tel_html}"""
+
+
 def build_data_notes(report):
     """Sección Data: definición de interacción + kinds (FPA-140), share
     filtrado (FPA-141), timezone (FPA-142) y concurrencia (FPA-120)."""
@@ -3186,12 +3298,13 @@ button, .cta, .ptoggle, .show-all, .export-csv, .dl-svg {
 /* coffe-dqz: una vista a la vez a TODO ancho (revierte deliberadamente
    la parte desktop de FPA-152: "en desktop las vistas van en secuencia");
    el ancla href de cada tab queda como fallback degradado sin JS. */
-#summary, #cost, #breakdown, #habits, #outlook, #data { display: none; }
+#summary, #cost, #breakdown, #habits, #outlook, #energy, #data { display: none; }
 body[data-view="summary"] #summary,
 body[data-view="cost"] #cost,
 body[data-view="breakdown"] #breakdown,
 body[data-view="habits"] #habits,
 body[data-view="outlook"] #outlook,
+body[data-view="energy"] #energy,
 body[data-view="data"] #data { display: block; }
 @media print {
   /* coffe-dqz: la impresión incluye todas las vistas; !important vence
@@ -4046,14 +4159,18 @@ def render_html(report, cfg, generated=None, today=None):
     budget_bridge_html = (budget_html(model["budget"])
                           + bridge_html(model["bridge"]))
     forecast_only_html = forecast_html(model["forecast"])
+    # coffe-5ng (F8): vista Energía
+    energy_only_html = energy_html(model["energy"])
     # F6: CTAs del Summary desde el config (FPA-165/168)
     ctas_block = ctas_html(cfg)
 
     model_json = json.dumps(model, ensure_ascii=False, sort_keys=True)
-    tabs = ("summary", "cost", "breakdown", "habits", "outlook", "data")
+    tabs = ("summary", "cost", "breakdown", "habits", "outlook",
+            "energy", "data")
     tab_labels = {"summary": "Resumen", "cost": "Costo",
                   "breakdown": "Desglose", "habits": "Hábitos",
-                  "outlook": "Pronóstico", "data": "Datos y método"}
+                  "outlook": "Pronóstico", "energy": "Energía",
+                  "data": "Datos y método"}
     tab_html = "".join(
         f'<a class="tab" role="tab" href="#{k}" data-view="{k}"'
         f'{" aria-current=\"true\"" if k == "summary" else ""}>'
@@ -4079,10 +4196,10 @@ def render_html(report, cfg, generated=None, today=None):
         marginalia = {
             s: guide.marginalia_html(guide_dict, cfg, s)
             for s in ("summary", "cost", "breakdown", "habits", "outlook",
-                      "data")}
+                      "energy", "data")}
     else:
         marginalia = {s: "" for s in ("summary", "cost", "breakdown",
-                                      "habits", "outlook", "data")}
+                                      "habits", "outlook", "energy", "data")}
 
     body_inner = f"""<main id="main">
   {banner}
@@ -4117,6 +4234,11 @@ def render_html(report, cfg, generated=None, today=None):
     <h2>¿Qué viene después?</h2>
     {marginalia["outlook"]}
     {forecast_only_html}
+  </section>
+  <section id="energy" class="fpa-view" aria-label="Energía">
+    <h2>¿Cuánta energía consume?</h2>
+    {marginalia["energy"]}
+    {energy_only_html}
   </section>
   <section id="data" class="fpa-view" aria-label="Datos y método">
     <h2>Datos y método</h2>
@@ -4373,7 +4495,8 @@ def render_html(report, cfg, generated=None, today=None):
   }});
 
   // ============ F6: vistas, tabs, top-5, export, share, readout ============
-  var VIEWS = ["summary", "cost", "breakdown", "habits", "outlook", "data"];
+  var VIEWS = ["summary", "cost", "breakdown", "habits", "outlook",
+               "energy", "data"];
   function setView(key) {{
     if (VIEWS.indexOf(key) < 0) return;
     document.body.setAttribute("data-view", key);
