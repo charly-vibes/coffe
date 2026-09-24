@@ -30,4 +30,4 @@
 
 - [x] 5.1 `openspec/project.md`: testing strategy actualizado
 - [x] 5.2 README: sección de tests
-- [ ] 5.3 `openspec archive` del change (al cerrar)
+- [x] 5.3 `openspec archive` del change (al cerrar)
