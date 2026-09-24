@@ -101,12 +101,12 @@ El deploy es vía **GitHub Actions** (no hay branch `gh-pages`): `.github/workfl
 ## Estado de los datos
 
 <!-- CHECK-DOCS:BEGIN -->
-- Interacciones: 153,824
+- Interacciones: 154,146
 - Proyectos: 55
-- Costo efectivo: $5,166.73
-- Costo real: $717.72
+- Costo efectivo: $5,167.83
+- Costo real: $718.82
 - Cash real (ledger): $1,156.72
-- Sesiones: 3,086
+- Sesiones: 3,089
 - Periodo: 2025-12-23 → 2026-09-24
 <!-- CHECK-DOCS:END -->
 
@@ -132,7 +132,11 @@ emiten `null` con razón. Referencia de contexto: Google reportó 0.24 Wh
 por prompt mediano de Gemini Apps (0.03 gCO2e), que NO calibra uso CLI
 agéntico (contextos 10–100× mayores). El multiplicador de cache_read es
 el parámetro dominante: con 0% / 10% / 100% la banda total es
-~18 / ~33 / ~175 kWh.
+~18 / ~33 / ~175 kWh. El dashboard publica esta banda en la vista
+"Energía" (coffe-5ng): `monthly[].energy_kwh_band` {low, high} — el
+mismo método recomputado con cache factor 0.0 y 1.0 — y el total del
+periodo con banda (33.5 kWh nominal, 17.7–175.2 en el dataset
+congelado).
 
 ### ✅ Extraído y documentado
 

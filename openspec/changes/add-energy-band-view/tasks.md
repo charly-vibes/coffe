@@ -12,20 +12,20 @@
 
 ## 2. Dashboard — vista Energía (F8)
 
-- [ ] 2.1 TDD `tests/test_fpa_f8.py` (estilo f2–f7, sin playwright): tab
+- [x] 2.1 TDD `tests/test_fpa_f8.py` (estilo f2–f7, sin playwright): tab
   "Energía" en tablist, barras mensuales con banda low–high, total del periodo,
   meses null visibles con razón, tag *assumed* en toda cifra, readout accesible
-- [ ] 2.2 Implementar vista en `viz-fpa.py`: registro en `tabs`/`VIEWS`/
+- [x] 2.2 Implementar vista en `viz-fpa.py`: registro en `tabs`/`VIEWS`/
   `tab_labels`, chart con banda, KPI del total (banda 18/33/175 en dataset
   actual), cumpliendo accesibilidad/mobile y "loss visible, no silenciosa"
-- [ ] 2.3 Suite completa: `test_tracker.py`, `test_energy.py`, `test_viz.py`,
+- [x] 2.3 Suite completa: `test_tracker.py`, `test_energy.py`, `test_viz.py`,
   `test_fpa_f6*.py`, `test_fpa_f8.py` — 0 pageerrors en smoke Chromium si
   playwright disponible
 
 ## 3. Datos y docs (pasada atómica final)
 
-- [ ] 3.1 Regen dataset congelado (`--until`), goldens dataset-derived y
+- [x] 3.1 Regen dataset congelado (`--until`), goldens dataset-derived y
   `data/fpa-dashboard.html` en una sola corrida; determinismo doble corrida
   (única diff permitida: timestamp — FPA-104)
-- [ ] 3.2 README: sección Energía referenciando la vista + check-docs verificado
+- [x] 3.2 README: sección Energía referenciando la vista + check-docs verificado
 - [ ] 3.3 Commits por fase y push; cerrar coffe-5ng; `openspec archive`
