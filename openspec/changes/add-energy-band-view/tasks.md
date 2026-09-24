@@ -1,13 +1,13 @@
 ## 1. Tracker — banda de sensibilidad
 
-- [ ] 1.1 TDD `tests/test_energy.py`: banda low (cache factor 0.0) y high (1.0)
+- [x] 1.1 TDD `tests/test_energy.py`: banda low (cache factor 0.0) y high (1.0)
   por mes con synthetic rows — identidad `low ≤ nominal ≤ high`, null heredado,
   bucketing mensual igual que 7mj.1 (no por primera interacción)
-- [ ] 1.2 Implementar emisión `monthly[m].energy_kwh_band: {low, high}` en
+- [x] 1.2 Implementar emisión `monthly[m].energy_kwh_band: {low, high}` en
   `usage-tracker.py` reusando `energy_for()`; misma `energy_version` por bucket
-- [ ] 1.3 Metadata: `energy_band_cache_factors: [0.0, 1.0]` + nota de método en
+- [x] 1.3 Metadata: `energy_band_cache_factors: [0.0, 1.0]` + nota de método en
   `fpa_config.py` / `validate_config()` (bloque requerido, fail-loud igual que 7mj.1)
-- [ ] 1.4 Schema aditivo (`specs/usage-report-v3.schema.json`): `energy_kwh_band`
+- [x] 1.4 Schema aditivo (`specs/usage-report-v3.schema.json`): `energy_kwh_band`
   y metadata de banda; `--validate` verde
 
 ## 2. Dashboard — vista Energía (F8)
