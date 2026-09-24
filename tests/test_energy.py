@@ -257,6 +257,106 @@ class TestEmisionEnergia(unittest.TestCase):
             ut._FPA_CONFIG = original
 
 
+class TestBandaSensibilidad(unittest.TestCase):
+    """coffe-5ng: monthly[].energy_kwh_band {low, high} — cache factor 0.0/1.0.
+
+    Mismos buckets, coeficientes versionados y energy_version que la emisión
+    nominal de 7mj.1; modelos sin telemetría excluidos de ambos extremos.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.rep = aggregate_of([
+            row(model_raw="claude-sonnet-4-6"),
+            row(model_raw="deepseek/deepseek-v4-flash"),
+            row(tool="amp", model_raw="amp", input_tokens=0, output_tokens=0,
+                cache_read_tokens=0, cache_write_tokens=0),
+        ])
+
+    def test_banda_presente_con_low_y_high(self):
+        b = mes(self.rep, "2026-05")["energy_kwh_band"]
+        self.assertIn("low", b)
+        self.assertIn("high", b)
+        self.assertEqual(b["low"], round(b["low"], 3))
+        self.assertEqual(b["high"], round(b["high"], 3))
+
+    def test_extremos_exactos_sonnet(self):
+        """low = fresh × J / 3.6e6; high = (fresh + cache_read) × J / 3.6e6."""
+        rep = aggregate_of([row(model_raw="claude-sonnet-4-6")])
+        b = mes(rep, "2026-05")["energy_kwh_band"]
+        esperado_low = round(1_500_000 * 0.1 / 3.6e6, 3)     # mid 0.1 J/tok
+        esperado_high = round(11_500_000 * 0.1 / 3.6e6, 3)
+        self.assertAlmostEqual(b["low"], esperado_low, places=3)
+        self.assertAlmostEqual(b["high"], esperado_high, places=3)
+
+    def test_identidad_low_nominal_high(self):
+        m = mes(self.rep, "2026-05")
+        b = m["energy_kwh_band"]
+        self.assertLessEqual(b["low"], m["energy_kwh"])
+        self.assertLessEqual(m["energy_kwh"], b["high"])
+
+    def test_modelo_sin_telemetria_excluido_de_ambos_extremos(self):
+        """amp (null) no suma a la banda, igual que no suma al nominal."""
+        rep = aggregate_of([row(model_raw="claude-sonnet-4-6"),
+                            row(tool="amp", model_raw="amp",
+                                input_tokens=0, output_tokens=0,
+                                cache_read_tokens=0, cache_write_tokens=0)])
+        b = mes(rep, "2026-05")["energy_kwh_band"]
+        esperado_low = round(1_500_000 * 0.1 / 3.6e6, 3)
+        esperado_high = round(11_500_000 * 0.1 / 3.6e6, 3)
+        self.assertAlmostEqual(b["low"], esperado_low, places=3)
+        self.assertAlmostEqual(b["high"], esperado_high, places=3)
+        self.assertAlmostEqual(mes(rep, "2026-05")["energy_kwh"],
+                               round(2_500_000 * 0.1 / 3.6e6, 3), places=3)
+
+    def test_mes_solo_sin_telemetria_banda_cero(self):
+        """Mes amp-only: banda 0.0/0.0, igual que su energy_kwh 0.0."""
+        rep = aggregate_of([row(tool="amp", model_raw="amp",
+                                input_tokens=0, output_tokens=0,
+                                cache_read_tokens=0, cache_write_tokens=0)])
+        m = mes(rep, "2026-05")
+        self.assertEqual(m["energy_kwh"], 0.0)
+        self.assertEqual(m["energy_kwh_band"], {"low": 0.0, "high": 0.0})
+
+    def test_banda_usa_la_version_del_bucket(self):
+        """Mes posterior a una segunda effective usa el coeficiente nuevo."""
+        cfg = cfg_base()
+        cfg["energy_coefficients"]["versions"].append(
+            {"effective": "2026-06-01",
+             "tiers": {"flash": 0.01, "mid": 0.05, "frontier": 0.1},
+             "model_tiers": {}})
+        original = ut._FPA_CONFIG
+        ut._FPA_CONFIG = cfg
+        try:
+            rep = aggregate_of([row(ts="2026-06-10T14:23:00+00:00")])
+            b = mes(rep, "2026-06")["energy_kwh_band"]
+            self.assertAlmostEqual(b["low"], round(1_500_000 * 0.05 / 3.6e6, 3))
+            self.assertAlmostEqual(b["high"], round(11_500_000 * 0.05 / 3.6e6, 3))
+        finally:
+            ut._FPA_CONFIG = original
+
+    def test_metadata_band_cache_factors(self):
+        md = self.rep["metadata"]
+        self.assertEqual(md["energy_band_cache_factors"], [0.0, 1.0])
+
+    def test_fallback_sin_config_sin_banda(self):
+        original = ut._FPA_CONFIG
+        ut._FPA_CONFIG = None
+        try:
+            rep = aggregate_of([row()])
+            self.assertNotIn("energy_kwh_band", mes(rep, "2026-05"))
+            self.assertNotIn("energy_band_cache_factors", rep["metadata"])
+        finally:
+            ut._FPA_CONFIG = original
+
+    def test_schema_tiene_campos_banda(self):
+        s = json.loads(SCHEMA_PATH.read_text())
+        mb = s["definitions"]["monthlyBucket"]["properties"]
+        self.assertIn("energy_kwh_band", mb)
+        md = s["properties"]["metadata"]["properties"]
+        self.assertIn("energy_band_cache_factors", md)
+
+
 class TestAbortLoud(unittest.TestCase):
     """Mes sin cobertura de versión → ValueError nombrando el mes."""
 

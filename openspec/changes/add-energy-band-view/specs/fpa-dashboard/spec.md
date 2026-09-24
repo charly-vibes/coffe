@@ -20,9 +20,10 @@ persistente por hover/focus/tap, touch targets ≥ 44×44 px y single-column
 
 #### Scenario: mes sin telemetría visible con razón
 
-- **WHEN** un mes emite `energy_kwh: null` con razón
-- **THEN** la vista lo lista como sin estimación junto a su razón, no lo omite
-  ni lo muestra como 0
+- **WHEN** un mes tiene `energy_kwh` 0.0 porque sus modelos emitieron `null`
+  con razón (sin telemetría)
+- **THEN** la vista lo marca como sin telemetría y expone las razones por
+  modelo, no lo presenta como una medición de cero kWh
 
 #### Scenario: smoke de la vista energía
 

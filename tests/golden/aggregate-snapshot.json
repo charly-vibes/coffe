@@ -567,6 +567,10 @@
       "end": "2026-06-01",
       "start": "2026-05-10"
     },
+    "energy_band_cache_factors": [
+      0.0,
+      1.0
+    ],
     "energy_cache_read_factor": 0.1,
     "energy_config_source": "config/fpa.json",
     "energy_method": "tokens (input+output+cache_write a peso completo; cache_read \u00d7 cache_read_energy_factor) \u00d7 J/token del tier (config energy_coefficients versionado) / 3.6e6 \u2014 coeficientes de laboratorio (Luccioni et al. / AI Energy Score), orden de magnitud, nunca medici\u00f3n",
@@ -690,6 +694,10 @@
       "cost_real": 40.0,
       "cost_real_tracker": 0.0,
       "energy_kwh": 0.0,
+      "energy_kwh_band": {
+        "high": 0.0,
+        "low": 0.0
+      },
       "energy_kwh_by_model": {
         "claude-sonnet-4-6": {
           "kwh": 0.0,
@@ -766,6 +774,10 @@
       "cost_real": 0.0,
       "cost_real_tracker": 0.0,
       "energy_kwh": 0.0,
+      "energy_kwh_band": {
+        "high": 0.0,
+        "low": 0.0
+      },
       "energy_kwh_by_model": {
         "claude-sonnet-4-6": {
           "kwh": 0.0,

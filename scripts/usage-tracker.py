@@ -370,6 +370,11 @@ def _energy_for_month(monthly_dicts):
       {"kwh": null, "reason": "sin telemetría de tokens"} — nunca 0,
       que sugeriría medición (FPA-008).
     - total energy_kwh = suma de modelos con datos.
+    - coffe-5ng: energy_kwh_band {low, high} = mismo cálculo con cache
+      factor 0.0 y 1.0 (los extremos de la banda de sensibilidad: 0% y
+      100% de acierto de caché; el nominal usa el factor del config).
+      Modelos sin telemetría quedan fuera de ambos extremos, igual que
+      fuera del total nominal.
     """
     if _FPA_CONFIG is None:
         return  # fallback sin config: metadata.energy_* registra la razón
@@ -389,6 +394,8 @@ def _energy_for_month(monthly_dicts):
         mapping = version.get("model_tiers", {})
         by_model = {}
         total = 0.0
+        band_low = 0.0
+        band_high = 0.0
         for model, tok in mo["tokens_by_model"].items():
             if not any((tok["in"], tok["out"], tok["cache_read"],
                         tok["cache_write"])):
@@ -399,9 +406,15 @@ def _energy_for_month(monthly_dicts):
             kwh = _energy_kwh(tok["in"], tok["out"], tok["cache_read"],
                               tok["cache_write"], tiers[tier], factor)
             total += kwh
+            band_low += round((tok["in"] + tok["out"] + tok["cache_write"])
+                              * tiers[tier] / 3.6e6, 3)
+            band_high += round((tok["in"] + tok["out"] + tok["cache_write"]
+                                + tok["cache_read"]) * tiers[tier] / 3.6e6, 3)
             by_model[model] = {"kwh": kwh, "tier": tier}
         mo["energy_kwh_by_model"] = by_model
         mo["energy_kwh"] = round(total, 3)
+        mo["energy_kwh_band"] = {"low": round(band_low, 3),
+                                 "high": round(band_high, 3)}
 
 
 def parse_ts(ts):
@@ -1705,6 +1718,10 @@ def aggregate(interactions, sessions, skills_total=None, skills_by_project=None,
             "energy_cache_read_factor": (
                 _ENERGY_COEFFS["cache_read_energy_factor"]
                 if _FPA_CONFIG is not None else None),
+            # coffe-5ng: extremos de la banda de sensibilidad de caché que
+            # emite cada mes en energy_kwh_band (0% y 100% de acierto).
+            **({"energy_band_cache_factors": [0.0, 1.0]}
+               if _FPA_CONFIG is not None else {}),
             "energy_method": (
                 "tokens (input+output+cache_write a peso completo; "
                 "cache_read × cache_read_energy_factor) × J/token del tier "
