@@ -417,7 +417,7 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
 
 - **1 · ELI5:** Una tienda buena pone lo más útil en la puerta y te dice
   qué hacer después.
-- **2 · Cotidiano:** Cinco vistas, cada una respondiendo una pregunta. Un
+- **2 · Cotidiano:** Seis vistas, cada una respondiendo una pregunta. Un
   selector de periodo. Cada alerta tiene un botón. Los lectores reciben una
   invitación principal ("Leer la serie").
 - **3 · Practicante:** Títulos de hallazgo ("{{fig:mes_pico}} manejó el {{fig:mes_pico_share}}
@@ -432,3 +432,41 @@ Los IDs de requisito (FPA-xxx) apuntan a la spec.
   títulos generados deben salir de métricas y umbrales con nombre, o se
   vuelven las afirmaciones sin respaldo que el review detectó. El estado
   codificado en la URL hace las vistas reproducibles y revisables.
+
+---
+
+## E. Energía estimada
+
+### 20. Energía estimada y banda de caché (FPA-180)
+
+- **1 · ELI5:** Cuánta electricidad hicieron consumir tus conversaciones
+  con el robot: hoy unas bombitas LED, no una estufa eléctrica.
+- **2 · Cotidiano:** Los proveedores no reportan energía, así que el
+  dashboard la **estima** a partir de los tokens. Hoy el periodo suma
+  **{{fig:energia_total}} kWh**, con una banda de
+  **{{fig:energia_low}}–{{fig:energia_high}} kWh** que muestra cuánto
+  cambiaría la estimación si la caché hiciera su trabajo perfecto o
+  pésimo. Cada barra mensual lleva
+  su banda y la marca del escenario base; los meses sin telemetría de
+  tokens se muestran con la razón, nunca como un cero medido.
+- **3 · Practicante:** Fórmula del tracker (`energy_method` en metadata):
+  `(input + output + cache_write + cache_read × factor) × J/token del tier
+  ÷ 3.6e6`, con coeficientes de laboratorio versionados por fecha en el
+  config (`energy_coefficients`: flash 0.03 / mid 0.1 / frontier 0.2
+  J/token entregado). El factor de cache_read es **el parámetro dominante**:
+  la banda recompone el mismo método con factor 0.0 y 1.0
+  (`energy_band_cache_factors`), y el escenario base usa el nominal del
+  config (hoy {{fig:cache_factor}}). Toda cifra lleva el tag *assumed* —
+  son estimaciones de Luccioni et al. / AI Energy Score, jamás mediciones.
+  Un ancla útil de contexto: Google reportó 0.24 Wh por prompt mediano de
+  Gemini Apps, pero NO calibra uso CLI agéntico (contextos 10–100×
+  mayores); usar per-token como método primario.
+- **4 · Experto:** La estimación hereda los sesgos de los benchmarks de
+  laboratorio (hardware y workload distintos del datacenter real); el
+  multiplicador de cachés domina la incertidumbre y merece análisis de
+  sensibilidad antes que afinar los coeficientes por modelo. La banda es
+  determinista (mismos buckets y versión que el nominal), no un intervalo
+  de confianza. Las cifras reportadas por proveedores (p.ej. la reducción
+  per-query que reporta Google) usan límites de sistema distintos y no son
+  directamente comparables; el disclosure obligatorio (EU AI Act Art. 53)
+  va a mejorar la base de comparación con el tiempo.

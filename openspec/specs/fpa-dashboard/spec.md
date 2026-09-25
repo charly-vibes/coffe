@@ -419,7 +419,7 @@ archivo, IDs de requisito (FPA-xxx) y variables internas SHALL NOT cambiar.
 ### Requirement: guía de análisis a cuatro niveles, en español y con grounding
 
 El sistema SHALL (debe) versionar la guía de análisis en español
-(`docs/fpa-analyses-guide.md`, 19 análisis × niveles ELI5/Everyday/Practitioner/
+(`docs/fpa-analyses-guide.md`, 20 análisis × niveles ELI5/Everyday/Practitioner/
 Expert) en el repo como fuente de contenido, con un pase de **grounding** previo a
 la publicación: cada fórmula, umbral y default citado SHALL verificarse contra la
 implementación real (`viz-fpa.py`, `usage-tracker.py`, `config/fpa.json`); las
@@ -430,8 +430,8 @@ texto de la guía, nunca el código.
 El generador SHALL ingerrir la guía (parse stdlib) y producir:
 
 - `data/fpa-guide.html`: la guía completa, autocontenida y en el tema del sitio.
-- **Marginalia con progressive disclosure**: en cada una de las 5 vistas del
-  Dashboard y en el Gantt, cada análisis mapeado SHALL anunciarse con un
+- **Marginalia con progressive disclosure**: en cada una de las 6 vistas del
+  Dashboard (coffe-8kx: incluida Energía) y en el Gantt, cada análisis mapeado SHALL anunciarse con un
   affordance compacto (chip/botón de información, target táctil de 44px) cuyo
   tooltip muestre el teaser del nivel 1 (ELI5); al seleccionar el chip SHALL
   expandirse la nota in situ (nivel 2 completo, nivel 3 colapsado, enlace a la
@@ -605,7 +605,7 @@ mes (sin cambio del requisito de datos).
 - **THEN** la sección muestra "n/a" con la razón y no renderiza selector ni
   waterfall (sin placeholders vacíos)
 
-### Requirement: vista de energía estimada con banda
+### Requirement: vista de energía estimada con banda (FPA-180)
 
 El Dashboard SHALL (debe) incluir una vista "Energía" (tab F8) que muestre los
 kWh estimados por mes del reporte como barras con banda low–high
@@ -616,6 +616,8 @@ vista SHALL (debe) cumplir accesibilidad y mobile igual que las demás: readout
 persistente por hover/focus/tap, touch targets ≥ 44×44 px y single-column
 < 600px. El caption SHALL (debe) explicar que los extremos corresponden a 0% y
 100% de acierto de caché y que el escenario base usa el factor nominal (10%).
+La vista SHALL (debe) tener su análisis explicado en la guía (análisis 20,
+coffe-8kx) y por lo tanto recibir marginalia como las demás vistas.
 
 #### Scenario: banda visible en la vista energía
 

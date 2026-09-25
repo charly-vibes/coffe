@@ -291,6 +291,23 @@ def derive_figures(report, cfg):
         off = None
     tz_txt = f"{off.total_seconds() / 3600:+03.0f}" if off is not None else tz_name
 
+    # energía estimada (coffe-8kx): totales del periodo recomputados como
+    # la vista F8 (build_energy) — suma de monthly con energía emitida.
+    # FPA-008: sin provenance assumed (fallback sin config) → n/a, jamás
+    # un 0.0 que parezca medición.
+    if md.get("energy_provenance") == "assumed":
+        en_tot = en_lo = en_hi = 0.0
+        for mo in (report.get("monthly") or {}).values():
+            if "energy_kwh" not in mo:
+                continue  # fallback sin config (7mj): sin campos mensuales
+            en_tot += mo.get("energy_kwh") or 0.0
+            band = mo.get("energy_kwh_band") or {}
+            en_lo += band.get("low", 0.0)
+            en_hi += band.get("high", 0.0)
+        en_fig = (f"{en_tot:.1f}", f"{en_lo:.1f}", f"{en_hi:.1f}")
+    else:
+        en_fig = ("n/a", "n/a", "n/a")
+
     b = cfg.get("budgets") or {}
     bridge_label, bridge_v, bridge_m, bridge_r = _bridge_example(report)
     fo_share = 100.0 * (fo.get("share") or 0.0)
@@ -336,6 +353,11 @@ def derive_figures(report, cfg):
         "bridge_v": bridge_v,
         "bridge_m": bridge_m,
         "bridge_r": bridge_r,
+        # coffe-8kx: energía estimada (assumed) para el análisis 20
+        "energia_total": en_fig[0],
+        "energia_low": en_fig[1],
+        "energia_high": en_fig[2],
+        "cache_factor": str(md.get("energy_cache_read_factor") or "n/a"),
     }
 
 
@@ -366,10 +388,17 @@ NIVEL_COTIDIANO = "2 · Cotidiano"
 NIVEL_PRACTICANTE = "3 · Practicante"
 
 
-def _mchip(a):
+def _mchip(a, figures=None):
     """Un chip de marginalia: <details> nativo con tooltip ELI5 (title),
     nivel 2 visible al expandir, nivel 3 colapsado dentro y enlace a la
-    guía completa (FPA coffe-gen.4)."""
+    guía completa (FPA coffe-gen.4). Con `figures`, resuelve {{fig:*}}
+    del reporte vigente (coffe-8kx)."""
+    if figures is not None:
+        a = dict(a)
+        a["levels"] = {
+            lvl: FIG_TOKEN_RE.sub(
+                lambda m: figures.get(m.group(1), m.group(0)), text)
+            for lvl, text in a["levels"].items()}
     teaser = _plain(a["levels"][NIVEL_TEASER])
     daily = _plain(a["levels"][NIVEL_COTIDIANO])
     prac = _plain(a["levels"][NIVEL_PRACTICANTE])
@@ -389,14 +418,19 @@ def _mchip(a):
         f'</details>')
 
 
-def marginalia_html(guide_dict, cfg, surface):
-    """Strip de marginalia para una superficie (5 vistas + data + gantt):
-    chips por análisis mapeado, con tooltip del teaser ELI5."""
+def marginalia_html(guide_dict, cfg, surface, figures=None):
+    """Strip de marginalia para una superficie (6 vistas + data + gantt):
+    chips por análisis mapeado, con tooltip del teaser ELI5.
+
+    coffe-8kx: con `figures` (derivadas del reporte vigente), los tokens
+    {{fig:*}} del texto se resuelven también en los chips — si no, el chip
+    de energía citaría 0.0 kWh en el fallback sin config (FPA-008: nunca
+    un cero que parezca medición)."""
     by_num = {a["num"]: a for a in analyses_flat(guide_dict)}
     chips = []
     for num, surfaces in ANALYSIS_SURFACES:
         if surface in surfaces and num in by_num:
-            chips.append(_mchip(by_num[num]))
+            chips.append(_mchip(by_num[num], figures))
     if not chips:
         return ""
     label = ('¿Qué es esto? Los análisis que esta sección mira '
@@ -407,8 +441,8 @@ def marginalia_html(guide_dict, cfg, surface):
 
 
 # Mapeo declarado análisis→superficie (coffe-gen.4 lo consume para la
-# marginalia). Claves canónicas del texto; superficies: las 5 vistas del
-# dashboard + 'data' (Datos y método) + 'gantt'.
+# marginalia). Claves canónicas del texto; superficies: las 6 vistas del
+# dashboard (coffe-8kx suma 'energy') + 'data' (Datos y método) + 'gantt'.
 ANALYSIS_SURFACES = [
     ("1", ["summary"]),      # efectivo vs real vs apalancamiento (headline)
     ("2", ["summary"]),      # claim coste/1k vs target
@@ -430,6 +464,7 @@ ANALYSIS_SURFACES = [
     ("17", ["breakdown"]),   # árboles con roll-up
     ("18", ["data"]),        # calidad de datos
     ("19", ["data"]),        # interfaz y CTAs
+    ("20", ["energy"]),      # energía estimada y banda de caché (coffe-8kx)
 ]
 
 # Umbrales citados en la guía ↔ valores reales (config o defaults del

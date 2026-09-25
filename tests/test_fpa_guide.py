@@ -49,13 +49,14 @@ class TestParser(unittest.TestCase):
     def setUp(self):
         self.guide = guide.load_guide(GUIDE_MD)
 
-    def test_20_entradas_19_numeros(self):
-        """19 números de análisis; el 10 tiene variantes a/b (20 entradas)."""
+    def test_21_entradas_20_numeros(self):
+        """20 números de análisis (coffe-8kx suma el 20 de energía);
+        el 10 tiene variantes a/b (21 entradas)."""
         flat = [a for s in self.guide["sections"] for a in s["analyses"]]
-        self.assertEqual(20, len(flat))
+        self.assertEqual(21, len(flat))
         nums = {a["num"] for a in flat}
         self.assertEqual({str(i) for i in range(1, 10)} | {"10a", "10b"}
-                         | {str(i) for i in range(11, 20)}, nums)
+                         | {str(i) for i in range(11, 21)}, nums)
 
     def test_cuatro_niveles_por_analisis(self):
         for s in self.guide["sections"]:
@@ -69,6 +70,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual("FPA-002", by_num["1"]["ids"][0])
         self.assertEqual("FPA-116", by_num["10a"]["ids"][0])
         self.assertIn("FPA-080", by_num["13"]["ids"])
+        self.assertIn("FPA-180", by_num["20"]["ids"])  # coffe-8kx
 
     def test_titulos_y_secciones(self):
         self.assertEqual("A", self.guide["sections"][0]["key"])
@@ -88,9 +90,14 @@ class TestMapping(unittest.TestCase):
 
     def test_superficies_validas(self):
         valid = {"summary", "cost", "breakdown", "habits", "outlook",
-                 "data", "gantt"}
+                 "energy", "data", "gantt"}
         for _, surfaces in guide.ANALYSIS_SURFACES:
             self.assertTrue(set(surfaces) <= valid)
+
+    def test_energia_en_su_vista(self):
+        """coffe-8kx: la vista Energía tiene su propio análisis (20)."""
+        surfaces = dict(guide.ANALYSIS_SURFACES)
+        self.assertEqual(["energy"], surfaces["20"])
 
     def test_multitasking_y_ritmo_tambien_en_gantt(self):
         surfaces = dict(guide.ANALYSIS_SURFACES)
@@ -134,10 +141,16 @@ class TestMarginalia(unittest.TestCase):
     def test_render_dashboard_incluye_strips(self):
         html = viz.render_html(REPORT, CONFIG, generated="2026-09-19 12:00")
         for surface in ("summary", "cost", "breakdown", "habits", "outlook",
-                        "data"):
+                        "energy", "data"):
             self.assertIn('<div class="marginalia"', html)
             self.assertTrue(html.count(f'class="marginalia" id="m-{surface}"')
                             == 1, f"strip de {surface} ausente")
+
+    def test_render_energy_strip_linkea_analisis_20(self):
+        """coffe-8kx: la vista Energía anuncia su análisis con chip."""
+        html = viz.render_html(REPORT, CONFIG, generated="2026-09-19 12:00")
+        self.assertIn('id="m-energy"', html)
+        self.assertIn('href="fpa-guide.html#analisis-20"', html)
 
     def test_render_gantt_incluye_strips(self):
         gantt = _load("viz_gantt", "scripts/viz-gantt.py")
@@ -216,8 +229,28 @@ class TestFiguresDerivadas(unittest.TestCase):
     def test_render_y_chips_sin_tokens(self):
         gd = guide.load_guide(guide.resolve_figures(GUIDE_MD, REPORT, CONFIG))
         self.assertNotIn("{{fig:", guide.render_guide_html(gd, CONFIG))
-        for s in ("summary", "cost", "breakdown", "habits", "outlook", "data"):
+        for s in ("summary", "cost", "breakdown", "habits", "outlook",
+                  "energy", "data"):
             self.assertNotIn("{{fig:", guide.marginalia_html(gd, CONFIG, s))
+
+    def test_figuras_de_energia_derivadas_del_reporte(self):
+        """coffe-8kx: los tokens fig:* de energía salen del reporte vigente,
+        recomputando el total del periodo como lo hace la vista F8."""
+        figs = guide.derive_figures(REPORT, CONFIG)
+        tot = lo = hi = 0.0
+        for mo in REPORT["monthly"].values():
+            if "energy_kwh" not in mo:
+                continue
+            tot += mo.get("energy_kwh") or 0.0
+            band = mo.get("energy_kwh_band") or {}
+            lo += band.get("low", 0.0)
+            hi += band.get("high", 0.0)
+        self.assertEqual(f"{tot:.1f}", figs["energia_total"])
+        self.assertEqual(f"{lo:.1f}", figs["energia_low"])
+        self.assertEqual(f"{hi:.1f}", figs["energia_high"])
+        self.assertEqual(
+            str(REPORT["metadata"]["energy_cache_read_factor"]),
+            figs["cache_factor"])
 
     def test_header_cuenta_analisis_reales(self):
         gd = guide.load_guide(GUIDE_MD)
@@ -265,6 +298,7 @@ class TestRenderGuideHtml(unittest.TestCase):
         self.assertIn('id="analisis-1"', self.html)
         self.assertIn('id="analisis-10a"', self.html)
         self.assertIn('id="analisis-19"', self.html)
+        self.assertIn('id="analisis-20"', self.html)  # coffe-8kx
 
     def test_en_tema_compartido(self):
         self.assertEqual(dict(theme.TOKENS), _root := dict(re.findall(

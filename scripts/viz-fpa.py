@@ -4223,8 +4223,11 @@ def render_html(report, cfg, generated=None, today=None):
     if guide.GUIDE_MD.exists():
         guide_dict = guide.load_guide(guide.resolve_figures(
             guide.GUIDE_MD.read_text(encoding="utf-8"), report, cfg))
+        # coffe-8kx: figures para los chips (resuelve {{fig:*}} de energía;
+        # sin esto el chip citaría 0.0 kWh en el fallback sin config, FPA-008)
+        figures = guide.derive_figures(report, cfg)
         marginalia = {
-            s: guide.marginalia_html(guide_dict, cfg, s)
+            s: guide.marginalia_html(guide_dict, cfg, s, figures=figures)
             for s in ("summary", "cost", "breakdown", "habits", "outlook",
                       "energy", "data")}
     else:
