@@ -35,7 +35,7 @@
     {
       "action": {
         "label": "Ver el reporte",
-        "target": "data/usage_report_v3.json"
+        "target": "usage_report_v3.json"
       },
       "evidence": {
         "cur_per_1k": 650.0,

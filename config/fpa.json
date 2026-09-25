@@ -203,11 +203,11 @@
     "secondary": [
       {
         "label": "Explorar el Gantt",
-        "target": "data/gantt-multitasking.html"
+        "target": "gantt-multitasking.html"
       },
       {
         "label": "Descargar los datos",
-        "target": "data/usage_report_v3.json"
+        "target": "usage_report_v3.json"
       },
       {
         "label": "Correr en tus logs",
@@ -221,7 +221,7 @@
       },
       "reconciliation": {
         "label": "Ver el reporte",
-        "target": "data/usage_report_v3.json"
+        "target": "usage_report_v3.json"
       },
       "budget": {
         "label": "Ajustar presupuesto",
@@ -229,7 +229,7 @@
       },
       "unit-cost": {
         "label": "Ver el reporte",
-        "target": "data/usage_report_v3.json"
+        "target": "usage_report_v3.json"
       },
       "mix": {
         "label": "Comparar planes",
